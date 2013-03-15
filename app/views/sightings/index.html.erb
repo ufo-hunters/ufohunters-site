@@ -1,2 +1,60 @@
+<html>
+<head>
+    <title>OpenLayers Demo</title>
+    <style type="text/css">
+      html, body, #basicMap {
+          width: 700px;
+          height: 500px;
+          margin: 20;
+      }
+    </style>
+   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+   <script>
+      function init() {
+        
+    var lat            = 40.5361528074896;
+    var lon            = -3.6291320200;
+    var zoom           = 15;
+ 
+    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+ 
+    map = new OpenLayers.Map("basicMap");
+    var mapnik         = new OpenLayers.Layer.OSM();
+    map.addLayer(mapnik);
+ 
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+    markers.addMarker(new OpenLayers.Marker(position)); 
+ 
+    map.setCenter(position, zoom);
+
+      }
+    </script>
+  </head>
+
+<body onload="init();">
+
 <h1>Sightings#index</h1>
 <p>Find me in app/views/sightings/index.html.erb</p>
+
+
+<p>Numero de avistamientos: <%=@numUFO%></p>
+
+<% @listaUFO.each do |ovni| %>
+  <p>Fecha avistamiendo: <%=ovni.sighted_at%></br>
+     Fecha en la que se reporto: <%=ovni.reported_at%></br>
+	 Localizacion: <%=ovni.location%></br>
+	 Forma: <%=ovni.shape%></br>
+	 Duration: <%=ovni.duration%></br>
+	 Description: <%=ovni.description%></br>
+  </p>
+<% end %>
+
+
+<div id="basicMap"></div>
+
+
+</body>
+</html>
