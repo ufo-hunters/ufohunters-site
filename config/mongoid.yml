@@ -79,11 +79,11 @@ test:
         max_retries: 1
         retry_interval: 0
 production:
-  #sessions:
-    #default:
-      #database: sightings
-      #hosts:
+  sessions:
+    default:      
+  	uri: <%= ENV['MONGOHQ_URL'] %>
+	#database: sightings
+        #hosts:
         #- linus.mongohq.com:10048
-      #username: ufo
-      #password: ufo
-  uri: <%= ENV['MONGOHQ_URL'] %>
+        #username: ufo
+        #password: ufo

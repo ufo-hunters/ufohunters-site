@@ -81,8 +81,9 @@ test:
 production:
   sessions:
     default:
-      database: sightings
-      hosts:
-        - linus.mongohq.com:10048
-      username: ufo
-      password: ufo
+      #database: sightings
+      #hosts:
+        #- linus.mongohq.com:10048
+      #username: ufo
+      #password: ufo
+  uri: <%= ENV['MONGOHQ_URL'] %>
