@@ -26,8 +26,7 @@
  
     var markers = new OpenLayers.Layer.Markers( "Markers" );
     map.addLayer(markers);
-    markers.addMarker(new OpenLayers.Marker(position));
- 
+    markers.addMarker(new OpenLayers.Marker(position)); 
     map.setCenter(position, zoom);
 
       }
@@ -43,8 +42,25 @@
 <p>Numero de avistamientos: <%=@numUFO%></p>
 
 <% @listaUFO.each do |ovni| %>
-  <p>name: <%=ovni.name%></br>
-  tipo_ovni: <%=ovni.tipo_ovni%></p>
+  <p>Fecha avistamiendo: <%=ovni.sighted_at%></br>
+     Fecha en la que se reporto: <%=ovni.reported_at%></br>
+	 Localizacion: <%=ovni.location%></br>
+	 Forma: <%=ovni.shape%></br>
+	 Duration: <%=ovni.duration%></br>
+	 Description: <%=ovni.description%></br>
+<<<<<<< HEAD
+	 <% ovni.coord.each do |k,y| %>
+     		<%= k %>: <%= y %></br>
+         <% end %>
+=======
+        Coordenadas: </br>
+        
+        <% ovni.coord.each do |k,v| %>
+			- <%=k%>: <%=v%></br>
+        <% end %>
+	
+>>>>>>> 9d8360752d423853961ceb5f48b76375292d4b38
+  </p>
 <% end %>
 
 
@@ -53,4 +69,3 @@
 
 </body>
 </html>
-

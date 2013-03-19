@@ -11,6 +11,8 @@ gem 'rails', '3.2.2'
 #gema para conexion a mongodb
 gem 'mongoid', '~> 3.0.0'
 
+#gem "rserve-simpler", "~> 0.0.6"
+
 
 # Gems used only for assets and not required 
 # in production environments by default.

@@ -363,3 +363,123 @@
  1555  heroku logs --tail
  1556  history
 
+ 1562  cd Documentos/UFO/
+ 1563  ls
+ 1564  cd ufo
+ 1565  git add .
+ 1566  git commit -m "vs"
+ 1567  git push origin master
+ 1568  git push heroku master
+ 1569  heroku config | grep MONGOHQ_URL
+ 1570  heroku config
+ 1571  heroku config rm DATABASE_Url
+ 1572  heroku config rm DATABASE_URL
+ 1573  heroku config:unset DATABASE_URL
+ 1574  heroku config
+ 1575  heroku restart
+ 1576  git push heroku master
+ 1577  git add .
+ 1578  git commit -m "vs"
+ 1579  git push origin master
+ 1580  git push heroku master
+ 1581  heroku logs --tail
+ 1582  heroku config
+ 1583  heroku logs --tail
+ 1584  git add .
+ 1585  git commit -m "vs2"
+ 1586  git push origin master
+ 1587  git push heroku master
+ 1588  heroku logs --tail
+ 1589  heroku restart
+ 1590  heroku logs --tail
+ 1591  git add .
+ 1592  git commit -m "vs3"
+ 1593  git push origin master
+ 1594  git push heroku master
+ 1595  heroku logs --tail
+ 1596  heroku config | grep MONGOHQ_URL
+ 1597  heroku restart
+ 1598  heroku logs --tail
+ 1599  ls
+ 1600  bundle install
+ 1601  bundle update
+ 1602  bundle install
+ 1603  git add .
+ 1604  git commit -m "vs4"
+ 1605  git push origin master
+ 1606  git push heroku master
+ 1607  heroku logs --tail
+ 1608  heroku restart
+ 1609  heroku logs --tail
+ 1610  git add .
+ 1611  git commit -m "vs5"
+ 1612  git add/rm
+ 1613  git add/rm app/models/ufo.rb
+ 1614  git add/rm models/ufo.rb
+ 1615  git add/rm ufo/models/ufo.rb
+ 1616  git add ..
+ 1617  git add .
+ 1618  git commit -m "vs5"
+ 1619  git commit -a
+ 1620  git add/rm 
+ 1621  git --help
+ 1622  git add help
+ 1623  git rm app/models/ufo.rb
+ 1624  git rm models/ufo.rb
+ 1625  git rm config/database.yml
+ 1626  git rm ufi
+ 1627  git rm ufo
+ 1628  git add .
+ 1629  git commit -m "vs5"
+ 1630  git push origin master
+ 1631  git push heroku master
+ 1632  heroku logs --tail
+ 1633  heroku restart
+ 1634  heroku logs --tail
+ 1635  export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightings
+ 1636  heroku config | grep MONGOHQ_URL
+ 1637  heroku restart
+ 1638  export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightings
+ 1639  heroku config | grep MONGOHQ_URL
+ 1640  heroku restart
+ 1641  git push heroku master
+ 1642  heroku logs --tail
+ 1643  puts Collections
+ 1644  heroku confid:add MONGOHQ_URL
+ 1645* heroku config:add MONGOHQ_URL=
+ 1646  heroku config:add MONGOHQ_URL=MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightings
+ 1647  heroku config:add MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightings
+ 1648  heroku restart
+ 1649  heroku config:add MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10029/sightings
+ 1650  heroku restart
+ 1651  heroku config:push
+ 1652  heroku config
+ 1653  heroku config | grep MONGOHQ_URL
+ 1654  export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10029/app13480402
+ 1655  heroku config:add MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10029/app13480402
+ 1656  heroku restart
+ 1657  heroku logs --tail
+ 1658  heroku ps:scale web=2
+ 1659  heroku logs --tail
+ 1660  git add .
+ 1661  git commit -m "vs7"
+ 1662  git push origin master
+ 1663  git push heroku master
+ 1664  heroku restart
+ 1665  heroku logs --tail
+ 1666  bundle install
+ 1667  git add Gemfile
+ 1668  git commit -m 'use Ruby 1.9.3'
+ 1669  git push origin master
+ 1670  git push heroku master
+ 1671  heroku run 'ruby -v'
+
+
+export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightingspaco@paco:~/Documentos/UFO/ufo$ heroku config | grep MONGOHQ_URL
+MONGOHQ_URL: mongodb://heroku:b4c0843dae9732f441b61264a3e3c098@linus.mongohq.com:10029/app13480402
+paco@paco:~/Documentos/UFO/ufo$ export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+paco@paco:~/Documentos/UFO/ufo$ heroku config:add MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+Setting config vars and restarting ufo-hunters-2013... done, v31
+MONGOHQ_URL: mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+
+
