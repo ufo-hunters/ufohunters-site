@@ -483,3 +483,12 @@ Setting config vars and restarting ufo-hunters-2013... done, v31
 MONGOHQ_URL: mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
 
 
+
+
+
+
+mongo linus.mongohq.com:10048/sightings -u ufo -pufo
+
+db.ufo.find({coord: {$ne: null},sighted_at:"20130228",duration:"2-3 minutes"}).pretty()
+
+

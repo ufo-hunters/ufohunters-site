@@ -475,3 +475,11 @@
  1671  heroku run 'ruby -v'
 
 
+export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10032/sightingspaco@paco:~/Documentos/UFO/ufo$ heroku config | grep MONGOHQ_URL
+MONGOHQ_URL: mongodb://heroku:b4c0843dae9732f441b61264a3e3c098@linus.mongohq.com:10029/app13480402
+paco@paco:~/Documentos/UFO/ufo$ export MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+paco@paco:~/Documentos/UFO/ufo$ heroku config:add MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+Setting config vars and restarting ufo-hunters-2013... done, v31
+MONGOHQ_URL: mongodb://ufo:ufo@linus.mongohq.com:10048/sightings
+
+
