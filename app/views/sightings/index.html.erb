@@ -48,6 +48,9 @@
 	 Forma: <%=ovni.shape%></br>
 	 Duration: <%=ovni.duration%></br>
 	 Description: <%=ovni.description%></br>
+	 <% ovni.coord.each do |k,y| %>
+     		<%= k %>: <%= y %></br>
+         <% end %>
   </p>
 <% end %>
 
