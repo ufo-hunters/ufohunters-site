@@ -256,7 +256,7 @@
  1448  git remote -v
  1449  git remote rm heroku
  1450  git remote -v
- 1451  git remote add origin git@heroku.com:ufo-hunters-2013.herokuapp.com
+ 1451  git remote add heroku git@heroku.com:ufo-hunters-2013.herokuapp.com
  1452  git remote -v
  1453  git push origin master
  1454  git push heroku master

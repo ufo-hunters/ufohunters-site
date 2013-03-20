@@ -120,7 +120,7 @@
 			  
 			<% @listaUFO.each do |ovni| %>
 			  <div class="content_item">
-				  <p><h3>Date sighted: <%=ovni.sighted_at%></h3>
+				  <p><h3>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%></h3>
 				    Date reported: <%=ovni.reported_at.to_date.strftime("%A %d. %B %Y")%></br>
 					 Location: <%=ovni.location%></br>
 					 Shape: <%=ovni.shape%></br>
