@@ -494,5 +494,12 @@ db.ufo.find({coord: {$ne: null},sighted_at:"20130228",duration:"2-3 minutes"}).p
 precompilar los estilos para subirlos:
 bundle exec rake assets:precompile
 
+y en application.rb en config
+añadir
+  # Prevent initializing the application before assets are precompiled (required for heroku)
+    config.assets.initialize_on_precompile = false
+    # Add Rails Admin assets (required)
+    config.assets.precompile += ['sightings.css', 'sightings.css.scss']
+
 
 
