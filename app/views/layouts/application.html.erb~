@@ -7,7 +7,7 @@
   <%= csrf_meta_tags %>
    <script src="http://www.openlayers.org/api/OpenLayers.js"></script> 
 </head>
-<body onload="init()">
+<body onload="init())">
 
 <%= yield %>
 

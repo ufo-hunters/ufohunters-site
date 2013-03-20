@@ -1,117 +1,171 @@
-<html>
-<head>
-    <title>OpenLayers Demo</title>
-    <style type="text/css">
-      html, body, #basicMap {
-          width: 900px;
-          height: 500px;
-          margin: 20;
-      }
-    </style>
-   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-   <script>
-    
-    var iconSize = new OpenLayers.Size(21, 25);
-    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-    var icon = new OpenLayers.Icon("http://www.openstreetmap.org/openlayers/img/marker.png",
-                   iconSize, iconOffset);
-    var zoom, center, currentPopup, map, lyrMarkers;
-    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-        "autoSize": true,
-        "minSize": new OpenLayers.Size(300, 50),
-        "maxSize": new OpenLayers.Size(500, 300),
-        "keepInMap": true
-    });
-    var bounds = new OpenLayers.Bounds();
 
-    function addMarker(lng, lat, info) {
-        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
-        bounds.extend(pt);
-        var feature = new OpenLayers.Feature(lyrMarkers, pt);
-        feature.closeBox = true;
-        feature.popupClass = popupClass;
-        feature.data.popupContentHTML = info;
-        feature.data.overflow = "auto";
-        var marker = new OpenLayers.Marker(pt, icon.clone());
-        var markerClick = function(evt) {
-            if (currentPopup != null && currentPopup.visible()) {
-                currentPopup.hide();
-            }
-            if (this.popup == null) {
-                this.popup = this.createPopup(this.closeBox);
-                map.addPopup(this.popup);
-                this.popup.show();
-            } else {
-                this.popup.toggle();
-            }
-            currentPopup = this.popup;
-            OpenLayers.Event.stop(evt);
-        };
-        marker.events.register("mousedown", feature, markerClick);
-        lyrMarkers.addMarker(marker);
-    }
-    function init() {
-        
-		    var lat            = 40.5361528074896;
-		    var lon            = -3.6291320200;
-		    var zoom           = 1;
-		 
-		    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-		    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+      
+
+		<script type="text/javascript">
 		
+			 var iconSize = new OpenLayers.Size(21, 25);
+		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
+		    var icon = new OpenLayers.Icon("http://www.openstreetmap.org/openlayers/img/marker.png",
+		                   iconSize, iconOffset);
+		    var zoom, center, currentPopup, map, lyrMarkers;
+		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+		        "autoSize": true,
+		        "minSize": new OpenLayers.Size(300, 50),
+		        "maxSize": new OpenLayers.Size(500, 300),
+		        "keepInMap": true
+		    });
+		    var bounds = new OpenLayers.Bounds();
 		
-		    var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
-		 
-		    map = new OpenLayers.Map("basicMap");
-		    var mapnik = new OpenLayers.Layer.OSM();
-		    map.addLayer(mapnik);
-		 
-		    var markers = new OpenLayers.Layer.Markers( "Markers" );
-		    map.addLayer(markers);
-		    markers.addMarker(new OpenLayers.Marker(position)); 
-                    
-		    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-                    map.addLayer(lyrMarkers);
-		    
-                    <% @listaUFO.each do |ovni| %>			  
-  			 addMarker(<%=ovni.coord.fetch("lon")%>,<%=ovni.coord.fetch("lat")%>,'Localizacion: <%=ovni.location%></br>Fecha avistamiendo: <%=ovni.sighted_at%>');
-		    <% end %>
-		    
-                    
-		    map.setCenter(position, zoom);
-		    map.zoomToMaxExtent();
+		    function addMarker(lng, lat, info) {
+		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
+		        bounds.extend(pt);
+		        var feature = new OpenLayers.Feature(lyrMarkers, pt);
+		        feature.closeBox = true;
+		        feature.popupClass = popupClass;
+		        feature.data.popupContentHTML = info;
+		        feature.data.overflow = "auto";
+		        var marker = new OpenLayers.Marker(pt, icon.clone());
+		        var markerClick = function(evt) {
+		            if (currentPopup != null && currentPopup.visible()) {
+		                currentPopup.hide();
+		            }
+		            if (this.popup == null) {
+		                this.popup = this.createPopup(this.closeBox);
+		                map.addPopup(this.popup);
+		                this.popup.show();
+		            } else {
+		                this.popup.toggle();
+		            }
+		            currentPopup = this.popup;
+		            OpenLayers.Event.stop(evt);
+		        };
+		        marker.events.register("mousedown", feature, markerClick);
+		        lyrMarkers.addMarker(marker);
+		    }
+		    function init() {
+		        
+				    var lat            = 40.5361528074896;
+				    var lon            = -3.6291320200;
+				    var zoom           = 1;
+				 
+				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+				
+				
+				    var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				 
+				    map = new OpenLayers.Map("basicMap");
+				    var mapnik = new OpenLayers.Layer.OSM();
+				    map.addLayer(mapnik);
+				 
+				    var markers = new OpenLayers.Layer.Markers( "Markers" );
+				    map.addLayer(markers);
+				    markers.addMarker(new OpenLayers.Marker(position)); 
+		                    
+				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
+		                    map.addLayer(lyrMarkers);
+				    
+		          <% @listaUFO.each do |ovni| %>			  
+		  			 	addMarker(<%=ovni.coord.fetch("lon")%>,<%=ovni.coord.fetch("lat")%>,'Localizacion: <%=ovni.location%></br>Fecha avistamiendo: <%=ovni.sighted_at%>');
+				    <% end %>
+				    
+		                    
+				    map.setCenter(position, zoom);
+				    map.zoomToMaxExtent();
+		
+		      }
+		
+		</script>
 
-      }
-    </script>
-  </head>
-
-<body onload="init();">
-
-<h1>Sightings#index</h1>
-<p>Find me in app/views/sightings/index.html.erb</p>
-<div id="basicMap"></div>
-
-<p>Numero de avistamientos: <%=@numUFO%></p>
-
-<% @listaUFO.each do |ovni| %>
-  
-  <p>Fecha avistamiendo: <%=ovni.sighted_at%></br>
-     Fecha en la que se reporto: <%=ovni.reported_at%></br>
-	 Localizacion: <%=ovni.location%></br>
-	 Forma: <%=ovni.shape%></br>
-	 Duration: <%=ovni.duration%></br>
-	 Description: <%=ovni.description%></br>
-	 <% ovni.coord.each do |k,y| %>
-     		<%= k %>: <%= y %></br>
-         <% end %>
-         <script>//placeRandomMarker('<%=ovni.coord.fetch("lat")%>', '<%=ovni.coord.fetch("lon")%>')
-        </script>
-  </p>
-<% end %>
 
 
 
 
+<div id="main">
+	<div id="header">
+		<div id="banner">
+			<div id="welcome">
+				<h1>Ufo hunters (statistics)</h1>
+			</div>
+			<div id="welcome_slogan">
+				<h1>Number of sightings counted <%=@numUFO%>... and growing</h1>
+			</div>
+		</div>
+	</div>
 
-</body>
-</html>
+	<div id="menubar">
+	<ul id="menu">
+		<li class="current"><a href="#">Home</a></li>
+		<li><a href="#">Our site</a></li>
+		<li><a href="#">Statistics</a></li>
+		<li><a href="#">Maps</a></li>
+		<li><a href="#">Contact Us</a></li>
+	</ul>
+	</div>
+
+
+
+	<div id="site_content">	
+
+		
+
+	 	<div id="content">
+	 	   <div class="content_item">
+	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
+	 	   </div>
+			<div class="content_item">
+			  <h1>Welcome To Ufo hunters</h1> 
+		      <p>This standards compliant, simple, fixed width website template is released as an 'open source' design (under the Creative Commons Attribution 3.0 Licence), which means that you are free to download and use it for anything you want (including modifying and amending it). If you wish to remove the &lsquo;ARaynorDesign&rsquo; link in the footer of the template, please contact me first, but other than that...</p>
+			 
+			  
+			<% @listaUFO.each do |ovni| %>
+			  <div class="content_item">
+				  <p><h3>Date sighted: <%=ovni.sighted_at%></h3>
+				    Date reported: <%=ovni.reported_at.to_date.strftime("%A %d. %B %Y")%></br>
+					 Location: <%=ovni.location%></br>
+					 Shape: <%=ovni.shape%></br>
+					 Duration: <%=ovni.duration%></br>
+					 Description:</br> <%=ovni.description%></br>
+					 <% ovni.coord.each do |k,y| %>
+				     		<%= k %>: <%= y %></br>
+					 <% end %>         
+				  </p>
+				 <div class="button_small">
+					<a href="#">Read more</a>
+		    		</div>
+			  </div>
+			<% end %>
+        </div>
+     </div>
+  </div>
+</div> 
+<div id="content_grey">
+	  <div class="content_grey_container_box">
+		<h4>Latest Blog Post</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+		<div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+	  </div><!--close content_grey_container_box-->
+      <div class="content_grey_container_box">
+       <h4>Latest News</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+	  </div><!--close content_grey_container_box-->
+      <div class="content_grey_container_boxl">
+		<h4>Latest Projects</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->	  
+	  </div><!--close content_grey_container_box1-->      
+	  <br style="clear:both"/>
+    </div><!--close content_grey-->   
+ 
+  </div><!--close main--> 
+<div id="footer">
+	  <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
+</div>
+

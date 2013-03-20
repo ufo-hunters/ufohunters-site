@@ -1,15 +1,14 @@
 class UfoModel
   include Mongoid::Document  
+
   store_in collection: "ufo"  
+
   field :sighted_at, type: String
   field :reported_at, type: String
   field :location, type: String
   field :shape, type: String
   field :duration, type: String
   field :description, type: String
-<<<<<<< HEAD
   field :coord, type:Hash
-=======
-  field :coord, type: Hash
->>>>>>> 9d8360752d423853961ceb5f48b76375292d4b38
+  
 end
