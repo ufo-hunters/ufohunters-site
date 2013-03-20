@@ -491,6 +491,8 @@ mongo linus.mongohq.com:10048/sightings -u ufo -pufo
 
 db.ufo.find({coord: {$ne: null},sighted_at:"20130228",duration:"2-3 minutes"}).pretty()
 
+https://devcenter.heroku.com/articles/rails-asset-pipeline#the_asset_pipeline
+
 precompilar los estilos para subirlos:
 bundle exec rake assets:precompile
 
@@ -500,6 +502,15 @@ añadir
     config.assets.initialize_on_precompile = false
     # Add Rails Admin assets (required)
     config.assets.precompile += ['sightings.css', 'sightings.css.scss']
+
+
+This is most likely due your config/application.rb not requiring rails/all (the default), but some custom requires.
+
+To resolve this, add the following to config/application.rb:
+
+require 'sprockets/railtie'
+
+
 
 
 
