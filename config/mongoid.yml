@@ -6,6 +6,9 @@ development:
         - linus.mongohq.com:10048
       username: ufo
       password: ufo
+    options:
+      raise_not_found_error: false
+
 #development:
   # Configure available database sessions. (required)
   #sessions:
@@ -92,3 +95,5 @@ production:
   sessions:
     default:
       uri: <%= ENV['MONGOHQ_URL'] %>      
+    options:
+      raise_not_found_error: false

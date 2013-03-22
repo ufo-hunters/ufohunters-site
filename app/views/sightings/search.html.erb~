@@ -1,0 +1,111 @@
+
+      
+
+		<script type="text/javascript">
+		
+		    function init() {
+		        				   
+					 var lat            = <%=@listaUFO.coord.fetch("lat")%>;
+				    var lon            = <%=@listaUFO.coord.fetch("lon")%>;
+				    var zoom           = 8;
+				    var icon = new OpenLayers.Icon("http://www.openstreetmap.org/openlayers/img/marker.png",
+		                   iconSize, iconOffset);
+				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+				    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				 
+				    map = new OpenLayers.Map("basicMap");
+				    var mapnik         = new OpenLayers.Layer.OSM();
+				    map.addLayer(mapnik);
+				 
+				    var markers = new OpenLayers.Layer.Markers( "Markers" );
+				    map.addLayer(markers);
+				    markers.addMarker(new OpenLayers.Marker(position, icon.clone()));				    
+				    map.setCenter(position, zoom);
+				    
+			}
+		</script>
+
+
+
+
+
+<div id="main">
+	<div id="header">
+		<div id="banner">
+			<div id="welcome">
+				<h1>Ufo hunters (statistics)</h1>
+			</div>
+			<div id="welcome_slogan">
+				<h1>Number of sightings counted <%=@numUFO%>... and growing</h1>
+			</div>
+		</div>
+	</div>
+
+	<div id="menubar">
+	<ul id="menu">
+		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
+		<!--li><a href="#">Our site</a></li-->
+		<!--li><a href="#">Statistics</a></li-->
+		<!--li><a href="#">Maps</a></li-->
+		<!--li><a href="#">Contact Us</a></li-->
+	</ul>
+	</div>
+
+
+
+	<div id="site_content">	
+
+		
+
+	 	<div id="content">
+	 	   <div class="content_item">
+	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
+	 	   </div>
+			
+			
+			  <div class="content_item">
+				  <p><h3>Date sighted: <%=@listaUFO.sighted_at.to_date.strftime("%A %d. %B %Y")%></h3>
+				    Date reported: <%=@listaUFO.reported_at.to_date.strftime("%A %d. %B %Y")%></br>
+					 Location: <%=@listaUFO.location%></br>
+					 Shape: <%=@listaUFO.shape%></br>
+					 Duration: <%=@listaUFO.duration%></br>
+					 Description:</br> <%=@listaUFO.description%></br>
+					        
+				  </p>
+				 
+			  </div>
+        </div>
+     </div>
+  </div>
+</div> 
+<div id="content_grey">
+	  <div class="content_grey_container_box">
+		<h4>Latest Blog Post</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+		<div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+	  </div><!--close content_grey_container_box-->
+      <div class="content_grey_container_box">
+       <h4>Latest News</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->
+	  </div><!--close content_grey_container_box-->
+      <div class="content_grey_container_boxl">
+		<h4>Latest Projects</h4>
+	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
+	    <div class="readmore">
+		  <a href="#">Read more</a>
+		</div><!--close readmore-->	  
+	  </div><!--close content_grey_container_box1-->      
+	  <br style="clear:both"/>
+    </div><!--close content_grey-->   
+ 
+  </div><!--close main--> 
+<div id="footer">
+	  <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
+</div>
+
