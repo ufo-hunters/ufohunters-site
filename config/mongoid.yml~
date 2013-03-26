@@ -1,3 +1,11 @@
+development:
+  sessions:
+    default:
+      database: sightings
+      hosts:
+        - linus.mongohq.com:10048
+      username: ufo
+      password: ufo
 #development:
   # Configure available database sessions. (required)
   #sessions:
@@ -83,8 +91,5 @@ test:
 production:   
   sessions:
     default:
-        uri: <%= ENV['MONGOHQ_URL'] %>     
-    options:    
-	skip_version_check: true
-        safe: true
+        uri: <%= ENV['MONGOHQ_URL'] %>  
    

@@ -10,6 +10,6 @@ class UfoModel
   field :shape, type: String
   field :duration, type: String
   field :description, type: String
-  field :coord, type:Hash
+  field :coord, type: Array
   
 end

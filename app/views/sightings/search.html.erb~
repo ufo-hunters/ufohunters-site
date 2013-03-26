@@ -8,6 +8,8 @@
 					 var lat            = <%=@listaUFO.coord.fetch("lat")%>;
 				    var lon            = <%=@listaUFO.coord.fetch("lon")%>;
 				    var zoom           = 8;
+				    var iconSize = new OpenLayers.Size(21, 25);
+		          var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
 				    var icon = new OpenLayers.Icon("http://www.openstreetmap.org/openlayers/img/marker.png",
 		                   iconSize, iconOffset);
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
@@ -45,7 +47,7 @@
 	<div id="menubar">
 	<ul id="menu">
 		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
-		<!--li><a href="#">Our site</a></li-->
+		<li><a href="#">Maps</a></li>
 		<!--li><a href="#">Statistics</a></li-->
 		<!--li><a href="#">Maps</a></li-->
 		<!--li><a href="#">Contact Us</a></li-->

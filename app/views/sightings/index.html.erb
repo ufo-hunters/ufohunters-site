@@ -65,7 +65,7 @@
 		                    map.addLayer(lyrMarkers);
 				    
 		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord.fetch("lon")%>,<%=ovni.coord.fetch("lat")%>,'Location: <%=ovni.location%></br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%><p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%></br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%><p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
 				    <% end %>
 				    
 		                    
@@ -95,7 +95,7 @@
 	<div id="menubar">
 	<ul id="menu">
 		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
-		<!--li><a href="#">Our site</a></li-->
+		<li><a href="#">Our site</a></li>
 		<!--li><a href="#">Statistics</a></li-->
 		<!--li><a href="#">Maps</a></li-->
 		<!--li><a href="#">Contact Us</a></li-->

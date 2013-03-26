@@ -1,11 +1,3 @@
-development:
-  sessions:
-    default:
-      database: sightings
-      hosts:
-        - linus.mongohq.com:10077
-      username: ufo
-      password: ufo
 #development:
   # Configure available database sessions. (required)
   #sessions:
