@@ -65,7 +65,7 @@
 		                    map.addLayer(lyrMarkers);
 				    
 		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord[0]]%>,<%=ovni.coord[1]]%>,'Location: <%=ovni.location%></br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%><p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%></br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%><p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
 				    <% end %>
 				    
 		                    
