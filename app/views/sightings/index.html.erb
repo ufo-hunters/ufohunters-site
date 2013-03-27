@@ -65,10 +65,9 @@
 		                    map.addLayer(lyrMarkers);
 				    
 		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%></br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%><p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%> </br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
 				    <% end %>
-				    
-		                    
+				              
 				    map.setCenter(position, zoom);
 				    map.zoomToMaxExtent();
 		
@@ -92,9 +91,9 @@
 	</div>
 
 	<div id="menubar">
-	<ul id="menu">
-		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
-		<li><a href="#">Our site</a></li>
+	<ul id="menu"><!--  class="current" -->
+		<li><%= link_to "Home", :controller => "sightings"%></li>
+		<li><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
 		<!--li><a href="#">Statistics</a></li-->
 		<!--li><a href="#">Maps</a></li-->
 		<!--li><a href="#">Contact Us</a></li-->
@@ -106,7 +105,6 @@
 	<div id="site_content">	
 
 		
-
 	 	<div id="content">
 	 	   <div class="content_item">
 	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
@@ -117,6 +115,7 @@
 			 
 			 <% @listaUFO.each do |ovni| %>
 			  <div class="content_container">
+			  
 				  <p><h3>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%></h3>
 				    Date reported: <%=ovni.reported_at.to_date.strftime("%A %d. %B %Y")%></br>
 					 Location: <%=ovni.location%></br>

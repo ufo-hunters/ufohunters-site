@@ -5,8 +5,8 @@
 		
 		    function init() {
 		        				   
-					 var lat            = <%=@listaUFO.coord.fetch("lat")%>;
-				    var lon            = <%=@listaUFO.coord.fetch("lon")%>;
+					 var lat            = <%=@listaUFO.coord[1]%>;
+				    var lon            = <%=@listaUFO.coord[0]%>;
 				    var zoom           = 8;
 				    var iconSize = new OpenLayers.Size(21, 25);
 		          var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
@@ -47,7 +47,7 @@
 	<div id="menubar">
 	<ul id="menu">
 		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
-		<li><a href="#">Maps</a></li>
+		<li><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
 		<!--li><a href="#">Statistics</a></li-->
 		<!--li><a href="#">Maps</a></li-->
 		<!--li><a href="#">Contact Us</a></li-->

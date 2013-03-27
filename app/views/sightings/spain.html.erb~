@@ -45,13 +45,14 @@
 		    }
 		    function init() {
 		        
-				     var zoom           = 1;
+				     var zoom           = 6;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 				
-				
-				    var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				    var lon = -3.4;
+				    var lat = 40;
+				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
 				 
 				    map = new OpenLayers.Map("basicMap");
 				    var mapnik = new OpenLayers.Layer.OSM();
@@ -65,11 +66,11 @@
 		                    map.addLayer(lyrMarkers);
 				    
 		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%> </br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%> </br>Date sighted: <%=ovni.sighted_at%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
 				    <% end %>
 				              
 				    map.setCenter(position, zoom);
-				    map.zoomToMaxExtent();
+				    //map.zoomToMaxExtent();
 		
 		      }
 		
@@ -92,7 +93,7 @@
 
 	<div id="menubar">
 	<ul id="menu">
-		<li class="current"><%= link_to "Home", :controller => "sightings"%></li>
+		<li><%= link_to "Home", :controller => "sightings"%></li>
 		<li><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
 		<!--li><a href="#">Statistics</a></li-->
 		<!--li><a href="#">Maps</a></li-->
@@ -104,21 +105,21 @@
 
 	<div id="site_content">	
 
-		543534535:<%= yield %>
+		
 
 	 	<div id="content">
 	 	   <div class="content_item">
-	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
+	 	   		<div id="basicMap" style="width: 900px; height: 550px;"></div>
 	 	   </div>
 			<div class="content_item">
-			  <h1>Welcome To Ufo hunters</h1> 
+			  <h1>Welcome to Spain's Ufo</h1> 
 		      <p>Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per. Ius id vidit volumus mandamus, vide veritus democritum te nec, ei eos debet libris consulatu.</p>
 			 
 			 <% @listaUFO.each do |ovni| %>
 			  <div class="content_container">
 			  
-				  <p><h3>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%></h3>
-				    Date reported: <%=ovni.reported_at.to_date.strftime("%A %d. %B %Y")%></br>
+				  <p><h3>Date sighted: <%=ovni.sighted_at%></h3>
+				    Date reported: <%=ovni.reported_at%></br>
 					 Location: <%=ovni.location%></br>
 					 Shape: <%=ovni.shape%></br>
 					 Duration: <%=ovni.duration%></br>				        
