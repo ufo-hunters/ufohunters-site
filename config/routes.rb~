@@ -54,7 +54,7 @@ Ufo::Application.routes.draw do
       
   # root search and spain, same controller
   match 'sightings/search/:id' => 'sightings#search'
-  match 'sightings/spain/:id' => 'sightings#spain'  
+  #match 'sightings/spain' => 'sightings#spain'  
   
   # See how all your routes lay out with "rake routes"  
   # This is a legacy wild controller route that's not recommended for RESTful applications.
