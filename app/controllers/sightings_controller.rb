@@ -24,7 +24,7 @@ class SightingsController < ApplicationController
 																											[-1.35,36.22],
 																											[ -7.26 , 36.02 ],
 																											[ -7.19 , 41.70 ],
-																											[ -9.26 , 43.64 ],
+																											[ -9.15 , 42.02 ],
 																											[ -9.26 , 43.64 ]]}})
 			  @numUFO = UfoModel.count()
         	  
