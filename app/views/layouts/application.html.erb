@@ -6,6 +6,24 @@
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
    <script src="http://www.openlayers.org/api/OpenLayers.js"></script> 
+  <script type="text/javascript">
+    function mycarousel_initCallback(carousel) {
+      // Pause autoscrolling if the user moves with the cursor over the clip.
+      carousel.clip.hover(function() {
+          carousel.stopAuto();
+      }, function() {
+        carousel.startAuto();
+      });
+    };
+    jQuery(document).ready(function() {
+    jQuery('#mycarousel').jcarousel({
+      auto: 2,
+      wrap: 'last',
+      initCallback: mycarousel_initCallback
+    });
+}); 
+  </script>
+
 </head>
 <body onload="init()">
 

@@ -34,7 +34,12 @@ h2
 { font: normal 165% Arial, Helvetica, sans-serif;}
 
 h3
-{ font: normal 130% Arial, Helvetica, sans-serif;
+{
+  color: #1D1D1D;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 1.1;
+  margin: 0 0 9px;
 }
 
 h4, h5, h6

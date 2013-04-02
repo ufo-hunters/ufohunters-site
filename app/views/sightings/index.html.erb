@@ -100,12 +100,19 @@
 	</ul>
 	</div>
 
-
-
 	<div id="site_content">	
-
 		
 	 	<div id="content">
+		
+		   <div class="content_item">
+			<ul id="mycarousel" class="jcarousel-skin-tango">
+                        <% for i in 0..10 %>
+                           <li><%=@listaUFO[i].sighted_at%><br/><%=@listaUFO[i].location%></li>
+                        <% end %>
+                      </ul>
+
+		   </div>
+
 	 	   <div class="content_item">
 	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
 	 	   </div>
