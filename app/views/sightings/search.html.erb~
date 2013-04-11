@@ -30,7 +30,8 @@
 		        feature.data.overflow = "auto";
 				
 		        var marker = new OpenLayers.Marker(pt, icon.clone());
-		        if(first==0) marker = new OpenLayers.Marker(pt, iconDetalle.clone());
+		        if(first==0) marker = new OpenLayers.Marker(pt);
+		        if(icono==1) marker = new OpenLayers.Marker(pt,iconDetalle);
 		        var markerClick = function(evt) {
 		            if (currentPopup != null && currentPopup.visible()) {
 		                currentPopup.hide();
