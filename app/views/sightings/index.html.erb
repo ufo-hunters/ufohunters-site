@@ -39,8 +39,8 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        //marker.events.register("mousedown", feature, markerClick);
-		        marker.events.register("mouseover", feature, markerClick);
+		        marker.events.register("mousedown", feature, markerClick);
+		        
 		        lyrMarkers.addMarker(marker);
 		    }
 		    function init() {
@@ -62,10 +62,11 @@
 				    markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		                    map.addLayer(lyrMarkers);
-				    
-		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%> </br>Date sighted: <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+		            map.addLayer(lyrMarkers);
+					var location = '';
+		            <% @listaUFO.each do |ovni| %>
+						location = "<%=ovni.location.gsub(/'/, '')%>";
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
 				    map.setCenter(position, zoom);
@@ -77,96 +78,50 @@
 
 
 
-
-<div id="main">
-	<div id="header">
-		<div id="banner">
-			<div id="welcome">
-				<h1>Ufo hunters (statistics)</h1>
-			</div>
-			<div id="welcome_slogan">
-				<h1>Number of sightings counted <%=@numUFO%>... and growing</h1>
-			</div>
-		</div>
-	</div>
-
-	<div id="menubar">
-	<ul id="menu"><!--  class="current" -->
-		<li><%= link_to "Home", :controller => "sightings"%></li>
-		<li><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
-		<!--li><a href="#">Statistics</a></li-->
-		<!--li><a href="#">Maps</a></li-->
-		<!--li><a href="#">Contact Us</a></li-->
-	</ul>
-	</div>
-
 	<div id="site_content">	
 		
-	 	<div id="content">
-		
-		   <div class="content_item">
-			<ul id="mycarousel" class="jcarousel-skin-tango">
-                        <% for i in 0..10 %>
-                           <li><%=@listaUFO[i].sighted_at%><br/><%=@listaUFO[i].location%></li>
-                        <% end %>
-                      </ul>
+				<div id="content">
+				
+					   <div class="content_item">
+							<h3>Recent UFO Activity</h3>
+						
+							<div id="mycarousel">
+								<% for i in 0..19 %>
+									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
+									<%if @listaUFO[i].sighted_at.blank? == false %> <%=@listaUFO[i].sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/>
+									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id %></strong>
+									</div>
+								<% end %>
+							</div>
+					   </div>
 
-		   </div>
+					   <div class="content_item">
+							<div id="basicMap" style="width: 900px; height: 450px;"></div>
+					   </div>
+					   
+					   <div class="content_item">
+								  <!--h1>Welcome To Ufo hunters</h1> 
+								  <p>Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per. Ius id vidit volumus mandamus, vide veritus democritum te nec, ei eos debet libris consulatu.</p-->
+								
+								<div class="content_container">
+									<%= image_tag image_path('world.png') %>
+									<p><h3>Thousands of sightings all over the world</h3></p>
+									<p>Find sightings by date, shape, location or near you !! Browse over more than 75000 sightings.</p>
+								</div>
 
-	 	   <div class="content_item">
-	 	   		<div id="basicMap" style="width: 900px; height: 450px;"></div>
-	 	   </div>
-			<div class="content_item">
-			  <!--h1>Welcome To Ufo hunters</h1> 
-		      <p>Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per. Ius id vidit volumus mandamus, vide veritus democritum te nec, ei eos debet libris consulatu.</p-->
-			<div class="content_container">
-				<%= image_tag image_path('world.png') %>
-			<p><h3>Thousands of sightings all over the world</h3></p>
-			<p>Find sightings by date, shape, location or near you !! Browse over more than 75000 sightings.</p>
+								<div class="content_container">
+									<%= image_tag image_path('ufo_home.png') %>
+									<p><h3>Have you seen a UFO?</h3></p>
+									<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
+								</div>			
+					 
+								<div>
+									<%= image_tag image_path('computer_worker.png') %>
+									<p><h3>Report your experience</h3></p>
+									<p>Share your experience in one simple step and make it available to everyone.
+								</div>	
+						</div>
+				</div>
 		</div>
-
-			<div class="content_container">
-				<%= image_tag image_path('ufo_home.png') %>
-				<p><h3>Have you seen a UFO?</h3></p>
-				<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
-			</div>			
- 
-			<div>
-				<%= image_tag image_path('computer_worker.png') %>
-				<p><h3>Report your experience</h3></p>
-				<p>Share your experience in one simple step and make it available to everyone.
-			</div>	
-        </div>
-     </div>
-  </div>
 </div> 
-<div id="content_grey">
-	  <div class="content_grey_container_box">
-		<h4>Latest Blog Post</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-		<div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_box">
-       <h4>Latest News</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_boxl">
-		<h4>Latest Projects</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->	  
-	  </div><!--close content_grey_container_box1-->      
-	  <br style="clear:both"/>
-    </div><!--close content_grey-->   
- 
-  </div><!--close main--> 
-<div id="footer">
-	  <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
-</div>
 
