@@ -73,7 +73,7 @@
 				    
 		            <% @listaUFOlist.each do |ovni|%>
                         location = "<%=ovni.location.gsub(/'/, '')%>"; 			
-                        addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: ' + location + ' </br>Date sighted: <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>',0);
+                        addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>',0);
 						 <% end %>
 				    
 					
