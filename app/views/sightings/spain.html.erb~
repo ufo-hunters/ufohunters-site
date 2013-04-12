@@ -3,9 +3,9 @@
 
 		<script type="text/javascript">
 		
-			 var iconSize = new OpenLayers.Size(21, 25);
+			var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("http://www.openstreetmap.org/openlayers/img/marker.png",
+		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
 		                   iconSize, iconOffset);
 		    var zoom, center, currentPopup, map, lyrMarkers;
 		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
@@ -39,8 +39,8 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        //marker.events.register("mousedown", feature, markerClick);
-		        marker.events.register("mouseover", feature, markerClick);
+		        marker.events.register("mousedown", feature, markerClick);
+
 		        lyrMarkers.addMarker(marker);
 		    }
 		    function init() {
@@ -60,107 +60,60 @@
 				 
 				    var markers = new OpenLayers.Layer.Markers( "Markers" );
 				    map.addLayer(markers);
-				    markers.addMarker(new OpenLayers.Marker(position)); 
+				    //markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
 		                    map.addLayer(lyrMarkers);
-				    
-		          <% @listaUFO.each do |ovni| %>			  
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'Location: <%=ovni.location%> </br>Date sighted: <%=ovni.sighted_at%> <p align="center"><b><%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %></b></p>');
+				    var location = '';
+		            <% @listaUFO.each do |ovni| %>
+						location = "<%=ovni.location.gsub(/'/, '')%>";
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
 				    map.setCenter(position, zoom);
 				    //map.zoomToMaxExtent();
 		
 		      }
-		
+		      
+		      $(function(){
+				
+						$("#mostrar").click(function(event) {
+							var texto = $("#mostrar").text();
+							alert(texto);
+							alert(texto=='SHOW');
+							if(texto=='SHOW') texto = "CLOSE";
+							if(texto=='CLOSE') texto = "SHOW";
+							alert(texto);
+							event.preventDefault();
+							$("#ufolist").slideToggle(5000);
+							$("#mostrar").text(texto);
+						});						
+						
+				});
 		</script>
 
 
 
-
-<div id="main">
-	<div id="header">
-		<div id="banner">
-			<div id="welcome">
-				<h1>Ufo hunters (statistics)</h1>
-			</div>
-			<div id="welcome_slogan">
-				<h1>Number of sightings counted <%=@numUFO%>... and growing</h1>
-			</div>
-		</div>
-	</div>
-
-	<div id="menubar">
-	<ul id="menu">
-		<li><%= link_to "Home", :controller => "sightings"%></li>
-		<li><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
-		<!--li><a href="#">Statistics</a></li-->
-		<!--li><a href="#">Maps</a></li-->
-		<!--li><a href="#">Contact Us</a></li-->
-	</ul>
-	</div>
-
-
-
-	<div id="site_content">	
-
-		
+	<div id="site_content">			
 
 	 	<div id="content">
-	 	   <div class="content_item">
-	 	   		<div id="basicMap" style="width: 900px; height: 550px;"></div>
-	 	   </div>
-			<div class="content_item">
-			  <h1>Welcome to Spain's Ufo</h1> 
-		      <p>Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per. Ius id vidit volumus mandamus, vide veritus democritum te nec, ei eos debet libris consulatu.</p>
-			 
-			 <% @listaUFO.each do |ovni| %>
-			  <div class="content_container">
-			  
-				  <p><h3>Date sighted: <%=ovni.sighted_at%></h3>
-				    Date reported: <%=ovni.reported_at%></br>
-					 Location: <%=ovni.location%></br>
-					 Shape: <%=ovni.shape%></br>
-					 Duration: <%=ovni.duration%></br>				        
-				  </p>
-				 <div class="button_small">
-					<%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %>
-		    		</div>
-			  </div>
-			<% end %>			  
-			
+			   <div class="content_item">
+					<div id="basicMap" style="width: 900px; height: 550px;"></div>
+			   </div>
+			   <div class="content_item">
+					  <h2>Welcome to Ufos in Spain</h2> 
+					  <p>In this map you can see all sightings in Spain. </p>
+				      <h2>Sightings in Spain, in alphabetical order <a href="#" id="mostrar">SHOW</a></h2>
+							<div id="ufolist" style="display: none">						 
+								 <% @listaUFO.each do |ovni| %>
+									  <div class="content_location">						  
+											  <strong><%=ovni.location%></strong></br>
+											  <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
+											  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>
+									  </div>
+								 <% end %>	
+						   </div>
+				</div>
         </div>
-     </div>
-  </div>
+    </div>
 </div> 
-<div id="content_grey">
-	  <div class="content_grey_container_box">
-		<h4>Latest Blog Post</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-		<div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_box">
-       <h4>Latest News</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_boxl">
-		<h4>Latest Projects</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->	  
-	  </div><!--close content_grey_container_box1-->      
-	  <br style="clear:both"/>
-    </div><!--close content_grey-->   
- 
-  </div><!--close main--> 
-<div id="footer">
-	  <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
-</div>
-

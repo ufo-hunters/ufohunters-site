@@ -74,7 +74,20 @@
 				    //map.zoomToMaxExtent();
 		
 		      }
-		
+		      
+		      $(function(){
+				
+						$("#mostrar").click(function(event) {
+							var texto = "CLOSE" ;
+							if($("#mostrar").text()=='SHOW') texto = "CLOSE";
+							if($("#mostrar").text()=='CLOSE') texto = "SHOW";
+							
+							event.preventDefault();
+							$("#ufolist").slideToggle(5000);
+							$("#mostrar").text(texto);
+						});						
+						
+				});
 		</script>
 
 
@@ -86,22 +99,18 @@
 					<div id="basicMap" style="width: 900px; height: 550px;"></div>
 			   </div>
 			   <div class="content_item">
-					  <h1>Welcome to Ufos in Spain</h1> 
-					  <p>Lorem ipsum ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per. Ius id vidit volumus mandamus, vide veritus democritum te nec, ei eos debet libris consulatu.</p>
-				 
-					 <% @listaUFO.each do |ovni| %>
-						  <div class="content_container">						  
-								  <p><h3>Date sighted: <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></h3>
-										 Date reported: <%if ovni.reported_at.blank? == false %> <%=ovni.reported_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
-										 Location: <%=ovni.location%></br>
-										 Shape: <%=ovni.shape%></br>
-										 Duration: <%=ovni.duration%></br>				        
-								  </p>
-								 <div class="button_small">
-										<%= link_to "Read more", :controller => "sightings", :action => "search", :id => ovni.id %>
-								 </div>
-						  </div>
-					<% end %>	
+					  <h2>Welcome to Ufos in Spain</h2> 
+					  <p>In this map you can see all sightings in Spain. </p>
+				      <h2>Sightings in Spain, in alphabetical order <a href="#" id="mostrar">SHOW</a></h2>
+							<div id="ufolist" style="display: none">						 
+								 <% @listaUFO.each do |ovni| %>
+									  <div class="content_location">						  
+											  <strong><%=ovni.location%></strong></br>
+											  <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
+											  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>
+									  </div>
+								 <% end %>	
+						   </div>
 				</div>
         </div>
     </div>

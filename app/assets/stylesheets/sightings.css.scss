@@ -227,6 +227,24 @@ ul#menu li:hover a
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 10px;}
+
+.content_item a{
+	font: bold;
+	color: #3F4A5F;	
+}
+.content_item a:hover
+{ 
+	color: #51607B;
+	text-decoration: underline;}
+
+.content_location
+{ 
+ width: 140px;
+ padding: 5px;
+ margin-bottom: 5px;
+ margin-top: 10px;
+ float: left;
+ height: 80px;}
   
 .content_image
 { float: left; 

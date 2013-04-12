@@ -32,7 +32,7 @@ class SightingsController < ApplicationController
 																					[ -7.26 , 36.02 ],
 																					[ -7.19 , 41.70 ],
 																					[ -9.15 , 42.02 ],
-																					[ -9.26 , 43.64 ]]}})
+																					[ -9.26 , 43.64 ]]}}).order_by(:location.asc)
 			  @numUFO = UfoModel.count()
 			  @menu = "spain"        	  
   end
