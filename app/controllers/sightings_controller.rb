@@ -24,7 +24,7 @@ class SightingsController < ApplicationController
 			  #distance = 700 #km        
 			  #location = [-3.688810, 40.420088]	  
         	  #@listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$centerSphere" => [location, (distance.fdiv(6371) )]}})  	  
-		      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[ -9.26 , 43.64 ] , 
+		     @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[ -9.26 , 43.64 ] , 
 																					[ -1.9, 43.42 ] , 
 																					[ 3.24,42.73 ], 
 																					[ 4.77, 39.43 ],
@@ -42,5 +42,22 @@ class SightingsController < ApplicationController
 			  @listaUFO = UfoModel.collection.aggregate({ "$group" =>
 												  { "_id" => {"shape" => "$shape"}, "count" => { "$sum" => 1 } } 
 											   })
+  end
+  def maps 
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"  
+  end
+  def northamerica 
+			  @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[-169.45, 71.41] , 
+																					[-177.54, 51.40 ] , 
+																					[-123.04, 30.75 ] ,
+																					[-80.85, 24.20 ] ,
+																					[-42.18, 47.28 ] ,
+																					[-42.18, 47.28 ] ,
+																					[-94.57, 72.18 ] ,
+																					[-169.45, 71.41]
+																					]}}).order_by(:sighted_at.desc).limit(100)
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"
   end
 end
