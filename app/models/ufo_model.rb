@@ -11,4 +11,7 @@ class UfoModel
   field :duration, type: String
   field :description, type: String
   field :coord, type: Array
+  field :forma, type: Hash
+  field :suma, type: Hash
+  
 end

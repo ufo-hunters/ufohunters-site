@@ -36,4 +36,11 @@ class SightingsController < ApplicationController
 			  @numUFO = UfoModel.count()
 			  @menu = "spain"        	  
   end
+  def statistics 
+			  @numUFO = UfoModel.count()
+			  @menu = "statistics"  
+			  @listaUFO = UfoModel.collection.aggregate({ "$group" =>
+												  { "_id" => {"shape" => "$shape"}, "count" => { "$sum" => 1 } } 
+											   })
+  end
 end

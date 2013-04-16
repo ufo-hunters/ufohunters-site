@@ -229,11 +229,15 @@ ul#menu li:hover a
   margin-left: 10px;}
 
 .content_item h3 {
-	color: #2A2A2A;
+    color: #2A2A2A;
     font-size: 24px;
     font-weight: normal;
     line-height: 1.1;
-    margin: 0 0 9px;
+    margin: 0 0 0px;
+}
+
+.content_item a {
+	color: #3F4A5F;
 }
 
 .content_image
@@ -249,7 +253,26 @@ ul#menu li:hover a
 { width: 280px;
   padding: 5px;
   margin-right: 10px;
-  float: left;}
+  float: left;
+}
+
+.content_container h3
+{
+  margin: 0 0 0px;
+}
+
+.content_container
+{
+  text-align: center;
+}
+
+.content_container p
+{
+  font-size: 15px;
+  margin: 10px 0 10px;
+  padding-right: 10px;
+  color: #5A5A5A;
+}
   
 #content_grey
  { width: 920px;
@@ -443,4 +466,8 @@ div.sighting_carousel {
   border-right: 1px solid #B0B0B0; 
   margin-right: 10px; 
   text-align: center;
+}
+
+p.activity {
+  font-size: 12px;
 }
