@@ -1,6 +1,6 @@
 // Place all the styles related to the sightings controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/ 222222
+// You can use Sass (SCSS) here: http://sass-lang.com/
 html
 { height: 100%;} 
 
@@ -98,9 +98,9 @@ ol li
   text-align: center; 
   margin: 0 auto;
   background: #1D1D1D;
-  background: -moz-linear-gradient(#535353, #1d1d1d);
-  background: -o-linear-gradient(#535353, #1d1d1d);
-  background: -webkit-linear-gradient(#535353, #1d1d1d);
+  background: -moz-linear-gradient(#3F4A5F, #698DC5);
+  background: -o-linear-gradient(#3F4A5F, #698DC5);
+  background: -webkit-linear-gradient(#3F4A5F, #698DC5);
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
@@ -207,9 +207,9 @@ ul#menu li:hover a
   text-shadow: 0px -1px 0px #000;
   color: #fff;
   background: #1D1D1D;
-  background: -moz-linear-gradient(#535353, #1d1d1d);
-  background: -o-linear-gradient(#535353, #1d1d1d);
-  background: -webkit-linear-gradient(#535353, #1d1d1d);
+  background: -moz-linear-gradient(#3F4A5F, #698DC5);
+  background: -o-linear-gradient(#3F4A5F, #698DC5);
+  background: -webkit-linear-gradient(#3F4A5F, #698DC5);
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
@@ -227,7 +227,19 @@ ul#menu li:hover a
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 10px;}
-  
+
+.content_item h3 {
+    color: #2A2A2A;
+    font-size: 24px;
+    font-weight: normal;
+    line-height: 1.1;
+    margin: 0 0 0px;
+}
+
+.content_item a {
+	color: #3F4A5F;
+}
+
 .content_image
 { float: left; 
   width: 150px;
@@ -238,19 +250,38 @@ ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px;}
   
 .content_container
-{ width: 320px;
+{ width: 280px;
   padding: 5px;
   margin-right: 10px;
-  float: left;}
+  float: left;
+}
+
+.content_container h3
+{
+  margin: 0 0 0px;
+}
+
+.content_container
+{
+  text-align: center;
+}
+
+.content_container p
+{
+  font-size: 15px;
+  margin: 10px 0 10px;
+  padding-right: 10px;
+  color: #5A5A5A;
+}
   
 #content_grey
  { width: 920px;
   height: 160px;
   text-align: center; 
   background: #1D1D1D;
-  background: -moz-linear-gradient(#535353, #1d1d1d);
-  background: -o-linear-gradient(#535353, #1d1d1d);
-  background: -webkit-linear-gradient(#535353, #1d1d1d);
+  background: -moz-linear-gradient(#3F4A5F, #698DC5);
+  background: -o-linear-gradient(#3F4A5F, #698DC5);
+  background: -webkit-linear-gradient(#3F4A5F, #698DC5);
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
@@ -328,9 +359,9 @@ ul#menu li:hover a
   width: 80px;
   padding: 5px 2px 7px 2px;
   background: #1D1D1D;
-  background: -moz-linear-gradient(#535353, #1d1d1d);
-  background: -o-linear-gradient(#535353, #1d1d1d);
-  background: -webkit-linear-gradient(#535353, #1d1d1d);
+  background: -moz-linear-gradient(#3F4A5F, #698DC5);
+  background: -o-linear-gradient(#3F4A5F, #698DC5);
+  background: -webkit-linear-gradient(#3F4A5F, #698DC5);
   border-radius: 15px 15px 15px 15px;
   -moz-border-radius: 15px 15px 15px 15px;
   -webkit-border: 15px 15px 15px 15px;
@@ -425,3 +456,83 @@ ul img {
   font: normal 130% arial, sans-serif;
   color: #FFF;}
  
+div.sighting_carousel {
+  float: left;
+  display: block;
+  margin: 7px;
+  padding: 9px;
+  width: 184px;
+  height: 70px;
+  border-right: 1px solid #B0B0B0; 
+  margin-right: 10px; 
+  text-align: center;
+}
+
+p.activity {
+  font-size: 12px;
+}
+
+/*  CARRUSEL MAPS*/
+
+.image_carousel {
+	padding: 30px 80px 80px 60px;
+	position: relative;
+}
+.content_continent {
+	border: 1px solid #ccc;
+	background-color: white;
+	padding: 9px;
+	margin: 7px;
+	display: block;
+	float: left;
+	width: 200px;
+	height: 210px ;
+	text-align: center;
+}
+a.prev, a.next {
+	background: url(http://caroufredsel.dev7studios.com/images/miscellaneous_sprite.png) no-repeat transparent;
+	width: 45px;
+	height: 50px;
+	display: block;
+	position: absolute;
+	top: 85px;
+}
+a.prev {			left: 25px;
+					background-position: 0 0; 
+					top: 140px;}
+a.prev:hover {		background-position: 0 -50px; }
+a.prev.disabled {	background-position: 0 -100px !important;  }
+a.next {			right: 25px;
+					background-position: -50px 0; 
+					top: 140px;}
+a.next:hover {		background-position: -50px -50px; }
+a.next.disabled {	background-position: -50px -100px !important;  }
+a.prev.disabled, a.next.disabled {
+	cursor: default;
+}
+
+a.prev span, a.next span {
+	display: none;
+}
+.pagination {
+	text-align: center;
+}
+.pagination a {
+	background: url(http://caroufredsel.dev7studios.com/images/miscellaneous_sprite.png) 0 -300px no-repeat transparent;
+	width: 15px;
+	height: 15px;
+	margin: 0 5px 0 0;
+	display: inline-block;
+}
+.pagination a.selected {
+	background-position: -25px -300px;
+	cursor: default;
+}
+.pagination a span {
+	display: none;
+}
+.clearfix {
+	float: none;
+	clear: both;
+}
+
