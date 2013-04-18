@@ -15,7 +15,10 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
-		
+		    var ua = navigator.userAgent;		        
+    		var event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+			alert(ua);
+			
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
@@ -38,8 +41,8 @@
 		            }
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
-		        };
-		        marker.events.register("touchstart", feature, markerClick);
+		        };		        
+		        marker.events.register(event, feature, markerClick);
 
 		        lyrMarkers.addMarker(marker);
 		    }
@@ -70,7 +73,7 @@
 		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
-				    map.setCenter(position, zoom);
+				    map.setCenter(position, zoom);				    
 				    //map.zoomToMaxExtent();
 		
 		      }
