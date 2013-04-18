@@ -16,11 +16,7 @@
 		    });
 		    var bounds = new OpenLayers.Bounds();
 		    var ua = navigator.userAgent;	
-		    var event = "click";
-		    if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
-		    	event = "touchstart";
-		    }	        
-    		
+		    
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
@@ -44,7 +40,12 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };		        
-		        marker.events.register(event, feature, markerClick);
+		        
+		        if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+		        	marker.events.register("touchstart", feature, markerClick);
+		    	} else {
+	    			marker.events.register("click", feature, markerClick);
+		    	}
 
 		        lyrMarkers.addMarker(marker);
 		    }
