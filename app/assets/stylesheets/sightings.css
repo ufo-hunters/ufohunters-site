@@ -490,7 +490,7 @@ p.activity {
 	text-align: center;
 }
 a.prev, a.next {
-	background: url(http://caroufredsel.dev7studios.com/images/miscellaneous_sprite.png) no-repeat transparent;
+	background: url(/assets/miscellaneous_sprite.png) no-repeat transparent;
 	width: 45px;
 	height: 50px;
 	display: block;
@@ -518,7 +518,7 @@ a.prev span, a.next span {
 	text-align: center;
 }
 .pagination a {
-	background: url(http://caroufredsel.dev7studios.com/images/miscellaneous_sprite.png) 0 -300px no-repeat transparent;
+	background: url(/assets/miscellaneous_sprite.png) 0 -300px no-repeat transparent;
 	width: 15px;
 	height: 15px;
 	margin: 0 5px 0 0;
