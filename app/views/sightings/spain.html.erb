@@ -39,7 +39,7 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        marker.events.register("mousedown", feature, markerClick);
+		        marker.events.register("click", feature, markerClick);
 
 		        lyrMarkers.addMarker(marker);
 		    }
