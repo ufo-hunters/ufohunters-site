@@ -60,4 +60,28 @@ class SightingsController < ApplicationController
 			  @numUFO = UfoModel.count()
 			  @menu = "maps"
   end
+
+  def oceania
+
+     @listaUFO = UfoModel.where(:coord => {
+			"$geoWithin" => {
+				"$polygon" => [
+					[138.69141, 1.40611],
+        				[175.42969, -14.09396],
+        				[177.18750, -52.69636],
+					[103.18359, -42.42346],
+					[110.03906, -25.00597],
+					[124.10156, -14.09396],
+					[129.28711, -9.70906],
+					[132.45117, -6.14055],
+					[130.69336, -2.46018],
+					[129.19922, -0.35156],
+					[133.33008, 4.21494]
+				]}
+			}).order_by(:sighted_at.desc).limit(100)
+
+      @numUFO = UfoModel.count()
+      @menu = "maps"
+
+  end
 end
