@@ -39,13 +39,13 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        marker.events.register("mousedown", feature, markerClick);
+		        marker.events.register("touchstart", feature, markerClick);
 
 		        lyrMarkers.addMarker(marker);
 		    }
 		    function init() {
 		        
-				     var zoom           = 3;
+				    var zoom           = 3;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
@@ -63,7 +63,7 @@
 				    //markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		                    map.addLayer(lyrMarkers);
+		            map.addLayer(lyrMarkers);
 				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
 						location = "<%=ovni.location.gsub(/'/, '')%>";
@@ -112,7 +112,7 @@
 					<div id="basicMap" style="width: 900px; height: 550px;"></div>
 			   </div>
 			   
-        </div>
+          </div>
         
         
     </div>
