@@ -15,10 +15,12 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
-		    var ua = navigator.userAgent;		        
-    		var event = (ua.match(/iPad/i)) ? "touchstart" : "click";
-			alert(ua);
-			
+		    var ua = navigator.userAgent;	
+		    var event = "click";
+		    if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i))){
+		    	event = "touchstart";
+		    }	        
+    		
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
