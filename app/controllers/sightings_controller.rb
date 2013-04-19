@@ -82,7 +82,7 @@ class SightingsController < ApplicationController
 
       @numUFO = UfoModel.count()
       @menu = "maps"
-
+  end
   def southamerica 
 			  @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[-77.87, 11.00] , 
 																					[-68.20, 14.26 ] , 
@@ -103,5 +103,62 @@ class SightingsController < ApplicationController
 			  @numUFO = UfoModel.count()
 			  @menu = "maps"
 
+  end
+  def africa 
+			  @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[5.09,38.41], 
+																					[-8.08,35.17], 
+																					[-20.39,28.14], 
+																					[-26.19,17.81], 
+																					[-15.64,4.04], 
+																					[3.51,0.87], 
+																					[14.76,-36.03], 
+																					[32.69,-34.30], 
+																					[55.89,22.26], 
+																					[53.08,12.04], 
+																					[5.09,38.41], 
+																					[23.40,37.44],
+																					[5.09,38.41]
+																					]}}).order_by(:sighted_at.desc).limit(100)
+
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"
+  end
+  def europe 
+			  @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[-10.41,36.73], 
+																					[-6.37,35.99], 
+																					[-2.27,36.16],
+																					[10.76,38.82], 
+																					[12.83,36.45], 
+																					[17.13,36.13],
+																					[22.14,34.88], 
+																					[27.50,34.37], 
+																					[29.97,44.02],
+																					[39.02,47.69], 
+																					[32.87,56.75], 
+																					[32.60,70.08],
+																					[18.80,70.98], 
+																					[10.10,66.33], 
+																					[-17.05,67.74],
+																					[-30.23,66.01],
+																					[-10.41,36.73]
+																					]}}).order_by(:sighted_at.desc).limit(100)
+
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"
+  end
+  def asia 
+			  @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => [[30.93,74.68], 
+																					[32.34,30.14], 
+																					[41.13,12.55],
+																					[116.71,-10.83],
+																					[140.97,17.64], 
+																					[164.53,50.29], 
+																					[178.60,65.51], 
+																					[91.75,79.43],
+																					[30.93,74.68]
+																					]}}).order_by(:sighted_at.desc).limit(100)
+
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"
   end
 end
