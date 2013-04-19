@@ -33,46 +33,46 @@
                             
                         </script>
 
-        
-                <div class="image_carousel"> 
-                        <div id="foo2">
-                                                <div class="content_continent">
-                                                    <%= image_tag image_path('noord-amerika.png') %>          
-                                                    <h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
-                                                </div>
 
-                                                <div class="content_continent">
-                                                   <%= image_tag image_path('zuid-amerika.png') %>
-                                                    <h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
-                                                </div>  
-                                                
-                                                <div class="content_continent">
-                                                   <%= image_tag image_path('afrika.png') %>
-                                                    <h3>Africa</h3>
-                                                </div>
+		<div class="image_carousel"> 
+			   <div id="foo2">
+					  <div class="content_continent">
+								<%= image_tag image_path('noord-amerika.png') %>											
+								<h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
+							</div>
 
-                                                <div class="content_continent">
-                                                    <%= image_tag image_path('azie.png') %>          
-                                                    <h3>Asia</h3>
-                                                </div>                  
-                         
-                                                <div class="content_continent">
-                                                    <%= image_tag image_path('europa.png') %>        
-                                                     <h3>Europe</h3>
-                                                </div>                                                                  
-                                                
-                                                <div class="content_continent">
-                                                    <%= image_tag image_path('oceanie.png') %>
-                                                    <h3>Oceania</h3>
-                                                </div>
-                
-                                                                                
-                        </div>
-                        <div class="clearfix"></div>
-                                        <a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
-                                        <a class="next" id="foo2_next" href="#"><span>next</span></a>
-                                        <div class="pagination" id="foo2_pag"></div>
-                        </div>
-                </div> 
+							<div class="content_continent">
+							   <%= image_tag image_path('zuid-amerika.png') %>
+								<h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
+							</div>
+							
+							<div class="content_continent">
+							   <%= image_tag image_path('afrika.png') %>
+								<h3>Africa</h3>
+							</div>
+
+							<div class="content_continent">
+								<%= image_tag image_path('azie.png') %>											
+								<h3>Asia</h3>
+							</div>			
+				 
+							<div class="content_continent">
+								<%= image_tag image_path('europa.png') %>											
+								<h3>Europe</h3>
+							</div>									
+							
+							<div class="content_continent">
+								<%= image_tag image_path('oceanie.png') %>
+								<h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
+							</div>
+		
+										
+				</div>
+				<div class="clearfix"></div>
+						<a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
+						<a class="next" id="foo2_next" href="#"><span>next</span></a>
+						<div class="pagination" id="foo2_pag"></div>
+				</div>
+		</div> 
 
 </div>
