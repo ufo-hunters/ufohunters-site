@@ -1,6 +1,6 @@
 <div id="site_content">    
                                                                                                 
-                        <div class="content_item">
+                   <div class="content_item">
                                 <h3>Latest sightings</h3>
                                 <p>Latest UFO sightings all over the world</p>  
                    </div>
@@ -48,31 +48,27 @@
 							
 							<div class="content_continent">
 							   <%= image_tag image_path('afrika.png') %>
-								<h3>Africa</h3>
+								<h3><%= link_to "Africa", :controller => "sightings", :action => "africa"%></h3>
 							</div>
 
 							<div class="content_continent">
 								<%= image_tag image_path('azie.png') %>											
-								<h3>Asia</h3>
+								<h3><%= link_to "Asia", :controller => "sightings", :action => "asia"%></h3>
 							</div>			
 				 
 							<div class="content_continent">
 								<%= image_tag image_path('europa.png') %>											
-								<h3>Europe</h3>
+								<h3><%= link_to "Europe", :controller => "sightings", :action => "europe"%></h3>
 							</div>									
 							
 							<div class="content_continent">
 								<%= image_tag image_path('oceanie.png') %>
 								<h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
-							</div>
-		
+							</div>	
 										
 				</div>
 				<div class="clearfix"></div>
-						<a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
-						<a class="next" id="foo2_next" href="#"><span>next</span></a>
-						<div class="pagination" id="foo2_pag"></div>
-				</div>
-		</div> 
+		</div>
+	</div> 
 
 </div>

@@ -1,9 +1,12 @@
 
+      
+
 		<script type="text/javascript">
 		
-		    var iconSize = new OpenLayers.Size(22, 22);
+			var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>", iconSize, iconOffset);
+		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
+		                   iconSize, iconOffset);
 		    var zoom, center, currentPopup, map, lyrMarkers;
 		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
 		        "autoSize": true,
@@ -12,7 +15,8 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
-		
+		    var ua = navigator.userAgent;	
+		    
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
@@ -35,7 +39,7 @@
 		            }
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
-		        };
+		        };		        
 		        
 		        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
 		        	marker.events.register("touchstart", feature, markerClick);
@@ -47,13 +51,13 @@
 		    }
 		    function init() {
 		        
-				    var zoom = 3.5; 
+				    var zoom           = 3;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 				
-				    var lon = 147.65625;
-				    var lat = -28.76766;
+				    var lon = 20.39;
+				    var lat = 6.31;
 				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
 				 
 				    map = new OpenLayers.Map("basicMap");
@@ -65,14 +69,14 @@
 				    //markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		                    map.addLayer(lyrMarkers);
+		            map.addLayer(lyrMarkers);
 				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
 						location = "<%=ovni.location.gsub(/'/, '')%>";
 		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
-				    map.setCenter(position, zoom);
+				    map.setCenter(position, zoom);				    
 				    //map.zoomToMaxExtent();
 		
 		      }
@@ -98,7 +102,7 @@
 
 	 	  <div id="content">
 	 			<div class="content_item">
-							<h3>Latest sightings in Oceania</h3>
+							<h3>Latest sightings in Africa</h3>
 							<p>20 latest UFO sightings</p>
 						
 							<div id="mycarousel">
@@ -114,7 +118,7 @@
 					<div id="basicMap" style="width: 900px; height: 550px;"></div>
 			   </div>
 			   
-        </div>
+          </div>
         
         
     </div>

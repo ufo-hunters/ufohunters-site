@@ -40,7 +40,7 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+		        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
 		        	marker.events.register("touchstart", feature, markerClick);
 		    	} else {
 	    			marker.events.register("click", feature, markerClick);
@@ -78,21 +78,8 @@
 				    map.setCenter(position, zoom);
 				    //map.zoomToMaxExtent();
 		
-		      }
-		      
-		      $(function(){
-				
-						$("#mostrar").click(function(event) {
-							var texto = "CLOSE" ;
-							if($("#mostrar").text()=='SHOW') texto = "CLOSE";
-							if($("#mostrar").text()=='CLOSE') texto = "SHOW";
-							
-							event.preventDefault();
-							$("#ufolist").slideToggle(5000);
-							$("#mostrar").text(texto);
-						});						
-						
-				});
+		      }		      
+		     
 		</script>
 
 
@@ -106,17 +93,38 @@
 			   <div class="content_item">
 					  <h2>Welcome to Ufos in Spain</h2> 
 					  <p>In this map you can see all sightings in Spain. </p>
-				      <h2>Sightings in Spain, in alphabetical order <a href="#" id="mostrar">SHOW</a></h2>
-							<div id="ufolist" style="display: none">						 
-								 <% @listaUFO.each do |ovni| %>
-									  <div class="content_location">						  
-											  <strong><%=ovni.location%></strong></br>
-											  <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
-											  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>
-									  </div>
-								 <% end %>	
-						   </div>
-				</div>
+				      <p>Sightings in Spain, in alphabetical order.</p>
+			   </div>
+				<script type="text/javascript">
+                        $(document).ready(function() {
+                                $("#foo3").after('<ul id="fooX" />').next().html($("#foo3").html());
+								$("#foo3 li:odd").remove();
+								$("#fooX li:even").remove();
+
+								$("#foo3").carouFredSel({
+									synchronise	: "#fooX",
+									scroll		: 1									
+								});
+								$("#fooX").carouFredSel({
+									auto		: false
+								});
+                        });    
+            	</script>
+            	<div class="list_carousel">
+					<ul id="foo3">
+					 <% @listaUFO.each do |ovni| %>
+						  <li>						  
+								  <strong><%=ovni.location%></strong></br>
+								  <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
+								  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>
+						  </li>
+					 <% end %>	
+			   		</ul>
+			   		<div class="clearfix"></div>
+						<a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
+						<a class="next" id="foo2_next" href="#"><span>next</span></a>
+					<div class="pagination" id="foo2_pag"></div>
+			   	</div>				
         </div>
     </div>
 </div> 
