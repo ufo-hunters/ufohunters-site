@@ -15,6 +15,7 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
+		    var ua = navigator.userAgent;
 		
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
@@ -39,7 +40,11 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        marker.events.register("mousedown", feature, markerClick);
+		        if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+		        	marker.events.register("touchstart", feature, markerClick);
+		    	} else {
+	    			marker.events.register("click", feature, markerClick);
+		    	}
 
 		        lyrMarkers.addMarker(marker);
 		    }

@@ -3,7 +3,7 @@
 
 		<script type="text/javascript">
 		
-		    var iconSize = new OpenLayers.Size(22, 22);
+			var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
 		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
 		                   iconSize, iconOffset);
@@ -15,8 +15,8 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
-		    var ua = navigator.userAgent;
-			
+		    var ua = navigator.userAgent;	
+		    
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
@@ -39,26 +39,26 @@
 		            }
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
-		        };
-		        
+		        };		        
 		        
 		        if((ua.match(/iPad/i)) || (ua.match(/Android/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
 		        	marker.events.register("touchstart", feature, markerClick);
 		    	} else {
 	    			marker.events.register("click", feature, markerClick);
 		    	}
-		        
+
 		        lyrMarkers.addMarker(marker);
 		    }
 		    function init() {
 		        
-				     var zoom           = 1;
+				    var zoom           = 3;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 				
-				
-				    var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				    var lon = -61.69;
+				    var lat = -20.46;
+				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
 				 
 				    map = new OpenLayers.Map("basicMap");
 				    var mapnik = new OpenLayers.Layer.OSM();
@@ -66,32 +66,44 @@
 				 
 				    var markers = new OpenLayers.Layer.Markers( "Markers" );
 				    map.addLayer(markers);
-				    markers.addMarker(new OpenLayers.Marker(position)); 
+				    //markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
 		            map.addLayer(lyrMarkers);
-					var location = '';
+				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
 						location = "<%=ovni.location.gsub(/'/, '')%>";
 		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
-				    map.setCenter(position, zoom);
-				    map.zoomToMaxExtent();
+				    map.setCenter(position, zoom);				    
+				    //map.zoomToMaxExtent();
 		
 		      }
-		
+		      
+		      $(function(){
+				
+						$("#mostrar").click(function(event) {
+							var texto = "CLOSE" ;
+							if($("#mostrar").text()=='SHOW') texto = "CLOSE";
+							if($("#mostrar").text()=='CLOSE') texto = "SHOW";
+							
+							event.preventDefault();
+							$("#ufolist").slideToggle(5000);
+							$("#mostrar").text(texto);
+						});						
+						
+				});
 		</script>
 
 
 
-	<div id="site_content">	
-		
-				<div id="content">
-				
-					   <div class="content_item">
-							<h3>Recent UFO Activity</h3>
-							<p>20 latest UFO sightings all over the world</p>
+	<div id="site_content">			
+
+	 	  <div id="content">
+	 			<div class="content_item">
+							<h3>Latest sightings in South America</h3>
+							<p>20 latest UFO sightings</p>
 						
 							<div id="mycarousel">
 								<% for i in 0..19 %>
@@ -102,32 +114,12 @@
 								<% end %>
 							</div>
 					   </div>
-
-					   <div class="content_item">
-							<div id="basicMap" style="width: 900px; height: 450px;"></div>
-					   </div>
-					   
-					   <div class="content_item">
-								
-								<div class="content_container">
-									<%= image_tag image_path('world.png') %>
-									<h3>Thousands of sightings</h3>
-									<p>Find sightings by date, shape, location or near you !! Browse over more than 75000 sightings.</p>
-								</div>
-
-								<div class="content_container">
-									<%= image_tag image_path('ufo_home.png') %>
-									<h3>Have you seen a UFO?</h3>
-									<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
-								</div>			
-					 
-								<div class="content_container">
-									<%= image_tag image_path('computer_worker.png') %>
-									<h3>Report your experience</h3>
-									<p>Share your experience in one simple step and make it available to everyone.
-								</div>	
-						</div>
-				</div>
-		</div>
+			   <div class="content_item">
+					<div id="basicMap" style="width: 900px; height: 550px;"></div>
+			   </div>
+			   
+          </div>
+        
+        
+    </div>
 </div> 
-
