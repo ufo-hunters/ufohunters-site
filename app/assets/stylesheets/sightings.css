@@ -535,4 +535,21 @@ a.prev span, a.next span {
 	float: none;
 	clear: both;
 }
-
+.list_carousel {
+  padding: 15px 0 15px 40px;
+}
+.list_carousel ul {
+  list-style: none;
+}
+.list_carousel li {
+  float: left;
+  width: 134px;
+  height: 100px;
+  margin: 10px;
+  font: 100% Arial,Helvetica,sans-serif;
+}
+.list_carousel a
+{ color: #3F4A5F;
+  background: transparent;
+  outline: none;
+  text-decoration: none;}
