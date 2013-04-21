@@ -263,4 +263,4 @@ var ufo_data = (function() {
     };
 })();
 
-ufo_data.init("news");
+ufo_data.init("newest");
