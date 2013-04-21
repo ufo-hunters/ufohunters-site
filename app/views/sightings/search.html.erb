@@ -100,15 +100,17 @@
 				   <div class="content_item">
 						<div id="basicMap" style="width: 900px; height: 450px;"></div>
 				   </div>
-				   <div class="content_item">
-						  <p><h3>Date sighted: <%if @listaUFO.sighted_at.blank? == false %><%=@listaUFO.sighted_at.to_date.strftime("%A %d. %B %Y")%><% end%></h3>
-							Date reported: <%if @listaUFO.reported_at.blank? == false %><%=@listaUFO.reported_at.to_date.strftime("%A %d. %B %Y")%><% end%></br>
-							 Location: <%=@listaUFO.location%></br>
-							 Shape: <%=@listaUFO.shape%></br>
-							 Duration: <%=@listaUFO.duration%></br>
-							 Description:</br> <%=@listaUFO.description%></br>
-						  </p>
-				   </div>
+				   <div class="content_item post">
+						  <h1 class="title"><%= @listaUFO.location  %></h1>
+<p class="meta">
+	<small>Sighted on <strong><%if @listaUFO.sighted_at.blank? == false %><%=@listaUFO.sighted_at.to_date.strftime("%A %d. %B %Y")%><% end%></strong><br/>
+	Reported on <strong><%if @listaUFO.reported_at.blank? == false %><%=@listaUFO.reported_at.to_date.strftime("%A %d. %B %Y")%><% end%></strong><br/>
+	Shape: <strong><%=@listaUFO.shape%></strong> | Duration: <strong><%=@listaUFO.duration%></strong><br/>
+	Source: <strong><%=@listaUFO.source%></strong></small>
+</p>
+	<div class="entry">
+	   <p><%=@listaUFO.description%></p>
+	   						 
         </div>
      </div>
   </div>
