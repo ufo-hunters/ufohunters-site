@@ -613,3 +613,7 @@ a.prev span, a.next span {
   background: transparent;
   outline: none;
   text-decoration: none;}
+
+.share_bar {
+   margin: 0 0 5px;
+}
