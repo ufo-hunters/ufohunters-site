@@ -240,10 +240,17 @@ ul#menu li:hover a
 	color: #3F4A5F;
 }
 
-.post {
+#main-post {
    font-size: 12px;
    line-height: 25px;
    padding: 0 20px;
+   float: left;
+   width: 570px;
+}
+
+.post {
+   border-bottom: 1px dashed #9C9C9C;
+   margin-bottom: 10px;
 }
 
 .post .title {
@@ -270,9 +277,27 @@ ul#menu li:hover a
 }
 
 .post .entry {
-   border-bottom: 1px dashed #9C9C9C;
    margin-bottom: 20px;
    padding-bottom: 5px;
+   text-align: justify;
+}
+
+#other-posts {
+   float: right;
+   font-size: 12px;
+   line-height: 25px;
+   padding: 0 20px 20px;
+   width: 250px;
+} 
+
+#other-posts .title {
+  font-size: 1.4em;
+  font-weight: normal;
+}
+
+#next_btn {
+   font-weight: bold;
+   float: right;
 }
 
 .content_image
