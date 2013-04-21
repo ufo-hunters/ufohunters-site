@@ -88,10 +88,18 @@
 	 	<div id="content">
 			   <div class="content_item">
 			   		<h3>Latest sightings in <%=@namecity%></h3><br/>
-					<div id="basicMap" style="width: 900px; height: 550px;"></div>
+
+					<% if @listaUFO.empty? == true %>
+							<h2>Sorry... we haven't got sightings in <%=@namecity%>.<br/>
+							If you know someone, you'll send us please! </h2>
+					<% else %>
+							<div id="basicMap" style="width: 900px; height: 550px;"></div>
+					<% end %>
 			   </div>
 			   <div class="content_item">
-					  <h2>100 latest UFO sightings</h2> 
+			   			<% if @listaUFO.empty? == false %>
+					 		 <h2>100 latest UFO sightings</h2> 
+					 	<% end %>
 			   </div>
 				<script type="text/javascript">
                         $(document).ready(function() {
