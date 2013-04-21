@@ -44,6 +44,7 @@ class SightingsController < ApplicationController
 											   })
   end
   def maps 
+  			  @listaMap = Countries.all.order_by(:name.asc)
 			  @numUFO = UfoModel.count()
 			  @menu = "maps"  
   end
@@ -157,6 +158,39 @@ class SightingsController < ApplicationController
 																					[91.75,79.43],
 																					[30.93,74.68]
 																					]}}).order_by(:sighted_at.desc).limit(100)
+
+			  @numUFO = UfoModel.count()
+			  @menu = "maps"
+  end
+  def country 
+  			  nameCountry = params[:id]
+			  listaCiudad = Countries.where({"cod" => nameCountry}).limit(1)
+
+			  listaCiudad.each do |country| 
+			  	    @namecity = country.name
+			  		@ciudad = country.geometry
+			  end
+			  type = ""
+			  coordinates = ""
+			  @ciudad.each_with_index do |datos, index| 
+			  		if index==0
+			  			type = datos[1]			  			
+			  		else
+			  			coordinates =  datos[1]
+			  		end
+			  end
+
+			  if type == 'Polygon'
+			  			@listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).order_by(:sighted_at.desc).limit(100)
+			  else
+			  		coordinates.each_with_index do |coordinatesdatos,index| 	
+			  					if index == 0
+			  						@listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+			  					else
+			  						@listaUFO = @listaUFO + UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+			  					end			
+			  		end
+			  end			  
 
 			  @numUFO = UfoModel.count()
 			  @menu = "maps"
