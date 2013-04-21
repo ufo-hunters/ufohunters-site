@@ -1,9 +1,9 @@
 <div id="site_content">    
                                                                                                 
-                   <div class="content_item">
-                                <h3>Latest sightings</h3>
-                                <p>Latest UFO sightings all over the world</p>  
-                   </div>
+        <div class="content_item">
+                    <h3>Latest sightings</h3>
+                    <p>Latest UFO sightings all over the world</p>  
+        </div>
 
 
 
@@ -72,6 +72,12 @@
 				<a class="next" id="foo2_next" href="#"><span>next</span></a>
 				<div class="pagination" id="foo2_pag"></div> 
 		</div>
-	</div> 
 
-</div>
+		<div class="content_item">
+				 <% @listaMap.each do |map| %>
+				 		 <%= link_to map.name, :controller => "sightings", :action => "country", :id => map.cod%> |
+				 <% end %>
+		</div>
+</div> 
+
+

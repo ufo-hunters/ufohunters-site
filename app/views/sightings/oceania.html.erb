@@ -12,7 +12,8 @@
 		        "keepInMap": true
 		    });
 		    var bounds = new OpenLayers.Bounds();
-		
+			var ua = navigator.userAgent;
+
 		    function addMarker(lng, lat, info) {
 		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
 		        bounds.extend(pt);
@@ -109,7 +110,7 @@
 									</div>
 								<% end %>
 							</div>
-					   </div>
+			   </div>
 			   <div class="content_item">
 					<div id="basicMap" style="width: 900px; height: 550px;"></div>
 			   </div>
