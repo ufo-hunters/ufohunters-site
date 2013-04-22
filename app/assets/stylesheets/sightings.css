@@ -240,6 +240,66 @@ ul#menu li:hover a
 	color: #3F4A5F;
 }
 
+#main-post {
+   font-size: 12px;
+   line-height: 25px;
+   padding: 0 20px;
+   float: left;
+   width: 570px;
+}
+
+.post {
+   border-bottom: 1px dashed #9C9C9C;
+   margin-bottom: 10px;
+}
+
+.post .title {
+   margin: 0;
+}
+
+.post h1 {
+   font-size: 2.2em;
+   letter-spacing: -1px;
+   font-weight: normal;
+}
+
+.post .meta {
+   color: #505050;
+   font-size: 13px;
+   line-height: normal;
+   margin: 0;
+   padding-bottom: 10px;
+   padding-top: 10px;
+}
+
+.post .meta small > strong {
+   color: #1D1D1D;
+}
+
+.post .entry {
+   margin-bottom: 20px;
+   padding-bottom: 5px;
+   text-align: justify;
+}
+
+#other-posts {
+   float: right;
+   font-size: 12px;
+   line-height: 25px;
+   padding: 0 20px 20px;
+   width: 250px;
+} 
+
+#other-posts .title {
+  font-size: 1.4em;
+  font-weight: normal;
+}
+
+#next_btn {
+   font-weight: bold;
+   float: right;
+}
+
 .content_image
 { float: left; 
   width: 150px;
@@ -553,3 +613,7 @@ a.prev span, a.next span {
   background: transparent;
   outline: none;
   text-decoration: none;}
+
+.share_bar {
+   margin: 0 0 5px;
+}
