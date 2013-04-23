@@ -50,8 +50,8 @@
 			<li <%if @menu.blank? == false && @menu == "spain"%>class="current"<% end %>><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
 			<li <%if @menu.blank? == false && @menu == "statistics"%>class="current"<% end %>><%= link_to "Statistics", :controller => "sightings", :action => "statistics"%></li>
 			<li <%if @menu.blank? == false && @menu == "maps"%>class="current"<% end %>><%= link_to "Maps", :controller => "sightings", :action => "maps"%></li>
-			<li <%if @menu.blank? == false && @menu == "reportus"%>class="current"<% end %>><%= link_to "Report a UFO", :controller => "reportus", :action => "reportus"%></li>
-			<li <%if @menu.blank? == false && @menu == "aboutus"%>class="current"<% end %>><%= link_to "About us", :controller => "reportus", :action => "aboutus"%></li>
+			<li <%if @menu.blank? == false && @menu == "report"%>class="current"<% end %>><%= link_to "Report a UFO", :controller => "sightings", :action => "report"%></li>
+			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to "About us", :controller => "sightings", :action => "about"%></li>
 		</ul>
 	</div>
 			<%= yield %>
