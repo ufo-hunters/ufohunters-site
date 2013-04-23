@@ -1,4 +1,7 @@
 class SightingsController < ApplicationController
+
+   include SightingsHelper
+
    def index  	
       @listaUFO = UfoModel.all.desc(:sighted_at).limit(100)
       @numUFO = UfoModel.count()
@@ -14,7 +17,8 @@ class SightingsController < ApplicationController
       distance = 100 #km 
       @listaUFOlist = UfoModel.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).limit(50)  
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
-      @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank?
+      @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank? 
+      @page_title += " on " + format_date(@listaUFO.sighted_at) unless @listaUFO.blank?
    end
 
    def spain
