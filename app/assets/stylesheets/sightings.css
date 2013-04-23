@@ -326,6 +326,11 @@ ul#menu li:hover a
   text-align: center;
 }
 
+.content_container > div.shareEgg {
+	height: 120px;
+	margin-top: 50px;
+}
+
 .content_container p
 {
   font-size: 15px;
