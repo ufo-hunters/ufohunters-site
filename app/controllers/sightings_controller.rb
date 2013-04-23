@@ -215,4 +215,13 @@ class SightingsController < ApplicationController
       @menu = "maps"
    end
 
+   def about
+   		@menu = "about"
+   		@page_title = "About us"
+   end
+
+   def report
+   		@menu = "report"
+   		@page_title = "Report a UFO"
+   end
 end
