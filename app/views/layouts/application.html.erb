@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ufo Sightings</title>
-  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <title>UFO Hunters - <%= @page_title %></title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
    <script src="http://www.openlayers.org/api/OpenLayers.js"></script> 
@@ -28,14 +28,15 @@
   </script>
   <script type="text/javascript">var switchTo5x=true;</script>
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-  <script type="text/javascript">stLight.options({publisher: "c2c6271b-4fca-45ab-bc2e-6ef06be8e37f", doNotHash: false, doNotCopy: false, hashAddressBar: true});</script>
+  <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+  
 </head>
 <body onload="init()">
 <div id="main">
 	<div id="header">
 		<div id="banner">
 			<div id="welcome">
-				<h1>Ufo Hunters</h1>
+				<h1>UFO Hunters</h1>
 			</div>
 			<div id="welcome_slogan">
 				<h2>Number of sightings counted <%=@numUFO%>... and growing</h2>
@@ -49,9 +50,6 @@
 			<li <%if @menu.blank? == false && @menu == "spain"%>class="current"<% end %>><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
 			<li <%if @menu.blank? == false && @menu == "statistics"%>class="current"<% end %>><%= link_to "Statistics", :controller => "sightings", :action => "statistics"%></li>
 			<li <%if @menu.blank? == false && @menu == "maps"%>class="current"<% end %>><%= link_to "Maps", :controller => "sightings", :action => "maps"%></li>
-			<!--li><a href="#">Statistics</a></li-->
-			<!--li><a href="#">Maps</a></li-->
-			<!--li><a href="#">Contact Us</a></li-->
 		</ul>
 	</div>
 			<%= yield %>
@@ -88,6 +86,18 @@
 	<div id="footer">
 		  <a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a>
 	</div>
-			
+	
+	
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-40361062-1', 'ufo-hunters.com');
+  ga('send', 'pageview');
+
+</script>
+
 </body>
 </html>
