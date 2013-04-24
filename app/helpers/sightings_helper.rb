@@ -6,4 +6,12 @@ module SightingsHelper
       end
    end
 
+   def youtube_link?(link)
+   	link =~ /(youtube|youtu.be)/
+   end
+
+   def youtube_video(url)
+   	render :partial => 'common/video', :locals => {:url => url}
+   end
+
 end
