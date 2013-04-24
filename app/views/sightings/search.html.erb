@@ -4,163 +4,174 @@
 		<script type="text/javascript">
 		   			
 			var iconSize = new OpenLayers.Size(22, 22);			
-		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
+		   var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
+		   var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
 		                   iconSize, iconOffset);
 			var iconSizeDetalle = new OpenLayers.Size(40, 40);
 			var iconOffsetDetalle = new OpenLayers.Pixel(-(iconSizeDetalle.w / 2), -iconSizeDetalle.h);
 			var iconDetalle = new OpenLayers.Icon("<%= image_path('ufo_selected.png') %>",
 		                   iconSizeDetalle, iconOffsetDetalle);
-		    var zoom, center, currentPopup, map, lyrMarkers;
-		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+		   var zoom, center, currentPopup, map, lyrMarkers;
+		   var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
 		        "autoSize": true,
 		        "minSize": new OpenLayers.Size(300, 50),
 		        "maxSize": new OpenLayers.Size(500, 300),
 		        "keepInMap": true
 		    });
-		    var bounds = new OpenLayers.Bounds();
-		    var first = 0;
+		   var bounds = new OpenLayers.Bounds();
+		   var first = 0;
 			var ua = navigator.userAgent;
 
-		    function addMarker(lng, lat, info,icono) {
-		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
-		        bounds.extend(pt);
-		        var feature = new OpenLayers.Feature(lyrMarkers, pt);
-		        feature.closeBox = true;
-		        feature.popupClass = popupClass;
-		        feature.data.popupContentHTML = info;
-		        feature.data.overflow = "auto";
+		   function addMarker(lng, lat, info,icono) {
+		   	var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
+		      bounds.extend(pt);
+		      var feature = new OpenLayers.Feature(lyrMarkers, pt);
+		      feature.closeBox = true;
+		      feature.popupClass = popupClass;
+		      feature.data.popupContentHTML = info;
+		      feature.data.overflow = "auto";
 				
-		        var marker = new OpenLayers.Marker(pt, icon.clone());
-		        if(first!=0) {
-				        if(icono==1) marker = new OpenLayers.Marker(pt,iconDetalle);
-				        var markerClick = function(evt) {
-				            if (currentPopup != null && currentPopup.visible()) {
-				                currentPopup.hide();
-				            }
-				            if (this.popup == null) {
-				                this.popup = this.createPopup(this.closeBox);
-				                map.addPopup(this.popup);
-				                this.popup.show();
-				            } else {
-				                this.popup.toggle();
-				            }
-				            currentPopup = this.popup;
-				            OpenLayers.Event.stop(evt);
-				        };
+		      var marker = new OpenLayers.Marker(pt, icon.clone());
+		      if(first!=0) {
+					if(icono==1) marker = new OpenLayers.Marker(pt,iconDetalle);
+				   	var markerClick = function(evt) {
+				      if (currentPopup != null && currentPopup.visible()) {
+				      	currentPopup.hide();
+				      }
+				      if (this.popup == null) {
+				         this.popup = this.createPopup(this.closeBox);
+				         map.addPopup(this.popup);
+				         this.popup.show();
+				      } else {
+				         this.popup.toggle();
+				      }
+				      currentPopup = this.popup;
+				      OpenLayers.Event.stop(evt);
+				   };
 
 					var clickEvent = "click";
 
-				        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
-				        	clickEvent = "touchstart";
-				    	}
-			    		marker.events.register(clickEvent, feature, markerClick);
+				   if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+				     	clickEvent = "touchstart";
+				   }
+			    	marker.events.register(clickEvent, feature, markerClick);
 
-				        lyrMarkers.addMarker(marker);
+				   lyrMarkers.addMarker(marker);
 				}
-		        first = 1;
-		    }
-		    function init() {
+		      first = 1;
+		   }
+		   
+		   function init() {
 		        
-				    var zoom           = 8;
+			   var zoom           = 8;
 				 
-				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+			   var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+			   var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 									
-					var lat            = <%=@listaUFO.coord[1]%>;
-				    var lon            = <%=@listaUFO.coord[0]%>;
+				var lat            = <%=@listaUFO.coord[1]%>;
+				var lon            = <%=@listaUFO.coord[0]%>;
 					
-				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
 					
-				    map = new OpenLayers.Map("basicMap");
-				    var mapnik = new OpenLayers.Layer.OSM();
-				    map.addLayer(mapnik);
+				map = new OpenLayers.Map("basicMap");
+				var mapnik = new OpenLayers.Layer.OSM();
+				map.addLayer(mapnik);
 				 					
-				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		          	map.addLayer(lyrMarkers);
-				    var location = '';
+				lyrMarkers = new OpenLayers.Layer.Markers("Markers");
+		      map.addLayer(lyrMarkers);
+				var location = '';
 				    
-		            <% @listaUFOlist.each do |ovni|%>
-                        location = "<%=ovni.location.gsub(/'/, '')%>"; 			
-                        addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>',0);
-						 <% end %>
+		      <% @listaUFOlist.each do |ovni|%>
+            	location = "<%=ovni.location%>"; 			
+               addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>',0);
+				<% end %>
 				    
-					
-					addMarker(lon, lat, null, 1);					
-				    map.setCenter(position, zoom);
+				addMarker(lon, lat, null, 1);					
+				map.setCenter(position, zoom);
 		
-		      }
-			  
-			
+		   }
 		</script>
 
 	<script type="text/javascript">
-        $(document).ready(function() {
-	  $("#nearest_sightings_carousel").carouFredSel({
-	    direction: "up",
-	    width: 250,
-	    height: "variable",
-	    items: {
-	        visible: 5,
-	        width: 250
-	    },
-	    scroll: 500,
-	    auto: false,
-	    next: "#next_btn"
-	  });
-	});
+   	$(document).ready(function() {
+	  		$("#nearest_sightings_carousel").carouFredSel({
+		    	direction: "up",
+		    	width: 250,
+		    	height: "variable",
+		    	items: {
+		        visible: 5,
+		        width: 250
+		    	},
+		    	scroll: 500,
+		    	auto: false,
+		    	next: "#next_btn"
+	  		});
+		});
 
 	</script>
 
 	<div id="site_content">	
 
 	 	<div id="content">
-				   <div class="content_item">
-						<div id="basicMap" style="width: 900px; height: 450px;"></div>
-				   </div>
-				   <div id="main-post">
-					<div class="share_bar">
-					    <span class='st_sharethis_hcount' displayText='ShareThis'></span>
-						<span class='st_facebook_hcount' displayText='Facebook'></span>
-						<span class='st_twitter_hcount' displayText='Tweet'></span>
-						<span class='st_googleplus_hcount' displayText='Google +'></span>
-						<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
-					</div>
-					<div class="post">
-						  <h1 class="title"><%= @listaUFO.location  %></h1>
-	<p class="meta">
-	<small>Sighted on <strong><%= format_date @listaUFO.sighted_at %></strong><br/>
-	Reported on <strong><%= format_date @listaUFO.reported_at %></strong><br/>
-	Shape: <strong><%=@listaUFO.shape%></strong> | Duration: <strong><%=@listaUFO.duration%></strong><br/>
-	Source: <strong><%=@listaUFO.source%></strong></small>
-	</p>
-	<div class="entry">
-	   <p><%=@listaUFO.description.html_safe%></p>
-	   						 
-        </div>
-	</div>
-     </div>
-     <div id="other-posts">
-     <div id="nearest_sightings_carousel">
-     <% 
-        # In orden to avoid the same sighting as first nearest sighting
-        first_sighting = 0;
-	@listaUFOlist.each do |ovni| 
-	   first_sighting += 1;
-           unless first_sighting == 1 
-	%>
-    	<div class="post"> 
-         <h2 class="title"><%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id %></h2>
-         <p class="meta">
-	    <small>Sighted on <strong><%= format_date ovni.sighted_at %></strong><br/>
-	    Shape: <strong><%=ovni.shape%></strong> | Duration: <strong><%= ovni.duration %></strong></small>
-         </p>
-	</div>
-	<% end %>
-     <% end %>
-     </div>
-     <a id="next_btn">More</a>
-     </div>
+		   <div class="content_item">
+				<div id="basicMap" style="width: 900px; height: 450px;"></div>
+		   </div>
+		   <div id="main-post">
+			<div class="share_bar">
+			   <span class='st_sharethis_hcount' displayText='ShareThis'></span>
+				<span class='st_facebook_hcount' displayText='Facebook'></span>
+				<span class='st_twitter_hcount' displayText='Tweet'></span>
+				<span class='st_googleplus_hcount' displayText='Google +'></span>
+				<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
+			</div>
+			<div class="post">
+				<h1 class="title"><%= @listaUFO.location  %></h1>
+				<p class="meta">
+					<small>Sighted on <strong><%= format_date @listaUFO.sighted_at %></strong><br/>
+					Reported on <strong><%= format_date @listaUFO.reported_at %></strong><br/>
+					Shape: <strong><%=@listaUFO.shape%></strong> | Duration: <strong><%=@listaUFO.duration%></strong><br/>
+					Source: <strong><%=@listaUFO.source%></strong></small>
+				</p>
+				<div class="entry">
+	   			<p><%=@listaUFO.description.html_safe%></p>
+	   			<% unless @listaUFO.links.blank?	%>
+	   				<h2>Related links</h2>
+	   				<ul>
+	   				<% @listaUFO.links.each do |link| 
+	   						if youtube_link? link %>
+	   							<%= youtube_video link %>
+	   						<% else %>
+	   							<li><%= link_to link, link, :target => '_blank' %></li>
+	   					<% end %>
+	   				<% end %>
+	   				</ul>
+	   			<% end %>				 
+   			</div>
+			</div>
+     	</div>
+     	<div id="other-posts">
+     		<div id="nearest_sightings_carousel">
+     		<% 
+      	# In orden to avoid the same sighting as nearest sighting
+      	@listaUFOlist.each do |ovni|
+	      	if @listaUFO.id == ovni.id
+	         	next
+	       	end
+			%>
+    			<div class="post"> 
+         		<h2 class="title"><%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id %></h2>
+         		<p class="meta">
+	    			<small>Sighted on <strong><%= format_date ovni.sighted_at %></strong><br/>
+	    			Shape: <strong><%=ovni.shape%></strong> | Duration: <strong><%= ovni.duration %></strong></small>
+         		</p>
+				</div>
+			<% 
+			end 
+			%>
+     		</div>
+     		<a id="next_btn">More</a>
+     	</div>
 
-  </div>
-</div> 
+  	</div>
+
+</div>
