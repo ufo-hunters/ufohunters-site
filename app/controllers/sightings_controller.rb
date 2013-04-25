@@ -3,26 +3,26 @@ class SightingsController < ApplicationController
    include SightingsHelper
 
    def index  	
-      @listaUFO = UfoModel.all.desc(:sighted_at).limit(100)
-      @numUFO = UfoModel.count()
+      @listaUFO = Report.all.desc(:sighted_at).limit(100)
+      @numUFO = Report.count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
    end
 
    def search
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       idUfo = params[:id]
-      @listaUFO = UfoModel.find idUfo
+      @listaUFO = Report.find idUfo
       @coordenadas = @listaUFO.coord
       distance = 100 #km 
-      @listaUFOlist = UfoModel.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).limit(50)  
+      @listaUFOlist = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).limit(50)  
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
       @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank? 
       @page_title += " on " + format_date(@listaUFO.sighted_at) unless @listaUFO.blank?
    end
 
    def spain
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[ -9.26 , 43.64 ],
 				[ -1.9, 43.42 ],
 				[ 3.24,42.73 ],
@@ -34,15 +34,15 @@ class SightingsController < ApplicationController
 				[ -9.26 , 43.64 ]]
 		}}).order_by(:location.asc)
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "spain"
       @page_title = "UFO Sightings in Spain"    	  
    end
 
    def statistics 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "statistics"  
-      @listaUFO = UfoModel.collection.aggregate({ "$group" => 
+      @listaUFO = Report.collection.aggregate({ "$group" => 
 		{ "_id" => {"shape" => "$shape"}, 
 		  "count" => { "$sum" => 1 }} })
       @page_title = "UFO Data Stats"
@@ -50,13 +50,13 @@ class SightingsController < ApplicationController
 
    def maps 
       @listaMap = Countries.all.order_by(:name.asc)
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings Maps"  
    end
   
    def northamerica 
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[-169.45, 71.41],
 				[-177.54, 51.40 ],
 				[-123.04, 30.75 ],
@@ -66,13 +66,13 @@ class SightingsController < ApplicationController
 				[-94.57, 72.18 ],
 				[-169.45, 71.41]]
 		}}).order_by(:sighted_at.desc).limit(100)
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in North America"
    end
 
    def oceania
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[138.69141, 1.40611],
         			[175.42969, -14.09396],
         			[177.18750, -52.69636],
@@ -86,13 +86,13 @@ class SightingsController < ApplicationController
 				[133.33008, 4.21494]]
 		}}).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in Oceania"
    end
 
    def southamerica 
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[-77.87, 11.00], 
 				[-68.20, 14.26 ], 
 				[-47.46, 4.39 ],
@@ -109,13 +109,13 @@ class SightingsController < ApplicationController
 				[-84.19, -5.09],
 				[-77.87, 11.00]]
 		}}).order_by(:sighted_at.desc).limit(100)
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in South America"
    end
 
    def africa 
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[5.09,38.41],
 				[-8.08,35.17],
 				[-20.39,28.14],
@@ -131,13 +131,13 @@ class SightingsController < ApplicationController
 				[5.09,38.41]]
 		}}).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in Africa"
    end
 
    def europe 
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[-10.41,36.73],
 				[-6.37,35.99],
 				[-2.27,36.16],
@@ -157,13 +157,13 @@ class SightingsController < ApplicationController
 				[-10.41,36.73]]
 		}}).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in Europe"
    end
 
    def asia 
-      @listaUFO = UfoModel.where(:coord => {"$geoWithin" => 
+      @listaUFO = Report.where(:coord => {"$geoWithin" => 
 		{"$polygon" => [[30.93,74.68],
 				[32.34,30.14],
 				[41.13,12.55],
@@ -175,7 +175,7 @@ class SightingsController < ApplicationController
 				[30.93,74.68]]
 		}}).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
       @page_title = "UFO Sightings in Asia"
    end
@@ -200,18 +200,18 @@ class SightingsController < ApplicationController
       end
 
       if type == 'Polygon'
-         @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).order_by(:sighted_at.desc).limit(100)
+         @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).order_by(:sighted_at.desc).limit(100)
       else
          coordinates.each_with_index do |coordinatesdatos,index| 	
             if index == 0
-               @listaUFO = UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+               @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
             else
-               @listaUFO = @listaUFO + UfoModel.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+               @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
             end			
          end
       end			  
 
-      @numUFO = UfoModel.count()
+      @numUFO = Report.count()
       @menu = "maps"
    end
 
