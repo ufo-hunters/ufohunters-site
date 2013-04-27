@@ -44,7 +44,8 @@ class SightingsController < ApplicationController
       @menu = "statistics"  
       @listaUFO = Report.collection.aggregate({ "$group" => 
 		{ "_id" => {"shape" => "$shape"}, 
-		  "count" => { "$sum" => 1 }} })
+		  "count" => { "$sum" => 1 }} },
+        "$sort" => { "count" => -1 })
       @page_title = "UFO Data Stats"
    end
 
