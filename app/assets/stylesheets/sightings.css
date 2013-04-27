@@ -627,3 +627,8 @@ a.prev span, a.next span {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+#follow_us {
+  float: right;
+  margin-top: 5px;
+}
