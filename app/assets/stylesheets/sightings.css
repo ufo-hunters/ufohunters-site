@@ -620,5 +620,10 @@ a.prev span, a.next span {
   text-decoration: none;}
 
 .share_bar {
-   margin: 0 0 5px;
+  margin: 0 0 5px;
+}
+
+.player {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
