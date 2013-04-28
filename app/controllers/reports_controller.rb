@@ -51,6 +51,8 @@ class ReportsController < ApplicationController
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
     @tmp["status"] = "0"
+    @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d') #@tmp["sighted_at"].tr('/', '').to_date.strftime('%Y%m%d')
+    @tmp["reported_at"] = Date.strptime(@tmp["reported_at"], '%m/%d/%Y').strftime('%Y%m%d') #@tmp["reported_at"].tr('/', '').to_date.strftime('%Y%m%d')
 
     @report = Report.new(@tmp)
     
