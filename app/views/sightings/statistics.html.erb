@@ -11,6 +11,31 @@ function init() {}
 	  <p>The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dinamically generated to keep it up to date as our database is updated. </p>
        </div>
        <div class="content_item">
+          <div class="stats_table">
+            <table>
+              <caption>UFO Shapes Data</caption>
+              <thead>
+                <tr>
+                   <th class="stats_table_left">Shape</th>
+                   <th>Number of sightings</th>
+                </tr>
+              </thead>
+              <tbody>
+              <%
+                count = 0
+                @listaUFO.each do |ufo|
+              %>    
+                <tr <%= count % 2 == 0 ? "class='even'" : ""%>>
+                   <td class="stats_table_left"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'] %></td>
+                   <td class="stats_table_right"><%= ufo['count'] %></td>
+                </tr>
+              <% 
+                count += 1
+              end %>
+              
+              </tbody>
+            </table>
+          </div>
           <article>
              <div class="top">
              </div>

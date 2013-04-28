@@ -628,6 +628,7 @@ a.prev span, a.next span {
   margin-bottom: 10px;
 }
 
+<<<<<<< HEAD
 
 /*  CAJA DE ENVIO POR UFO REPORT */
 
@@ -775,3 +776,43 @@ span.divrojo {
 }
 
  
+#follow_us {
+  float: right;
+  margin-top: 5px;
+}
+
+.stats_table {
+  float: left;
+}
+
+.stats_table th {
+  border-bottom: 1px solid #1D1D1D;
+  color: #1D1D1D;
+}
+
+.stats_table .even {
+  background-color: #D1DCED;
+}
+
+.stats_table_left {
+  text-align: left;
+}
+
+.stats_table_right {
+  text-align: center;
+}
+
+table {
+  border-collapse:collapse;
+}
+
+table > caption {
+  font-size: 1.2em;
+}
+
+article > svg {
+  position: relative;
+  left: 20px;
+  top: -530px;
+}
+
