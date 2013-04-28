@@ -245,7 +245,7 @@ ul#menu li:hover a
    line-height: 25px;
    padding: 0 20px;
    float: left;
-   width: 350px;
+   width: 570px;
 }
 
 .post {
@@ -816,5 +816,5 @@ table > caption {
 article > svg {
   position: relative;
   left: 20px;
-  top: -530px;
+  top: -580px;
 }

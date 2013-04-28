@@ -3,19 +3,19 @@ class SightingsController < ApplicationController
    include SightingsHelper
 
    def index  	
-      @listaUFO = Report.all.desc(:sighted_at).limit(100)
-      @numUFO = Report.count()
+      @listaUFO = Report.where(:status => 1).desc(:sighted_at).limit(100)
+      @numUFO = Report.where(:status => 1).count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
    end
 
    def search
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       idUfo = params[:id]
       @listaUFO = Report.find idUfo
       @coordenadas = @listaUFO.coord
       distance = 100 #km 
-      @listaUFOlist = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).limit(50)  
+      @listaUFOlist = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
       @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank? 
       @page_title += " on " + format_date(@listaUFO.sighted_at) unless @listaUFO.blank?
@@ -32,15 +32,15 @@ class SightingsController < ApplicationController
 				[ -7.19 , 41.70 ],
 				[ -9.15 , 42.02 ],
 				[ -9.26 , 43.64 ]]
-		}}).order_by(:location.asc)
+		}}).and(:status => 1).order_by(:location.asc)
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "spain"
       @page_title = "UFO Sightings in Spain"    	  
    end
 
    def statistics 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "statistics"  
       @listaUFO = Report.collection.aggregate({ "$group" => 
 		{ "_id" => {"shape" => "$shape"}, 
@@ -51,7 +51,7 @@ class SightingsController < ApplicationController
 
    def maps 
       @listaMap = Countries.all.order_by(:name.asc)
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings Maps"  
    end
@@ -66,8 +66,8 @@ class SightingsController < ApplicationController
 				[-42.18, 47.28 ],
 				[-94.57, 72.18 ],
 				[-169.45, 71.41]]
-		}}).order_by(:sighted_at.desc).limit(100)
-      @numUFO = Report.count()
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in North America"
    end
@@ -85,9 +85,9 @@ class SightingsController < ApplicationController
 				[130.69336, -2.46018],
 				[129.19922, -0.35156],
 				[133.33008, 4.21494]]
-		}}).order_by(:sighted_at.desc).limit(100)
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Oceania"
    end
@@ -109,8 +109,8 @@ class SightingsController < ApplicationController
 				[-73.12, -20.79],
 				[-84.19, -5.09],
 				[-77.87, 11.00]]
-		}}).order_by(:sighted_at.desc).limit(100)
-      @numUFO = Report.count()
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in South America"
    end
@@ -130,9 +130,9 @@ class SightingsController < ApplicationController
 				[5.09,38.41],
 				[23.40,37.44],
 				[5.09,38.41]]
-		}}).order_by(:sighted_at.desc).limit(100)
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Africa"
    end
@@ -156,9 +156,9 @@ class SightingsController < ApplicationController
 				[-17.05,67.74],
 				[-30.23,66.01],
 				[-10.41,36.73]]
-		}}).order_by(:sighted_at.desc).limit(100)
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Europe"
    end
@@ -174,9 +174,9 @@ class SightingsController < ApplicationController
 				[178.60,65.51],
 				[91.75,79.43],
 				[30.93,74.68]]
-		}}).order_by(:sighted_at.desc).limit(100)
+		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Asia"
    end
@@ -187,7 +187,7 @@ class SightingsController < ApplicationController
       
       listaCiudad.each do |country| 
          @namecity = country.name
-	 @ciudad = country.geometry
+	      @ciudad = country.geometry
       end
       
       type = ""
@@ -201,18 +201,18 @@ class SightingsController < ApplicationController
       end
 
       if type == 'Polygon'
-         @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).order_by(:sighted_at.desc).limit(100)
+         @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
       else
          coordinates.each_with_index do |coordinatesdatos,index| 	
             if index == 0
-               @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+               @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             else
-               @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).order_by(:sighted_at.desc).limit(100)
+               @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             end			
          end
       end			  
 
-      @numUFO = Report.count()
+      @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
    end
 
