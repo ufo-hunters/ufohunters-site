@@ -13,11 +13,11 @@ function init() {}
                     <div>                           	  
                               <div class="caja-field">
                                 <label for="sighted_at" style="float: left;"><strong>Sighted on </strong></label></br>
-                                 <%= @report['sighted_at']%>
+                                 <%= format_date @report['sighted_at']%>
                               </div>
                               <div class="caja-field">
                                 <label for="reported_at"><strong>Reported on </strong></label></br>
-                                <%= @report['reported_at']%>
+                                <%= format_date @report['reported_at']%>
                               </div>                               
                               <div class="caja-field">
                                 <label for="report_shape"><strong>Shape </strong></label></br>
