@@ -1,17 +1,36 @@
-   
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script> 
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script>
+function init() {}
 
-  
+$(document).ready(function(){
+     $("#new_report").validate({
+    });
+});
+
+
+
+</script>
+ <style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 10em; float: left; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { clear: both; }
+.submit { margin-left: 12em; }
+em { font-weight: bold; padding-right: 1em; vertical-align: top; }
+</style> 
 
   <div id="site_content"> 
-    <div id="content">         
+    <div id="content">  
+        <div class="caja caja-sombra">       
             <div id="main-post">
-
-                    <div class="content_item">
+                    <div> 
                       <h3>New report</h3>
                     </div>
 
-                    <div class="content_item">
-                      
+                    <div> 
                           <%= form_for(@report) do |f| %>
                               <% if @report.errors.any? %>
                                 <div id="error_explanation">
@@ -24,42 +43,64 @@
                                   </ul>
                                 </div>
                               <% end %>
-
+                             
+                              <script>
+                                $(function() {
+                                  $( "#report_sighted_at" ).datepicker();
+                                  $( "#report_reported_at" ).datepicker();
+                                });   
+                                cont = 0;
+                                function addlink() {   
+                                        cont = cont + 1;
+                                         $(".fieldlinks").append("<input type='text' size='30' class='fieldufo' name='report[links[" + cont + "]]' id='report_links'/>");
+                                }                           
+                              </script>
                               
 
-                              <div class="field">
-                                <%= f.label :sighted_at %><br />
-                                <%= f.text_field :sighted_at %>
+                              <div class="caja-field">
+                                <label for="sighted_at" style="float: left;">Sighted on <span class="divrojo">*</span></label></br>
+                                <%= f.text_field :sighted_at, :size => 12, :class => 'required fieldufo'  %>
                               </div>
-                              <div class="field">
-                                <%= f.label :reported_at %><br />
-                                <%= f.text_field :reported_at %>
+                              <div class="caja-field">
+                                <label for="reported_at">Reported on <span class="divrojo">*</span></label></br>
+                                <%= f.text_field :reported_at, :size => 12, :class => 'required fieldufo'  %>
+                              </div>                               
+                              <div class="caja-field">
+                                <label for="report_shape">Shape <span class="divrojo">*</span></label></br>
+                                <%= f.text_field :shape, :size => 12, :class => 'required fieldufo' %>
                               </div>
-                               <div class="field">
-                                <%= f.label :location %><br />
-                                <%= f.text_field :location %>
+                              <div class="caja-field">
+                                <label for="report_duration">Duration <span class="divrojo">*</span></label></br>
+                                <%= f.text_field :duration, :size => 12, :class => 'required fieldufo' %>
+                              </div> 
+                              <div class="caja-field-normal">
+                                <label for="report_location">Location <span class="divrojo">*</span></label></br>
+                                <%= f.text_field :location, :class => 'required fieldufo' %>
+                              </div>                             
+                               <div class="caja-field-normal">
+                                <label for="report_description">Description <span class="divrojo">*</span></label></br>
+                                <%= f.text_area :description, :rows => 8, :cols => 43, :class => 'required fieldufo' %>
                               </div>
-                               <div class="field">
-                                <%= f.label :shape %><br />
-                                <%= f.text_field :shape %>
+                              <div class="caja-field-normal">
+                                <%= f.label :links %></br>
+                                <!-- %= f.text_field :links, :class => 'fieldufo'% --> 
+                                <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
+                                <div class="fieldlinks"></div>
+                                <a href="javascript:addlink();">(Add more links)</a>
                               </div>
-                               <div class="field">
-                                <%= f.label :description %><br />
-                                <%= f.text_field :description %>
-                              </div>
+                              
                               <div class="actions">
-                                <%= f.submit %>
+                                <input type="submit" value="Send Ufo's Report" name="commit">
                               </div>
 
-
-                              <div class="entry">
-                                 <p></p>
-                              </div>
 
                           <% end %>
 
                     </div>                  
             </div> 
-  </div>
+            <div class="sombra-abajo-derecha"></div>
+            <div class="sombra-abajo-izquierda"></div>
+        </div>
+    </div>
 </div> 
 
