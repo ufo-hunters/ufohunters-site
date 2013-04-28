@@ -48,6 +48,7 @@ class ReportsController < ApplicationController
 
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
+    @tmp["status"] = "0"
 
     @report = Report.new(@tmp)
 
