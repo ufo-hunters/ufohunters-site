@@ -10,7 +10,7 @@ gem 'rails', '3.2.2'
 
 #gema para conexion a mongodb
 gem 'mongoid', '~> 3.0.0'
-
+gem 'wolcanus-simple_captcha', :require => 'simple_captcha', :git => 'git://github.com/v1rtual/simple-captcha.git'
 #gem "rserve-simpler", "~> 0.0.6"
 
 

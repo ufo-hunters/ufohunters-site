@@ -218,12 +218,12 @@ ul#menu li:hover a
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;}  
 
 #content
-{ #width: 680px;
+{ 
   margin-bottom: 20px;
   float: left;}
 
 .content_item
-{ #width: 680px;
+{ 
   margin-top: 20px;
   margin-bottom: 20px;
   margin-left: 10px;}
@@ -245,7 +245,7 @@ ul#menu li:hover a
    line-height: 25px;
    padding: 0 20px;
    float: left;
-   width: 570px;
+   width: 350px;
 }
 
 .post {
@@ -626,6 +626,157 @@ a.prev span, a.next span {
 .player {
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+
+/*  CAJA DE ENVIO POR UFO REPORT */
+
+.caja
+{    
+    width: 400px;
+    height: 600px;
+    background-color: #f4f4f4;
+}
+.caja-field
+{
+    width:160px;
+    float:left;
+}
+.caja-field-normal
+{
+    float:left;
+    width:260px;
+}
+.caja-sombra
+{
+
+    position: relative;
+    float: left;
+    padding: 1em;
+    margin-left: 190px;
+    margin-top: 50px;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+}
+
+.caja-sombra:before, .caja-sombra:after
+{
+
+    content: "";
+    position: absolute;
+    z-index: -2;
+}
+
+.caja-sombra:before
+{
+
+    width: 24px;
+    height: 46%;
+    top: 0;
+    right: -1px;
+    display: inline-block;
+    box-shadow: 10px -10px 10px rgba(0, 0, 0, 0.5);
+    -webkit-transform: rotate(2deg) translate(-20px, 25px) skew(-6deg);
+    -moz-transform: rotate(2deg) translate(-20px, 25px) skew(-6deg);
+    -o-transform: rotate(2deg) translate(-20px, 25px) skew(-6deg);
+    transform: rotate(2deg) translate(-20px, 25px) skew(-6deg);
+}
+
+.caja-sombra:after
+{
+
+    display: inline-block;
+    height: 46%;
+    left: -7px;
+    top: 0;
+    width: 24px;
+    box-shadow: -10px -10px 10px rgba(0, 0, 0, 0.5);
+    -webkit-transform: rotate(2deg) translate(20px,25px) skew(6deg);
+    -moz-transform: rotate(2deg) translate(20px,25px) skew(6deg);
+    -o-transform: rotate(2deg) translate(20px,25px) skew(6deg);
+    transform: rotate(2deg) translate(20px,25px) skew(6deg);
+}
+
+.sombra-abajo-derecha
+{
+
+    content: '';
+    width: 24px;
+    height: 46%;
+    bottom: 0;
+    right: -1px;
+    position: absolute;
+    z-index: -1;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    -webkit-transform: rotate(-2deg) translate(-20px,-25px) skew(6deg);
+    -moz-transform: rotate(-2deg) translate(-20px,-25px) skew(6deg);
+    -o-transform: rotate(-2deg) translate(-20px,-25px) skew(6deg);
+    transform: rotate(-2deg) translate(-20px,-25px) skew(6deg);
+}
+
+.sombra-abajo-izquierda
+{
+
+    content: '';
+    width: 24px;
+    height: 46%;
+    bottom: 0;
+    left: -7px;
+    position: absolute;
+    z-index: -1;
+    box-shadow: -10px 10px 10px rgba(0, 0, 0, 0.5);
+    -webkit-transform: rotate(-2deg) translate(20px,-25px) skew(-6deg);
+    -moz-transform: rotate(-2deg) translate(20px,-25px) skew(-6deg);
+    -o-transform: rotate(-2deg) translate(20px,-25px) skew(-6deg);
+    transform: rotate(-2deg) translate(20px,-25px) skew(-6deg);
+}
+
+/* CAJAS DE TEXTO DEL FORMULARIO */
+span.divrojo {
+  color: red;
+  float: left;
+}
+.actions {
+  float: left;
+  width: 190px;
+}
+.fieldufo{
+    
+    padding: 5px;   
+    border: 1px solid #A9D0F5;
+    
+    /*Applying CSS3 gradient*/
+    background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);    
+    background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');
+    
+    /*Applying CSS 3radius*/   
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    
+    /*Applying CSS3 box shadow*/
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    box-shadow: 0 0 2px #DDDDDD;
+
+}
+.fieldufo:hover
+{
+    border:1px solid ##58ACFA;
+}
+.fieldufo:focus
+{
+    box-shadow:0 0 2px #0040FF;
+}
+.thankreport {
+    font: 165% Arial,Helvetica,sans-serif;
+     margin: 30px;
+}
+.thankreport_foot{
+    float: left;
+    font: 165% Arial,Helvetica,sans-serif;
+    color:green;
+    margin: 70px;
 }
 
 #follow_us {

@@ -1,5 +1,52 @@
-<p id="notice"><%= notice %></p>
+<script>
+function init() {}
+</script>
 
+ <div id="site_content"> 
+    <div id="content">  
+        <div class="caja caja-sombra">       
+            <div id="main-post">
+                    <div> 
+                      <div class="thankreport">New ufo reported!</div>
+                    </div>
 
-<%= link_to 'Edit', edit_report_path(@report) %> |
-<%= link_to 'Back', reports_path %>
+                    <div>                           	  
+                              <div class="caja-field">
+                                <label for="sighted_at" style="float: left;"><strong>Sighted on </strong></label></br>
+                                 <%= format_date @report['sighted_at']%>
+                              </div>
+                              <div class="caja-field">
+                                <label for="reported_at"><strong>Reported on </strong></label></br>
+                                <%= format_date @report['reported_at']%>
+                              </div>                               
+                              <div class="caja-field">
+                                <label for="report_shape"><strong>Shape </strong></label></br>
+                                <%= @report['shape']%>
+                              </div>
+                              <div class="caja-field">
+                                <label for="report_duration"><strong>Duration </strong></label></br>
+                                <%= @report['duration']%>
+                              </div> 
+                              <div class="caja-field-normal">
+                                <label for="report_location"><strong>Location </strong></label></br>
+                                <%= @report['location']%>
+                              </div>                             
+                               <div class="caja-field-normal">
+                                <label for="report_description"><strong>Description </strong></label></br>
+                                <%= @report['description']%>
+                              </div>
+                              <div class="caja-field-normal">
+                                <label for="report_links"><strong>Links </strong></label></br>
+                                <%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%>
+                              </div>             
+                           
+                    </div>         
+                    <div> 
+                       <div class="thankreport_foot">Thank very much for your trust on us</div>
+                    </div>         
+            </div> 
+            <div class="sombra-abajo-derecha"></div>
+            <div class="sombra-abajo-izquierda"></div>
+        </div>
+    </div>
+</div> 

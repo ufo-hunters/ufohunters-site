@@ -20,6 +20,7 @@ class Report
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
   validates_presence_of :location, :message => "Location date is mandatory"
+  validates_presence_of :duration, :message => "Duration date is mandatory"
   validates_presence_of :shape, :message => "Shape date is mandatory"
   validates_presence_of :description, :message => "Description date is mandatory"
   
