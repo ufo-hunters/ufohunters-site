@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  
+  include SimpleCaptcha::ControllerHelpers
   # GET /reports
   # GET /reports.json
   def index
@@ -51,16 +53,30 @@ class ReportsController < ApplicationController
     @tmp["status"] = "0"
 
     @report = Report.new(@tmp)
+    
+    if simple_captcha_valid?        
 
-    respond_to do |format|
-      if @report.save
-        format.html { redirect_to @report, notice: 'Ufo model was successfully created.' }
-        format.json { render json: @report, status: :created, location: @report }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
-      end
+        respond_to do |format|
+          if @report.save
+            format.html { redirect_to @report, notice: 'Ufo model was successfully created.' }
+            format.json { render json: @report, status: :created, location: @report }
+          else
+            format.html { render action: "new" }
+            format.json { render json: @report.errors, status: :unprocessable_entity }
+          end
+        end
+
+    else
+
+        respond_to do |format| 
+            @notice = 'You must enter the text from the image'         
+            format.html { render action: "new", notice: 'You must enter the text from the image'}
+            format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text from the image' }
+        end
+
     end
+
+    
   end
 
   # PUT /reports/1

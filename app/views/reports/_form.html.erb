@@ -88,7 +88,11 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                                 <div class="fieldlinks"></div>
                                 <a href="javascript:addlink();">(Add more links)</a>
                               </div>
-                              
+
+                              <%= show_simple_captcha(:label => "")%>
+                              <span class="divrojo"><%=@notice%></span>
+                              <span class="divrojo"><%=@info%></span>
+
                               <div class="actions">
                                 <input type="submit" value="Send Ufo's Report" name="commit">
                               </div>
