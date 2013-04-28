@@ -733,6 +733,11 @@ a.prev span, a.next span {
 /* CAJAS DE TEXTO DEL FORMULARIO */
 span.divrojo {
   color: red;
+  float: left;
+}
+.actions {
+  float: left;
+  width: 190px;
 }
 .fieldufo{
     

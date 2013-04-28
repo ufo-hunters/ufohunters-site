@@ -48,9 +48,13 @@ class ReportsController < ApplicationController
   def create
     @numUFO = Report.count()
 
+    @tmporigin = params[:report]
+
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
     @tmp["status"] = "0"
+    @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d') 
+    @tmp["reported_at"] = Date.strptime(@tmp["reported_at"], '%m/%d/%Y').strftime('%Y%m%d') 
 
     @report = Report.new(@tmp)
     
@@ -67,7 +71,9 @@ class ReportsController < ApplicationController
         end
 
     else
-
+        @report["sighted_at"] = ""
+        @report["reported_at"] = ""
+        @report["links"] = ""
         respond_to do |format| 
             @notice = 'You must enter the text from the image'         
             format.html { render action: "new", notice: 'You must enter the text from the image'}
