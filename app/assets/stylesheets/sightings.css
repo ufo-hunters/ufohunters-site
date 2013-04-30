@@ -240,12 +240,12 @@ ul#menu li:hover a
 	color: #3F4A5F;
 }
 
-#main-post {
+#main-sighting {
    font-size: 12px;
    line-height: 25px;
    padding: 0 20px;
    float: left;
-   width: 350px;
+   width: 570px;
 }
 
 .post {
@@ -327,7 +327,7 @@ ul#menu li:hover a
 }
 
 .content_container > div.shareEgg {
-	height: 120px;
+	height: 123px;
 	margin-top: 50px;
 }
 
@@ -762,7 +762,7 @@ span.divrojo {
 }
 .fieldufo:hover
 {
-    border:1px solid ##58ACFA;
+    border:1px solid #58ACFA;
 }
 .fieldufo:focus
 {
@@ -781,7 +781,7 @@ span.divrojo {
 
 #follow_us {
   float: right;
-  margin-top: 5px;
+  margin-top: -10px;
 }
 
 .stats_table {
@@ -816,5 +816,5 @@ table > caption {
 article > svg {
   position: relative;
   left: 20px;
-  top: -530px;
+  top: -580px;
 }
