@@ -220,7 +220,7 @@ class SightingsController < ApplicationController
       @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/]).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "videos"
-      @page_title = "Recent UFO Activity"
+      @page_title = "Recent UFO Activity with videos"
    end
 
    def about
