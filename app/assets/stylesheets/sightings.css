@@ -364,15 +364,23 @@ ul#menu li:hover a
 { width: 270px;
   padding: 5px;
   text-align: center;
-  margin: 20px 10px 10px 10px;
+  margin: 0px 10px 10px 10px;
   float: left;}
+
+.content_grey_container_box p {
+  padding: 0px;
+}
 
 .content_grey_container_boxl
 { width: 270px;
   padding: 5px;
   text-align: center;
-  margin: 20px 0 10px 10px;
+  margin: 0px 0 10px 10px;
   float: left;}
+
+.content_grey_container_boxl p {
+  padding: 0px;
+}
   
 #footer
 { width: 920px;
