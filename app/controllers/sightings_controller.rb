@@ -216,6 +216,13 @@ class SightingsController < ApplicationController
       @menu = "maps"
    end
 
+   def videos   
+      @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/]).desc(:sighted_at).limit(100)
+      @numUFO = Report.where(:status => 1).count()
+      @menu = "videos"
+      @page_title = "Recent UFO Activity"
+   end
+
    def about
    		@menu = "about"
    		@page_title = "About us"
