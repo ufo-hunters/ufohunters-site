@@ -3,7 +3,7 @@ class SightingsController < ApplicationController
    include SightingsHelper
 
    def index  	
-      @listaUFO = Report.where(:status => 1).desc(:sighted_at).limit(100)
+      @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
@@ -217,7 +217,7 @@ class SightingsController < ApplicationController
    end
 
    def videos   
-      @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/]).desc(:sighted_at).limit(100)
+      @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "videos"
       @page_title = "Recent UFO Activity with videos"
