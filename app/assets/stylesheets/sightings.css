@@ -644,6 +644,7 @@ a.prev span, a.next span {
     width: 400px;
     height: 600px;
     background-color: #f4f4f4;
+    font-size: 120%;
 }
 .caja-field
 {
@@ -660,7 +661,7 @@ a.prev span, a.next span {
 
     position: relative;
     float: left;
-    padding: 1em;
+    padding: 2em;
     margin-left: 190px;
     margin-top: 50px;
     box-shadow: 0 2px 18px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
