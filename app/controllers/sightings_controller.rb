@@ -1,6 +1,6 @@
 class SightingsController < ApplicationController
 
-   include SightingsHelper
+   include ApplicationHelper
 
    def index  	
       @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
