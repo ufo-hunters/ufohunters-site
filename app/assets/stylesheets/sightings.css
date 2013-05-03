@@ -381,7 +381,19 @@ ul#menu li:hover a
 .content_grey_container_boxl p {
   padding: 0px;
 }
-  
+
+#content_grey_carousel {
+  position: relative;
+}
+
+#content_grey_carousel > a.prev {
+   top: 75px;
+}
+
+#content_grey_carousel > a.next {
+   top: 75px;
+}
+
 #footer
 { width: 920px;
   height: 20px;
@@ -587,6 +599,7 @@ a.prev.disabled, a.next.disabled {
 a.prev span, a.next span {
 	display: none;
 }
+
 .pagination {
 	text-align: center;
 }
