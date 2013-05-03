@@ -15,6 +15,9 @@ if defined?(Bundler)
 end
 
 module Ufo
+
+  THUMBS_URL_BASE = "http://img.youtube.com/vi/"
+  
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

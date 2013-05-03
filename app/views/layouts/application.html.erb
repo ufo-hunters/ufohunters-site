@@ -49,38 +49,71 @@
 			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to "About us", :controller => "sightings", :action => "about"%></li>
 		</ul>
 	</div>
-			<%= yield %>
+	<%= yield %>
 
+
+   <script type="text/javascript">
+   $(document).ready(function() {
+      $("#video_thumb_carousel").carouFredSel({
+         circular: false,
+         infinite: false,
+         auto: false,
+         width: 921,             
+         height: 160,                                    
+         items: {
+            visible: 3,
+            width: 307
+         },
+         prev: {     
+            button: "#video_thumb_carousel_prev",
+            key: "left"
+         },
+         next: { 
+            button: "#video_thumb_carousel_next",
+            key: "right"
+         }
+      });
+   });
+	</script>
 	<div id="content_grey">
-		  <div class="content_grey_container_box">
-				<h4>West Hollywood, CA</h4>
-				<p>Tuesday 09. April 2013</p>
-				<div class="video-thumb">
+	   <div id="content_grey_carousel">
 
-					<%= link_to(image_tag("http://img.youtube.com/vi/qgGBnUONSqQ/1.jpg", :alt =>  "UFO Sighting at West Hollywood, CA"), :controller => "sightings", :action => "search", :id => "51438e180ad2e1e9be4478f9") %>
-				</div><!--close readmore-->
-		  </div><!--close content_grey_container_box-->
-		  
-		  <div class="content_grey_container_box">
-			   <h4>Newburgh, NY</h4>
-				<p>Friday 22. March 2013</p>
-				<div class="video-thumb">
+         <div id="video_thumb_carousel">
+         <%
 
-				  <%= link_to(image_tag("http://img.youtube.com/vi/PkVN67GDzgs/1.jpg", :alt =>  "UFO Sighting at Newburgh, NY"), :controller => "sightings", :action => "search", :id => "51438e180ad2e1e9be4478ed") %>
-				</div><!--close readmore-->
-		  </div><!--close content_grey_container_box-->
-		  
-		  <div class="content_grey_container_boxl">
-				<h4>St. John's (Canada), NF</h4>
-				<p>Friday 08. March 2013</p>
-				<div class="video-thumb">
-					
-					<%= link_to(image_tag("http://img.youtube.com/vi/5nEk4io9o8o/1.jpg", :alt =>  "UFO Sighting at St. John's (Canada), NF"), :controller => "sightings", :action => "search", :id => "51438e130ad2e1e9be447789") %>
-				</div><!--close readmore-->	  
-		  </div><!--close content_grey_container_box1-->  
-		  
+			video_thumb_list = video_list
+			
+         video_thumb_list.each do |thumb|
+         	logger.info "links: " + thumb.links.to_s
+         	thumb.links.each do |link|
+      	      if youtube_link? link
+      	   	   video_id = youtube_video_id(link)
+      	   	   logger.info "video id: " + video_id
+      	   	   if video_id
+      	   
+      %>
+			            <div class="content_grey_container_box">
+					         <h4><%= thumb.location %></h4>
+					         <p><%= format_date thumb.sighted_at %></p>
+					         <div class="video-thumb">
+						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id) %>
+					         </div><!--close readmore-->
+			            </div><!--close content_grey_container_box-->
+		            <%
+	            	   break
+	         	   end
+	            end
+		      end
+		   end
+		   %>
 		  <br style="clear:both"/>
-		  
+ 
+      </div>
+      <div class="clearfix"></div>
+		<a class="prev" id="video_thumb_carousel_prev" href="#"><span>prev</span></a>
+		<a class="next" id="video_thumb_carousel_next" href="#"><span>next</span></a>
+      </div>
+    
 	</div><!--close content_grey-->
  
 	<div id="footer">
