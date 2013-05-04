@@ -30,7 +30,7 @@ class ReportsController < ApplicationController
 
     @menu = "report"
     @page_title = "Report a UFO"
-    
+    @notice = 'Introduce the text of image' 
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @report }
@@ -47,8 +47,6 @@ class ReportsController < ApplicationController
   # POST /reports.json
   def create
     @numUFO = Report.count()
-
-    @tmporigin = params[:report]
 
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values

@@ -33,7 +33,7 @@ div {
   &.field, &.actions {
     margin-bottom: 10px;
   }
-}
+}padding-left: 10px;
 
 #notice {
   color: green;
