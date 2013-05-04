@@ -222,6 +222,10 @@ ul#menu li:hover a
   margin-bottom: 20px;
   float: left;}
 
+#content_about
+{ 
+ padding: 80px;}
+
 .content_item
 { 
   margin-top: 20px;
