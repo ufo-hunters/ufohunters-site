@@ -663,11 +663,20 @@ a.prev span, a.next span {
 {
     width:160px;
     float:left;
+    padding-top: 10px;
 }
 .caja-field-normal
 {
     float:left;
+    width:360px;
+    padding-top: 10px;
+}
+.caja-text
+{
+    float:left;
     width:260px;
+    padding-bottom: 10px;
+    padding-left: 10px;
 }
 .caja-sombra
 {
@@ -755,18 +764,22 @@ a.prev span, a.next span {
 /* CAJAS DE TEXTO DEL FORMULARIO */
 span.divrojo {
   color: red;
-  float: left;
 }
 .actions {
   float: left;
   width: 190px;
+  padding: 5px !important;
+}
+.labelclass {
+   float: left;
+   width: 20em;
 }
 .fieldufo{
     
     padding: 5px;   
     border: 1px solid #A9D0F5;
     
-    /*Applying CSS3 gradient*/
+    /* Applying CSS3 gradient */
     background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);    
     background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');

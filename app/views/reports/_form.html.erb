@@ -82,16 +82,14 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                                 <%= f.text_area :description, :rows => 8, :cols => 43, :class => 'required fieldufo' %>
                               </div>
                               <div class="caja-field-normal">
-                                <%= f.label :links %></br>
-                                <!-- %= f.text_field :links, :class => 'fieldufo'% --> 
+                                <label for="report_links" class="labelclass">Links (videos, images, articles...)</label>
                                 <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
                                 <div class="fieldlinks"></div>
                                 <a href="javascript:addlink();">(Add more links)</a>
                               </div>
 
                               <%= show_simple_captcha(:label => "")%>
-                              <span class="divrojo"><%=@notice%></span>
-                              <span class="divrojo"><%=@info%></span>
+                              <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
 
                               <div class="actions">
                                 <input type="submit" value="Send Ufo's Report" name="commit">
