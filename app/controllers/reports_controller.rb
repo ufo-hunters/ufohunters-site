@@ -26,6 +26,9 @@ class ReportsController < ApplicationController
   # GET /reports/new
   # GET /reports/new.json
   def new
+    
+    @numUFO = Report.where(:status => 1).count()
+    
     @report = Report.new
 
     @menu = "report"
