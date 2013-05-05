@@ -60,7 +60,7 @@
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 				
 				
-				    var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				    var position = new OpenLayers.Bounds();
 				 
 				    map = new OpenLayers.Map("basicMap");
 				    var mapnik = new OpenLayers.Layer.OSM();
@@ -77,10 +77,10 @@
 		                  begin
 		            %>
 						         location = "<%=ovni.location%>";
-		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% 
 				            rescue => ex
-                            logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
+                           logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
                            next
 				            end
 				         end %>
@@ -92,7 +92,6 @@
 
 			    $(document).ready(function() {
 
-					// Using default configuration
 					$("#mycarousel").carouFredSel({
 						width: 850,
 						height: 85,
@@ -119,12 +118,12 @@
 				
 					   <div class="content_item">
 							<h3>Recent UFO Activity</h3>
-							<p>100 latest UFO sightings (with videos) all over the world</p>
+							<p>100 latest UFO sightings videos all over the world</p>
 						
 							<div id="mycarousel">
 								<% for i in 0..19 %>
 									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%if @listaUFO[i].sighted_at.blank? == false %> <%=@listaUFO[i].sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/>
+									<%= format_date @listaUFO[i].sighted_at %><br/>
 									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id %></strong>
 									</div>
 								<% end %>
@@ -136,7 +135,7 @@
 					   </div>
 					   
 					   <div class="content_item">								
-									<p>In this section you will see the last 100 sightings reported with videos. In this map you can see their geolocation, if you click on the icon of the ship you will see a summary and a link to the information about the sighting, in which you can see the videos reported.</p>
+									<p>Click the icons in the map to access the sightings reports and <strong>watch the videos</strong> submitted by the witnesses. Judge yourself and share your opinion with the community.</p>
 						</div>
 				</div>
 		</div>
