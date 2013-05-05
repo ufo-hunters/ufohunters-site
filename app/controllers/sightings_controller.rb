@@ -224,12 +224,9 @@ class SightingsController < ApplicationController
    end
 
    def about
-   		@menu = "about"
-   		@page_title = "About us"
+   	@numUFO = Report.where(:status => 1).count()
+      @menu = "about"
+   	@page_title = "About us"
    end
 
-   def report
-   		@menu = "report"
-   		@page_title = "Report a UFO"
-   end
 end
