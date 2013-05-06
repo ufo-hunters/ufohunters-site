@@ -150,10 +150,10 @@
 			</div>
      	</div>
      	<div id="other-posts">
-     		<p>Sightings to less than 100 miles of the main sighting (you can see them in the map too):</p>
+     		<p>Nearest sightings (100 miles radius):</p>
      		<div id="nearest_sightings_carousel">     			
      		<% 
-      	# In orden to avoid the same sighting as nearest sighting
+      	# In order to avoid the same sighting as nearest sighting
       	@listaUFOlist.each do |ovni|
 	      	if @listaUFO.id == ovni.id
 	         	next
