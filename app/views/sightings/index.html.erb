@@ -77,7 +77,7 @@
 		                  begin
 		            %>
 						         location = "<%=ovni.location%>";
-		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% 
 				            rescue => ex
                            logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
@@ -92,7 +92,6 @@
 
 			    $(document).ready(function() {
 
-					// Using default configuration
 					$("#mycarousel").carouFredSel({
 						width: 850,
 						height: 85,
@@ -124,7 +123,7 @@
 							<div id="mycarousel">
 								<% for i in 0..19 %>
 									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%if @listaUFO[i].sighted_at.blank? == false %> <%=@listaUFO[i].sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/>
+									<%= format_date @listaUFO[i].sighted_at %><br/>
 									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id %></strong>
 									</div>
 								<% end %>
@@ -137,9 +136,8 @@
 					   
 					   <div class="content_item">
 								<div class="content_item">
-					   					<p>In the map above you can see geolocated the last 100 sightings in the world. The Icons with the spacecraft are linkable, if you pressing about it can see a summary of the sighting and a link will direct you to the page where you can see in detail all data from this sighting.</p>
-					   					<h></h>
-					   			</div>
+			   					<p>The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p>If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
+					   		</div>
 								<div class="content_container">
 									<%= image_tag image_path('world.png') %>
 									<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>

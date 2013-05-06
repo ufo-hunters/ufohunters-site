@@ -40,11 +40,13 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
-		        	marker.events.register("touchstart", feature, markerClick);
-		    	} else {
-	    			marker.events.register("click", feature, markerClick);
-		    	}
+		        var clickEvent = "click";
+
+		        if ((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))) {
+		        	  clickEvent = "touchstart";
+		    	  }
+
+		    	  marker.events.register(clickEvent, feature, markerClick);
 
 		        lyrMarkers.addMarker(marker);
 		    }
@@ -64,19 +66,17 @@
 				    map.addLayer(mapnik);
 				 
 				    var markers = new OpenLayers.Layer.Markers( "Markers" );
-				    map.addLayer(markers);
-				    //markers.addMarker(new OpenLayers.Marker(position)); 
+				    map.addLayer(markers); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
 		                    map.addLayer(lyrMarkers);
 				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
 						location = "<%=ovni.location.gsub(/'/, '')%>";
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
 				    map.setCenter(position, zoom);
-				    //map.zoomToMaxExtent();
 		
 		      }		      
 		     
@@ -88,9 +88,9 @@
 					<div id="basicMap" style="width: 900px; height: 550px;"></div>
 			   </div>
 			   <div class="content_item">
-					  <h2>Welcome to Ufos in Spain</h2> 
-					  <p>In this map you can see all sightings in Spain. </p>
-				      <p>Below you can see a list of all of them sorted alphabetically.</p>
+					  <h2>Welcome to UFO sightings in Spain</h2> 
+					  <p>This map shows all <strong>Spanish sightings</strong> in our site.</p>
+				     <p>If you prefer, here you have a list of all Spanish sightings sorted alphabetically by location.</p>
 			   </div>
 				<script type="text/javascript">
                         $(document).ready(function() {
@@ -112,7 +112,7 @@
 					 <% @listaUFO.each do |ovni| %>
 						  <li>						  
 								  <strong><%=ovni.location%></strong></br>
-								  <%if ovni.sighted_at.blank? == false %> <%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%></br>
+								  <%= format_date ovni.sighted_at %></br>
 								  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>
 						  </li>
 					 <% end %>	
