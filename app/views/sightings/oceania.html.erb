@@ -38,11 +38,13 @@
 		            OpenLayers.Event.stop(evt);
 		        };
 		        
-		        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
-		        	marker.events.register("touchstart", feature, markerClick);
-		    	} else {
-	    			marker.events.register("click", feature, markerClick);
-		    	}
+              var clickEvent = "click";
+
+		        if ((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))) {
+		        	  clickEvent = "touchstart";
+		    	  } 
+
+              marker.events.register(clickEvent, feature, markerClick);
 
 		        lyrMarkers.addMarker(marker);
 		    }
@@ -70,7 +72,7 @@
 				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
 						location = "<%=ovni.location.gsub(/'/, '')%>";
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
 				    <% end %>
 				              
 				    map.setCenter(position, zoom);
