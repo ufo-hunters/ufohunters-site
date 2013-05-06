@@ -859,7 +859,7 @@ article > svg {
 }
 
 blockquote {
-  background: url(/assets/quotes.jpg) no-repeat scroll left top transparent;
+  background: url(/assets/quotes.jpg) no-repeat scroll left top #F1F1F1;
   color: #3D3D3D;
   font-family: Georgia,"Times New Roman",Times,serif;
   font-size: 18px;
