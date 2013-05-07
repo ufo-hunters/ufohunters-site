@@ -1,6 +1,21 @@
 class SightingsController < ApplicationController
 
    include ApplicationHelper
+   
+   caches_action :index
+   caches_action :spain
+   caches_action :statistics
+   caches_action :maps
+   caches_action :northamerica
+   caches_action :oceania
+   caches_action :southamerica
+   caches_action :africa
+   caches_action :europe
+   caches_action :asia
+   caches_action :videos
+   caches_action :about
+   caches_action :search, :layout => false
+   caches_action :country, :layout => false
 
    def index  	
       @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
