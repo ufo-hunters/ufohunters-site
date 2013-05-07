@@ -22,6 +22,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
+      @page_description = "Latest UFO Sightings all over the world"
    end
 
    def search
@@ -34,6 +35,7 @@ class SightingsController < ApplicationController
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
       @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank? 
       @page_title += " on " + format_date(@listaUFO.sighted_at) unless @listaUFO.blank?
+      @page_description = "UFO Report: " + @page_title
    end
 
    def spain
@@ -51,7 +53,8 @@ class SightingsController < ApplicationController
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "spain"
-      @page_title = "UFO Sightings in Spain"    	  
+      @page_title = "UFO Sightings in Spain"
+      @page_description = "UFO Sighting Reports in Spain"
    end
 
    def statistics 
@@ -62,13 +65,15 @@ class SightingsController < ApplicationController
 		  "count" => { "$sum" => 1 }} },
         "$sort" => { "count" => -1 })
       @page_title = "UFO Data Stats"
+      @page_description = "A glance at our UFO Data using Data-Driven Documents"
    end
 
    def maps 
       @listaMap = Countries.all.order_by(:name.asc)
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
-      @page_title = "UFO Sightings Maps"  
+      @page_title = "UFO Sightings Maps" 
+      @page_description = "Latest UFO Sightings Maps: Africa, Asia, Europe, North America, Oceania, South America"
    end
   
    def northamerica 
@@ -85,6 +90,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in North America"
+      @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
    end
 
    def oceania
@@ -105,6 +111,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Oceania"
+      @page_description = "Latest UFO Sightings Maps: Oceania - UFO Reports in Oceania"
    end
 
    def southamerica 
@@ -128,6 +135,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in South America"
+      @page_description = "Latest UFO Sightings Maps: South America - UFO Reports in South America"
    end
 
    def africa 
@@ -150,6 +158,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Africa"
+      @page_description = "Latest UFO Sightings Maps: Africa - UFO Reports in Africa"
    end
 
    def europe 
@@ -176,6 +185,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Europe"
+      @page_description = "Latest UFO Sightings Maps: Europe - UFO Reports in Europe"
    end
 
    def asia 
@@ -194,6 +204,7 @@ class SightingsController < ApplicationController
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Asia"
+      @page_description = "Latest UFO Sightings Maps: Asia - UFO Reports in Asia"
    end
 
    def country 
@@ -235,13 +246,16 @@ class SightingsController < ApplicationController
       @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "videos"
-      @page_title = "Recent UFO Activity with videos"
+      @page_title = "Recent UFO Sighting Videos"
+      @page_description = "Latest UFO Sighting Reports and Videos as witnesses reported them"
+
    end
 
    def about
    	@numUFO = Report.where(:status => 1).count()
       @menu = "about"
-   	@page_title = "About us"
+   	@page_title = "About"
+      @page_description = "About ufo-hunters.com and who's behind this site"
    end
 
 end

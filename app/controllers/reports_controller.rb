@@ -36,7 +36,8 @@ class ReportsController < ApplicationController
 
     @menu = "report"
     @page_title = "Report a UFO"
-    @notice = 'Introduce the text of image' 
+    @page_description = "Have you seen a UFO? Report your experience filling in the report form"
+    @notice = 'Introduce the text of the image' 
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @report }
@@ -79,9 +80,9 @@ class ReportsController < ApplicationController
         @report["reported_at"] = ""
         @report["links"] = ""
         respond_to do |format| 
-            @notice = 'You must enter the text from the image'         
-            format.html { render action: "new", notice: 'You must enter the text from the image'}
-            format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text from the image' }
+            @notice = 'You must enter the text of the image'         
+            format.html { render action: "new", notice: 'You must enter the text of the image'}
+            format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
         end
 
     end

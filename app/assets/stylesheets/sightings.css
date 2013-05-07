@@ -854,8 +854,8 @@ table > caption {
 
 article > svg {
   position: relative;
-  left: 20px;
-  top: -580px;
+  left: -30px;
+  top: -610px;
 }
 
 blockquote {
