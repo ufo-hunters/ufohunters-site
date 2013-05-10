@@ -33,8 +33,7 @@ class SightingsController < ApplicationController
       distance = 100 #km 
       @listaUFOlist = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
-      @page_title = "UFO Sighting at " + @listaUFO.location unless @listaUFO.blank? 
-      @page_title += " on " + format_date(@listaUFO.sighted_at) unless @listaUFO.blank?
+      @page_title = friendly_title(@listaUFO)
       @page_description = "UFO Report: " + @page_title
    end
 

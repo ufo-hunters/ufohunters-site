@@ -66,18 +66,16 @@
 				 
 				    var markers = new OpenLayers.Layer.Markers( "Markers" );
 				    map.addLayer(markers);
-				    //markers.addMarker(new OpenLayers.Marker(position)); 
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
 		            map.addLayer(lyrMarkers);
 				    var location = '';
 		            <% @listaUFO.each do |ovni| %>
-						location = "<%=ovni.location.gsub(/'/, '')%>";
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%if ovni.sighted_at.blank? == false %><%=ovni.sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+						location = "<%=ovni.location%>";
+		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
 				    <% end %>
 				              
-				    map.setCenter(position, zoom);				    
-				    //map.zoomToMaxExtent();
+				    map.setCenter(position, zoom);
 		
 		      }
 		      
@@ -126,8 +124,8 @@
 							<div id="mycarousel">
 								<% for i in 0..19 %>
 									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%if @listaUFO[i].sighted_at.blank? == false %> <%=@listaUFO[i].sighted_at.to_date.strftime("%A %d. %B %Y")%> <% end%><br/>
-									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id %></strong>
+									<%= format_date @listaUFO[i].sighted_at %><br/>
+									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
 									</div>
 								<% end %>
 							</div>

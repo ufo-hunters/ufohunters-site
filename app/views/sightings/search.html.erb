@@ -83,7 +83,7 @@
 				    
 		      <% @listaUFOlist.each do |ovni|%>
             	location = "<%=ovni.location%>"; 			
-               addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>,'<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>',0);
+               addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>',0);
 				<% end %>
 				    
 				addMarker(lon, lat, null, 1);					
@@ -160,7 +160,7 @@
 	       	end
 			%>
     			<div class="post"> 
-         		<h2 class="title"><%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id %></h2>
+         		<h2 class="title"><%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></h2>
          		<p class="meta">
 	    			<small>Sighted on <strong><%= format_date ovni.sighted_at %></strong><br/>
 	    			Shape: <strong><%=ovni.shape%></strong> | Duration: <strong><%= ovni.duration %></strong></small>
