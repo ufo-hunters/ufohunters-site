@@ -4,8 +4,6 @@ class ReportsController < ApplicationController
   # GET /reports
   # GET /reports.json
 
-  caches_action :new
-
   def index
     #@reports = Report.all.desc(:sighted_at).limit(10)
 
