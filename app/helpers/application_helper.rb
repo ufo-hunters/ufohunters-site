@@ -36,6 +36,13 @@ module ApplicationHelper
       end
    end
 
-   
+   def friendly_title(ovni)
+      title = "UFO Sighting"
+      unless ovni.blank?
+         title += " at " + ovni.location unless ovni.location.blank? 
+         title += " on " + format_date(ovni.sighted_at) unless ovni.sighted_at.blank?
+         title.gsub("'","")
+      end
+   end
 
 end

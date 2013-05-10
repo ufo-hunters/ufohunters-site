@@ -53,6 +53,7 @@ Ufo::Application.routes.draw do
   root :to => 'sightings#index'
   resources :reports    
   # root search and spain, same controller
+  match 'sightings/search/:id(/:title)' => 'sightings#search'
   match 'sightings/search/:id' => 'sightings#search'
   match 'sightings/spain' => 'sightings#spain'  
   match 'stats/statistics' => 'stats#statistics'

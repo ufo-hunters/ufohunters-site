@@ -77,7 +77,7 @@
 		                  begin
 		            %>
 						         location = "<%=ovni.location%>";
-		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id %></strong>');
+		  			 	         addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
 				    <% 
 				            rescue => ex
                            logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
@@ -124,7 +124,7 @@
 								<% for i in 0..19 %>
 									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
 									<%= format_date @listaUFO[i].sighted_at %><br/>
-									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id %></strong>
+									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i])  %></strong>
 									</div>
 								<% end %>
 							</div>
