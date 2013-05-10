@@ -99,7 +99,7 @@
 					         <h4><%= thumb.location %></h4>
 					         <p><%= format_date thumb.sighted_at %></p>
 					         <div class="video-thumb">
-						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id) %>
+						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
 					         </div>
 			            </div>
 		            <%
