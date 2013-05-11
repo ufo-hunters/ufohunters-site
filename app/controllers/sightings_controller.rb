@@ -2,20 +2,21 @@ class SightingsController < ApplicationController
 
    include ApplicationHelper
    
-   caches_action :index
-   caches_action :spain
-   caches_action :statistics
-   caches_action :maps
-   caches_action :northamerica
-   caches_action :oceania
-   caches_action :southamerica
-   caches_action :africa
-   caches_action :europe
-   caches_action :asia
-   caches_action :videos
-   caches_action :about
+   caches_page :index, :expires_in => 24.hour
+   caches_page :spain, :expires_in => 24.hour
+   caches_page :statistics, :expires_in => 24.hour
+   caches_page :maps, :expires_in => 24.hour
+   caches_page :northamerica, :expires_in => 24.hour
+   caches_page :oceania, :expires_in => 24.hour
+   caches_page :southamerica, :expires_in => 24.hour
+   caches_page :africa, :expires_in => 24.hour
+   caches_page :europe, :expires_in => 24.hour
+   caches_page :asia, :expires_in => 24.hour
+   caches_page :videos, :expires_in => 24.hour
+   caches_page :about, :expires_in => 24.hour
    caches_action :search, :layout => false
    caches_action :country, :layout => false
+   caches_page :sitemap, :expires_in => 96.hour
 
    def index  	
       @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
@@ -255,6 +256,10 @@ class SightingsController < ApplicationController
       @menu = "about"
    	@page_title = "About"
       @page_description = "About ufo-hunters.com and who's behind this site"
+   end
+
+   def sitemap
+      @numUFO = Report.where(:status => 1)
    end
 
 end
