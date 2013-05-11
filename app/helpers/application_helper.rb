@@ -41,7 +41,7 @@ module ApplicationHelper
       unless ovni.blank?
          title += " at " + ovni.location unless ovni.location.blank? 
          title += " on " + format_date(ovni.sighted_at) unless ovni.sighted_at.blank?
-         title.gsub("'","").gsub("/","-").gsub("&", "-").gsub("?","-")
+         title.gsub("'","").gsub("/","-").gsub("&", "-").gsub("?","-").gsub(".","")
       end
    end
 
