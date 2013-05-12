@@ -2,7 +2,12 @@ module ApplicationHelper
 
    def format_date date
       unless date.blank?
-         date.to_date.strftime("%A %d. %B %Y")
+         begin
+            date.to_date.strftime("%A %d. %B %Y")
+         rescue => ex
+            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            return ""
+         end
       end
    end
 
