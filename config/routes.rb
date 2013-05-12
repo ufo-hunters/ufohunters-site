@@ -1,6 +1,5 @@
 Ufo::Application.routes.draw do
   get "sightings/index"
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -53,6 +52,7 @@ Ufo::Application.routes.draw do
   root :to => 'sightings#index'
   resources :reports    
   # root search and spain, same controller
+  get 'sitemap', :to => 'sightings#sitemap'
   match 'sightings/search/:id(/:title)' => 'sightings#search'
   match 'sightings/search/:id' => 'sightings#search'
   match 'sightings/spain' => 'sightings#spain'  
