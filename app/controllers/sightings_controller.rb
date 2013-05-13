@@ -4,7 +4,6 @@ class SightingsController < ApplicationController
    
    caches_page :index, :expires_in => 4.hour
    caches_page :spain, :expires_in => 12.hour
-   caches_action :statistics, :layout => false
    caches_page :maps, :expires_in => 24.hour
    caches_page :northamerica, :expires_in => 12.hour
    caches_page :oceania, :expires_in => 12.hour
