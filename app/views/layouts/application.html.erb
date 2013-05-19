@@ -91,8 +91,9 @@
          	thumb.links.each do |link|
       	      if youtube_link? link
       	   	   video_id = youtube_video_id(link)
-      	   	   logger.info "video id: " + video_id
+      	   	   
       	   	   if video_id
+      	   	   	logger.info "video id: " + video_id
       	   
       %>
 			            <div class="content_grey_container_box">
