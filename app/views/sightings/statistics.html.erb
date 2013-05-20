@@ -23,10 +23,12 @@ function init() {}
               <tbody>
               <%
                 count = 0
-                @listaUFO.each do |ufo|
+                (0...30).each do |i|
+                #@listaUFO.each do |ufo|
+                  ufo = @listaUFO[i]
               %>    
                 <tr <%= count % 2 == 0 ? "class='even'" : ""%>>
-                   <td class="stats_table_left"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'] %></td>
+                   <td class="stats_table_left"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
                    <td class="stats_table_right"><%= ufo['count'] %></td>
                 </tr>
               <% 

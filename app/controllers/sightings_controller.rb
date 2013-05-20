@@ -2,17 +2,17 @@ class SightingsController < ApplicationController
 
    include ApplicationHelper
    
-   caches_page :index, :expires_in => 24.hour
-   caches_page :spain, :expires_in => 24.hour
+   caches_page :index, :expires_in => 4.hour
+   caches_page :spain, :expires_in => 12.hour
    caches_page :statistics, :expires_in => 24.hour
    caches_page :maps, :expires_in => 24.hour
-   caches_page :northamerica, :expires_in => 24.hour
-   caches_page :oceania, :expires_in => 24.hour
-   caches_page :southamerica, :expires_in => 24.hour
-   caches_page :africa, :expires_in => 24.hour
-   caches_page :europe, :expires_in => 24.hour
-   caches_page :asia, :expires_in => 24.hour
-   caches_page :videos, :expires_in => 24.hour
+   caches_page :northamerica, :expires_in => 12.hour
+   caches_page :oceania, :expires_in => 12.hour
+   caches_page :southamerica, :expires_in => 12.hour
+   caches_page :africa, :expires_in => 12.hour
+   caches_page :europe, :expires_in => 12.hour
+   caches_page :asia, :expires_in => 12.hour
+   caches_page :videos, :expires_in => 12.hour
    caches_page :about, :expires_in => 24.hour
    caches_action :search, :layout => false
    caches_action :country, :layout => false
