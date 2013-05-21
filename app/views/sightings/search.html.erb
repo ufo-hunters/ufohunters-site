@@ -51,7 +51,7 @@
 
 					var clickEvent = "click";
 
-				   if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+				   if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
 				     	clickEvent = "touchstart";
 				   }
 			    	marker.events.register(clickEvent, feature, markerClick);
