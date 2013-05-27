@@ -69,11 +69,29 @@ class SightingsController < ApplicationController
    end
 
    def maps 
+      @listaMapEurope = Countries.where(:continent => "Europe").order_by(:name.asc)
+      @listaMapAsia = Countries.where(:continent => "Asia").order_by(:name.asc)
+      @listaMapNorthAmerica = Countries.where(:continent => "North America").order_by(:name.asc)
+      @listaMapSouthAmerica = Countries.where(:continent => "South America").order_by(:name.asc)
+      @listaMapAfrica = Countries.where(:continent => "Africa").order_by(:name.asc)
+      @listaMapOceania = Countries.where(:continent => "Oceania").order_by(:name.asc)
+
       @listaMap = Countries.all.order_by(:name.asc)
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings Maps" 
       @page_description = "Latest UFO Sightings Maps: Africa, Asia, Europe, North America, Oceania, South America"
+   end
+
+   # GET sightings/countrieslist
+   # GET sightings/countrieslist.json
+
+   def countrieslist
+      @listaMapEurope = Countries.all.order_by(:name.asc)
+      respond_to do |format|
+        format.html # countrieslist.html.erb
+        format.json { render json: @listaMapEurope }
+      end
    end
   
    def northamerica 
@@ -208,19 +226,21 @@ class SightingsController < ApplicationController
    end
 
    def country 
-      nameCountry = params[:id]
-      listaCiudad = Countries.where({"cod" => nameCountry}).limit(1)
+     codeCountry = params[:id]
+      listaPais = Countries.where({"cod" => codeCountry}).limit(1)
       
-      listaCiudad.each do |country| 
-         @namecity = country.name
-	      @ciudad = country.geometry
+      listaPais.each do |country| 
+         @nameCountry = country.name
+         @coordCountry = country.center
+         @zoom = country.zoom
+         @pais = country.geometry
       end
       
       type = ""
       coordinates = ""
-      @ciudad.each_with_index do |datos, index| 
+      @pais.each_with_index do |datos, index| 
          if index==0
-            type = datos[1]			  			
+            type = datos[1]                  
          else
             coordinates =  datos[1]
          end
@@ -229,14 +249,14 @@ class SightingsController < ApplicationController
       if type == 'Polygon'
          @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
       else
-         coordinates.each_with_index do |coordinatesdatos,index| 	
+         coordinates.each_with_index do |coordinatesdatos,index|  
             if index == 0
                @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             else
                @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
-            end			
+            end         
          end
-      end			  
+      end           
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
