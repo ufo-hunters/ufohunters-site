@@ -53,6 +53,7 @@ Ufo::Application.routes.draw do
   resources :reports    
   # root search and spain, same controller
   get 'sitemap', :to => 'sightings#sitemap'
+  match 'sightings/country/:id(/:title)' => 'sightings#country'
   match 'sightings/search/:id(/:title)' => 'sightings#search'
   match 'sightings/search/:id' => 'sightings#search'
   match 'sightings/spain' => 'sightings#spain'  

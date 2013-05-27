@@ -50,32 +50,26 @@
 		    }
 		    function init() {
 		        
-				     var zoom           = 6;
+				     var zoom           = <%=@zoom%>;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-				
+				    var lon  = <%=@coordCountry[0]%>;
+				    var lat  = <%=@coordCountry[1]%>;
+				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+								 
+				    map = new OpenLayers.Map("basicMap");
+				    var mapnik = new OpenLayers.Layer.OSM();
+				    map.addLayer(mapnik);
+				 
+				    var markers = new OpenLayers.Layer.Markers( "Markers" );
+				    map.addLayer(markers);
+				    //markers.addMarker(new OpenLayers.Marker(position)); 
+		                    
+				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
+		            map.addLayer(lyrMarkers);
+				    var location = '';
 		            <% @listaUFO.each_with_index do |ovni, index| %>
-							<% if index==0 %>									
-								    //var lon = <%=ovni.coord[0]%>;
-								    //var lat = <%=ovni.coord[1]%>;
-								    var lon           = 14.30;
-				    				var lat           = 46.62;
-
-								    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
-								 
-								    map = new OpenLayers.Map("basicMap");
-								    var mapnik = new OpenLayers.Layer.OSM();
-								    map.addLayer(mapnik);
-								 
-								    var markers = new OpenLayers.Layer.Markers( "Markers" );
-								    map.addLayer(markers);
-								    //markers.addMarker(new OpenLayers.Marker(position)); 
-						                    
-								    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-						            map.addLayer(lyrMarkers);
-								    var location = '';
-							<% end %>
 							location = "<%=ovni.location.gsub(/'/, '')%>";
 		  			 		addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
 				    <% end %>
@@ -90,15 +84,18 @@
 
 	 	<div id="content">
 			   <div class="content_item">
-			   		<h3>Latest sightings in <%=@namecity%></h3><br/>
+			   		<h3>Latest sightings in <%=@nameCountry%></h3><br/>
 
-					<% if @listaUFO.empty? == true %>
-							<h2>Sorry... we haven't got sightings in <%=@namecity%>.<br/>
-							If you know someone, you'll send us please! </h2>
-					<% else %>
 							<div id="basicMap" style="width: 900px; height: 550px;"></div>
-					<% end %>
 			   </div>
+			   <% if @listaUFO.empty? == true %>
+						<div class="content_item">
+					  			<p><strong>Sorry... we haven't got sightings in <%=@nameCountry%>.<br/>
+							If you know someone, you'll <%= link_to "send us", :controller => "reports", :action => "new"%> please! </strong></p>
+			   			</div>
+			   <% end %>
+			    
+			   
 			   <div class="content_item">
 			   			<% if @listaUFO.empty? == false %>
 					 		 <h2>100 latest UFO sightings</h2> 
