@@ -1,5 +1,5 @@
 (function(){d3.geo = {};
-  
+
 var d3_geo_radians = Math.PI / 180;
 // TODO clip input coordinates on opposite hemisphere
 d3.geo.azimuthal = function() {
