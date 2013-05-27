@@ -1,4 +1,3 @@
-<%= javascript_include_tag "d3.js" %>
 <%= javascript_include_tag "d3.geo.js" %>
 <div id="site_content">    
                                                                                                 
@@ -141,7 +140,7 @@ var svg = d3.select("#bodyworld").append("svg:svg")
     .on("mousedown", mousedown);
 
 d3.json("/assets/world-countries.json", function(collection) {
-    feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click).on("mouseclick",mouseclick);
+    feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click);
     feature.append("svg:title").text(function(d) { return d.properties.name; });
 });
 
