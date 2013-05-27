@@ -40,7 +40,7 @@
 		            currentPopup = this.popup;
 		            OpenLayers.Event.stop(evt);
 		        };
-		        if((ua.match(/iPad/i)) || (ua.match(/iPhone/i)) || (ua.match(/webOS/i))){
+		       if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
 		        	marker.events.register("touchstart", feature, markerClick);
 		    	} else {
 	    			marker.events.register("click", feature, markerClick);
