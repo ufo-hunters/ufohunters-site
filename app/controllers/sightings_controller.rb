@@ -15,7 +15,7 @@ class SightingsController < ApplicationController
    caches_page :videos, :expires_in => 3.hour
    caches_page :about, :expires_in => 24.hour
    caches_page :search, :expires_in => 24.hour
-   caches_action :country, :layout => false
+   caches_page :country, :expires_in => 24.hour
    caches_page :sitemap, :expires_in => 96.hour
 
    def index  	
