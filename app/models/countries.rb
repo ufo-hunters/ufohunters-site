@@ -9,4 +9,7 @@ class Countries
   field :geometry, type: Hash
   field :type, type: String
   field :coordinates, type: String
+  field :zoom, type: String
+  field :continent, type: String
+  field :center, type: Array
 end
