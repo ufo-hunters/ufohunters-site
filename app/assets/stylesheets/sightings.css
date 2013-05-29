@@ -707,7 +707,7 @@ a.prev span, a.next span {
     width: 24px;
     height: 46%;
     top: 0;
-    right: -1px;
+    right: 0px;
     display: inline-block;
     box-shadow: 10px -10px 10px rgba(0, 0, 0, 0.5);
     -webkit-transform: rotate(2deg) translate(-20px, 25px) skew(-6deg);
@@ -738,7 +738,7 @@ a.prev span, a.next span {
     width: 24px;
     height: 46%;
     bottom: 0;
-    right: -1px;
+    right: 0px;
     position: absolute;
     z-index: -1;
     box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
@@ -776,7 +776,7 @@ span.divrojo {
 }
 .labelclass {
    float: left;
-   width: 20em;
+   width: 30em;
 }
 .fieldufo{
     

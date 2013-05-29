@@ -31,10 +31,14 @@ function init() {}
                                 <label for="report_location"><strong>Location </strong></label></br>
                                 <%= @report['location']%>
                               </div>                             
-                               <div class="caja-field-normal">
+                              <div class="caja-field-normal">
                                 <label for="report_description"><strong>Description </strong></label></br>
                                 <textarea id="report_description" class="required fieldufo" rows="5" name="report[description]" cols="43"> <%= @report['description']%> </textarea>
                               </div>
+                              <div class="caja-field-normal">
+                                <label for="report_email"><strong>Email </strong></label></br>
+                                <%= @report['email']%>
+                              </div> 
                               <div class="caja-field-normal">
                                 <label for="report_links"><strong>Links </strong></label></br>
                                 <%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%>
