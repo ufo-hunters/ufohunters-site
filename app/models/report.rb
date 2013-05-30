@@ -14,8 +14,7 @@ class Report
   field :coord, type: Array
   field :links, type: Array
   field :source, type: String
-  field :forma, type: Hash
-  field :suma, type: Hash
+  field :email, type: String
 
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
