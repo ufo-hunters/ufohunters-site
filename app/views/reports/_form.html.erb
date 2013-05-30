@@ -81,6 +81,10 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
                                 <label for="report_description">Description <span class="divrojo">*</span></label></br>
                                 <%= f.text_area :description, :rows => 8, :cols => 43, :class => 'required fieldufo' %>
                               </div>
+                               <div class="caja-field-normal">
+                                <label for="report_email" class="labelclass">Email contact (your email address will never be published or shared)</label>
+                                <%= f.text_field :email, :class => 'fieldufo' %>
+                              </div>
                               <div class="caja-field-normal">
                                 <label for="report_links" class="labelclass">Links (videos, images, articles...)</label>
                                 <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
