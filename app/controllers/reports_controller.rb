@@ -5,12 +5,12 @@ class ReportsController < ApplicationController
   # GET /reports.json
 
   def index
-    #@reports = Report.all.desc(:sighted_at).limit(10)
+    @reports = Report.all.desc(:sighted_at).limit(10)
 
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.json { render json: @reports }
-    #end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @reports }
+    end
   end
 
   # GET /reports/1
