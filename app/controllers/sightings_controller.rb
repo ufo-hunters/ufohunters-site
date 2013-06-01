@@ -261,7 +261,8 @@ class SightingsController < ApplicationController
             end         
          end
       end           
-
+      @page_title = "UFO Sightings in " + @nameCountry
+      @page_description = "Latest UFO Sightings Maps: " + @nameCountry + " - UFO Reports in " + @nameCountry
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
    end
