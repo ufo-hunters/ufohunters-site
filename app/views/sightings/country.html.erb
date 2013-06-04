@@ -90,8 +90,8 @@
 			   </div>
 			   <% if @listaUFO.empty? == true %>
 						<div class="content_item">
-					  			<p><strong>Sorry... we haven't got sightings in <%=@nameCountry%>.<br/>
-							If you know someone, you'll <%= link_to "send us", :controller => "reports", :action => "new"%> please! </strong></p>
+					  			<p><strong>Sorry... we haven't got any sightings reported in <%=@nameCountry%>.<br/>
+							If you saw one, please <%= link_to "let us know", :controller => "reports", :action => "new"%>!!</strong></p>
 			   			</div>
 			   <% end %>
 			    
