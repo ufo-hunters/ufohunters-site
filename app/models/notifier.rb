@@ -7,7 +7,7 @@
     #sengrid_enable :ganalytics, :opentrack
 
     def test_notification 
-      mail(:to => "fjfdepedro@gmail.com", :subject => "mail from heroku") 
+      mail(:to => "fjfdepedro@gmail.com", :subject => "mail from heroku")
       puts("Sent mail from notifier") 
    end 
 
