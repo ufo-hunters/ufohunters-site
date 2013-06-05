@@ -46,5 +46,5 @@ gem 'jquery-rails'
 gem 'therubyracer'
 gem 'execjs'
 
-gem 'mail'
-gem 'devise', '1.1.rc0'  
+#gem 'mail'
+#gem 'devise', '1.1.rc0'  
