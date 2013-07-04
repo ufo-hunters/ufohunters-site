@@ -1,4 +1,3 @@
-
       <%
       if @listaUFO.coord
       %>
@@ -146,17 +145,73 @@
 				<div class="entry">
 	   			<p><%=@listaUFO.description.html_safe%></p>
 	   			<% unless @listaUFO.links.blank?	%>
+	   				<script type="text/javascript">
+   					$(document).ready(function() {
+		   				$("#gallery").carouFredSel({
+		   					items: 3
+		   				});
+							$("#gallery a").prettyPhoto({
+								theme: "facebook",
+								changepicturecallback: function() {
+									$("#gallery").trigger("pause");
+								},
+								callback: function() {
+									$("#gallery").trigger("play");
+								}
+							});
+   						//$("a[rel^='prettyPhoto']").prettyPhoto();
+						});
+						</script>
 	   				<h2>Related links</h2>
-	   				<ul>
-	   				<% @listaUFO.links.each do |link| 
-	   						if youtube_link? link %>
-	   							<%= youtube_video link %>
-	   						<% else %>
+	   				<%
+	   				image_urls, other_urls = select_url_images(@listaUFO.links)
+
+	   				unless image_urls.blank?
+	   				%>
+	   					<div class="image_carousel">
+	   						<div id="gallery">
+	   							<%
+	   							image_urls.each do |img|
+	   							%>	
+	   								<a rel="prettyPhoto" href="<%=img%>">
+	            						<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
+	        							</a>
+	        						<%
+	        					   end
+	        					   %>
+	   						</div>
+	   						<div class="clearfix"></div>
+	   					</div>
+	   				<%
+	   				end
+
+	   				unless other_urls.blank?
+
+	   					video_urls, other_urls = select_youtube_videos(other_urls)
+
+	   					video_urls.each do |vid|
+	   						%><%=youtube_video(vid)%><%
+	   					end
+
+	   					if other_urls
+
+	   					%>
+	   						<ul>
+	   					<%
+	   						other_urls.each do |link|
+	   					%>
 	   							<li><%= link_to link, link, :target => '_blank' %></li>
-	   					<% end %>
-	   				<% end %>
-	   				</ul>
-	   			<% end %>				 
+	   					<%
+	   						end
+	   					%>
+	   					  </ul>
+	   				<% 
+	   					end
+
+	   				end
+
+	   			end 
+	   			%>				 
    			</div>
 
    			<div id="disqus_thread"></div>
