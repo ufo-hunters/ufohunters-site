@@ -148,8 +148,15 @@
 	   				<script type="text/javascript">
    					$(document).ready(function() {
 		   				$("#gallery").carouFredSel({
-		   					items: 3
-		   				});
+		   					 item: 3,
+							    auto: {
+							    	button: "#gallery_play"
+							    },
+							    scroll: {
+							      duration: 1000,
+							      timeoutDuration: 2000
+							    }
+							}).trigger("pause");
 							$("#gallery a").prettyPhoto({
 								theme: "facebook",
 								changepicturecallback: function() {
@@ -181,6 +188,7 @@
 	        					   %>
 	   						</div>
 	   						<div class="clearfix"></div>
+	   						<a id="gallery_play" class="play" href="#"><span>&gt;</span></a>
 	   					</div>
 	   				<%
 	   				end
