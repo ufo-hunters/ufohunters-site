@@ -17,6 +17,7 @@ module ApplicationHelper
 
    def youtube_video(url)
       video_id = youtube_video_id(url)
+
       render :partial => 'common/video', :locals => {:video_id => video_id} unless video_id.blank?
    end
 

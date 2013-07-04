@@ -649,8 +649,9 @@ a.prev span, a.next span {
 }
 
 .player {
-  margin-top: 10px;
+  margin-top: 35px;
   margin-bottom: 10px;
+  padding: 15px 0 15px 30px;
 }
 
 
@@ -867,3 +868,34 @@ blockquote {
   margin: 0 0 0 15px;
   padding: 0 20px 0 30px;
 }
+
+.image_carousel {
+  padding: 15px 0 15px 20px;
+}
+.image_carousel img {
+  border: 1px solid #ccc;
+  background-color: white;
+  padding: 9px;
+  margin: 7px;
+  display: block;
+  float: left;
+}
+.image_carousel a {
+  display: block;
+  float: left;
+}
+a.play {
+  background: url(/assets/miscellaneous_sprite.png) no-repeat transparent;
+  width: 45px;
+  height: 45px;
+  display: block;
+  position: absolute;
+  top: 185px;
+  left: 50%;
+  margin-left: -22px;
+}
+a.play { background-position: -150px 0; }
+a.play:hover { background-position: -150px -50px; }
+a.play.paused { background-position: -100px 0; }
+a.play.paused:hover { background-position: -100px -50px; }
+a.play span { display: none; }
