@@ -71,6 +71,11 @@ GEM
     multi_json (1.6.1)
     origin (1.0.11)
     polyglot (0.3.3)
+    prettyphoto-rails (0.2.1)
+      jquery-rails
+      rails (>= 3.1)
+      sass-rails
+      uglifier
     rack (1.4.5)
     rack-cache (1.2)
       rack (>= 0.4)
@@ -131,6 +136,7 @@ DEPENDENCIES
   jquery-rails
   mail
   mongoid (~> 3.0.0)
+  prettyphoto-rails
   rails (= 3.2.2)
   sass-rails (~> 3.2.3)
   therubyracer
