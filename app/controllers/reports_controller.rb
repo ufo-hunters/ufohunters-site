@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
-    @report = Report.find(params[:id])
+    @report = Report.without(:email).find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
