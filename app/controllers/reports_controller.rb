@@ -1,6 +1,9 @@
 class ReportsController < ApplicationController
   
   include SimpleCaptcha::ControllerHelpers
+
+  caches_action :index, :expires_in => 24.hour
+  caches_page :show, :expires_in => 24.hour
   # GET /reports
   # GET /reports.json
 
