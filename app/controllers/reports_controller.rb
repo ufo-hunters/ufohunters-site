@@ -1,11 +1,14 @@
 class ReportsController < ApplicationController
   
   include SimpleCaptcha::ControllerHelpers
+
+  caches_action :index, :expires_in => 24.hour
+  caches_page :show, :expires_in => 24.hour
   # GET /reports
   # GET /reports.json
 
   def index
-    @reports = Report.all.without(:email).desc(:sighted_at).limit(10)
+    @reports = Report.where(:status => 1).without(:email).desc(:sighted_at).limit(10)
 
     respond_to do |format|
       format.html # index.html.erb
