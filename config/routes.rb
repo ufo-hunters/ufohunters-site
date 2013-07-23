@@ -50,7 +50,10 @@ Ufo::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => 'sightings#index'
-  resources :reports    
+    
+  match 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', :constraints => { :longitud => /[^\/]+/, :latitud => /[^\/]+/}
+  resources :reports
+      
   # root search and spain, same controller
   get 'sitemap', :to => 'sightings#sitemap'
   match 'sightings/country/:id(/:title)' => 'sightings#country'
