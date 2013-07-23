@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
       distance = 100 #km 
 
       if @coordenadas
-         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description).limit(50)  
+         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)  
       end
       
       respond_to do |format|
