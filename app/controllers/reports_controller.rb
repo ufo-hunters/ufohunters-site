@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
   # GET /reports.json
 
   def index
-    @reports = Report.where(:status => 1).without(:email).desc(:sighted_at).limit(10)
+    @reports = Report.where(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).desc(:sighted_at).limit(20)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -26,6 +26,24 @@ class ReportsController < ApplicationController
       format.json { render json: @report }
     end
   end
+
+  # GET /reports/nearof/1234/5678
+  # GET /reports/nearof/1234/5678.json
+  def nearof
+      @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]
+      #@coordenadas = [-84.799473,35.250002]
+      distance = 100 #km 
+
+      if @coordenadas
+         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)  
+      end
+      
+      respond_to do |format|
+	      format.html # nearof.html.erb
+	      format.json { render json: @nearest }
+      end
+  end   
+
 
   # GET /reports/new
   # GET /reports/new.json
@@ -45,7 +63,7 @@ class ReportsController < ApplicationController
     end
     
   end
-
+    
   # GET /reports/1/edit
   def edit
     #@report = Report.find(params[:id])
