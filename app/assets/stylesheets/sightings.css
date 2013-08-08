@@ -898,3 +898,9 @@ a.play:hover { background-position: -150px -50px; }
 a.play.paused { background-position: -100px 0; }
 a.play.paused:hover { background-position: -100px -50px; }
 a.play span { display: none; }
+
+#compact_gcs {
+  width: 350px; 
+  margin-top: 5px; 
+  background: none repeat scroll 0 0 transparent; float:right;
+}
