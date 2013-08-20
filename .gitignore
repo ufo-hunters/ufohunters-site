@@ -6,6 +6,7 @@
 *.mp4
 *.pdf
 *.docx
+*.doc
 
 # Ignore bundler config
 /.bundle
