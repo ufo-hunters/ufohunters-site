@@ -5,6 +5,8 @@
 #   git config --global core.excludesfile ~/.gitignore_global
 *.mp4
 *.pdf
+*.docx
+*.doc
 
 # Ignore bundler config
 /.bundle
