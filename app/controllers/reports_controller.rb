@@ -130,7 +130,7 @@ class ReportsController < ApplicationController
 
   # DELETE /reports/1
   # DELETE /reports/1.json
-  def destroy
+  def destroy 
    # @report = Report.find(params[:id])
     #@report.destroy
 

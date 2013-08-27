@@ -8,13 +8,13 @@ xml.channel {
 	@reports.each do |numUFO|
 	    xml.url do
 	        xml.loc 
-	        xml.changefreq("weekly")      
+	        xml.changefreq("weekly")        
 	      	xml.title(numUFO.location)
 			xml.description(format_date numUFO.sighted_at)
 			xml.author("ufo-hunters.com")
 			xml.link( "http://www.ufo-hunters.com/sightings/search/", numUFO.id, "/", friendly_title(numUFO) )
 			xml.georss :point do
-              xml.text! numUFO.coord[0].to_s + " " + numUFO.coord[1].to_s
+              xml.text! numUFO.coord[0].to_s + " " + numUFO.coord[1].to_s 
             end
 	    end
 	end
