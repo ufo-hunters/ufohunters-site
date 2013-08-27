@@ -139,4 +139,13 @@ class ReportsController < ApplicationController
     #  format.json { head :no_content }
     #end
   end
+
+  def sightings
+    @reports = Report.where(:status => 1, :source => "ufo-hunters.com").without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).desc(:sighted_at).limit(100)
+
+     respond_to do |format|
+       format.xml
+     end
+  end
+
 end
