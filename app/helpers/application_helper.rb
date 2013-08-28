@@ -11,6 +11,17 @@ module ApplicationHelper
       end
    end
 
+   def format_date_rss date
+      unless date.blank?
+         begin
+            date.to_date.strftime("%a, %d %B %Y %T")
+         rescue => ex
+            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            return ""
+         end
+      end
+   end
+
    def youtube_link?(link)
    	link =~ /(youtube|youtu.be)/
    end

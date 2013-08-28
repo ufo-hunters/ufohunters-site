@@ -51,6 +51,7 @@ Ufo::Application.routes.draw do
   # just remember to delete public/index.html.
   root :to => 'sightings#index'
   get 'reports/sightings', :to  => 'reports#sightings'
+  match 'reports/:id/country(.:format)' => 'reports#country'
   match 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', :constraints => { :longitud => /[^\/]+/, :latitud => /[^\/]+/}
   resources :reports
       

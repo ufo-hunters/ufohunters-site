@@ -141,11 +141,51 @@ class ReportsController < ApplicationController
   end
 
   def sightings
-    @reports = Report.where(:status => 1, :source => "ufo-hunters.com").without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).desc(:sighted_at).limit(100)
+    @reports = Report.where(:status => 1, :source => "ufo-hunters.com", :coord =>  {"$exists" => 1}).without(:email,:links,:source,:status,:shape,:duration).desc(:sighted_at).limit(100)
 
      respond_to do |format|
        format.xml
      end
   end
+
+
+  def country 
+     codeCountry = params[:id]
+      listaPais = Countries.where({"cod" => codeCountry}).limit(1)
+      
+      listaPais.each do |country| 
+         @nameCountry = country.name
+         @coordCountry = country.center
+         @zoom = country.zoom
+         @pais = country.geometry
+      end
+      
+      type = ""
+      coordinates = ""
+      @pais.each_with_index do |datos, index| 
+         if index==0
+            type = datos[1]                  
+         else
+            coordinates =  datos[1]
+         end
+      end
+
+      if type == 'Polygon'
+         @reports = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      else
+         coordinates.each_with_index do |coordinatesdatos,index|  
+            if index == 0
+               @reports = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+            else
+               @reports = @reports + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+            end         
+         end
+      end           
+     
+      respond_to do |format|
+         format.xml
+      end
+
+   end
 
 end
