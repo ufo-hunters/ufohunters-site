@@ -26,21 +26,34 @@
 <div id="main">
 	<div id="header">
 		<div id="banner">
-			<div id="welcome">
+			<div id="welcome">				
+				<div style="float:left;"><h1>UFO Hunters</h1></div>
 				<div id="follow_us">
 					<div class="fb-like-box" data-href="http://www.facebook.com/UfoHuntersCom" data-width="292" data-show-faces="false" data-stream="false" data-header="false"></div>
 					<div>
 					   <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
 				   </div>
-				</div>
-				<h1>UFO Hunters</h1>
+				</div>					
+				<div style="float:left;margin-left:85px"><a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a></div>
 			</div>
-			<div id="welcome_slogan">
-				<h2>Number of sightings counted <%=@numUFO%>... and growing</h2>
-			</div>
+			<div id="welcome_slogan">				
+				<h2>Number of sightings counted <%=@numUFO%>... and growing</h2>				
+			</div>			
 		</div>
 	</div>
-    
+	<div style="width:800px;margin-left:auto;height:30px;text-align:center;margin-right:auto">
+					<script type="text/javascript"><!--
+					google_ad_client = "ca-pub-4760111415025425";
+					/* Enlaces en la Home */
+					google_ad_slot = "5026952480";
+					google_ad_width = 728;
+					google_ad_height = 15;
+					//-->
+					</script>
+					<script type="text/javascript"
+					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+					</script>
+	</div>    
 	<div id="menubar">
 		<ul id="menu"><!--  class="current" -->
 			<li <%if @menu.blank? == false && @menu == "index"%>class="current"<% end %>><%= link_to "Home", :controller => "sightings"%></li>
