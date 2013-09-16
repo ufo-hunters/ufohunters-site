@@ -100,133 +100,168 @@ class SightingsController < ApplicationController
   
    def northamerica 
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[-169.45, 71.41],
-				[-177.54, 51.40 ],
-				[-123.04, 30.75 ],
-				[-80.85, 24.20 ],
-				[-42.18, 47.28 ],
-				[-42.18, 47.28 ],
-				[-94.57, 72.18 ],
-				[-169.45, 71.41]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[-169.45, 71.41],
+            [-177.54, 51.40 ],
+            [-123.04, 30.75 ],
+            [-80.85, 24.20 ],
+            [-42.18, 47.28 ],
+            [-42.18, 47.28 ],
+            [-94.57, 72.18 ],
+            [-169.45, 71.41]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in North America"
       @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
+      
    end
 
    def oceania
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[138.69141, 1.40611],
-        			[175.42969, -14.09396],
-        			[177.18750, -52.69636],
-				[103.18359, -42.42346],
-				[110.03906, -25.00597],
-				[124.10156, -14.09396],
-				[129.28711, -9.70906],
-				[132.45117, -6.14055],
-				[130.69336, -2.46018],
-				[129.19922, -0.35156],
-				[133.33008, 4.21494]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[138.69141, 1.40611],
+               [175.42969, -14.09396],
+               [177.18750, -52.69636],
+            [103.18359, -42.42346],
+            [110.03906, -25.00597],
+            [124.10156, -14.09396],
+            [129.28711, -9.70906],
+            [132.45117, -6.14055],
+            [130.69336, -2.46018],
+            [129.19922, -0.35156],
+            [133.33008, 4.21494]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Oceania"
       @page_description = "Latest UFO Sightings Maps: Oceania - UFO Reports in Oceania"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
+
    end
 
    def southamerica 
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[-77.87, 11.00], 
-				[-68.20, 14.26 ], 
-				[-47.46, 4.39 ],
-				[-30.05, -5.61 ],
-				[-36.73, -19.97 ],
-				[-45.70, -31.20 ],
-				[-52.91, -37.71 ],
-				[-61.87, -45.82],
-				[-55.37, -51.61],
-				[-61.17, -55.17],
-				[-70.13, -57.42],
-				[-78.22, -50.06],
-				[-73.12, -20.79],
-				[-84.19, -5.09],
-				[-77.87, 11.00]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[-77.87, 11.00], 
+            [-68.20, 14.26 ], 
+            [-47.46, 4.39 ],
+            [-30.05, -5.61 ],
+            [-36.73, -19.97 ],
+            [-45.70, -31.20 ],
+            [-52.91, -37.71 ],
+            [-61.87, -45.82],
+            [-55.37, -51.61],
+            [-61.17, -55.17],
+            [-70.13, -57.42],
+            [-78.22, -50.06],
+            [-73.12, -20.79],
+            [-84.19, -5.09],
+            [-77.87, 11.00]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in South America"
       @page_description = "Latest UFO Sightings Maps: South America - UFO Reports in South America"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
+
    end
 
    def africa 
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[5.09,38.41],
-				[-8.08,35.17],
-				[-20.39,28.14],
-				[-26.19,17.81],
-				[-15.64,4.04],
-				[3.51,0.87],
-				[14.76,-36.03],
-				[32.69,-34.30],
-				[55.89,22.26],
-				[53.08,12.04],
-				[5.09,38.41],
-				[23.40,37.44],
-				[5.09,38.41]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[5.09,38.41],
+            [-8.08,35.17],
+            [-20.39,28.14],
+            [-26.19,17.81],
+            [-15.64,4.04],
+            [3.51,0.87],
+            [14.76,-36.03],
+            [32.69,-34.30],
+            [55.89,22.26],
+            [53.08,12.04],
+            [5.09,38.41],
+            [23.40,37.44],
+            [5.09,38.41]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Africa"
       @page_description = "Latest UFO Sightings Maps: Africa - UFO Reports in Africa"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
+
    end
 
    def europe 
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[-10.41,36.73],
-				[-6.37,35.99],
-				[-2.27,36.16],
-				[10.76,38.82],
-				[12.83,36.45],
-				[17.13,36.13],
-				[22.14,34.88],
-				[27.50,34.37],
-				[29.97,44.02],
-				[39.02,47.69],
-				[32.87,56.75],
-				[32.60,70.08],
-				[18.80,70.98],
-				[10.10,66.33],
-				[-17.05,67.74],
-				[-30.23,66.01],
-				[-10.41,36.73]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[-10.41,36.73],
+            [-6.37,35.99],
+            [-2.27,36.16],
+            [10.76,38.82],
+            [12.83,36.45],
+            [17.13,36.13],
+            [22.14,34.88],
+            [27.50,34.37],
+            [29.97,44.02],
+            [39.02,47.69],
+            [32.87,56.75],
+            [32.60,70.08],
+            [18.80,70.98],
+            [10.10,66.33],
+            [-17.05,67.74],
+            [-30.23,66.01],
+            [-10.41,36.73]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Europe"
       @page_description = "Latest UFO Sightings Maps: Europe - UFO Reports in Europe"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
+
    end
 
    def asia 
       @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[30.93,74.68],
-				[32.34,30.14],
-				[41.13,12.55],
-				[116.71,-10.83],
-				[140.97,17.64],
-				[164.53,50.29],
-				[178.60,65.51],
-				[91.75,79.43],
-				[30.93,74.68]]
-		}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+      {"$polygon" => [[30.93,74.68],
+            [32.34,30.14],
+            [41.13,12.55],
+            [116.71,-10.83],
+            [140.97,17.64],
+            [164.53,50.29],
+            [178.60,65.51],
+            [91.75,79.43],
+            [30.93,74.68]]
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
       @page_title = "UFO Sightings in Asia"
       @page_description = "Latest UFO Sightings Maps: Asia - UFO Reports in Asia"
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @listaUFO }
+      end
    end
 
    def country 
