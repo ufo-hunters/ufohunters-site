@@ -8,7 +8,7 @@ class ReportsController < ApplicationController
   # GET /reports.json
 
   def index
-    @reports = Report.where(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).desc(:sighted_at).limit(20)
+    @reports = Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -27,7 +27,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  # GET /reports/nearof/1234/5678
+  # GET /reports/nearof/1234/5678      
   # GET /reports/nearof/1234/5678.json
   def nearof
       @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]
