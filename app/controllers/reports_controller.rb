@@ -27,7 +27,7 @@ class ReportsController < ApplicationController
     end
   end
 
-  # GET /reports/nearof/1234/5678
+  # GET /reports/nearof/1234/5678      
   # GET /reports/nearof/1234/5678.json
   def nearof
       @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]

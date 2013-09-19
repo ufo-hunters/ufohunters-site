@@ -272,7 +272,7 @@ class SightingsController < ApplicationController
          @nameCountry = country.name
          @coordCountry = country.center
          @zoom = country.zoom
-         @pais = country.geometry
+         @pais = country.geometry  
       end
       
       type = ""
