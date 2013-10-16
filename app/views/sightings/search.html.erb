@@ -148,7 +148,10 @@
 				<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
 			</div>
 			<div class="post">
+				<article>
+					<header>
 				<h1 class="title"><%= @listaUFO.location  %></h1>
+					</header>
 				<p class="meta">
 					<small>Sighted on <strong><%= format_date @listaUFO.sighted_at %></strong><br/>
 					Reported on <strong><%= format_date @listaUFO.reported_at %></strong><br/>
@@ -232,7 +235,8 @@
 	   				end
 
 	   			end 
-	   			%>				 
+	   			%>
+	   			</article>			 
    			</div>
 
    			<div id="disqus_thread"></div>
@@ -249,12 +253,12 @@
 			   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 			</div>
-     	</div>
-     	<% 
+
+			<% 
      	if @listaUFOlist
      	%>
      	<div id="other-posts">
-     	   
+     	  <aside>
      		<p>Nearest sightings (100 miles radius):</p>
      		<div id="nearest_sightings_carousel">     			
      		<% 
@@ -287,10 +291,14 @@
 			<script type="text/javascript"
 			src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 			</script>
+		  </aside>
      	</div>
      	<%
      end
      %>
+
+     	</div>
+
   	</div>
 
 </div>
