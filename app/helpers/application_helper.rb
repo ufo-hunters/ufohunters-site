@@ -27,7 +27,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%Y-%m-%d")
          rescue => ex
-            logger.info "Invalida date - #{ex.class}: #{ex.message}"
+            logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
