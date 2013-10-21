@@ -22,6 +22,17 @@ module ApplicationHelper
       end
    end
 
+   def format_date_microdata date
+      unless date.blank?
+         begin
+            date.to_date.strftime("%Y-%m-%d")
+         rescue => ex
+            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            return ""
+         end
+      end
+   end
+
    def youtube_link?(link)
    	link =~ /(youtube|youtu.be)/
    end

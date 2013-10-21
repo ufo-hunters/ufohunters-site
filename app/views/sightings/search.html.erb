@@ -147,19 +147,24 @@
 				<span class='st_googleplus_hcount' displayText='Google +'></span>
 				<span class='st_linkedin_hcount' displayText='LinkedIn'></span>
 			</div>
-			<div class="post">
+			<div itemscope itemtype="http://schema.org/Article" class="post">
 				<article>
+					<meta itemprop="articleSection" content="UFO Sightings">
 					<header>
-				<h1 class="title"><%= @listaUFO.location  %></h1>
+						<h1 itemprop="name" class="title"><%= @listaUFO.location  %></h1>
 					</header>
-				<p class="meta">
-					<small>Sighted on <strong><%= format_date @listaUFO.sighted_at %></strong><br/>
-					Reported on <strong><%= format_date @listaUFO.reported_at %></strong><br/>
+					<p class="meta">
+					<small>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @listaUFO.sighted_at %>"><%= format_date @listaUFO.sighted_at %></strong><br/>
+					Reported on <strong itemprop="datePublished" content="<%= format_date_microdata @listaUFO.reported_at %>"><%= format_date @listaUFO.reported_at %></strong><br/>
 					Shape: <strong><%=@listaUFO.shape%></strong> | Duration: <strong><%=@listaUFO.duration%></strong><br/>
-					Source: <strong><%=@listaUFO.source%></strong></small>
-				</p>
+					Source: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><%=@listaUFO.source%></strong></span>
+					<span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+						<meta itemprop="name" content="ufo-hunters.com">
+					</span>
+					</small>
+					</p>
 				<div class="entry">
-	   			<p><%=@listaUFO.description.html_safe%></p>
+	   			<p itemprop="articleBody"><%=@listaUFO.description.html_safe%></p>
 	   			<% unless @listaUFO.links.blank?	%>
 	   				<script type="text/javascript">
    					$(document).ready(function() {
@@ -236,8 +241,9 @@
 
 	   			end 
 	   			%>
-	   			</article>			 
-   			</div>
+	   						 
+   				</div>
+   			</article>
 
    			<div id="disqus_thread"></div>
    			<script type="text/javascript">
