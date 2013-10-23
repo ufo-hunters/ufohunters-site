@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>UFO Hunters - <%= @page_title %></title>
   <%= stylesheet_link_tag "application", :media => "all" %>
@@ -14,7 +14,7 @@
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
 </head>
-<body onload="init()">
+<body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
@@ -96,12 +96,13 @@
 	<div id="content_grey">
 	   <div id="content_grey_carousel">
 
-         <div id="video_thumb_carousel">
+         <div id="video_thumb_carousel" itemscope itemtype="http://schema.org/ItemList">
+         	<meta itemprop="itemListOrder" content="Descending"/>
          <%
 
 			video_thumb_list = video_list
 			
-         video_thumb_list.each do |thumb|
+         	video_thumb_list.each do |thumb|
          	logger.info "links: " + thumb.links.to_s
          	thumb.links.each do |link|
       	      if youtube_link? link
@@ -111,10 +112,10 @@
       	   	   	logger.info "video id: " + video_id
       	   
       %>
-			            <div class="content_grey_container_box">
-					         <h4><%= thumb.location %></h4>
-					         <p><%= format_date thumb.sighted_at %></p>
-					         <div class="video-thumb">
+			            <div class="content_grey_container_box" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+					         <h4 itemprop="name"><%= thumb.location %></h4>
+					         <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+					         <div class="video-thumb" itemprop="image">
 						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
 					         </div>
 			            </div>
