@@ -113,10 +113,10 @@
       	   
       %>
 			            <div class="content_grey_container_box" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-					         <h4 itemprop="name"><%= thumb.location %></h4>
+					         <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
 					         <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
-					         <div class="video-thumb" itemprop="image">
-						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
+					         <div class="video-thumb"><figure>
+						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
 					         </div>
 			            </div>
 		            <%
