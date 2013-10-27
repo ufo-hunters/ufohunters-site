@@ -125,19 +125,18 @@
 		   	</div>
 		   
 		   	<div id="main-sighting">
-			    <script type="text/javascript"><!--
-				google_ad_client = "ca-pub-4760111415025425";
-				google_ad_slot = "1056351688";
-				google_ad_width = 468;
-				google_ad_height = 15;
-				//-->
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-				<script type="text/javascript"
-				src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
+		   		<div itemscope itemtype="http://schema.org/WPAdBlock">
+				    <script type="text/javascript"><!--
+						google_ad_client = "ca-pub-4760111415025425";
+						google_ad_slot = "1056351688";
+						google_ad_width = 468;
+						google_ad_height = 15;
+						//-->
+						</script>
+						<script type="text/javascript"
+						src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+						</script>
+					</div>
 				<div class="share_bar">
 				   <span class='st_sharethis_hcount' displayText='ShareThis'></span>
 					<span class='st_facebook_hcount' displayText='Facebook'></span>
@@ -265,8 +264,8 @@
 		     	if @listaUFOlist
 		     	%>
  	
- 				<div id="other-posts">
-		     	  <aside>
+ 				<!--div id="other-posts"-->
+		     	<aside id="other-posts" itemscope itemtype="http://schema.org/WPSideBar">
 		     		<p>Nearest sightings (100 miles radius):</p>
 		     		<div id="nearest_sightings_carousel" itemscope itemtype="http://schema.org/ItemList">     			
 		     		<% 
@@ -287,20 +286,22 @@
 					end 
 					%>
 		     		</div>
- 					<a id="next_btn">More</a>
- 					<br/>
-		     		<script type="text/javascript"><!--
-					google_ad_client = "ca-pub-4760111415025425";
-					google_ad_slot = "2533084886";
-					google_ad_width = 250;
-					google_ad_height = 250;
-					//-->
-					</script>
-					<script type="text/javascript"
-					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-					</script>
-	  			  </aside>
- 				</div>
+	 					<a id="next_btn">More</a>
+	 					<br/>
+	 					<div itemscope itemtype="http://schema.org/WPAdBlock">
+			     		<script type="text/javascript"><!--
+								google_ad_client = "ca-pub-4760111415025425";
+								google_ad_slot = "2533084886";
+								google_ad_width = 250;
+								google_ad_height = 250;
+								//-->
+								</script>
+								<script type="text/javascript"
+								src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+							</script>
+						</div>
+	  			</aside>
+ 				<!--/div-->
 		     	<%
 		     end
 		     %>
