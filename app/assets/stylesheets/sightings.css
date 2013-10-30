@@ -259,6 +259,7 @@ ul#menu li:hover a
 
 .post .title {
    margin: 0;
+   text-align: left;
 }
 
 .post h1 {
@@ -274,6 +275,7 @@ ul#menu li:hover a
    margin: 0;
    padding-bottom: 10px;
    padding-top: 10px;
+   text-align: left;
 }
 
 .post .meta small > strong {

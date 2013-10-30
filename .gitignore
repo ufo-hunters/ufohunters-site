@@ -7,7 +7,7 @@
 *.pdf
 *.docx
 *.doc
-
+*.bmp
 # Ignore bundler config
 /.bundle
 

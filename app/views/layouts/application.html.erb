@@ -5,7 +5,7 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <meta content='UFO, UFO Sightings, OVNI, Avistamientos OVNIS, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports' name='keywords'>
+  <meta content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports' name='keywords'>
   <meta content='<%= @page_description %>' name='description'>
   <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" />
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>    
@@ -55,6 +55,7 @@
 					</script>
 	</div>    
 	<div id="menubar">
+		<nav>
 		<ul id="menu"><!--  class="current" -->
 			<li <%if @menu.blank? == false && @menu == "index"%>class="current"<% end %>><%= link_to "Home", :controller => "sightings"%></li>
 			<li <%if @menu.blank? == false && @menu == "spain"%>class="current"<% end %>><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
@@ -64,6 +65,7 @@
 			<li <%if @menu.blank? == false && @menu == "videos"%>class="current"<% end %>><%= link_to "Videos", :controller => "sightings", :action => "videos"%></li>
 			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to "About us", :controller => "sightings", :action => "about"%></li>
 		</ul>
+		</nav>
 	</div>
 	<%= yield %>
 
@@ -134,7 +136,9 @@
 	</div>
  
 	<div id="footer">
+		<footer>
 		  <a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a> | <a href="http://www.facebook.com/UfoHuntersCom">facebook - UfoHuntersCom</a> | <a href="http://twitter.com/UfoHuntersCom">twitter - @UfoHuntersCom</a>
+		</footer>
 	</div>
 	
 	
