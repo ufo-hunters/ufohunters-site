@@ -1,12 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>UFO Hunters - <%= @page_title %></title>
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <meta content="text/html; charset=utf-8" http-equiv="content-type" /> 
   <meta content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports' name='keywords'>
   <meta content='<%= @page_description %>' name='description'>
+  <meta content="website" property="og:type"/>
+  <meta content="UFO Hunters - Recent UFO Activity - <%= @page_title %>" property="og:title">
+  <meta content="UFO Hunters - Recent UFO Activity - <%= @page_title %>" property="og:site_name">
+  <meta content="<%= @page_description %>" property="og:description">
+  <meta content="en_US" property="og:locale">
   <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" />
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>    
   <script type="text/javascript">var switchTo5x=true;</script>
@@ -14,7 +20,7 @@
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
 </head>
-<body onload="init()">
+<body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
@@ -24,7 +30,7 @@
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
 <div id="main">
-	<div id="header">
+	<div id="header" itemscope itemtype="http://schema.org/WPHeader">
 		<div id="banner">
 			<div id="welcome">				
 				<div style="float:left;"><h1>UFO Hunters</h1></div>
@@ -41,7 +47,7 @@
 			</div>			
 		</div>
 	</div>
-	<div style="width:800px;margin-left:auto;height:30px;text-align:center;margin-right:auto">
+	<div itemscope itemtype="http://schema.org/WPAdBlock" style="width:800px;margin-left:auto;height:30px;text-align:center;margin-right:auto">
 					<script type="text/javascript"><!--
 					google_ad_client = "ca-pub-4760111415025425";
 					/* Enlaces en la Home */
@@ -53,20 +59,19 @@
 					<script type="text/javascript"
 					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 					</script>
-	</div>    
-	<div id="menubar">
-		<nav>
-		<ul id="menu"><!--  class="current" -->
-			<li <%if @menu.blank? == false && @menu == "index"%>class="current"<% end %>><%= link_to "Home", :controller => "sightings"%></li>
-			<li <%if @menu.blank? == false && @menu == "spain"%>class="current"<% end %>><%= link_to "Spain", :controller => "sightings", :action => "spain"%></li>
-			<li <%if @menu.blank? == false && @menu == "statistics"%>class="current"<% end %>><%= link_to "Statistics", :controller => "sightings", :action => "statistics"%></li>
-			<li <%if @menu.blank? == false && @menu == "maps"%>class="current"<% end %>><%= link_to "Maps", :controller => "sightings", :action => "maps"%></li>
-			<li <%if @menu.blank? == false && @menu == "report"%>class="current"<% end %>><%= link_to "Report a UFO", :controller => "reports", :action => "new"%></li>
-			<li <%if @menu.blank? == false && @menu == "videos"%>class="current"<% end %>><%= link_to "Videos", :controller => "sightings", :action => "videos"%></li>
-			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to "About us", :controller => "sightings", :action => "about"%></li>
+	</div>  
+
+	<nav id="menubar">
+		<ul id="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
+			<li <%if @menu.blank? == false && @menu == "index"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
+			<li <%if @menu.blank? == false && @menu == "statistics"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>
+			<li <%if @menu.blank? == false && @menu == "maps"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
+			<li <%if @menu.blank? == false && @menu == "report"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
+			<li <%if @menu.blank? == false && @menu == "videos"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
+			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
 		</ul>
-		</nav>
-	</div>
+	</nav>
+
 	<%= yield %>
 
 
@@ -96,12 +101,13 @@
 	<div id="content_grey">
 	   <div id="content_grey_carousel">
 
-         <div id="video_thumb_carousel">
+         <div id="video_thumb_carousel" itemscope itemtype="http://schema.org/ItemList">
+         	<meta itemprop="itemListOrder" content="Descending"/>
          <%
 
 			video_thumb_list = video_list
 			
-         video_thumb_list.each do |thumb|
+         	video_thumb_list.each do |thumb|
          	logger.info "links: " + thumb.links.to_s
          	thumb.links.each do |link|
       	      if youtube_link? link
@@ -111,11 +117,11 @@
       	   	   	logger.info "video id: " + video_id
       	   
       %>
-			            <div class="content_grey_container_box">
-					         <h4><%= thumb.location %></h4>
-					         <p><%= format_date thumb.sighted_at %></p>
-					         <div class="video-thumb">
-						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
+			            <div class="content_grey_container_box" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+					         <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+					         <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+					         <div class="video-thumb"><figure>
+						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
 					         </div>
 			            </div>
 		            <%
@@ -135,11 +141,11 @@
     
 	</div>
  
-	<div id="footer">
-		<footer>
-		  <a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a> | <a href="http://www.facebook.com/UfoHuntersCom">facebook - UfoHuntersCom</a> | <a href="http://twitter.com/UfoHuntersCom">twitter - @UfoHuntersCom</a>
-		</footer>
-	</div>
+	<!--div id="footer"-->
+	<footer id="footer" itemscope itemtype="http://schema.org/WPFooter" >
+	  <a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a> | <a href="http://www.facebook.com/UfoHuntersCom">facebook - UfoHuntersCom</a> | <a href="http://twitter.com/UfoHuntersCom">twitter - @UfoHuntersCom</a> | <a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a>
+	</footer>
+	<!--/div-->
 	
 	
 <script>

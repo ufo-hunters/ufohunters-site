@@ -120,10 +120,11 @@
 							<h3>Recent UFO Activity</h3>
 							<p>20 latest UFO sightings all over the world</p>
 						
-							<div id="mycarousel">
+							<div id="mycarousel" itemscope itemtype="http://schema.org/ItemList">
+								<meta itemprop="itemListOrder" content="Descending"/>
 								<% for i in 0..19 %>
-									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%= format_date @listaUFO[i].sighted_at %><br/>
+									<div class="sighting_carousel" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
+									<span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
 									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
 									</div>
 								<% end %>
