@@ -18,7 +18,7 @@ module ApplicationHelper
          rescue => ex
             logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
-         end
+         end 
       end
    end
 
