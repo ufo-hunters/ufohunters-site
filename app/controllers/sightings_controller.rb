@@ -17,7 +17,7 @@ class SightingsController < ApplicationController
    caches_page :search, :expires_in => 3.hour
    caches_page :country, :expires_in => 24.hour
    caches_page :sitemap, :expires_in => 96.hour
-
+                            
    def index  	
       @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
