@@ -19,7 +19,7 @@ module ApplicationHelper
             logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end 
-      end
+      end               
    end
 
    def format_date_rss date
