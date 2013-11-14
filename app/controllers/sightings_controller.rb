@@ -16,8 +16,8 @@ class SightingsController < ApplicationController
    caches_page :about, :expires_in => 24.hour
    caches_page :search, :expires_in => 3.hour
    caches_page :country, :expires_in => 24.hour
-   caches_page :sitemap, :expires_in => 96.hour
-
+   caches_page :sitemap, :expires_in => 96.hour                    
+                            
    def index  	
       @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
@@ -39,7 +39,7 @@ class SightingsController < ApplicationController
       
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
       @page_title = friendly_title(@listaUFO)
-      @page_description = "UFO Report: " + @page_title
+      @page_description = "UFO Report: " + @listaUFO.description[0..200] + "..."
    end
 
    def spain
@@ -226,7 +226,7 @@ class SightingsController < ApplicationController
             [-17.05,67.74],
             [-30.23,66.01],
             [-10.41,36.73]]
-      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
+      }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc)
 
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
