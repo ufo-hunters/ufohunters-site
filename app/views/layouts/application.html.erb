@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>UFO Hunters - <%= @page_title %></title>
+  <title><%= @page_title %> - UFO Hunters</title>
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -9,13 +9,13 @@
   <meta content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports' name='keywords'>
   <meta content='<%= @page_description %>' name='description'>
   <meta content="website" property="og:type"/>
-  <meta content="UFO Hunters - Recent UFO Activity - <%= @page_title %>" property="og:title">
-  <meta content="UFO Hunters - Recent UFO Activity - <%= @page_title %>" property="og:site_name">
+  <meta content="<%= @page_title %> - UFO Hunters" property="og:title">
+  <meta content="<%= @page_title %> - UFO Hunters" property="og:site_name">      
   <meta content="<%= @page_description %>" property="og:description">
   <meta content="en_US" property="og:locale">
-  <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" />
+  <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" /> 
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>    
-  <script type="text/javascript">var switchTo5x=true;</script>
+  <script type="text/javascript">var switchTo5x=true;</script>                 
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
@@ -35,7 +35,8 @@
 			<div id="welcome">				
 				<div style="float:left;"><h1>UFO Hunters</h1></div>
 				<div id="follow_us">
-					<div class="fb-like-box" data-href="http://www.facebook.com/UfoHuntersCom" data-width="292" data-show-faces="false" data-stream="false" data-header="false"></div>
+					<div class="fb-like-box" style="display:inline;" data-href="http://www.facebook.com/UfoHuntersCom" data-width="202" data-show-faces="false" data-stream="false" data-header="false"></div>
+					<div style="float:right; margin-top:20px;"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone></div>
 					<div>
 					   <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
 				   </div>
