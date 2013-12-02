@@ -1,6 +1,4 @@
 
-      
-
 		<script type="text/javascript">          
 		
 		    var iconSize = new OpenLayers.Size(22, 22);
@@ -54,7 +52,7 @@
 		    }
 		    function init() {
 		        
-				     var zoom           = 1;
+				    var zoom           = 1;
 				 
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
@@ -72,7 +70,7 @@
 		                    
 				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
 		            map.addLayer(lyrMarkers);
-					var location = '';
+					  var location = '';
 		            <% @listaUFO.each do |ovni| 
 		                  begin
 		            %>
@@ -110,57 +108,54 @@
 
 		</script>
 
-
-
-	<div id="site_content">	
-		
-				<div id="content">
-					   <%=	render :partial => 'common/gcs' %>
-					   <div class="content_item">
-							<h3>Recent UFO Activity</h3>
-							<p>20 latest UFO sightings all over the world</p>
-						
-							<div id="mycarousel" itemscope itemtype="http://schema.org/ItemList">
-								<meta itemprop="itemListOrder" content="Descending"/>
-								<% for i in 0..19 %>
-									<div class="sighting_carousel" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
-									<span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
-									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
-									</div>
-								<% end %>
-							</div>
-					   </div>
-
-					   <div class="content_item">
-							<div id="basicMap" style="width: 900px; height: 450px;"></div>
-					   </div>
-					   
-					   <div class="content_item">
-								<div class="content_item">
-			   					<p>The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p>If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
-					   		</div>
-								<div class="content_container">
-									<%= image_tag image_path('world.png') %>
-									<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>
-									<p>Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
-								</div>
-
-								<div class="content_container">
-									<%= image_tag image_path('ufo_home.png') %>
-									<h3><%= link_to "Have you seen a UFO?", :controller => "reports", :action => "new"%></h3>
-									<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
-								</div>			
-								<script type="text/javascript" src="http://w.sharethis.com/gallery/shareegg/shareegg.js"></script>
-								<script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false, onhover:false});</script>
-
-								<div class="content_container">
-									<div id='shareThisShareEgg' class='shareEgg'></div>
-									<script type='text/javascript'>stlib.shareEgg.createEgg('shareThisShareEgg', ['sharethis','facebook','googleplus','twitter'], {title:'ShareThis Rocks!!!',url:'http://www.sharethis.com',theme:'shareegg'});</script>
-									<h3>Share your experience</h3>
-									<p>Share your experience in one simple step and make it available to everyone.
-								</div>	
-						</div>
-				</div>
+    <%#=	render :partial => 'common/gcs' %>
+		<div class="row">
+		  <div class="span4">
+		  	<h3>Recent UFO Activity</h3>
+				<p>20 latest UFO sightings all over the world</p>
+			</div>
 		</div>
-</div> 
+		
+		<div class="row hidden-phone">
+		  <div class="span12">				
+			  <div itemscope itemtype="http://schema.org/ItemList">
+				  <meta itemprop="itemListOrder" content="Descending"/>
+					<% for i in 0..19 %>
+					  <div class="sighting_carousel" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
+					    <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
+					    <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
+					  </div>
+					<% end %>
+				</div>
+			</div>
+    </div>
 
+		<div class="row">
+		  <div class="span12">
+		    <div id="basicMap" style="width: 100%; height: 450px;"></div>
+		  </div>
+		</div>			   
+		
+		<div class="row">
+		  <div class="span12">
+				<p>The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p>If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
+			</div>
+		</div>
+
+    <div class="row">
+			<div class="span4">
+				<%= image_tag image_path('world.png') %>
+				<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>
+				<p>Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
+			</div>
+			<div class="span4">
+				<%= image_tag image_path('ufo.png') %>
+				<h3><%= link_to "Have you seen a UFO?", :controller => "reports", :action => "new"%></h3>
+				<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
+			</div>		
+			<div class="span4">
+				<%= image_tag image_path('share.png') %>
+				<h3>Share your experience</h3>
+				<p>Share your experience in one simple step and make it available to everyone.
+			</div>
+	  </div>
