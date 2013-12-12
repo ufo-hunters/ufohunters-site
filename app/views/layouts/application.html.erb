@@ -48,7 +48,7 @@
 			  <div class="span1">
 				  <div style="float:right; margin-top:20px;"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone></div>
 			  </div>
-			  <div class="span3">
+			  <div class="3">
 				  <div>
 				    <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
 			    </div>
@@ -105,24 +105,8 @@
 	
     <script type="text/javascript">
      $(document).ready(function() {
-      $("#video_thumb_carousel").carouFredSel({
-         circular: false,
-         infinite: false,
-         auto: false,
-         width: 921,             
-         height: 160,                                    
-         items: {
-            visible: 3,
-            width: 307
-         },
-         prev: {     
-            button: "#video_thumb_carousel_prev",
-            key: "left"
-         },
-         next: { 
-            button: "#video_thumb_carousel_next",
-            key: "right"
-         }
+      $("#video_thumb_carousel").carousel({
+         interval: 10000
       });
      });
 	  </script>
@@ -130,10 +114,20 @@
 	  <div class="row hidden-phone">
 	    <div class="span12" itemscope itemtype="http://schema.org/ItemList">
       	<meta itemprop="itemListOrder" content="Descending"/>
+      	<div class="well">
+      	  <div id="video_thumb_carousel" class="carousel slide">
+            <ol class="carousel-indicators">
+              <li data-target="#video_thumb_carousel" data-slide-to="0" class="active"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="1"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="2"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="3"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner">
           <%
 
 			    video_thumb_list = video_list
-			
+					video_cont = 0
          	video_thumb_list.each do |thumb|
          	  logger.info "links: " + thumb.links.to_s
          	  thumb.links.each do |link|
@@ -142,23 +136,42 @@
       	   	   
       	   	    if video_id
       	   	   	  logger.info "video id: " + video_id
+      	   	   	  video_cont += 1
+      	   	   	  
+      	   	   	  if video_cont % 4 == 0
       	   
       %>
-			        <div itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-					      <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
-					      <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
-					      <div><figure>
-						      <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
-					      </div>
-			        </div>
-		          <%
+			          <div class="item <%= "active" if video_cont == 0 %>">
+                	<div class="row-fluid">
+                	<%
+                  end
+                	%>
+                	  <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+								      <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+								      <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+								      <div><figure>
+									      <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
+								      </div>
+						        </div>
+                	<%
+                	if video_cont % 4 == 0
+                	%>
+                	</div>
+                </div>
+                <%
+                  end
+                
 	                break
 	         	    end
 	            end
 		        end
 		      end
 		   %>
- 
+		        </div>
+		        <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev">‹</a>
+            <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next">›</a>
+		      </div>
+        </div>
       </div>
     </div>
     
