@@ -45,37 +45,21 @@
 			  <div class="span2">	  
 				  <div class="fb-like-box" style="display:inline;" data-href="http://www.facebook.com/UfoHuntersCom" data-width="202" data-show-faces="false" data-stream="false" data-header="false"></div>
 			  </div>
-			  <div class="span1">
-				  <div style="float:right; margin-top:20px;"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone></div>
+			  <div class="span3" style="margin-top:15px;">				 
+          <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
 			  </div>
-			  <div class="3">
-				  <div>
-				    <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
-			    </div>
+
+			  <div class="span1" style="margin-top:17px;">	
+			 	  <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone>
 			  </div>
-			  <div class="span2"> 					
-			    <div style="float:left;margin-left:85px"><a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a></div>
+
+			  <div class="span2" style="margin-top:10px;margin-bottom:10px;">	
+			    <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
 			  </div>
 
 	    </div>
 	  </header>
 	
-	  <div class="row hidden-phone">
-	    <div itemscope itemtype="http://schema.org/WPAdBlock" style="margin-left:auto;height:30px;text-align:center;margin-right:auto">
-				<script type="text/javascript"><!--
-					google_ad_client = "ca-pub-4760111415025425";
-					/* Enlaces en la Home */
-					google_ad_slot = "5026952480";
-					google_ad_width = 728;
-					google_ad_height = 15;
-					//-->
-				</script>
-				<script type="text/javascript"
-					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-	    </div>
-	  </div>
-  
 	  <div class="row">
 	    <div class="navbar navbar-inverse">
         <div class="navbar-inner">
@@ -111,7 +95,7 @@
      });
 	  </script>
 	
-	  <div class="row hidden-phone">
+	  <div class="row">
 	    <div class="span12" itemscope itemtype="http://schema.org/ItemList">
       	<meta itemprop="itemListOrder" content="Descending"/>
       	<div class="well">
@@ -136,15 +120,14 @@
       	   	   
       	   	    if video_id
       	   	   	  logger.info "video id: " + video_id
-      	   	   	  video_cont += 1
       	   	   	  
       	   	   	  if video_cont % 4 == 0
-      	   
-      %>
+                %>
 			          <div class="item <%= "active" if video_cont == 0 %>">
                 	<div class="row-fluid">
                 	<%
                   end
+                  video_cont += 1
                 	%>
                 	  <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
 								      <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
