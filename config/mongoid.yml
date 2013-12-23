@@ -91,5 +91,5 @@ test:
 production:   
   sessions:
     default:
-        uri: <%= ENV['MONGOHQ_URL'] %>  
+        uri: MONGOHQ_URL=mongodb://ufo:ufo@linus.mongohq.com:10077/sightings  
    
