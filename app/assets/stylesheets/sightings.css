@@ -31,7 +31,8 @@ h1, h2, h3, h4, h5, h6
   margin: 0 0 10px 0;}
 
 h2
-{ font: normal 165% Arial, Helvetica, sans-serif;}
+{ font: normal 155% Arial, Helvetica, sans-serif;
+margin-top:25px;}
 
 h3
 { font: normal 130% Arial, Helvetica, sans-serif;

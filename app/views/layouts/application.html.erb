@@ -33,49 +33,45 @@
   <div class="container">
 
     <header itemscope itemtype="http://schema.org/WPHeader">
-  	  <div class="row">
-		    <div class="span2">
-          <h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
-		    </div>
-			
-			  <div class="span2">
-          <h2><%=@numUFO%> sightings reported... and growing</h2>
-			  </div>
+  	    <div class="row">
+		         <div class="span3">
+          			<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
+          	 </div>
 
-			  <div class="span2">	  
-				  <div class="fb-like-box" style="display:inline;" data-href="http://www.facebook.com/UfoHuntersCom" data-width="202" data-show-faces="false" data-stream="false" data-header="false"></div>
-			  </div>
-			  <div class="span1">
-				  <div style="float:right; margin-top:20px;"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone></div>
-			  </div>
-			  <div class="3">
-				  <div>
-				    <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
-			    </div>
-			  </div>
-			  <div class="span2"> 					
-			    <div style="float:left;margin-left:85px"><a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a></div>
-			  </div>
+		         <div class="span4">
+          			<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
+			       </div>
+	           
+              <div class="span4" style="margin-top:20px;margin-bottom:10px;">  
+                <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
+             </div>
 
+			       <div class="span1">	  
+				          <!-- AddThis Smart Layers BEGIN -->
+                  <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
+                  <script type="text/javascript">
+                    addthis.layers({
+                      'theme' : 'transparent',
+                      'share' : {
+                        'position' : 'right',
+                        'numPreferredServices' : 4
+                      }, 
+                      'follow' : {
+                        'services' : [
+                          {'service': 'facebook', 'id': 'UfoHuntersCom'},
+                          {'service': 'twitter', 'id': 'UfoHuntersCom'},
+                          {'service': 'google_follow', 'id': '+UfohuntersCom'}
+                        ]
+                      }   
+                    });
+                  </script>
+                  <!-- AddThis Smart Layers END -->
+			       </div>
+    			 
 	    </div>
 	  </header>
 	
-	  <div class="row hidden-phone">
-	    <div itemscope itemtype="http://schema.org/WPAdBlock" style="margin-left:auto;height:30px;text-align:center;margin-right:auto">
-				<script type="text/javascript"><!--
-					google_ad_client = "ca-pub-4760111415025425";
-					/* Enlaces en la Home */
-					google_ad_slot = "5026952480";
-					google_ad_width = 728;
-					google_ad_height = 15;
-					//-->
-				</script>
-				<script type="text/javascript"
-					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-				</script>
-	    </div>
-	  </div>
-  
 	  <div class="row">
 	    <div class="navbar navbar-inverse">
         <div class="navbar-inner">
@@ -87,14 +83,14 @@
             </a>
             <!--a class="brand" href="#">Some Store</a-->
 	          <nav class="nav-collapse">
-		          <ul class="nav" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
+		          <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
 			          <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
 			          <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>
 			          <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
 			          <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
 			          <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
 			          <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
-		          </ul>
+              </ul>
 	          </nav>
 	        </div>
 	      </div>
@@ -162,13 +158,12 @@
       </div>
     </div>
     
-	  <footer class="row" itemscope itemtype="http://schema.org/WPFooter" >
-		  <div class="span3"></div>
-		  <div class="span6">
-	      <a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a> | <a href="http://www.facebook.com/UfoHuntersCom">facebook - UfoHuntersCom</a> | <a href="http://twitter.com/UfoHuntersCom">twitter - @UfoHuntersCom</a> | <a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a>
-	    </div>
-	    <div class="span3"></div>
-	  </footer>
+	  <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
+		  <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
+		  <div class="span3"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
+	    <div class="span3"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
+      <div class="span3"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
+	   </footer>
 	
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -180,6 +175,10 @@
     ga('send', 'pageview');
 
     </script>
+
+    <div class="postfooter">
+      <div class="span12"></div>
+    </div>
 
   </div>
 </body>

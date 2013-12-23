@@ -110,10 +110,25 @@
 
     <%#=	render :partial => 'common/gcs' %>
 		<div class="row">
-		  <div class="span4">
-		  	<h3>Recent UFO Activity</h3>
+		    <div class="span4">
+		  	    <h3>Recent UFO Activity</h3>
 				<p>20 latest UFO sightings all over the world</p>
 			</div>
+			<div class="span7">
+			 <script>
+                    (function() {
+                      var cx = '001248413888817770666:crwocgi6dui';
+                      var gcse = document.createElement('script');
+                      gcse.type = 'text/javascript';
+                      gcse.async = true;
+                      gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                          '//www.google.com/cse/cse.js?cx=' + cx;
+                      var s = document.getElementsByTagName('script')[0];
+                      s.parentNode.insertBefore(gcse, s);
+                    })();
+                  </script>
+                  <gcse:search></gcse:search>
+            </div>
 		</div>
 		
 		<div class="row hidden-phone">
