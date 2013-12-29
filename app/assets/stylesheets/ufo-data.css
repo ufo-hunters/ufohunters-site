@@ -11,6 +11,10 @@ h1 {
     color: #fefefe;
 }
 */
+body {
+    font: 80% Arial,Helvetica,sans-serif;
+}
+
 h1 {
     color: #1D1D1D;
     font: 175% Arial,Helvetica,sans-serif;
@@ -21,6 +25,7 @@ h1 {
 h2 {
     font: 155% Arial,Helvetica,sans-serif;
     margin-top: 25px;
+    letter-spacing: -1px;
 }
 h3 {
     font: 170% Arial,Helvetica,sans-serif;
