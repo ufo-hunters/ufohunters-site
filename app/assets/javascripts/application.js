@@ -11,9 +11,12 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
-
 //= require jquery
 //= require jquery_ujs
 //= require prettyphoto-rails 
-//= require twitter/bootstrap
+//= require twitter/bootstrap/bootstrap-transition
+//= require twitter/bootstrap/bootstrap-alert
+//= require twitter/bootstrap/bootstrap-modal
+//= require twitter/bootstrap/bootstrap-button 
+//= require twitter/bootstrap/bootstrap-collapse
 //= require_tree .
