@@ -11,6 +11,17 @@ h1 {
     color: #fefefe;
 }
 */
+h1 {
+    color: #1D1D1D;
+    font: 175% Arial,Helvetica,sans-serif;
+    letter-spacing: -1px;
+    margin: 0 0 10px;
+    text-shadow: 1px 1px #FFFFFF;
+}
+h2 {
+    font: 155% Arial,Helvetica,sans-serif;
+    margin-top: 25px;
+}
 h3 {
     font: 170% Arial,Helvetica,sans-serif;
 }
