@@ -80,37 +80,6 @@
 		
 		      }
 		      
-		      $(function(){
-				
-						$("#mostrar").click(function(event) {
-							var texto = "CLOSE" ;
-							if($("#mostrar").text()=='SHOW') texto = "CLOSE";
-							if($("#mostrar").text()=='CLOSE') texto = "SHOW";
-							
-							event.preventDefault();
-							$("#ufolist").slideToggle(5000);
-							$("#mostrar").text(texto);
-						});						
-						
-				});
-		       $(document).ready(function() {
-
-					// Using default configuration
-					$("#mycarousel").carouFredSel({
-						width: 850,
-						height: 85,
-						direction: "left",
-						items: {
-							visible: 4,
-							minimum: 10,
-						},
-						scroll: {
-							items: 1,
-							duration: 1000
-						},
-						auto: 3000			
-					});
-				}); 
 		</script>
 
 
