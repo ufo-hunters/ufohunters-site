@@ -80,57 +80,103 @@
 		      }		      
 		     
 		</script>
-	<div id="site_content">			
+	
+			    <div class="row">                                                                                                
+        			<div class="span12">
+			   			<h3>Latest sightings in <%=@nameCountry%></h3><br/>
+			   		</div>
+			   	</div>
 
-	 	<div id="content">
-			   <div class="content_item">
-			   		<h3>Latest sightings in <%=@nameCountry%></h3><br/>
+			   	<div class="row">                                                                                                
+        			<div class="span12">
+        				<div id="basicMap" style="width: 100%; height: 450px;"></div>
+        			</div>
+			    </div>
 
-							<div id="basicMap" style="width: 900px; height: 550px;"></div>
-			   </div>
+
 			   <% if @listaUFO.empty? == true %>
-						<div class="content_item">
+						<div class="row">                                                                             
+        					<div class="span12">
 					  			<p><strong>Sorry... we haven't got any sightings reported in <%=@nameCountry%>.<br/>
 							If you saw one, please <%= link_to "let us know", :controller => "reports", :action => "new"%>!!</strong></p>
+			   				</div>
 			   			</div>
 			   <% end %>
 			    
+	   			<% if @listaUFO.empty? == false %>
+			   			<div class="row">                                                                              
+		        			<div class="span12">
+					 		 	<h3>100 latest UFO sightings:</h3>
+					 		</div>
+				   		</div>
+			 	<% end %>
 			   
-			   <div class="content_item">
-			   			<% if @listaUFO.empty? == false %>
-					 		 <h2>100 latest UFO sightings</h2> 
-					 	<% end %>
-			   </div>
-				<script type="text/javascript">
-                        $(document).ready(function() {
-                                $("#foo3").after('<ul id="fooX" />').next().html($("#foo3").html());
-								$("#foo3 li:odd").remove();
-								$("#fooX li:even").remove();
+				
+            	<div class="row">
+						<div class="span8">
 
-								$("#foo3").carouFredSel({
-									synchronise	: "#fooX",
-									scroll		: 1									
-								});
-								$("#fooX").carouFredSel({
-									auto		: false
-								});
-                        });    
-            	</script>
-            	<div class="list_carousel">
-					<ul id="foo3">
-					 <% @listaUFO.each do |ovni| %>
-						  <li>						  
-								  <strong><%=ovni.location%></strong></br>
-								  <%= format_date ovni.sighted_at %><br/>
-								  <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>
-						  </li>
-					 <% end %>	
-			   		</ul>
-			   		<div class="clearfix"></div>
-						<a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
-						<a class="next" id="foo2_next" href="#"><span>next</span></a>
-					<div class="pagination" id="foo2_pag"></div>
-			   	</div>
-        </div>
-    </div>
+								<% 
+						     	if @listaUFO
+						     	%>	
+						     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
+						     			
+								      			<table class="table table-responsive table-striped">
+								      				<thead>
+															<tr>
+																	<th>Location
+																	</th>
+																	<th>Sighted on
+																	</th>
+																	<th>Shape
+																	</th>
+																	<th>Duration
+																	</th>
+															</tr>
+													</thead>
+													<tbody>
+											     	<% 
+											      	# In order to avoid the same sighting as nearest sighting
+											      	@listaUFO.each do |ovni|
+												      	
+														%>
+											    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
+												         		<td itemprop="name">
+												         			<%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %>
+												         		</td>
+												         		<td itemprop="dateCreated" content="<%= format_date_microdata ovni.sighted_at %>">
+													    			<%= format_date ovni.sighted_at %>
+													    		</td>
+													    		<td>
+													    			<%=ovni.shape%>
+												         		</td>
+												         		<td>
+													    			<%= ovni.duration %>
+												         		</td>
+															</tr>
+													<% 
+													end 
+
+													%>
+												    </tbody>
+												</table>
+									</div>
+				 				
+						     	<%
+						        end
+						        %>
+					    </div>
+					    <div class="span4">
+
+					 						<script type="text/javascript"><!--
+												google_ad_client = "ca-pub-4760111415025425";
+												google_ad_slot = "2708512888";
+												google_ad_width = 300;
+												google_ad_height = 600;
+												//-->
+											</script>
+												<script type="text/javascript"
+												src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+											</script>
+					    </div>
+	  			</div>
 </div> 

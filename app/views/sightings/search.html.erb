@@ -78,7 +78,7 @@
 				map.addLayer(mapnik);
 				 					
 				lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		      map.addLayer(lyrMarkers);
+		        map.addLayer(lyrMarkers);
 				var location = '';
 				    
 		      <% @listaUFOlist.each do |ovni|%>
@@ -94,24 +94,7 @@
 		<%
 		end
 		%>
-	<script type="text/javascript">
-   	$(document).ready(function() {
-	  		$("#nearest_sightings_carousel").carouFredSel({
-		    	direction: "up",
-		    	width: 250,
-		    	height: "variable",
-		    	items: {
-		        visible: 5,
-		        width: 250
-		    	},
-		    	scroll: 500,
-		    	auto: false,
-		    	next: "#next_btn"
-	  		});
-		});
-
-	</script>
-
+	
 	 	<div class="row">
 		    <div class="span12">
 			   	<%
@@ -345,8 +328,4 @@
 									</script>
 			    </div>
 	  	</div>
-
-
-
-
 </div>
