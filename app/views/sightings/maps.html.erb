@@ -1,244 +1,276 @@
 <%= javascript_include_tag "world/d3.geo.js" %>
-<div id="site_content">    
+<div class="row">  
                                                                                                 
-        <div class="content_item">
+         <div class="span12">
                     <h2>Latest sightings</h2>
                       
                     <p><strong><u>Continents</u></strong></p>
                     <p>Investigate the latest sightings in your continent (or region) clicking on the names below</p>
         </div>
-                        <script type="text/javascript">
-                        $(document).ready(function() {
-                                                $("#foo2").carouFredSel({
-                                                        circular: false,
-                                                        infinite: false,
-                                                        auto    : false,
-                                                        width: 800,             
-                                                        height: 250,                                    
-                                                        items: {
-                                                        visible: 3
-                                                   },
-                                                        prev    : {     
-                                                                button  : "#foo2_prev",
-                                                                key             : "left"
-                                                        },
-                                                        next    : { 
-                                                                button  : "#foo2_next",
-                                                                key             : "right"
-                                                        },
-                                                        pagination      : "#foo2_pag"
-                                                });
-                        });     
-                        function init() {}
-                            
-                        </script>
 
-    <div class="map_carousel"> 
-         <div id="foo2">
-            <div class="content_continent">
-                <%= image_tag image_path('noord-amerika.png') %>                      
-                <h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
-              </div>
+</div>        
 
-              <div class="content_continent">
-                 <%= image_tag image_path('zuid-amerika.png') %>
-                <h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
-              </div>
-              
-              <div class="content_continent">
-                 <%= image_tag image_path('afrika.png') %>
-                <h3><%= link_to "Africa", :controller => "sightings", :action => "africa"%></h3>
-              </div>
 
-              <div class="content_continent">
-                <%= image_tag image_path('azie.png') %>                     
-                <h3><%= link_to "Asia", :controller => "sightings", :action => "asia"%></h3>
-              </div>      
-         
-              <div class="content_continent">
-                <%= image_tag image_path('europa.png') %>                     
-                <h3><%= link_to "Europe", :controller => "sightings", :action => "europe"%></h3>
-              </div>                  
-              
-              <div class="content_continent">
-                <%= image_tag image_path('oceanie.png') %>
-                <h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
-              </div>  
-                    
-        </div>
-        <div class="clearfix"></div>
-        <a class="prev" id="foo2_prev" href="#"><span>prev</span></a>
-        <a class="next" id="foo2_next" href="#"><span>next</span></a>
-        <div class="pagination" id="foo2_pag"></div> 
-    </div>
+
+<div class="row">  
+                                                                                                
+        <div class="span12">
+
+                <script type="text/javascript">
+                 $(document).ready(function() {
+                  $("#thumb_continent").carousel({
+                     interval: 5000
+                  });
+                 });
+                </script>
+
+                <div class="well">
+                      <div id="thumb_continent" class="carousel slide">
+                            <ol class="carousel-indicators">
+                              <li data-target="#thumb_continent" data-slide-to="0" class="active"></li>
+                              <li data-target="#thumb_continent" data-slide-to="1"></li>
+                            </ol>
+                            <div class="carousel-inner">
+
+                              <div class="item active">
+                                <div class="row-fluid" style="margin-left:110px">
+
+                                  <div class="span3">
+                                    <%= image_tag image_path('noord-amerika.png') %>                      
+                                    <h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
+                                  </div>
+
+                                  <div class="span3">
+                                     <%= image_tag image_path('zuid-amerika.png') %>
+                                    <h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
+                                  </div>
+                                  
+                                  <div class="span3">
+                                     <%= image_tag image_path('afrika.png') %>
+                                    <h3><%= link_to "Africa", :controller => "sightings", :action => "africa"%></h3>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              <div class="item">
+                                <div class="row-fluid" style="margin-left:110px">
+
+                                  <div class="span3">
+                                    <%= image_tag image_path('azie.png') %>                     
+                                    <h3><%= link_to "Asia", :controller => "sightings", :action => "asia"%></h3>
+                                  </div>      
+                             
+                                  <div class="span3">
+                                    <%= image_tag image_path('europa.png') %>                     
+                                    <h3><%= link_to "Europe", :controller => "sightings", :action => "europe"%></h3>
+                                  </div>                  
+                                  
+                                  <div class="span3">
+                                    <%= image_tag image_path('oceanie.png') %>
+                                    <h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
+                                  </div>  
+                                </div>
+                              </div>
+                                    
+                          </div>
+                         <a class="left carousel-control" href="#thumb_continent" data-slide="prev">‹</a>
+                         <a class="right carousel-control" href="#thumb_continent" data-slide="next">›</a>
+                    </div>
+                </div>
+      </div>
+
+</div>                   
+
+
+<div class="row hidden-phone">    
+  <div class="span12">
+
+      <style type="text/css">
+
+      svg {
+        width: 1280px;
+        height: 800px;
+        pointer-events: all;
+      }
+
+      circle {
+        fill: #1972E5;
+      }
+
+      path {
+        fill: #698dc5;
+        stroke: #fff;
+      }
+
+      </style>
+
+
+
+    <p><strong><u>Countries</u></strong></p>
     
+    <p>You can move the world!, drag with the mouse (i.e. clicking plus holding the button down and then moving it) the world map.</p>
 
-<style type="text/css">
+    <p>When you hover the mouse over each one of the countries, a tooltip will appear and will show the country's name. </p>
 
-svg {
-  width: 1280px;
-  height: 800px;
-  pointer-events: all;
-}
+    <p>Discover your country's maps by a simple mouse-click on the one which is of interest for you. </p>
 
-circle {
-  fill: #1972E5;
-}
 
-path {
-  fill: #698dc5;
-  stroke: #fff;
-}
 
-</style>
+    <div id="bodyworld" style="margin-left:-180px">  
+    </div>
 
-<div class="content_item">
-                  <p><strong><u>Countries</u></strong></p>
-                  
-                  <p>You can move the world!, drag with the mouse (i.e. clicking plus holding the button down and then moving it) the world map.</p>
+    <script type="text/javascript">
 
-                  <p>When you hover the mouse over each one of the countries, a tooltip will appear and will show the country's name. </p>
+    var feature;
 
-                  <p>Discover your country's maps by a simple mouse-click on the one which is of interest for you. </p>
+    var projection = d3.geo.azimuthal()
+        .scale(380)
+        .origin([-71.03,42.37])
+        .mode("orthographic")
+        .translate([640, 400]);
 
- </div>
+    var circle = d3.geo.greatCircle()
+        .origin(projection.origin());
 
-<div id="bodyworld" style="margin-left:-180px">  
+    // TODO fix d3.geo.azimuthal to be consistent with scale
+    var scale = {
+      orthographic: 380,
+      stereographic: 380,
+      gnomonic: 380,
+      equidistant: 380 / Math.PI * 2,
+      equalarea: 380 / Math.SQRT2
+    };
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var svg = d3.select("#bodyworld").append("svg:svg")
+        .attr("width", 1280)
+        .attr("height", 800)
+        .on("mousedown", mousedown);
+
+    d3.json("/assets/world-countries.json", function(collection) {
+        feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click);
+        feature.append("svg:title").text(function(d) { return d.properties.name; });
+    });
+
+    d3.select(window)
+        .on("mousemove", mousemove)
+        .on("mouseup", mouseup);    
+
+    d3.select("select").on("change", function() {
+      projection.mode(this.value).scale(scale[this.value]);
+      refresh(750);
+    });
+
+    var m0,
+        o0;
+
+    function mousedown() {
+      m0 = [d3.event.pageX, d3.event.pageY];
+      o0 = projection.origin();
+      d3.event.preventDefault();
+    }
+
+    function mousemove() {
+      if (m0) {
+        var m1 = [d3.event.pageX, d3.event.pageY],
+            o1 = [o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8];
+        projection.origin(o1);
+        circle.origin(o1)
+        refresh();
+      }
+    }
+
+    function mouseup() {
+      if (m0) {
+        mousemove();
+        m0 = null;
+      }
+    }
+
+    function refresh(duration) {
+      (duration ? feature.transition().duration(duration) : feature).attr("d", clip);
+    }
+
+    function clip(d) {
+        return path(circle.clip(d));
+    }
+
+
+    function click(d) {
+      window.location.href = '/sightings/country/' + d.id + '/' + d.properties.name;
+    }
+
+
+
+    </script>
+
+  </div>
 </div>
 
-<script type="text/javascript">
 
-var feature;
-
-var projection = d3.geo.azimuthal()
-    .scale(380)
-    .origin([-71.03,42.37])
-    .mode("orthographic")
-    .translate([640, 400]);
-
-var circle = d3.geo.greatCircle()
-    .origin(projection.origin());
-
-// TODO fix d3.geo.azimuthal to be consistent with scale
-var scale = {
-  orthographic: 380,
-  stereographic: 380,
-  gnomonic: 380,
-  equidistant: 380 / Math.PI * 2,
-  equalarea: 380 / Math.SQRT2
-};
-
-var path = d3.geo.path()
-    .projection(projection);
-
-var svg = d3.select("#bodyworld").append("svg:svg")
-    .attr("width", 1280)
-    .attr("height", 800)
-    .on("mousedown", mousedown);
-
-d3.json("/assets/world-countries.json", function(collection) {
-    feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click);
-    feature.append("svg:title").text(function(d) { return d.properties.name; });
-});
-
-d3.select(window)
-    .on("mousemove", mousemove)
-    .on("mouseup", mouseup);    
-
-d3.select("select").on("change", function() {
-  projection.mode(this.value).scale(scale[this.value]);
-  refresh(750);
-});
-
-var m0,
-    o0;
-
-function mousedown() {
-  m0 = [d3.event.pageX, d3.event.pageY];
-  o0 = projection.origin();
-  d3.event.preventDefault();
-}
-
-function mousemove() {
-  if (m0) {
-    var m1 = [d3.event.pageX, d3.event.pageY],
-        o1 = [o0[0] + (m0[0] - m1[0]) / 8, o0[1] + (m1[1] - m0[1]) / 8];
-    projection.origin(o1);
-    circle.origin(o1)
-    refresh();
-  }
-}
-
-function mouseup() {
-  if (m0) {
-    mousemove();
-    m0 = null;
-  }
-}
-
-function refresh(duration) {
-  (duration ? feature.transition().duration(duration) : feature).attr("d", clip);
-}
-
-function clip(d) {
-    return path(circle.clip(d));
-}
-
-
-function click(d) {
-  window.location.href = '/sightings/country/' + d.id + '/' + d.properties.name;
-}
-
-
-
-</script>
-<div class="content_item">
+<div class="row">    
+  <div class="span12">
                     <p>If you prefer, you can explore the latest sightings in your country on this list. Click on the names of the countries below</p>
+  </div>
 </div>                    
 
-<div class="content_item">
-<p><strong>North America</strong></p>
-<% @listaMapNorthAmerica.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
-<% end %>
-</div>
-
-<div class="content_item">
-<p><strong>South America</strong></p>
-<% @listaMapSouthAmerica.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
-<% end %>
-</div>
-
-<div class="content_item">
-<p><strong>Africa</strong></p>
-<% @listaMapAfrica.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
-<% end %>
-</div>
-
-<div class="content_item">
-<p><strong>Asia</strong></p>
-<% @listaMapAsia.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
-<% end %>
-</div>
-
-<div class="content_item">
-<p><strong>Europe</strong></p>
-<% @listaMapEurope.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
-<% end %>
-</div>
-
-<div class="content_item">
-<p><strong>Oceania</strong></p>
-<% @listaMapOceania.each do |ovni| %>
-              <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %>  | 
-<% end %>
-</div>
-
-
-
-
+<div class="row">    
+  <div class="span12">
+      <p><strong>North America</strong></br>
+      <% @listaMapNorthAmerica.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
+      <% end %></p>
+  </div>
 </div> 
+
+<div class="row">    
+  <div class="span12">
+      <p><strong>South America</strong></br>
+      <% @listaMapSouthAmerica.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
+      <% end %></p>
+  </div>
+</div>
+
+<div class="row">    
+  <div class="span12">
+      <p><strong>Africa</strong></br>
+      <% @listaMapAfrica.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
+      <% end %></p>
+  </div>
+</div>
+
+<div class="row">    
+  <div class="span12">
+      <p><strong>Asia</strong></br>
+      <% @listaMapAsia.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
+      <% end %></p>
+  </div>
+</div>
+
+<div class="row">    
+  <div class="span12">
+      <p><strong>Europe</strong></br>
+      <% @listaMapEurope.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> | 
+      <% end %></p>
+  </div>
+</div>
+
+<div class="row">    
+  <div class="span12">
+      <p><strong>Oceania</strong></br>
+      <% @listaMapOceania.each do |ovni| %>
+                    <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %>  | 
+      <% end %></p>
+  </div>
+</div>
+
+
+
+

@@ -46,10 +46,7 @@ gem 'prettyphoto-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'therubyracer'
+#gem 'therubyracer'
+gem 'therubyracer' #, :path => 'D:\cosas\PROYECTO\UFO_BOOSTRAP\therubyracer_for_windows-master', :platform => 'mingw'
 gem 'execjs'
  
-
-
-
-

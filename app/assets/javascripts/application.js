@@ -11,8 +11,8 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
-//= require twitter/bootstrap
 //= require jquery
-//= require prettyphoto-rails
 //= require jquery_ujs
+//= require prettyphoto-rails 
+//= require twitter/bootstrap
 //= require_tree .
