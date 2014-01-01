@@ -168,19 +168,19 @@
 				   							    image_urls.each do |img|
 
 				   							  
-				   							    	  if img_cont % 4 == 0 && img_cont ==0
+				   							    	  if img_cont % 3 == 0 && img_cont ==0
 				   							          %>	
-							   								<div class="item <%= "active" if img_cont == 0 %>" style="margin-left: 50px; margin-right: 50px;">
-							   								    <div class="row-fluid">								   								
+							   								<div class="item <%= "active" if img_cont == 0 %>">
+							   								    <div class="row-fluid" style="margin-left: 50px;">								   								
 						   						      <%
 									                  end
 										             
-										              if img_cont % 4 == 0 && img_cont !=0
+										              if img_cont % 3 == 0 && img_cont !=0
 				   							          %>	
 							   									</div>
 							   								</div>
-							   								<div class="item" style="margin-left: 50px; margin-right: 50px;">
-							   								    <div class="row-fluid">								   								
+							   								<div class="item">
+							   								    <div class="row-fluid" style="margin-left: 50px;">								   								
 						   						      <%
 									                  end
 										              %>				
