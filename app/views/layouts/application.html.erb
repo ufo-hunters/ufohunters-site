@@ -125,50 +125,51 @@
           <%
 
           video_thumb_list = video_list
-          video_cont = 0
+          
+          video_cont=0
+
           video_thumb_list.each do |thumb|
-            logger.info "links: " + thumb.links.to_s
+
             thumb.links.each do |link|
+
               if youtube_link? link
                 video_id = youtube_video_id(link)
                
                 if video_id
-                  logger.info "video id: " + video_id
-                  video_cont += 1
                   
-                  if video_cont % 4 == 0
-           
-      %>
-                <div class="item <%= "active" if video_cont == 0 %>">
-                  <div class="row-fluid">
+                      if video_cont % 4 == 0 && video_cont ==0
+                          %>  
+                            <div class="item <%= "active" if video_cont == 0 %>">
+                                <div class="row-fluid">                                 
+                          <%
+                      end
+                   
+                      if video_cont % 4 == 0 && video_cont !=0
+                          %>  
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="row-fluid">                                 
+                          <%
+                      end
+                          %>
+                            <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+                              <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+                              <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+                              <div><figure>
+                                <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
+                              </div>
+                            </div>
                   <%
-                  end
-                  %>
-                    <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-                      <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
-                      <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
-                      <div><figure>
-                        <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
-                      </div>
-                    </div>
-                  <%
-                  if video_cont % 4 == 0
-                  %>
-                  </div>
-                </div>
-                <%
-                  end
-                
-                  break
+                    video_cont += 1
                 end
               end
-            end
+            end                           
           end
-       %>
-            </div>
-            <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev">‹</a>
-            <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next">›</a>
-          </div>
+           %></div>
+                            </div><%
+       %>          
+         
         </div>
       </div>
     </div>

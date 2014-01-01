@@ -147,51 +147,61 @@
 				   			<p itemprop="articleBody"><%=@listaUFO.description.html_safe%></p>
 				   			<% unless @listaUFO.links.blank?	%>
 				   				<script type="text/javascript">
-			   					$(document).ready(function() {
-					   				$("#gallery").carouFredSel({
-					   					 item: 3,
-										    auto: {
-										    	button: "#gallery_play"
-										    },
-										    scroll: {
-										      duration: 1000,
-										      timeoutDuration: 2000
-										    }
-										}).trigger("pause");
-										$("#gallery a").prettyPhoto({
-											theme: "facebook",
-											changepicturecallback: function() {
-												$("#gallery").trigger("pause");
-											},
-											callback: function() {
-												$("#gallery").trigger("play");
-											}
-										});
-			   						//$("a[rel^='prettyPhoto']").prettyPhoto();
-									});
-									</script>
+			   					      $(document).ready(function() {
+						                  $("#gallery").carousel({
+						                     interval: 5000
+						                  });
+						              });
+								</script>
 				   				<h2>Related links</h2>
 				   				<%
 				   				image_urls, other_urls = select_url_images(@listaUFO.links)
 
 				   				unless image_urls.blank?
 				   				%>
-				   					<div class="image_carousel">
-				   						<div id="gallery">
-				   							<%
-				   							image_urls.each do |img|
-				   							%>	
-				   								<a rel="prettyPhoto" href="<%=img%>">
-				   									<figure>
-				            						<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
-				            						</figure>
-				        							</a>
-				        						<%
+				   					<div class="well">
+                      					<div id="gallery" class="carousel slide">
+                      						<div class="carousel-inner">
+				   							    <%
+				   							    img_cont = 0
+
+				   							    image_urls.each do |img|
+
+				   							  
+				   							    	  if img_cont % 4 == 0 && img_cont ==0
+				   							          %>	
+							   								<div class="item <%= "active" if img_cont == 0 %>">
+							   								    <div class="row-fluid">								   								
+						   						      <%
+									                  end
+										             
+										              if img_cont % 4 == 0 && img_cont !=0
+				   							          %>	
+							   									</div>
+							   								</div>
+							   								<div class="item">
+							   								    <div class="row-fluid">								   								
+						   						      <%
+									                  end
+										              %>				
+										              				<div class="span3">
+										              					<a rel="prettyPhoto" href="<%=img%>">
+									   										<figure>
+									            								<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
+									            							</figure>
+									        							</a>
+									        						</div>
+				        						      <%									                  
+
+									                  if img 
+				   							    	  	img_cont += 1
+									                  end
 				        					   end
 				        					   %>
-				   						</div>
-				   						<div class="clearfix"></div>
-				   						<a id="gallery_play" class="play" href="#"><span>&gt;</span></a>
+				        					   		  </div>
+				   									</div>
+				        					</div>
+				   						</div>				   						
 				   					</div>
 				   				<%
 				   				end
