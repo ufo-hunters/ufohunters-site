@@ -131,6 +131,12 @@ a:hover > circle {
     position: relative;
     font: bold 120% Arial,Helvetica,sans-serif;
 }
+.navbar-inverse{
+    background-color: #D7DF21;
+}
+.navbar-inner {
+    background-color: #D7DF21;
+}    
 .navbar-inverse .btn-navbar {
     background-color: #D7DF21;
     background-image: linear-gradient(to bottom, #BBC31C, #D7DF21);
@@ -144,6 +150,8 @@ a:hover > circle {
 }
 .navbar-inverse .navbar-inner {
     background-color: #D7DF21;
+    background: #D7DF21;
+    layer-background-color: #D7DF21;
     background-image: linear-gradient(to bottom, #D7DF21, #D7DF21);
     background-repeat: repeat-x;
     border-color: #D7DF21;
