@@ -5,6 +5,7 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="text/html; charset=utf-8" http-equiv="content-type" /> 
   <meta name='keywords' content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports'/>
   <meta name='description' content='<%= @page_description %>'/>
@@ -13,15 +14,15 @@
   <meta property="og:site_name" content="<%= @page_title %> - UFO Hunters"/>      
   <meta property="og:description" content="<%= @page_description %>"/>
   <meta property="og:image" content="http://www.ufo-hunters.com/usa/20130807/ufo_sighting_in_deltona_florida.png" />
-  <meta content="en_US" property="og:locale"/>
+  <meta property="og:locale" content="en_US" />
   <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" /> 
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>    
   <script type="text/javascript">var switchTo5x=true;</script>                 
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-<link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
+  <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
 </head>
-<body  onload="init()" itemscope itemtype="http://schema.org/WebPage">
+<body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
@@ -34,47 +35,46 @@
   <div class="container">
 
     <header itemscope itemtype="http://schema.org/WPHeader">
-  	    <div class="row">
-		         <div class="span3">
-          			<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
-          	 </div>
+  	  <div class="row">
+		    <div class="span3">
+      		<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
+        </div>
 
-		         <div class="span4">
-          			<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
-			       </div>
+		    <div class="span4">
+        	<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
+			  </div>
 	           
-              <div class="span4" style="margin-top:20px;margin-bottom:10px;">  
-                <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
-             </div>
+        <div class="span4" style="margin-top:20px;margin-bottom:10px;">  
+          <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
+        </div>
 
-			       <div class="span1">	  
-				          <!-- AddThis Smart Layers BEGIN -->
-                  <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
-                  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
-                  <script type="text/javascript">
-                    addthis.layers({
-                      'theme' : 'transparent',
-                      'share' : {
-                        'position' : 'right',
-                        'numPreferredServices' : 4
-                      }, 
-                      'follow' : {
-                        'services' : [
-                          {'service': 'facebook', 'id': 'UfoHuntersCom'},
-                          {'service': 'twitter', 'id': 'UfoHuntersCom'},
-                          {'service': 'google_follow', 'id': '+UfohuntersCom'}
-                        ]
-                      }   
-                    });
-                  </script>
-                  <!-- AddThis Smart Layers END -->
-			       </div>
-    			 
-	    </div>
+			  <div class="span1">	  
+				  <!-- AddThis Smart Layers BEGIN -->
+          <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+          <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
+          <script type="text/javascript">
+            addthis.layers({
+              'theme' : 'transparent',
+              'share' : {
+                'position' : 'right',
+                'numPreferredServices' : 4
+              }, 
+              'follow' : {
+                'services' : [
+                  {'service': 'facebook', 'id': 'UfoHuntersCom'},
+                  {'service': 'twitter', 'id': 'UfoHuntersCom'},
+                  {'service': 'google_follow', 'id': '+UfohuntersCom'}
+                ]
+              }   
+            });
+          </script>
+          <!-- AddThis Smart Layers END -->
+			  </div>
+      </div>
 	  </header>
 	
 	  <div class="row">
-	    <div class="navbar navbar-inverse">
+      <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -101,12 +101,12 @@
 	
 	  <%= yield %>
 	
-     <script type="text/javascript">
-     $(document).ready(function() {
+    <script type="text/javascript">
+    $(document).ready(function() {
       $("#video_thumb_carousel").carousel({
-         interval: 10000
+        interval: 10000
       });
-     });
+    });
     </script>
   
     <div class="row">
