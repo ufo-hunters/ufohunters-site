@@ -3,7 +3,7 @@
 		
 		    var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
+		    var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
 		                   iconSize, iconOffset);
 		    var zoom, center, currentPopup, map, lyrMarkers;
 		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
@@ -53,7 +53,7 @@
 		    function init() {
 		        
 				    var zoom           = 1;
-				 
+				 	
 				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
 				
@@ -88,24 +88,7 @@
 		
 		      }
 
-			    $(document).ready(function() {
-
-					$("#mycarousel").carouFredSel({
-						width: 850,
-						height: 85,
-						direction: "left",
-						items: {
-							visible: 4,
-							minimum: 10,
-						},
-						scroll: {
-							items: 1,
-							duration: 1000
-						},
-						auto: 3000			
-					});
-				}); 
-
+			    
 		</script>
 
     <%#=	render :partial => 'common/gcs' %>
@@ -131,23 +114,68 @@
             </div>
 		</div>
 		
-		<div class="row hidden-phone">
+		<div class="row">
 		  <div class="span12">				
 			  <div itemscope itemtype="http://schema.org/ItemList">
 				  <meta itemprop="itemListOrder" content="Descending"/>
-					<% for i in 0..19 %>
-					  <div class="sighting_carousel" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
-					    <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
-					    <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
-					  </div>
-					<% end %>
+					
+							<script type="text/javascript">
+			   					      $(document).ready(function() {
+						                  $("#mycarousel").carousel({
+						                     interval: 10000
+						                  });
+						              });
+							</script>
+							<meta itemprop="itemListOrder" content="Descending"/>
+							<div class="well">
+              					<div id="mycarousel" class="carousel slide">
+              						<div class="carousel-inner" itemscope itemtype="http://schema.org/ItemList">
+              								<% 
+												vid_cont = 0
+
+												for i in 0..49 
+
+													if vid_cont % 5 == 0 && vid_cont ==0
+				   							          %>	
+							   								<div class="item <%= "active" if vid_cont == 0 %>">
+							   								    <div class="row-fluid" style="margin-left:80px">								   								
+						   						      <%
+									                end
+										             
+										            if vid_cont % 5 == 0 && vid_cont !=0
+				   							          %>	
+							   									</div>
+							   								</div>
+							   								<div class="item">
+							   								    <div class="row-fluid" style="margin-left:80px">								   								
+						   						      <%
+									                end
+
+																	%>
+																	<div class="span2" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article" style="margin-bottom:10px"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
+																		    <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
+																		    <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
+																	</div>
+											<% 		vid_cont += 1
+
+												end 
+
+													%>
+													 			</div>
+				   											</div>
+									</div>
+									<a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
+                         		    <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
+								</div>
+							</div>
+
 				</div>
 			</div>
     </div>
 
 		<div class="row">
 		  <div class="span12">
-		    <div id="basicMap" style="width: 100%; height: 450px;"></div>
+		    <div id="basicMap" style="width: 85%; height: 550px;"></div>
 		  </div>
 		</div>			   
 		

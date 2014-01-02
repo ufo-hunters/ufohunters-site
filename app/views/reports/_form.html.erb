@@ -21,9 +21,10 @@ $(document).ready(function(){
           </div>          
   </div>
 
+<%= form_for(@report) do |f| %>
+
   <div> 
-          <div class="span12">
-                          <%= form_for(@report) do |f| %>
+          <div class="span12">                          
                               <% if @report.errors.any? %>
                                 <div id="error_explanation">
                                   <h2><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
@@ -99,13 +100,13 @@ $(document).ready(function(){
   </div>
   <div class="row"> 
           <div class="span4">
-                              <input type="submit" value="SEND UFO'S REPORT" name="commit">
+                              <input type="submit" class="submit-button" value="SEND UFO'S REPORT" name="commit">
           </div>      
           <div class="span3"></br>
           </div>            
   </div>
 
-                          <% end %>
+<% end %>
 
                 
     
