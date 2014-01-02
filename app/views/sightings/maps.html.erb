@@ -148,7 +148,8 @@
     var svg = d3.select("#bodyworld").append("svg:svg")
         .attr("width", 1280)
         .attr("height", 800)
-        .on("mousedown", mousedown);
+        .on("mousedown", mousedown)
+        .on("mousedown.drag", mousedown);
 
     d3.json("/assets/world-countries.json", function(collection) {
         feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click);
