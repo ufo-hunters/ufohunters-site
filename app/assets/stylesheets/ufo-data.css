@@ -137,6 +137,9 @@ a:hover > circle {
 .navbar-inner {
     background-color: #D7DF21;
 }    
+.btn-navbar {
+    background-color: #D7DF21;
+}  
 .navbar-inverse .btn-navbar {
     background-color: #D7DF21;
     background-image: linear-gradient(to bottom, #BBC31C, #D7DF21);
@@ -224,6 +227,7 @@ ul#menunew li a:hover {
     border-radius: 5px;
     border: 1px solid #D7DF21;
     /*padding:0 3px 0 3px;*/
+    font-weight: bold;
     display:inline-block;
     text-decoration:none;
     background:#D7DF21;
