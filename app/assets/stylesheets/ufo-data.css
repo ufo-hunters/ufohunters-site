@@ -215,3 +215,25 @@ ul#menunew li a:hover {
     width: 92%;
     height: 92%;
 }
+
+/*styles button send report*/
+
+.submit-button {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #D7DF21;
+    /*padding:0 3px 0 3px;*/
+    display:inline-block;
+    text-decoration:none;
+    background:#D7DF21;
+    margin:50px;
+    padding:10px;
+    cursor:pointer;
+}
+
+.submit-button:hover { 
+    text-decoration:none; 
+    cursor:pointer;
+    border:1px solid gray;
+}
