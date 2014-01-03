@@ -138,10 +138,12 @@ a:hover > circle {
     background-color: #D7DF21;
 }    
 .btn-navbar {
-    background-color: #D7DF21;
+    background-color: #BBC31C;
 }  
 .navbar-inverse .btn-navbar {
-    background-color: #D7DF21;
+    background-color: #BBC31C;
+    background: #BBC31C;
+    layer-background-color: #BBC31C;
     background-image: linear-gradient(to bottom, #BBC31C, #D7DF21);
     background-repeat: repeat-x;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
