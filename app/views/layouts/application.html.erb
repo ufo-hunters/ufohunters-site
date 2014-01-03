@@ -5,7 +5,6 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content="text/html; charset=utf-8" http-equiv="content-type" /> 
   <meta name='keywords' content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports'/>
   <meta name='description' content='<%= @page_description %>'/>
@@ -23,6 +22,7 @@
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
   <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
 </head>
+
 <body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
@@ -84,17 +84,17 @@
               <span class="icon-bar"></span>
             </a>
             <!--a class="brand" href="#">Some Store</a-->
-	          <nav class="nav-collapse">
-		          <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
-			          <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
-			          <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
+            <nav class="nav-collapse">
+              <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
+                <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
                 <li <%if @menu.blank? == false && @menu == "northamerica"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>North America</div>"), {:controller => "sightings", :action => "northamerica"}, :itemprop => "url")%></li>
-			          <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
-			          <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
-			          <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
-			          <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
               </ul>
-	          </nav>
+            </nav>
 	        </div>
 	      </div>
 	    </div>
@@ -123,53 +123,59 @@
               <li data-target="#video_thumb_carousel" data-slide-to="4"></li>
             </ol>
             <div class="carousel-inner">
-          <%
+              <%
+              video_thumb_list = video_list
+              video_cont = 0
+              
+              video_thumb_list.each do |thumb|
+                thumb.links.each do |link|
+                  if youtube_link? link
+                    video_id = youtube_video_id(link)
 
-          video_thumb_list = video_list
-          
-          video_cont=0
-
-          video_thumb_list.each do |thumb|
-
-            thumb.links.each do |link|
-
-              if youtube_link? link
-                video_id = youtube_video_id(link)
-               
-                if video_id
+                    if video_id
                   
-                      if video_cont % 4 == 0 && video_cont ==0
-                          %>  
-                            <div class="item <%= "active" if video_cont == 0 %>">
-                                <div class="row-fluid">                                 
-                          <%
+                      if video_cont % 4 == 0
+              %>
+                        <div class="item <%= "active" if video_cont == 0 %>">
+                          <div class="row-fluid">
+              <%
                       end
-                   
-                      if video_cont % 4 == 0 && video_cont !=0
-                          %>  
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="row-fluid">                                 
-                          <%
-                      end
-                          %>
+              %>
                             <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
                               <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
                               <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
-                              <div><figure>
-                                <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
+                              <div>
+                                <figure>
+                                <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
+                                </figure>
                               </div>
                             </div>
-                  <%
-                    video_cont += 1
-                end
+              <%
+                      video_cont += 1
+
+                      if video_cont % 4 == 0 
+              %>
+                          </div>
+                        </div>
+              <%
+                      end
+
+                    end
+                  end
+                end                           
               end
-            end                           
-          end
-           %></div>
-                            </div><%
-       %>          
+              
+              if video_cont % 4 != 0 
+              %>
+                          </div>
+                        </div>
+              <%
+              end
+
+              %>
+            </div>
+          </div>
+
          
         </div>
         <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev">‹</a>
@@ -182,7 +188,7 @@
 		  <div class="span3"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
 	    <div class="span3"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
       <div class="span3"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
-	   </footer>
+    </footer>
 	
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
