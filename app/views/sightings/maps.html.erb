@@ -25,27 +25,24 @@
                 </script>
 
                 <div class="well">
-                      <div id="thumb_continent" class="carousel slide">
-                            <ol class="carousel-indicators">
-                              <li data-target="#thumb_continent" data-slide-to="0" class="active"></li>
-                              <li data-target="#thumb_continent" data-slide-to="1"></li>
-                            </ol>
-                            <div class="carousel-inner">
+                      <div id="thumb_continent" class="carousel slide" style="margin-bottom: 0px;">
+                            
+                            <div class="carousel-inner" style="width:80%;margin:auto;">
 
                               <div class="item active">
-                                <div class="row-fluid" style="margin-left:110px">
+                                <div class="row-fluid">
 
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                     <%= image_tag image_path('noord-amerika.png') %>                      
                                     <h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
                                   </div>
 
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                      <%= image_tag image_path('zuid-amerika.png') %>
                                     <h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
                                   </div>
                                   
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                      <%= image_tag image_path('afrika.png') %>
                                     <h3><%= link_to "Africa", :controller => "sightings", :action => "africa"%></h3>
                                   </div>
@@ -54,19 +51,19 @@
                               </div>
 
                               <div class="item">
-                                <div class="row-fluid" style="margin-left:110px">
+                                <div class="row-fluid">
 
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                     <%= image_tag image_path('azie.png') %>                     
                                     <h3><%= link_to "Asia", :controller => "sightings", :action => "asia"%></h3>
                                   </div>      
                              
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                     <%= image_tag image_path('europa.png') %>                     
                                     <h3><%= link_to "Europe", :controller => "sightings", :action => "europe"%></h3>
                                   </div>                  
                                   
-                                  <div class="span3">
+                                  <div class="span4" style="text-align:center">
                                     <%= image_tag image_path('oceanie.png') %>
                                     <h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
                                   </div>  

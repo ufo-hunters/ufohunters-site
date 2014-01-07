@@ -30,6 +30,14 @@ h2 {
 h3 {
     font: 170% Arial,Helvetica,sans-serif;
 }
+a {
+    color: #959C16;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: #7D8212;
+    text-decoration: underline;
+}
 .top {
     text-align: left;
     width: 85%;

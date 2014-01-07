@@ -106,53 +106,58 @@
 					<script type="text/javascript">
 			   	  $(document).ready(function() {
 					    $("#mycarousel").carousel({
-					      interval: 10000
+					      interval: 10000;
 					    });
 					  });
 					</script>
 					
-					<div class="well">
-          	<div id="mycarousel" class="carousel slide">
-          		<div class="carousel-inner">
-          			<% 
-									recent_sighting_cont = 0
+				<div class="well">
+		          	<div id="mycarousel" class="carousel slide">
+		          		<div class="carousel-inner" style="width:80%;margin:auto;">
+          									<% 
+												recent_sighting_cont = 0
 
-									for i in 0..19 
+												for i in 0..79 
 
-										if recent_sighting_cont % 4 == 0
-				        %>	
-											<div class="item <%= "active" if recent_sighting_cont == 0 %>">
-										    <div class="row-fluid">								   								
-                <%
-								    end
-								%>
-                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article" style="margin-bottom:10px"><strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
-                            <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
-                            <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
-                          </div>
-                <%
-                    recent_sighting_cont += 1
+													if recent_sighting_cont % 4 == 0
+							                %>	
+														<div class="item <%= "active" if recent_sighting_cont == 0 %>">
+													    <div class="row-fluid">								   								
+			                                <%
+											    end
+											%>
+							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
-                    if recent_sighting_cont % 4 == 0 
-              %>
-                        </div>
-                      </div>
-              <%
-                    end
-                  end
+							                          	<div style="width:85%;margin-left:auto;margin-bottom:10px">
+								                          	<strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
+								                            <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
+								                            <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
+							                        	</div>
 
-                  if recent_sighting_cont % 4 != 0 
-              %>
-                        </div>
-                      </div>
-              <%
-                  end 
-              %>
-              </div>
-              <a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
-              <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
-            </div>
-          </div>
+							                          </div>
+							                <%
+							                    recent_sighting_cont += 1
+
+							                    if recent_sighting_cont % 4 == 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                    end
+							                  end
+
+							                  if recent_sighting_cont % 4 != 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                  end 
+							                %>
+	                    </div>
+	                <a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
+	                <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
+	               </div>
+	            </div>
           
 				</div>
 			</div>
