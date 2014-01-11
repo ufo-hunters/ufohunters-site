@@ -36,7 +36,7 @@
   <div class="container">
 
     <header itemscope itemtype="http://schema.org/WPHeader">
-  	  <div class="row">
+  	  <div class="row hidden-phone">
 		    <div class="span3">
       		<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
         </div>
@@ -83,8 +83,9 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </a>
-            <!--a class="brand" href="#">Some Store</a-->
+            <a class="visible-phone" href="#"><%= image_tag image_path('navicon.png') %></a>
             <nav class="nav-collapse">
+              
               <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
