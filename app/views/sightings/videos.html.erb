@@ -5,7 +5,7 @@
 		
 		    var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
+		    var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
 		                   iconSize, iconOffset);
 		    var zoom, center, currentPopup, map, lyrMarkers;
 		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
@@ -90,54 +90,106 @@
 		
 		      }
 
-			    $(document).ready(function() {
-
-					$("#mycarousel").carouFredSel({
-						width: 850,
-						height: 85,
-						direction: "left",
-						items: {
-							visible: 4,
-							minimum: 10,
-						},
-						scroll: {
-							items: 1,
-							duration: 1000
-						},
-						auto: 3000			
-					});
-				}); 
-
+			   
 		</script>
 
 
 
-	<div id="site_content">	
-		
-				<div id="content">
-				
-					   <div class="content_item">
+	<div class="row">
+		<div class="span12">	
 							<h3>Recent UFO Activity</h3>
 							<p>100 latest UFO sightings videos all over the world</p>
-						
-							<div id="mycarousel">
-								<% for i in 0..19 %>
-									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%= format_date @listaUFO[i].sighted_at %><br/>
-									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i])  %></strong>
-									</div>
-								<% end %>
-							</div>
-					   </div>
-
-					   <div class="content_item">
-							<div id="basicMap" style="width: 900px; height: 450px;"></div>
-					   </div>
-					   
-					   <div class="content_item">								
-									<p>Click the icons in the map to access the sightings reports and <strong>watch the videos</strong> submitted by the witnesses. Judge yourself and share your opinion with the community.</p>
-						</div>
-				</div>
 		</div>
-</div> 
+	</div>
+
+	<div class="row">
+		<div class="span12">	
+							<script type="text/javascript">
+			   					      $(document).ready(function() {
+						                  $("#mycarousel").carousel({
+						                     interval: 10000
+						                  });
+						              });
+							</script>
+							<meta itemprop="itemListOrder" content="Descending"/>
+							<div class="well">
+              					<div id="mycarousel" class="carousel slide" style="margin-bottom: 0px;">
+              						<div class="carousel-inner" style="width:80%;margin:auto;">
+			          			            <% 
+												recent_sighting_cont = 0
+
+												for i in 0..79 
+
+													if recent_sighting_cont % 4 == 0
+							                %>	
+														<div class="item <%= "active" if recent_sighting_cont == 0 %>">
+													    <div class="row-fluid">								   								
+			                                <%
+											    end
+											%>
+							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+
+							                          	<div style="width:85%;margin-left:auto;margin-bottom:10px">
+								                          	<strong itemprop="name"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></strong><br/>
+								                            <span itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>"><%= format_date @listaUFO[i].sighted_at %></span><br/>
+								                            <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
+							                        	</div>
+
+							                          </div>
+							                <%
+							                    recent_sighting_cont += 1
+
+							                    if recent_sighting_cont % 4 == 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                    end
+							                  end
+
+							                  if recent_sighting_cont % 4 != 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                  end 
+							                %>
+							        </div>
+									<a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
+                         		    <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
+								</div>
+							</div>
+    	</div>
+	</div>					   
+    
+    <div class="row">
+		  <div class="span12">	
+		  	<p>Click the icons in the map to access the sightings reports and <strong>watch the videos</strong> submitted by the witnesses. Judge yourself and share your opinion with the community.</p>
+		  </div>
+    </div>
+	
+	<div class="row">
+		<div class="span12">	
+							<div id="basicMap" style="width: 85%; height: 550px;"></div>
+		</div>					   					  
+	</div>
+
+	<div class="row hidden-phone" style="margin-top: 20px;margin-bottom: 20px">
+				    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" style="margin-left:auto;height:90px;text-align:center;margin-right:auto">
+							<script type="text/javascript"><!--
+								google_ad_client = "ca-pub-4760111415025425";
+								/* Enlaces en la Home */
+								google_ad_slot = "2151939683";
+								google_ad_width = 970;
+								google_ad_height = 90;
+								//-->
+							</script>
+							<script type="text/javascript"
+								src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+							</script>
+
+				    </div>
+	</div>
+
+ 
 

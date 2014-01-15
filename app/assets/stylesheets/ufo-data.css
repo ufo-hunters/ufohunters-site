@@ -11,6 +11,33 @@ h1 {
     color: #fefefe;
 }
 */
+body {
+    font: 80% Arial,Helvetica,sans-serif;
+}
+
+h1 {
+    color: #1D1D1D;
+    font: 175% Arial,Helvetica,sans-serif;
+    letter-spacing: -1px;
+    margin: 0 0 10px;
+    text-shadow: 1px 1px #FFFFFF;
+}
+h2 {
+    font: 155% Arial,Helvetica,sans-serif;
+    margin-top: 25px;
+    letter-spacing: -1px;
+}
+h3 {
+    font: 170% Arial,Helvetica,sans-serif;
+}
+a {
+    color: #959C16;
+    text-decoration: none;
+}
+a:hover, a:focus {
+    color: #7D8212;
+    text-decoration: underline;
+}
 .top {
     text-align: left;
     width: 85%;
@@ -72,8 +99,14 @@ a:hover {
 */
 article {
       margin: auto auto auto auto;
-      text-align: center;
+      text-align: left;
 }
+
+.span9 article{
+      margin: auto auto auto auto;
+      text-align: left;
+}
+
 
 svg {
       margin: 0 auto 20px auto;
@@ -96,4 +129,125 @@ a:visited > circle {
 
 a:hover > circle {
       stroke: #000;
+}
+.navbar .nav {
+    display: block;
+    float: left;
+    font: bold 120% Arial,Helvetica,sans-serif;
+    left: 0;
+    margin: 5px 10px 5px 0;
+    position: relative;
+    font: bold 120% Arial,Helvetica,sans-serif;
+}
+.navbar-inverse{
+    background-color: #D7DF21;
+}
+.navbar-inner {
+    background-color: #D7DF21;
+}    
+.btn-navbar {
+    background-color: #BBC31C;
+}  
+.navbar-inverse .btn-navbar {
+    background-color: #BBC31C;
+    background: #BBC31C;
+    layer-background-color: #BBC31C;
+    background-image: linear-gradient(to bottom, #BBC31C, #D7DF21);
+    background-repeat: repeat-x;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0);
+}
+.navbar-inverse .btn-navbar:hover {
+    background-color: #D7DF21;
+}
+.navbar-inverse .navbar-inner {
+    background-color: #D7DF21;
+    background: #D7DF21;
+    layer-background-color: #D7DF21;
+    background-image: linear-gradient(to bottom, #D7DF21, #D7DF21);
+    background-repeat: repeat-x;
+    border-color: #D7DF21;
+}
+ul#menunew li.active a {
+    background: linear-gradient(#FFFFFF, #FFFFFF) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    background-color: #FFFFFF;
+    color: #1D1D1D;
+    text-shadow: none;
+    border-radius: 14px;
+}
+ul#menunew li a {
+    color: #1D1D1D;
+    text-shadow: none;
+    border-radius: 14px;
+}
+ul#menunew li a:hover {
+    background-color: #D7DF21;
+    color: #1D1D1D;
+    text-shadow: none;
+    border-radius: 14px;
+}
+.navbar-inverse .brand, .navbar-inverse .nav > li > a {
+    color: #000000;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0);
+}
+.footer {
+      background-color: #1D1D1D;
+      color: #D7DF21;
+      font-color: #D7DF21;
+      text-align: center;
+}
+.footer a{
+      color: #D7DF21;
+      font-color: #D7DF21;
+}
+.footer div{
+      height: 50px;
+      padding-top: 25px;
+      /*padding-left: 10px;*/
+}      
+.postfooter {
+      height: 100px;
+}
+.table thead th {
+    background-color: #D7DF21;
+}
+
+.player {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px; height: 0; overflow: hidden;
+}
+ 
+.player iframe,
+.player object,
+.player embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 92%;
+    height: 92%;
+}
+
+/*styles button send report*/
+
+.submit-button {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #D7DF21;
+    /*padding:0 3px 0 3px;*/
+    font-weight: bold;
+    display:inline-block;
+    text-decoration:none;
+    background:#D7DF21;
+    margin:50px;
+    padding:10px;
+    cursor:pointer;
+}
+
+.submit-button:hover { 
+    text-decoration:none; 
+    cursor:pointer;
+    border:1px solid gray;
 }

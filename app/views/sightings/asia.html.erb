@@ -5,7 +5,7 @@
 		
 			var iconSize = new OpenLayers.Size(22, 22);
 		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('ufo_marker.png') %>",
+		    var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
 		                   iconSize, iconOffset);
 		    var zoom, center, currentPopup, map, lyrMarkers;
 		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
@@ -79,63 +79,109 @@
 		
 		      }
 		      
-		      $(function(){
-				
-						$("#mostrar").click(function(event) {
-							var texto = "CLOSE" ;
-							if($("#mostrar").text()=='SHOW') texto = "CLOSE";
-							if($("#mostrar").text()=='CLOSE') texto = "SHOW";
-							
-							event.preventDefault();
-							$("#ufolist").slideToggle(5000);
-							$("#mostrar").text(texto);
-						});						
-						
-				});
-		       $(document).ready(function() {
-
-					// Using default configuration
-					$("#mycarousel").carouFredSel({
-						width: 850,
-						height: 85,
-						direction: "left",
-						items: {
-							visible: 4,
-							minimum: 10,
-						},
-						scroll: {
-							items: 1,
-							duration: 1000
-						},
-						auto: 3000			
-					});
-				}); 
+		   
 		</script>
 
 
 
-	<div id="site_content">			
-
-	 	  <div id="content">
-	 			<div class="content_item">
-							<h3>Latest sightings in Asia</h3>
-							<p>20 latest UFO sightings</p>
-						
-							<div id="mycarousel">
-								<% for i in 0..19 %>
-									<div class="sighting_carousel"><strong><%=@listaUFO[i].location%></strong><br/>
-									<%= format_date @listaUFO[i].sighted_at %><br/>
-									<strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></strong>
-									</div>
-								<% end %>
-							</div>
-					   </div>
-			   <div class="content_item">
-					<div id="basicMap" style="width: 900px; height: 550px;"></div>
-			   </div>
-			   
-          </div>
-        
-        
+	<div class="row">
+			<div class="span12">
+							<h3>Latest sightings in Asia</h3>							
+			</div>			   
     </div>
-</div> 
+							
+	<div class="row">
+			<div class="span12">
+					<div id="basicMap" style="width: 100%; height: 550px;"></div>
+			</div>			   
+    </div>
+
+    <div class="row hidden-phone" style="margin-top: 20px;margin-bottom: 20px">
+				    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" style="margin-left:auto;height:90px;text-align:center;margin-right:auto">
+							<script type="text/javascript"><!--
+								google_ad_client = "ca-pub-4760111415025425";
+								/* Enlaces en la Home */
+								google_ad_slot = "2151939683";
+								google_ad_width = 970;
+								google_ad_height = 90;
+								//-->
+							</script>
+							<script type="text/javascript"
+								src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+							</script>
+
+				    </div>
+	</div>
+    
+    <div class="row">                                                                              
+		<div class="span12">
+ 		 	<h3>100 latest UFO sightings:</h3>
+ 		</div>
+	</div>
+
+	<div class="row">
+				<div class="span8">
+				<% 
+		     	if @listaUFO
+		     	%>	
+		     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
+		     			
+				      			<table class="table table-responsive table-striped">
+				      				<thead>
+											<tr>
+													<th>Location
+													</th>
+													<th>Sighted on
+													</th>
+													<th>Shape
+													</th>
+													<th class="hidden-phone">Duration
+													</th>
+											</tr>
+									</thead>
+									<tbody>
+							     	<% 
+							      	# In order to avoid the same sighting as nearest sighting
+							      	@listaUFO.each do |ovni|
+										%>
+							    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
+								         		<td itemprop="name">
+								         			<%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %>
+								         		</td>
+								         		<td itemprop="dateCreated" content="<%= format_date_microdata ovni.sighted_at %>">
+									    			<%= format_date ovni.sighted_at %>
+									    		</td>
+									    		<td>
+									    			<%=ovni.shape%>
+								         		</td>
+								         		<td class="hidden-phone">
+									    			<%= ovni.duration %>
+								         		</td>
+											</tr>
+									<% 
+									end 
+
+									%>
+								    </tbody>
+								</table>
+					</div>
+ 				
+		     	<%
+		        end
+		        %>
+			    </div>
+			    <div class="span4 hidden-phone">
+
+			 						<script type="text/javascript"><!--
+										google_ad_client = "ca-pub-4760111415025425";
+										google_ad_slot = "2708512888";
+										google_ad_width = 300;
+										google_ad_height = 600;
+										//-->
+									</script>
+										<script type="text/javascript"
+										src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+									</script>
+			    </div>
+	 </div>
+
