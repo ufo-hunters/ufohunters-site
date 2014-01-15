@@ -171,24 +171,24 @@
 		
 		<div class="row">
 		  <div class="span12">
-				<p>The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p>If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
 			</div>
 		</div>
 
-    <div class="row">
-			<div class="span4">
+    <div class="row" style="background-color:#e9e9e9;">
+			<div class="span4" style="text-align: center; margin-top: 15px">
 				<%= image_tag image_path('world.png') %>
 				<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>
-				<p>Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
 			</div>
-			<div class="span4">
+			<div class="span4" style="text-align: center; margin-top: 15px">
 				<%= image_tag image_path('ufo.png') %>
 				<h3><%= link_to "Have you seen a UFO?", :controller => "reports", :action => "new"%></h3>
-				<p>Be quiet, you are not alone. Thousands of people have experienced the same before.
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Be quiet, you are not alone. Thousands of people have experienced the same before.
 			</div>		
-			<div class="span4">
-				<%= image_tag image_path('share.png') %>
-				<h3>Share your experience</h3>
-				<p>Share your experience in one simple step and make it available to everyone.
+			<div class="span4" style="text-align: center; margin-top: 15px">
+				<%= image_tag image_path('android.png') %>
+				<h3>UFO Hunters App</h3>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Download our App and take a look at the most recent sightings, or those near you.
 			</div>
 	  </div>
