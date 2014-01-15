@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html lang="en">
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
@@ -111,18 +111,19 @@
     });
     </script>
   
-    <div class="row" style="background-color:#d7df21;">
+    <div class="row" style="background-color:#d7df21;margin-top: 45px">
       <div class="span12" itemscope itemtype="http://schema.org/ItemList">
         <meta itemprop="itemListOrder" content="Descending"/>
         <div>
           <div id="video_thumb_carousel" class="carousel slide">
-            <ol class="carousel-indicators">
+           <!-- <ol class="carousel-indicators">
               <li data-target="#video_thumb_carousel" data-slide-to="0" class="active"></li>
               <li data-target="#video_thumb_carousel" data-slide-to="1"></li>
               <li data-target="#video_thumb_carousel" data-slide-to="2"></li>
               <li data-target="#video_thumb_carousel" data-slide-to="3"></li>
               <li data-target="#video_thumb_carousel" data-slide-to="4"></li>
             </ol>
+			-->
             <div class="carousel-inner">
               <%
               video_thumb_list = video_list
@@ -143,7 +144,7 @@
                       end
               %>
                             <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-                              <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+                              <h4 itemprop="name" style=" overflow: hidden;text-overflow: ellipsis;text-align: center"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
                               <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
                               <div>
                                 <figure>
@@ -175,8 +176,8 @@
 
               %>
             </div>
-            <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev">‹</a>
-            <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next">›</a>
+            <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev" style="top: 61%;left: -15px">â€¹</a>
+            <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next" style="top: 61%">â€º</a>
           </div>
          
         </div>
