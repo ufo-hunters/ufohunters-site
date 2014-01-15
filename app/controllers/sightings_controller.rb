@@ -110,7 +110,7 @@ class SightingsController < ApplicationController
             [-169.45, 71.41]]
       }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100)
       @numUFO = Report.where(:status => 1).count()
-      @menu = "maps"
+      @menu = "northamerica"
       @page_title = "UFO Sightings in North America"
       @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
 

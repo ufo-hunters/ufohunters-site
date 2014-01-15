@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
@@ -13,14 +13,16 @@
   <meta property="og:site_name" content="<%= @page_title %> - UFO Hunters"/>      
   <meta property="og:description" content="<%= @page_description %>"/>
   <meta property="og:image" content="http://www.ufo-hunters.com/usa/20130807/ufo_sighting_in_deltona_florida.png" />
-  <meta content="en_US" property="og:locale"/>
-  <link href="<%= image_path('favicon.ico') %>" rel="shortcut icon" /> 
+  <meta property="og:locale" content="en_US" />
+  <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>    
   <script type="text/javascript">var switchTo5x=true;</script>                 
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
-<link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
+  <link media="screen" type="text/css" rel="stylesheet" href="http://w.sharethis.com/gallery/shareegg/shareegg.css"></link>  
 </head>
+
 <body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
@@ -30,136 +32,180 @@
 	  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
 	  fjs.parentNode.insertBefore(js, fjs);
 	}(document, 'script', 'facebook-jssdk'));</script>
-<div id="main">
-	<div id="header" itemscope itemtype="http://schema.org/WPHeader">
-		<div id="banner">
-			<div id="welcome">				
-				<div style="float:left;"><h1>UFO Hunters</h1></div>
-				<div id="follow_us">
-					<div class="fb-like-box" style="display:inline;" data-href="http://www.facebook.com/UfoHuntersCom" data-width="202" data-show-faces="false" data-stream="false" data-header="false"></div>
-					<div style="float:right; margin-top:20px;"><script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script><g:plusone></g:plusone></div>
-					<div>
-					   <iframe scrolling="no" frameborder="0" data-twttr-rendered="true" title="Twitter Follow Button" style="width: 317px; height: 28px;" class="twitter-follow-button twitter-follow-button" src="http://platform.twitter.com/widgets/follow_button.1366232305.html#_=1367084461545&id=twitter-widget-0&lang=en&screen_name=UfoHuntersCom&show_count=true&show_screen_name=true&size=l" allowtransparency="true"></iframe>
-				   </div>
-				</div>					
-				<div style="float:left;margin-left:85px"><a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a></div>
-			</div>
-			<div id="welcome_slogan">				
-				<h2>Number of sightings counted <%=@numUFO%>... and growing</h2>				
-			</div>			
-		</div>
-	</div>
-	<div itemscope itemtype="http://schema.org/WPAdBlock" style="width:800px;margin-left:auto;height:30px;text-align:center;margin-right:auto">
-					<script type="text/javascript"><!--
-					google_ad_client = "ca-pub-4760111415025425";
-					/* Enlaces en la Home */
-					google_ad_slot = "5026952480";
-					google_ad_width = 728;
-					google_ad_height = 15;
-					//-->
-					</script>
-					<script type="text/javascript"
-					src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-					</script>
-	</div>  
 
-	<nav id="menubar">
-		<ul id="menu" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
-			<li <%if @menu.blank? == false && @menu == "index"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
-			<li <%if @menu.blank? == false && @menu == "statistics"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>
-			<li <%if @menu.blank? == false && @menu == "maps"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
-			<li <%if @menu.blank? == false && @menu == "report"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
-			<li <%if @menu.blank? == false && @menu == "videos"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
-			<li <%if @menu.blank? == false && @menu == "about"%>class="current"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
-		</ul>
-	</nav>
+  <div class="container">
 
-	<%= yield %>
+    <header itemscope itemtype="http://schema.org/WPHeader">
+  	  <div class="row hidden-phone">
+		    <div class="span3">
+      		<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
+        </div>
 
+		    <div class="span4">
+        	<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
+			  </div>
+	           
+        <div class="span4" style="margin-top:20px;margin-bottom:10px;">  
+          <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
+        </div>
 
-   <script type="text/javascript">
-   $(document).ready(function() {
-      $("#video_thumb_carousel").carouFredSel({
-         circular: false,
-         infinite: false,
-         auto: false,
-         width: 921,             
-         height: 160,                                    
-         items: {
-            visible: 3,
-            width: 307
-         },
-         prev: {     
-            button: "#video_thumb_carousel_prev",
-            key: "left"
-         },
-         next: { 
-            button: "#video_thumb_carousel_next",
-            key: "right"
-         }
+			  <div class="span1">	  
+				  <!-- AddThis Smart Layers BEGIN -->
+          <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
+          <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
+          <script type="text/javascript">
+            addthis.layers({
+              'theme' : 'transparent',
+              'share' : {
+                'position' : 'right',
+                'numPreferredServices' : 4
+              }, 
+              'follow' : {
+                'services' : [
+                  {'service': 'facebook', 'id': 'UfoHuntersCom'},
+                  {'service': 'twitter', 'id': 'UfoHuntersCom'},
+                  {'service': 'google_follow', 'id': '+UfohuntersCom'}
+                ]
+              }   
+            });
+          </script>
+          <!-- AddThis Smart Layers END -->
+			  </div>
+      </div>
+	  </header>
+	
+	  <div class="row">
+      <div class="navbar navbar-inverse">
+        <div class="navbar-inner">
+          <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </a>
+            <a class="visible-phone" href="#"><%= image_tag image_path('navicon2.png') %></a>
+            <nav class="nav-collapse">
+              
+              <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
+                <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
+                <li <%if @menu.blank? == false && @menu == "northamerica"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>North America</div>"), {:controller => "sightings", :action => "northamerica"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
+              </ul>
+            </nav>
+	        </div>
+	      </div>
+	    </div>
+    </div>
+	
+	  <%= yield %>
+	
+    <script type="text/javascript">
+    $(document).ready(function() {
+      $("#video_thumb_carousel").carousel({
+        interval: 10000
       });
-   });
-	</script>
-	<div id="content_grey">
-	   <div id="content_grey_carousel">
+    });
+    </script>
+  
+    <div class="row" style="background-color:#d7df21;margin-top: 45px">
+      <div class="span12" itemscope itemtype="http://schema.org/ItemList">
+        <meta itemprop="itemListOrder" content="Descending"/>
+        <div>
+          <div id="video_thumb_carousel" class="carousel slide">
+           <!-- <ol class="carousel-indicators">
+              <li data-target="#video_thumb_carousel" data-slide-to="0" class="active"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="1"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="2"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="3"></li>
+              <li data-target="#video_thumb_carousel" data-slide-to="4"></li>
+            </ol>
+			-->
+            <div class="carousel-inner">
+              <%
+              video_thumb_list = video_list
+              video_cont = 0
+              
+              video_thumb_list.each do |thumb|
+                thumb.links.each do |link|
+                  if youtube_link? link
+                    video_id = youtube_video_id(link)
 
-         <div id="video_thumb_carousel" itemscope itemtype="http://schema.org/ItemList">
-         	<meta itemprop="itemListOrder" content="Descending"/>
-         <%
+                    if video_id
+                  
+                      if video_cont % 4 == 0
+              %>
+                        <div class="item <%= "active" if video_cont == 0 %>">
+                          <div class="row-fluid">
+              <%
+                      end
+              %>
+                            <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+                              <h4 itemprop="name" style="overflow: hidden;text-overflow: ellipsis;text-align: center"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+                              <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+                              <div>
+                                <figure>
+                                <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
+                                </figure>
+                              </div>
+                            </div>
+              <%
+                      video_cont += 1
 
-			video_thumb_list = video_list
-			
-         	video_thumb_list.each do |thumb|
-         	logger.info "links: " + thumb.links.to_s
-         	thumb.links.each do |link|
-      	      if youtube_link? link
-      	   	   video_id = youtube_video_id(link)
-      	   	   
-      	   	   if video_id
-      	   	   	logger.info "video id: " + video_id
-      	   
-      %>
-			            <div class="content_grey_container_box" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-					         <h4 itemprop="name"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
-					         <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
-					         <div class="video-thumb"><figure>
-						         <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :alt =>  "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %></figure>
-					         </div>
-			            </div>
-		            <%
-	            	   break
-	         	   end
-	            end
-		      end
-		   end
-		   %>
-		  <br style="clear:both"/>
- 
+                      if video_cont % 4 == 0 
+              %>
+                          </div>
+                        </div>
+              <%
+                      end
+
+                    end
+                  end
+                end                           
+              end
+              
+              if video_cont % 4 != 0 
+              %>
+                          </div>
+                        </div>
+              <%
+              end
+
+              %>
+            </div>
+            <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev" style="top: 61%;left: -15px">‹</a>
+            <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next" style="top: 61%">›</a>
+          </div>
+         
+        </div>
       </div>
-      <div class="clearfix"></div>
-		<a class="prev" id="video_thumb_carousel_prev" href="#"><span>prev</span></a>
-		<a class="next" id="video_thumb_carousel_next" href="#"><span>next</span></a>
-      </div>
+    </div>
     
-	</div>
- 
-	<!--div id="footer"-->
-	<footer id="footer" itemscope itemtype="http://schema.org/WPFooter" >
-	  <a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a> | <a href="http://www.facebook.com/UfoHuntersCom">facebook - UfoHuntersCom</a> | <a href="http://twitter.com/UfoHuntersCom">twitter - @UfoHuntersCom</a> | <a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a>
-	</footer>
-	<!--/div-->
+	  <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
+		  <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
+		  <div class="span3"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
+	    <div class="span3"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
+      <div class="span3"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
+    </footer>
 	
-	
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-40361062-1', 'ufo-hunters.com');
-  ga('send', 'pageview');
+    ga('create', 'UA-40361062-1', 'ufo-hunters.com');
+    ga('send', 'pageview');
 
-</script>
+    </script>
 
+    <div class="postfooter">
+      <div class="span12"></div>
+    </div>
+
+  </div>
 </body>
 </html>
