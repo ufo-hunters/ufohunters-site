@@ -10,14 +10,14 @@ function init() {}
           <h2>A glance at our data</h2>
 	  <p>The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dinamically generated to keep it up to date as our database is updated. <strong>More graphs coming soon !!</strong></p>
        </div>
-       <div class="content_item">
-          <div class="stats_table">
-            <table>
+       <div class="content_item" >
+          <div class="stats_table"  >
+            <table style="float: left; width: 200px">
               <caption>UFO Shapes Data</caption>
               <thead>
                 <tr>
-                   <th class="stats_table_left">Shape</th>
-                   <th>Number of sightings</th>
+                   <th class="stats_table_left" style="text-align: left">Shape</th>
+                   <th style="text-align: left">Number of sightings</th>
                 </tr>
               </thead>
               <tbody>
@@ -37,12 +37,16 @@ function init() {}
               
               </tbody>
             </table>
-          </div>
-          <article>
+			
+			<article style="float: left; max-width: 950px" >
              <div class="top">
              </div>
           </article>
+			<div style="clear: both"></div>
+          </div>
+		   
           <%= javascript_include_tag "ufo-data.js" %>
+         
        </div>
     </div>
 </div> 
