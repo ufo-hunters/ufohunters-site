@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
   def video_list
   	 
-    Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(30)
+    Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(20)
 
   end
 

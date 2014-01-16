@@ -24,8 +24,8 @@ group :assets do
   # gem 'therubyracer'
 
   gem 'uglifier', '>= 1.0.3'
-  #gem 'compass-rails'           
-  #gem 'zurb-foundation', '~>4.0.0'
+  gem 'less-rails'
+  gem 'twitter-bootstrap-rails'
 end
 
 gem 'jquery-rails'
@@ -46,10 +46,7 @@ gem 'prettyphoto-rails'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'therubyracer'
+#gem 'therubyracer'
+gem 'therubyracer' #, :path => 'D:\cosas\PROYECTO\UFO_BOOSTRAP\therubyracer_for_windows-master', :platform => 'mingw'
 gem 'execjs'
  
-
-
-
-
