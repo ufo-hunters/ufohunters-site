@@ -1,0 +1,194 @@
+    <script type="text/javascript">          
+		
+		  var iconSize = new OpenLayers.Size(22, 22);
+		  var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
+		  var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
+		                   iconSize, iconOffset);
+		  var zoom, center, currentPopup, map, lyrMarkers;
+		  var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
+		        "autoSize": true,
+		        "minSize": new OpenLayers.Size(300, 50),
+		        "maxSize": new OpenLayers.Size(500, 300),
+		        "keepInMap": true
+		  });
+		  var bounds = new OpenLayers.Bounds();
+		  var ua = navigator.userAgent;
+			
+		  function addMarker(lng, lat, info) {
+		    var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
+		    bounds.extend(pt);
+		    var feature = new OpenLayers.Feature(lyrMarkers, pt);
+		    feature.closeBox = true;
+		    feature.popupClass = popupClass;
+		    feature.data.popupContentHTML = info;
+		    feature.data.overflow = "auto";
+		    var marker = new OpenLayers.Marker(pt, icon.clone());
+		    var markerClick = function(evt) {
+		      if (currentPopup != null && currentPopup.visible()) {
+		        currentPopup.hide();
+		      }
+		      if (this.popup == null) {
+		        this.popup = this.createPopup(this.closeBox);
+		        map.addPopup(this.popup);
+		        this.popup.show();
+		      } else {
+		        this.popup.toggle();
+		      }
+		        currentPopup = this.popup;
+		        OpenLayers.Event.stop(evt);
+		      };
+		        
+		      var clickEvent = "click";
+
+		      if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
+		      	clickEvent = "touchstart";
+		   	  }
+	    	
+	    	  marker.events.register(clickEvent, feature, markerClick);
+		    	
+		      lyrMarkers.addMarker(marker);
+		    }
+		    function init() {
+		        
+				  var zoom = 1;
+				 	
+				  var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
+				  var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
+				
+				  var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				 
+				  map = new OpenLayers.Map("basicMap");
+				  var mapnik = new OpenLayers.Layer.OSM();
+				  map.addLayer(mapnik);
+				 
+				  var markers = new OpenLayers.Layer.Markers( "Markers" );
+				  map.addLayer(markers);
+				  markers.addMarker(new OpenLayers.Marker(position)); 
+		                    
+				  lyrMarkers = new OpenLayers.Layer.Markers("Markers");
+		      map.addLayer(lyrMarkers);
+				  var location = '';
+		      <% 
+		      @listaUFO.each do |ovni| 
+		        begin
+		      %>
+					    location = "<%=ovni.location%>";
+		  		    addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
+				  <% 
+				    rescue => ex
+              logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
+              next
+				    end
+				  end 
+				  %>
+				              
+				  map.setCenter(position, zoom);
+				  map.zoomToMaxExtent();
+		
+		    }
+
+    </script>
+
+		<div class="row">
+		  <div class="span4">
+		    <h3>Recent UFO Activity</h3>
+		    <p>20 latest UFO sightings all over the world</p>
+			</div>
+			<div class="span8">
+			  <%=	render :partial => 'common/gcs' %>
+      </div>
+		</div>
+		
+		<div class="row">
+		  <div class="span12">				
+			  <div itemscope itemtype="http://schema.org/ItemList">
+				  <meta itemprop="itemListOrder" content="Descending"/>
+					<script type="text/javascript">
+			   	  $(document).ready(function() {
+					    $("#mycarousel").carousel({
+					      interval: 10000;
+					    });
+					  });
+					</script>
+					
+				<div class="well">
+		          	<div id="mycarousel" class="carousel slide" style="margin-bottom: 0px;">
+		          		<div class="carousel-inner" style="width:80%;margin:auto;">
+          									<% 
+												recent_sighting_cont = 0
+
+												for i in 0..79 
+
+													if recent_sighting_cont % 4 == 0
+							                %>	
+														<div class="item <%= "active" if recent_sighting_cont == 0 %>">
+													    <div class="row-fluid">								   								
+			                                <%
+											    end
+											%>
+							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+
+							                          	<div style="width:85%;margin-left:auto;margin-bottom:15px">
+								                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></p>
+								                            <p itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @listaUFO[i].sighted_at %></p>
+								                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></p>
+							                        	</div>
+
+							                          </div>
+							                <%
+							                    recent_sighting_cont += 1
+
+							                    if recent_sighting_cont % 4 == 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                    end
+							                  end
+
+							                  if recent_sighting_cont % 4 != 0 
+							                %>
+							                        </div>
+							                      </div>
+							                <%
+							                  end 
+							                %>
+	                    </div>
+	                <a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
+	                <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
+	               </div>
+	            </div>
+          
+				</div>
+			</div>
+    </div>
+
+		<div class="row">
+		  <div class="span12">
+		    <div id="basicMap" style="width: 100%; height: 600px;"></div>
+		  </div>
+		</div>			   
+		
+		<div class="row" >
+		  <div class="span12"  style="margin: 0 0 45px 0">
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
+			</div>
+		</div>
+
+    <div class="row">
+			<div class="span4" style="text-align: center; margin-top: 15px">
+				<%= image_tag image_path('world.png') %>
+				<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
+			</div>
+			<div class="span4" style="text-align: center; margin-top: 15px">
+				<%= image_tag image_path('ufo.png') %>
+				<h3><%= link_to "Have you seen a UFO?", :controller => "reports", :action => "new"%></h3>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Be quiet, you are not alone. Thousands of people have experienced the same before.
+			</div>		
+			<div class="span4" style="text-align: center; margin-top: 15px">
+				<%= image_tag image_path('android.png') %>
+				<h3><%= link_to "UFO Hunters App", "https://play.google.com/store/apps/details?id=com.ufohunters" %></h3>
+				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Download our App and take a look at the most recent sightings, or those near you.
+			</div>
+	  </div>
