@@ -202,13 +202,29 @@ ul#menunew li a:hover {
       font-color: #D7DF21;
 }
 .footer div{
-      height: 50px;
+      height: 40px;
       padding-top: 25px;
+      margin-bottom: 10px;
       /*padding-left: 10px;*/
 }      
 .postfooter {
       height: 100px;
 }
+.span_android{
+    padding-top: 18px !important;
+}
+.link_android1 {
+    color: #fff !important; 
+    font-weight: bold;   
+    padding-right: 5px;
+}
+.link_android2 {
+    color: #fff !important; 
+    font-weight: bold;   
+    padding-left: 5px;
+}
+
+
 .table thead th {
     background-color: #D7DF21;
 }
