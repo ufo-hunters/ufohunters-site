@@ -267,3 +267,11 @@ ul#menunew li a:hover {
     cursor:pointer;
     border:1px solid gray;
 }
+
+.thankyoureport {
+    font-weight: bold;
+    display:inline-block;
+    padding-top: 30px;
+    text-align: center;
+    font: 155% Arial,Helvetica,sans-serif;
+}
