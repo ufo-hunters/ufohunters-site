@@ -2,55 +2,57 @@
 function init() {}
 </script>
 
- <div id="site_content"> 
-    <div id="content">  
-        <div class="caja caja-sombra">       
-            <div id="main-post">
-                    <div> 
-                      <div class="thankreport">New ufo reported!</div>
-                    </div>
+<div class="ufoform">
 
-                    <div>                           	  
-                              <div class="caja-field">
-                                <label for="sighted_at" style="float: left;"><strong>Sighted on </strong></label></br>
-                                 <%= format_date @report['sighted_at']%>
-                              </div>
-                              <div class="caja-field">
-                                <label for="reported_at"><strong>Reported on </strong></label></br>
-                                <%= format_date @report['reported_at']%>
-                              </div>                               
-                              <div class="caja-field">
-                                <label for="report_shape"><strong>Shape </strong></label></br>
-                                <%= @report['shape']%>
-                              </div>
-                              <div class="caja-field">
-                                <label for="report_duration"><strong>Duration </strong></label></br>
-                                <%= @report['duration']%>
-                              </div> 
-                              <div class="caja-field-normal">
-                                <label for="report_location"><strong>Location </strong></label></br>
-                                <%= @report['location']%>
-                              </div>                             
-                              <div class="caja-field-normal">
-                                <label for="report_description"><strong>Description </strong></label></br>
-                                <textarea id="report_description" class="required fieldufo" rows="5" name="report[description]" cols="43"> <%= @report['description']%> </textarea>
-                              </div>
-                              <div class="caja-field-normal">
-                                <label for="report_email"><strong>Email </strong></label></br>
-                                <%= @report['email']%>
-                              </div> 
-                              <div class="caja-field-normal">
-                                <label for="report_links"><strong>Links </strong></label></br>
-                                <%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%>
-                              </div>             
+  <div class="row">
+          <div class="span12">
+                       <h3>New ufo reported!</h3>
+          </div>          
+  </div>
+
+  <div class="row"> 
+          <div class="span4">
+                                <label for="sighted_at"><strong>Sighted on </strong></label>
+                                 <p><%= format_date @report['sighted_at']%></p>
+          </div>
+          <div class="span3">                  
+                                <label for="reported_at"><strong>Reported on </strong></label>
+                                <p><%= format_date @report['reported_at']%></p>
+           </div>
+  </div>   
+  <div class="row"> 
+          <div class="span4">  
+                                <label for="report_shape"><strong>Shape </strong></label>
+                                <p><%= @report['shape']%></p>
+          </div>
+          <div class="span3"> 
+                                <label for="report_duration"><strong>Duration </strong></label>
+                                <p><%= @report['duration']%></p>
+          </div>
+  </div>                          
+  <div class="row"> 
+          <div class="span4">           
+                                <label for="report_location"><strong>Location </strong></label>
+                                <p><%= @report['location']%></p>
+          </div>
+          <div class="span3">                 
+                                 <label for="report_links"><strong>Links </strong></label>
+                                <p><%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%></p>
+          </div>
+  </div>  
+  <div class="row"> 
+          <div class="span4"> 
+
+                               <label for="report_description"><strong>Description </strong></label>
+                               <textarea id="report_description" rows="10" name="report[description]"> <%= @report['description']%> </textarea>
+                               
+          </div>
+           <div class="span3 thankyoureport"> 
+                       Thank you very much for your trust in us
+           </div>
+  </div>        
                            
-                    </div>         
-                    <div> 
-                       <div class="thankreport_foot">Thank you very much for your trust in us</div>
-                    </div>         
-            </div> 
-            <div class="sombra-abajo-derecha"></div>
-            <div class="sombra-abajo-izquierda"></div>
-        </div>
-    </div>
-</div> 
+  
+
+
+</div>           
