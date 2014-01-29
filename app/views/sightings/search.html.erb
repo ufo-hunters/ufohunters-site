@@ -153,56 +153,58 @@
 						                  });
 						              });
 								</script>
-				   				<h2>Related links</h2>
 				   				<%
 				   				image_urls, other_urls = select_url_images(@listaUFO.links)
 
 				   				unless image_urls.blank?
-				   				%>
-				   					<div class="well">
-                      					<div id="gallery" class="carousel slide">
-                      						<div class="carousel-inner">
+				   				%><h2>Images</h2>
+				   					<div class="well" style="padding: 0">
+                      					<div id="gallery" class="carousel slide" style="margin: 0">
+                      						<div class="carousel-inner" style="width: 90%; margin: auto;">
 				   							    <%
 				   							    img_cont = 0
 
 				   							    image_urls.each do |img|
 
 				   							  
-				   							    	  if img_cont % 3 == 0 && img_cont ==0
+				   							    	  if img_cont % 3 == 0
 				   							          %>	
 							   								<div class="item <%= "active" if img_cont == 0 %>">
-							   								    <div class="row-fluid" style="margin-left: 50px;">								   								
+							   								    <div class="row-fluid">								   								
 						   						      <%
-									                  end
-										             
-										              if img_cont % 3 == 0 && img_cont !=0
-				   							          %>	
-							   									</div>
-							   								</div>
-							   								<div class="item">
-							   								    <div class="row-fluid" style="margin-left: 50px;">								   								
-						   						      <%
-									                  end
-										              %>				
-										              				<div class="span3">
-										              					<a rel="prettyPhoto" href="<%=img%>">
-									   										<figure>
-									            								<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
-									            							</figure>
+									              end
+										            %>
+										              		<div class="span4">
+										              			<a href="<%=img%>">
+									   											<figure>
+									            							<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
+									            						</figure>
 									        							</a>
 									        						</div>
 				        						      <%									                  
 
-									                  if img 
-				   							    	  	img_cont += 1
-									                  end
-				        					    end
-				        					   %>
-				        					   		  </div>
-				   									</div>
+									               img_cont += 1
+
+									               if img_cont % 3 == 0 
+							                %>
+							                      </div>
+							                  </div>
+							                <%
+							                  end
+									                
+				        					  end
+				        					  
+				        					  if img_cont % 3 != 0 
+							              %>
+							                  </div>
+							                </div>
+							              <%
+							              end 
+							              %>
+
 				        					</div>
 				        					<a class="left carousel-control" href="#gallery" data-slide="prev">‹</a>
-                         				    <a class="right carousel-control" href="#gallery" data-slide="next">›</a>
+                         	<a class="right carousel-control" href="#gallery" data-slide="next">›</a>
 				   						</div>				   						
 				   					</div>
 				   				<%
@@ -212,13 +214,18 @@
 
 				   					video_urls, other_urls = select_youtube_videos(other_urls)
 
-				   					video_urls.each do |vid|
-				   						%><%=youtube_video(vid)%><%
-				   					end
+				   					if video_urls
+				   						%><h2>Videos</h2><%
+
+					   					video_urls.each do |vid|
+					   						%><%=youtube_video(vid)%><%	
+					   					end
+
+					   				end
 
 				   					if other_urls
 
-				   					%>
+				   					%><h2>Related links</h2>
 				   						<ul>
 				   					<%
 				   						other_urls.each do |link|
