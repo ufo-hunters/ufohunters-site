@@ -153,14 +153,13 @@
 						                  });
 						              });
 								</script>
-				   				<h2>Related links</h2>
 				   				<%
 				   				image_urls, other_urls = select_url_images(@listaUFO.links)
 
 				   				unless image_urls.blank?
-				   				%>
-				   					<div class="well">
-                      					<div id="gallery" class="carousel slide">
+				   				%><h2>Images</h2>
+				   					<div class="well" style="padding: 0">
+                      					<div id="gallery" class="carousel slide" style="margin: 0">
                       						<div class="carousel-inner">
 				   							    <%
 				   							    img_cont = 0
@@ -185,8 +184,8 @@
 									                  end
 										              %>				
 										              				<div class="span3">
-										              					<a rel="prettyPhoto" href="<%=img%>">
-									   										<figure>
+										              					<a href="<%=img%>">
+									   												<figure>
 									            								<img src="<%=img%>" alt="<%=@listaUFO.location%>" width="140" height="140" />
 									            							</figure>
 									        							</a>
@@ -201,8 +200,8 @@
 				        					   		  </div>
 				   									</div>
 				        					</div>
-				        					<a class="left carousel-control" href="#gallery" data-slide="prev">‹</a>
-                         				    <a class="right carousel-control" href="#gallery" data-slide="next">›</a>
+				        					<a class="left carousel-control" href="#gallery" data-slide="prev" style="background: none;border: 0;margin: 0; line-height: auto;top: 6px;font-weight: lighter;font-size: 70px">‹</a>
+                         	<a class="right carousel-control" href="#gallery" data-slide="next" style="background: none;border: 0;margin: 0; line-height: auto;top: 6px;font-size: 70px">›</a>
 				   						</div>				   						
 				   					</div>
 				   				<%
@@ -212,13 +211,18 @@
 
 				   					video_urls, other_urls = select_youtube_videos(other_urls)
 
-				   					video_urls.each do |vid|
-				   						%><%=youtube_video(vid)%><%
-				   					end
+				   					if video_urls
+				   						%><h2>Videos</h2><%
+
+					   					video_urls.each do |vid|
+					   						%><%=youtube_video(vid)%><%	
+					   					end
+
+					   				end
 
 				   					if other_urls
 
-				   					%>
+				   					%><h2>Related links</h2>
 				   						<ul>
 				   					<%
 				   						other_urls.each do |link|
