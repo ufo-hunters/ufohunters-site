@@ -214,7 +214,7 @@
 
 				   					video_urls, other_urls = select_youtube_videos(other_urls)
 
-				   					if video_urls
+				   					unless video_urls.blank?
 				   						%><h2>Videos</h2><%
 
 					   					video_urls.each do |vid|
@@ -223,7 +223,7 @@
 
 					   				end
 
-				   					if other_urls
+				   					unless other_urls.blank?
 
 				   					%><h2>Related links</h2>
 				   						<ul>
