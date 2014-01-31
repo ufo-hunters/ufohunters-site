@@ -143,8 +143,8 @@
               <%
                       end
               %>
-                            <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-                              <h4 itemprop="name" style="overflow: hidden;text-overflow: ellipsis;text-align: center"><%= thumb.location.size > 35 ? thumb.location.partition("(")[0] : thumb.location %></h4>
+                            <div class="span3" style="text-align: center" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+                              <h4 itemprop="name" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis" title="<%=thumb.location%>"><%= thumb.location %></h4>
                               <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
                               <div>
                                 <figure>
