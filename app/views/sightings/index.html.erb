@@ -54,8 +54,9 @@
 				 	
 				  var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
 				  var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-				
-				  var position = new OpenLayers.Bounds()//      = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+				  
+				  var position = new OpenLayers.LonLat(-31.35901, 30.14713).transform( fromProjection, toProjection);
+				  //var position = new OpenLayers.Bounds()//      
 				 
 				  map = new OpenLayers.Map("basicMap");
 				  var mapnik = new OpenLayers.Layer.OSM();
@@ -82,7 +83,8 @@
 				  end 
 				  %>
 				              
-				  map.setCenter(position, zoom);
+				  //map.setCenter(position, zoom);
+				  map.panTo(position);
 				  map.zoomToMaxExtent();
 		
 		    }

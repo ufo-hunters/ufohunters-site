@@ -10,6 +10,5 @@
  *
  *= require bootstrap_and_overrides
  *= require_self
- *= require prettyphoto-rails
  *= require_tree .
 */
