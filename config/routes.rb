@@ -1,4 +1,11 @@
 Ufo::Application.routes.draw do
+  #get "users/new"
+  resources :users
+
+  resources :sessions
+
+  resources :articles
+
   get "sightings/index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
