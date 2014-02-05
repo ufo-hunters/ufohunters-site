@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-	#before_filter :check_user
+	before_filter :check_user
 
   def new
     @user = User.new
