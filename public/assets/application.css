@@ -7358,1001 +7358,86 @@ a .icon-flip-vertical:before {
 
 
 
-
 */
 
-/* line 3, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_top {
-  height: 13px;
+/* line 1, ../../app/assets/stylesheets/scaffolds.css.scss */
+body {
+  background-color: #fff;
+  color: #333;
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
 }
-/* line 5, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_top .pp_middle, div.pp_default .pp_top .pp_left, div.pp_default .pp_top .pp_right {
-  height: 13px;
+
+/* line 9, ../../app/assets/stylesheets/scaffolds.css.scss */
+p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size: 13px;
+  line-height: 18px;
 }
-/* line 7, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_bottom {
-  height: 13px;
-}
-/* line 9, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_bottom .pp_left, div.pp_default .pp_bottom .pp_middle, div.pp_default .pp_bottom .pp_right {
-  height: 13px;
-}
-/* line 12, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_top .pp_left {
-  background: url(/assets/prettyPhoto/default/sprite.png) -78px -93px no-repeat;
-}
-/* line 14, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_top .pp_middle {
-  background: url(/assets/prettyPhoto/default/sprite_x.png) top left repeat-x;
-}
-/* line 16, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_top .pp_right {
-  background: url(/assets/prettyPhoto/default/sprite.png) -112px -93px no-repeat;
-}
-/* line 18, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_content .ppt {
-  color: #f8f8f8;
-}
-/* line 21, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_content_container .pp_left {
-  background: url(/assets/prettyPhoto/default/sprite_y.png) -7px 0 repeat-y;
-  padding-left: 13px;
-}
-/* line 24, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_content_container .pp_right {
-  background: url(/assets/prettyPhoto/default/sprite_y.png) top right repeat-y;
-  padding-right: 13px;
-}
-/* line 27, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_next:hover {
-  background: url(/assets/prettyPhoto/default/sprite_next.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 30, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_previous:hover {
-  background: url(/assets/prettyPhoto/default/sprite_prev.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 33, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_expand {
-  background: url(/assets/prettyPhoto/default/sprite.png) 0 -29px no-repeat;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-}
-/* line 38, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_expand:hover {
-  background: url(/assets/prettyPhoto/default/sprite.png) 0 -56px no-repeat;
-  cursor: pointer;
-}
-/* line 41, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_contract {
-  background: url(/assets/prettyPhoto/default/sprite.png) 0 -84px no-repeat;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-}
-/* line 46, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_contract:hover {
-  background: url(/assets/prettyPhoto/default/sprite.png) 0 -113px no-repeat;
-  cursor: pointer;
-}
-/* line 49, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_close {
-  width: 30px;
-  height: 30px;
-  background: url(/assets/prettyPhoto/default/sprite.png) 2px 1px no-repeat;
-  cursor: pointer;
-}
-/* line 54, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_gallery ul li a {
-  background: url(/assets/prettyPhoto/default/default_thumb.png) center center #f8f8f8;
-  border: 1px solid #aaaaaa;
-}
-/* line 57, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_social {
-  margin-top: 7px;
-}
-/* line 60, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_gallery a.pp_arrow_previous, div.pp_default .pp_gallery a.pp_arrow_next {
-  position: static;
-  left: auto;
-}
-/* line 64, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/default/sprite.png) -51px 1px no-repeat;
-  height: 30px;
-  width: 30px;
-}
-/* line 68, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/default/sprite.png) -51px 1px no-repeat;
-  height: 30px;
-  width: 30px;
-  background-position: -51px -29px;
-}
-/* line 74, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default a.pp_arrow_previous {
-  background: url(/assets/prettyPhoto/default/sprite.png) -31px -3px no-repeat;
-  height: 20px;
-  width: 20px;
-  margin: 4px 0 0;
-}
-/* line 79, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default a.pp_arrow_next {
-  background: url(/assets/prettyPhoto/default/sprite.png) -31px -3px no-repeat;
-  height: 20px;
-  width: 20px;
-  margin: 4px 0 0;
-  left: 52px;
-  background-position: -82px -3px;
-}
-/* line 86, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_content_container .pp_details {
-  margin-top: 5px;
-}
-/* line 88, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_nav {
-  clear: none;
-  height: 30px;
-  width: 110px;
-  position: relative;
-}
-/* line 93, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_nav .currentTextHolder {
-  font-family: Georgia;
-  font-style: italic;
-  color: #999999;
+
+/* line 15, ../../app/assets/stylesheets/scaffolds.css.scss */
+pre {
+  background-color: #eee;
+  padding: 10px;
   font-size: 11px;
-  left: 75px;
-  line-height: 25px;
-  position: absolute;
-  top: 2px;
-  margin: 0;
-  padding: 0 0 0 10px;
-}
-/* line 104, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_close:hover {
-  opacity: 0.7;
-}
-/* line 107, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_nav .pp_play:hover, div.pp_default .pp_nav .pp_pause:hover {
-  opacity: 0.7;
-}
-/* line 109, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_arrow_next:hover, div.pp_default .pp_arrow_previous:hover {
-  opacity: 0.7;
-}
-/* line 111, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_description {
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 14px;
-  margin: 5px 50px 5px 0;
-}
-/* line 117, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_bottom .pp_left {
-  background: url(/assets/prettyPhoto/default/sprite.png) -78px -127px no-repeat;
-}
-/* line 119, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_bottom .pp_middle {
-  background: url(/assets/prettyPhoto/default/sprite_x.png) bottom left repeat-x;
-}
-/* line 121, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_bottom .pp_right {
-  background: url(/assets/prettyPhoto/default/sprite.png) -112px -127px no-repeat;
-}
-/* line 123, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_loaderIcon {
-  background: url(/assets/prettyPhoto/default/loader.gif) center center no-repeat;
-}
-/* line 127, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_top .pp_left {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -88px -53px no-repeat;
-}
-/* line 129, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_top .pp_right {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -110px -53px no-repeat;
-}
-/* line 131, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_next:hover {
-  background: url(/assets/prettyPhoto/light_rounded/btnNext.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 134, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_previous:hover {
-  background: url(/assets/prettyPhoto/light_rounded/btnPrevious.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 137, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_expand {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -31px -26px no-repeat;
-  cursor: pointer;
-}
-/* line 140, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_expand:hover {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -31px -47px no-repeat;
-  cursor: pointer;
-}
-/* line 143, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_contract {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) 0 -26px no-repeat;
-  cursor: pointer;
-}
-/* line 146, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_contract:hover {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) 0 -47px no-repeat;
-  cursor: pointer;
-}
-/* line 149, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_close {
-  width: 75px;
-  height: 22px;
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -1px -1px no-repeat;
-  cursor: pointer;
-}
-/* line 155, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -1px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 159, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -24px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 163, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_arrow_previous {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) 0 -71px no-repeat;
-}
-/* line 165, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_arrow_next {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -22px -71px no-repeat;
-}
-/* line 168, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_bottom .pp_left {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -88px -80px no-repeat;
-}
-/* line 170, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_bottom .pp_right {
-  background: url(/assets/prettyPhoto/light_rounded/sprite.png) -110px -80px no-repeat;
-}
-/* line 174, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_top .pp_left {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -88px -53px no-repeat;
-}
-/* line 176, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_top .pp_right {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -110px -53px no-repeat;
-}
-/* line 179, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_content_container .pp_left {
-  background: url(/assets/prettyPhoto/dark_rounded/contentPattern.png) top left repeat-y;
-}
-/* line 181, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_content_container .pp_right {
-  background: url(/assets/prettyPhoto/dark_rounded/contentPattern.png) top right repeat-y;
-}
-/* line 183, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_next:hover {
-  background: url(/assets/prettyPhoto/dark_rounded/btnNext.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 186, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_previous:hover {
-  background: url(/assets/prettyPhoto/dark_rounded/btnPrevious.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 189, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_expand {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -31px -26px no-repeat;
-  cursor: pointer;
-}
-/* line 192, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_expand:hover {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -31px -47px no-repeat;
-  cursor: pointer;
-}
-/* line 195, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_contract {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) 0 -26px no-repeat;
-  cursor: pointer;
-}
-/* line 198, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_contract:hover {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) 0 -47px no-repeat;
-  cursor: pointer;
-}
-/* line 201, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_close {
-  width: 75px;
-  height: 22px;
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -1px -1px no-repeat;
-  cursor: pointer;
-}
-/* line 206, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_description {
-  margin-right: 85px;
-  color: white;
-}
-/* line 210, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -1px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 214, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -24px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 218, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_arrow_previous {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) 0 -71px no-repeat;
-}
-/* line 220, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_arrow_next {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -22px -71px no-repeat;
-}
-/* line 223, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_bottom .pp_left {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -88px -80px no-repeat;
-}
-/* line 225, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_bottom .pp_right {
-  background: url(/assets/prettyPhoto/dark_rounded/sprite.png) -110px -80px no-repeat;
-}
-/* line 227, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_loaderIcon {
-  background: url(/assets/prettyPhoto/dark_rounded/loader.gif) center center no-repeat;
-}
-/* line 230, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_left, div.dark_square .pp_middle, div.dark_square .pp_right, div.dark_square .pp_content {
-  background: black;
-}
-/* line 232, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_description {
-  color: white;
-  margin: 0 85px 0 0;
-}
-/* line 235, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_loaderIcon {
-  background: url(/assets/prettyPhoto/dark_square/loader.gif) center center no-repeat;
-}
-/* line 237, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_expand {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -31px -26px no-repeat;
-  cursor: pointer;
-}
-/* line 240, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_expand:hover {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -31px -47px no-repeat;
-  cursor: pointer;
-}
-/* line 243, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_contract {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) 0 -26px no-repeat;
-  cursor: pointer;
-}
-/* line 246, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_contract:hover {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) 0 -47px no-repeat;
-  cursor: pointer;
-}
-/* line 249, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_close {
-  width: 75px;
-  height: 22px;
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -1px -1px no-repeat;
-  cursor: pointer;
-}
-/* line 254, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_nav {
-  clear: none;
-}
-/* line 256, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -1px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 260, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -24px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 264, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_arrow_previous {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) 0 -71px no-repeat;
-}
-/* line 266, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_arrow_next {
-  background: url(/assets/prettyPhoto/dark_square/sprite.png) -22px -71px no-repeat;
-}
-/* line 268, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_next:hover {
-  background: url(/assets/prettyPhoto/dark_square/btnNext.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 271, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_previous:hover {
-  background: url(/assets/prettyPhoto/dark_square/btnPrevious.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 275, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_expand {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -31px -26px no-repeat;
-  cursor: pointer;
-}
-/* line 278, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_expand:hover {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -31px -47px no-repeat;
-  cursor: pointer;
-}
-/* line 281, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_contract {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) 0 -26px no-repeat;
-  cursor: pointer;
-}
-/* line 284, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_contract:hover {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) 0 -47px no-repeat;
-  cursor: pointer;
-}
-/* line 287, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_close {
-  width: 75px;
-  height: 22px;
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -1px -1px no-repeat;
-  cursor: pointer;
-}
-/* line 293, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -1px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 297, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -24px -100px no-repeat;
-  height: 15px;
-  width: 14px;
-}
-/* line 301, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_arrow_previous {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) 0 -71px no-repeat;
-}
-/* line 303, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_arrow_next {
-  background: url(/assets/prettyPhoto/light_square/sprite.png) -22px -71px no-repeat;
-}
-/* line 305, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_next:hover {
-  background: url(/assets/prettyPhoto/light_square/btnNext.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 308, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_previous:hover {
-  background: url(/assets/prettyPhoto/light_square/btnPrevious.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 313, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_top .pp_left {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -88px -53px no-repeat;
-}
-/* line 315, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_top .pp_middle {
-  background: url(/assets/prettyPhoto/facebook/contentPatternTop.png) top left repeat-x;
-}
-/* line 317, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_top .pp_right {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -110px -53px no-repeat;
-}
-/* line 320, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_content_container .pp_left {
-  background: url(/assets/prettyPhoto/facebook/contentPatternLeft.png) top left repeat-y;
-}
-/* line 322, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_content_container .pp_right {
-  background: url(/assets/prettyPhoto/facebook/contentPatternRight.png) top right repeat-y;
-}
-/* line 324, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_expand {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -31px -26px no-repeat;
-  cursor: pointer;
-}
-/* line 327, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_expand:hover {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -31px -47px no-repeat;
-  cursor: pointer;
-}
-/* line 330, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_contract {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) 0 -26px no-repeat;
-  cursor: pointer;
-}
-/* line 333, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_contract:hover {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) 0 -47px no-repeat;
-  cursor: pointer;
-}
-/* line 336, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_close {
-  width: 22px;
-  height: 22px;
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -1px -1px no-repeat;
-  cursor: pointer;
-}
-/* line 341, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_description {
-  margin: 0 37px 0 0;
-}
-/* line 343, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_loaderIcon {
-  background: url(/assets/prettyPhoto/facebook/loader.gif) center center no-repeat;
-}
-/* line 345, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_arrow_previous {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) 0 -71px no-repeat;
-  height: 22px;
-  margin-top: 0;
-  width: 22px;
-}
-/* line 350, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_arrow_previous.disabled {
-  background-position: 0 -96px;
-  cursor: default;
-}
-/* line 353, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_arrow_next {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -32px -71px no-repeat;
-  height: 22px;
-  margin-top: 0;
-  width: 22px;
-}
-/* line 358, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_arrow_next.disabled {
-  background-position: -32px -96px;
-  cursor: default;
-}
-/* line 361, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_nav {
-  margin-top: 0;
-}
-/* line 363, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_nav p {
-  font-size: 15px;
-  padding: 0 3px 0 4px;
-}
-/* line 366, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_nav .pp_play {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -1px -123px no-repeat;
-  height: 22px;
-  width: 22px;
-}
-/* line 370, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_nav .pp_pause {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -32px -123px no-repeat;
-  height: 22px;
-  width: 22px;
-}
-/* line 374, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_next:hover {
-  background: url(/assets/prettyPhoto/facebook/btnNext.png) center right no-repeat;
-  cursor: pointer;
-}
-/* line 377, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_previous:hover {
-  background: url(/assets/prettyPhoto/facebook/btnPrevious.png) center left no-repeat;
-  cursor: pointer;
-}
-/* line 381, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_bottom .pp_left {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -88px -80px no-repeat;
-}
-/* line 383, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_bottom .pp_middle {
-  background: url(/assets/prettyPhoto/facebook/contentPatternBottom.png) top left repeat-x;
-}
-/* line 385, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_bottom .pp_right {
-  background: url(/assets/prettyPhoto/facebook/sprite.png) -110px -80px no-repeat;
-}
-/* line 387, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_pic_holder a:focus {
-  outline: none;
-}
-/* line 389, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_overlay {
-  background: black;
-  display: none;
-  left: 0;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 9500;
-}
-/* line 397, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_pic_holder {
-  display: none;
-  position: absolute;
-  width: 100px;
-  z-index: 10000;
 }
 
-/* line 403, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_content {
-  height: 40px;
-  min-width: 40px;
+/* line 21, ../../app/assets/stylesheets/scaffolds.css.scss */
+a {
+  color: #000;
+}
+/* line 23, ../../app/assets/stylesheets/scaffolds.css.scss */
+a:visited {
+  color: #666;
+}
+/* line 26, ../../app/assets/stylesheets/scaffolds.css.scss */
+a:hover {
+  color: #fff;
+  background-color: #000;
 }
 
-/* line 407, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-* html .pp_content {
-  width: 40px;
+/* line 33, ../../app/assets/stylesheets/scaffolds.css.scss */
+div.field, div.actions {
+  margin-bottom: 10px;
 }
 
-/* line 410, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_content_container {
-  position: relative;
+/* line 38, ../../app/assets/stylesheets/scaffolds.css.scss */
+#notice {
+  color: green;
+}
+
+/* line 42, ../../app/assets/stylesheets/scaffolds.css.scss */
+.field_with_errors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+/* line 48, ../../app/assets/stylesheets/scaffolds.css.scss */
+#error_explanation {
+  width: 450px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 0;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+/* line 55, ../../app/assets/stylesheets/scaffolds.css.scss */
+#error_explanation h2 {
   text-align: left;
-  width: 100%;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  margin-bottom: 0px;
+  background-color: #c00;
+  color: #fff;
 }
-/* line 414, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_content_container .pp_left {
-  padding-left: 20px;
-}
-/* line 416, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_content_container .pp_right {
-  padding-right: 20px;
-}
-/* line 418, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_content_container .pp_details {
-  float: left;
-  margin: 10px 0 2px;
-}
-
-/* line 422, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_description {
-  display: none;
-  margin: 0;
-}
-
-/* line 426, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_social {
-  float: left;
-  margin: 0;
-}
-/* line 429, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_social .facebook {
-  float: left;
-  margin-left: 5px;
-  width: 55px;
-  overflow: hidden;
-}
-/* line 434, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_social .twitter {
-  float: left;
-}
-
-/* line 437, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_nav {
-  clear: right;
-  float: left;
-  margin: 3px 10px 0 0;
-}
-/* line 441, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_nav p {
-  float: left;
-  white-space: nowrap;
-  margin: 2px 4px;
-}
-/* line 445, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_nav .pp_play, .pp_nav .pp_pause {
-  float: left;
-  margin-right: 4px;
-  text-indent: -10000px;
-}
-
-/* line 451, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-a.pp_arrow_previous, a.pp_arrow_next {
-  display: block;
-  float: left;
-  height: 15px;
-  margin-top: 3px;
-  overflow: hidden;
-  text-indent: -10000px;
-  width: 14px;
-}
-
-/* line 460, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_hoverContainer {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 2000;
-}
-
-/* line 466, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery {
-  display: none;
-  left: 50%;
-  margin-top: -50px;
-  position: absolute;
-  z-index: 10000;
-}
-/* line 472, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery div {
-  float: left;
-  overflow: hidden;
-  position: relative;
-}
-/* line 476, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery ul {
-  float: left;
-  height: 35px;
-  position: relative;
-  white-space: nowrap;
-  margin: 0 0 0 5px;
-  padding: 0;
-}
-/* line 483, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery ul a {
-  border: 1px rgba(0, 0, 0, 0.5) solid;
-  display: block;
-  float: left;
-  height: 33px;
-  overflow: hidden;
-}
-/* line 489, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery ul a img {
-  border: 0;
-}
-/* line 491, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery li {
-  display: block;
-  float: left;
-  margin: 0 5px 0 0;
-  padding: 0;
-}
-/* line 496, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery li.default a {
-  background: url(/assets/prettyPhoto/facebook/default_thumbnail.gif) 0 0 no-repeat;
-  display: block;
-  height: 33px;
-  width: 50px;
-}
-/* line 501, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery .pp_arrow_previous, .pp_gallery .pp_arrow_next {
-  margin-top: 7px !important;
-}
-
-/* line 505, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-a.pp_next {
-  background: url(/assets/prettyPhoto/light_rounded/btnNext.png) 10000px 10000px no-repeat;
-  display: block;
-  float: right;
-  height: 100%;
-  text-indent: -10000px;
-  width: 49%;
-}
-/* line 512, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-a.pp_previous {
-  background: url(/assets/prettyPhoto/light_rounded/btnNext.png) 10000px 10000px no-repeat;
-  display: block;
-  float: left;
-  height: 100%;
-  text-indent: -10000px;
-  width: 49%;
-}
-/* line 519, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-a.pp_expand, a.pp_contract {
-  cursor: pointer;
-  display: none;
-  height: 20px;
-  position: absolute;
-  right: 30px;
-  text-indent: -10000px;
-  top: 10px;
-  width: 20px;
-  z-index: 20000;
-}
-/* line 529, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-a.pp_close {
-  position: absolute;
-  right: 0;
-  top: 0;
-  display: block;
-  line-height: 22px;
-  text-indent: -10000px;
-}
-
-/* line 537, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_loaderIcon {
-  display: block;
-  height: 24px;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  width: 24px;
-  margin: -12px 0 0 -12px;
-}
-
-/* line 546, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-#pp_full_res {
-  line-height: 1 !important;
-}
-/* line 548, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-#pp_full_res .pp_inline {
-  text-align: left;
-}
-/* line 550, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-#pp_full_res .pp_inline p {
-  margin: 0 0 15px;
-}
-
-/* line 554, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.ppt {
-  color: white;
-  display: none;
-  font-size: 17px;
-  z-index: 9999;
-  margin: 0 0 5px 15px;
-}
-/* line 560, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_content, div.light_rounded .pp_content {
-  background-color: white;
-}
-/* line 562, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default #pp_full_res .pp_inline {
-  color: black;
-}
-/* line 565, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_content .ppt, div.light_rounded #pp_full_res .pp_inline {
-  color: black;
-}
-/* line 568, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_content .ppt, div.light_square #pp_full_res .pp_inline {
-  color: black;
-}
-/* line 571, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_content .ppt, div.facebook #pp_full_res .pp_inline {
-  color: black;
-}
-/* line 574, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_gallery ul li a:hover, div.pp_default .pp_gallery ul li.selected a {
-  border-color: white;
-}
-
-/* line 578, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_gallery ul a:hover, .pp_gallery li.selected a {
-  border-color: white;
-}
-
-/* line 582, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.pp_default .pp_details, div.light_rounded .pp_details, div.dark_rounded .pp_details, div.dark_square .pp_details, div.light_square .pp_details, div.facebook .pp_details {
-  position: relative;
-}
-/* line 585, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_top .pp_middle {
-  background: white;
-}
-/* line 588, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_content_container .pp_left, div.light_rounded .pp_content_container .pp_right {
-  background: white;
-}
-/* line 590, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_bottom .pp_middle {
-  background: white;
-}
-/* line 593, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_left, div.light_square .pp_middle, div.light_square .pp_right, div.light_square .pp_content {
-  background: white;
-}
-/* line 595, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.facebook .pp_content {
-  background: white;
-}
-/* line 597, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_description, div.light_square .pp_description {
-  margin-right: 85px;
-}
-/* line 600, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_gallery a.pp_arrow_previous, div.light_rounded .pp_gallery a.pp_arrow_next {
-  margin-top: 12px !important;
-}
-/* line 603, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_gallery a.pp_arrow_previous, div.dark_rounded .pp_gallery a.pp_arrow_next {
-  margin-top: 12px !important;
-}
-/* line 606, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .pp_gallery a.pp_arrow_previous, div.dark_square .pp_gallery a.pp_arrow_next {
-  margin-top: 12px !important;
-}
-/* line 609, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_square .pp_gallery a.pp_arrow_previous, div.light_square .pp_gallery a.pp_arrow_next {
-  margin-top: 12px !important;
-}
-/* line 611, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_arrow_previous.disabled, div.dark_rounded .pp_arrow_previous.disabled, div.dark_square .pp_arrow_previous.disabled, div.light_square .pp_arrow_previous.disabled {
-  background-position: 0 -87px;
-  cursor: default;
-}
-/* line 614, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_arrow_next.disabled, div.dark_rounded .pp_arrow_next.disabled, div.dark_square .pp_arrow_next.disabled, div.light_square .pp_arrow_next.disabled {
-  background-position: -22px -87px;
-  cursor: default;
-}
-/* line 617, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.light_rounded .pp_loaderIcon, div.light_square .pp_loaderIcon {
-  background: url(/assets/prettyPhoto/light_rounded/loader.gif) center center no-repeat;
-}
-/* line 620, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .pp_top .pp_middle, div.dark_rounded .pp_content, div.dark_rounded .pp_bottom .pp_middle {
-  background: url(/assets/prettyPhoto/dark_rounded/contentPattern.png) top left repeat;
-}
-/* line 622, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded .currentTextHolder {
-  color: #c4c4c4;
-}
-/* line 624, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_square .currentTextHolder {
-  color: #c4c4c4;
-}
-/* line 626, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-div.dark_rounded #pp_full_res .pp_inline, div.dark_square #pp_full_res .pp_inline {
-  color: white;
-}
-
-/* line 629, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_top, .pp_bottom {
-  height: 20px;
-  position: relative;
-}
-
-/* line 634, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-* html .pp_top, * html .pp_bottom {
-  padding: 0 20px;
-}
-
-/* line 637, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_top .pp_left, .pp_bottom .pp_left {
-  height: 20px;
-  left: 0;
-  position: absolute;
-  width: 20px;
-}
-
-/* line 643, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_top .pp_middle, .pp_bottom .pp_middle {
-  height: 20px;
-  left: 20px;
-  position: absolute;
-  right: 20px;
-}
-
-/* line 650, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-* html .pp_top .pp_middle, * html .pp_bottom .pp_middle {
-  left: 0;
-  position: static;
-}
-
-/* line 654, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_top .pp_right, .pp_bottom .pp_right {
-  height: 20px;
-  left: auto;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 20px;
-}
-
-/* line 662, ../../../../../../usr/local/rvm/gems/ruby-1.9.3-p484/gems/prettyphoto-rails-0.2.1/vendor/assets/stylesheets/prettyphoto-rails.sass */
-.pp_fade, .pp_gallery li.default a img {
-  display: none;
+/* line 65, ../../app/assets/stylesheets/scaffolds.css.scss */
+#error_explanation ul li {
+  font-size: 12px;
+  list-style: square;
 }
 /*
 body {
@@ -8559,13 +7644,29 @@ ul#menunew li a:hover {
       font-color: #D7DF21;
 }
 .footer div{
-      height: 50px;
+      height: 40px;
       padding-top: 25px;
+      margin-bottom: 10px;
       /*padding-left: 10px;*/
 }      
 .postfooter {
       height: 100px;
 }
+.span_android{
+    padding-top: 18px !important;
+}
+.link_android1 {
+    color: #fff !important; 
+    font-weight: bold;   
+    padding-right: 5px;
+}
+.link_android2 {
+    color: #fff !important; 
+    font-weight: bold;   
+    padding-left: 5px;
+}
+
+
 .table thead th {
     background-color: #D7DF21;
 }
@@ -8607,4 +7708,12 @@ ul#menunew li a:hover {
     text-decoration:none; 
     cursor:pointer;
     border:1px solid gray;
+}
+
+.thankyoureport {
+    font-weight: bold;
+    display:inline-block;
+    padding-top: 30px;
+    text-align: center;
+    font: 155% Arial,Helvetica,sans-serif;
 }
