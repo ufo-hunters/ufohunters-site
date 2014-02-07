@@ -13,7 +13,6 @@ gem 'mongoid', '~> 3.0.0'
 gem 'wolcanus-simple_captcha', :require => 'simple_captcha', :git => 'git://github.com/v1rtual/simple-captcha.git'
 #gem "rserve-simpler", "~> 0.0.6"
 
-
 # Gems used only for assets and not required 
 # in production environments by default.
 group :assets do
@@ -29,10 +28,10 @@ group :assets do
 end
 
 gem 'jquery-rails'
-gem 'prettyphoto-rails'
+#gem 'prettyphoto-rails'
 
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
+gem 'bcrypt-ruby', '~> 3.0.0'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

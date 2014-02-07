@@ -8,6 +8,7 @@
 *.docx
 *.doc
 *.bmp
+*.3g2
 # Ignore bundler config
 /.bundle
 
