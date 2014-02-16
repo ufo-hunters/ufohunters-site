@@ -53,61 +53,140 @@ $(document).ready(function(){
 
   <div class="row"> 
           <div class="span4">
-                                <label for="sighted_at">Sighted on <span class="divrojo">*</span></label></br>
+                                <label for="sighted_at">Sighted on <span class="divrojo">*</span></label>
                                 <%= f.text_field :sighted_at, :size => 12, :class => 'required fieldufo'  %>
           </div>
-          <div class="span3">
-                                <label for="reported_at">Reported on <span class="divrojo">*</span></label></br>
+          <div class="span4">
+                                <label for="reported_at">Reported on <span class="divrojo">*</span></label>
                                 <%= f.text_field :reported_at, :size => 12, :class => 'required fieldufo'  %>
+          </div>
+          <div class="span4">
+                                <label for="report_shape">Shape <span class="divrojo">*</span></label>
+                                <%= f.text_field :shape, :size => 12, :class => 'required fieldufo' %>
           </div>
   </div>                             
   <div class="row"> 
+          
           <div class="span4">
-                                <label for="report_shape">Shape <span class="divrojo">*</span></label></br>
-                                <%= f.text_field :shape, :size => 12, :class => 'required fieldufo' %>
-          </div>
-          <div class="span3">
 
-                                <label for="report_duration">Duration <span class="divrojo">*</span></label></br>
+                                <label for="report_duration">Duration <span class="divrojo">*</span></label>
                                 <%= f.text_field :duration, :size => 12, :class => 'required fieldufo' %>
           </div>
-  </div>  
-  <div class="row"> 
-          <div class="span4">                              
-                                <label for="report_location">Location <span class="divrojo">*</span></label></br>
-                                <%= f.text_field :location, :class => 'required fieldufo' %>
-                                <br><br>
-                                <label for="report_email" class="report_location">Email contact (your email address<br> will never be published or shared)</label></br>
-                                <%= f.text_field :email, :class => 'fieldufo' %>
-          </div> 
-          <div class="span3"> 
-                                <label for="report_description">Description <span class="divrojo">*</span></label></br>
-                                <%= f.text_area :description, :rows => 8, :cols => 84, :class => 'required fieldufo' %>
-          </div>
-  </div>
- 
-  <div class="row"> 
           <div class="span4">
-                                <label for="report_links" class="report_location">Links (videos, images, articles...)</label></br>
+            <label for="report_email" class="report_location">Email contact (your email address<br> will never be published or shared)</label>
+                                <%= f.text_field :email, :class => 'fieldufo' %>
+          </div>                                
+          <div class="span4">
+                                <label for="report_links" class="report_location">Links (videos, images, articles...)</label>
                                 <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
                                 <div class="fieldlinks"></div>
                                 <a href="javascript:addlink();">(Add more links)</a>
           </div>
-          <div class="span3">
-                              <%= show_simple_captcha(:label => "")%></br>
-                              <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
+  </div>  
+  <div class="row"> 
+          <div class="span6">                              
+                                <label for="report_location">Location <span class="divrojo">*</span></label>
+                                <%= f.text_field :location, :class => 'required fieldufo' %>
+                                <a class="submit-button-coordenate" href="javascript:codeAddress();" onclick="codeAddress()">Find location</a>
+                                <input type="hidden" size="30" name="report[coord]" id="report_coord" class="fieldufo">
+                               
+                                
+                                <div id="map-canvas" class="map-canvas"></div>                               
+
+                              
+
+          </div> 
+          <div class="span6"> 
+                                <label for="report_description">Description <span class="divrojo">*</span></label>
+                                <%= f.text_area :description, :rows => 8, :cols => 84, :class => 'required fieldufo textarea100' %>
           </div>
   </div>
+ 
   <div class="row"> 
-          <div class="span4">
+          
+          <div class="span6">
+                              <%= show_simple_captcha(:label => "")%>
+                              <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
+          </div>
+          <div class="span6">
                               <input type="submit" class="submit-button" value="SEND UFO'S REPORT" name="commit">
-          </div>      
-          <div class="span3"></br>
-          </div>            
+          </div>  
   </div>
+ 
 
 <% end %>
+                                
+                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
+                    <script>
 
-                
-    
 
+                    var geocoder;
+                    var map;
+                    var marker;
+                    var mapOptions;
+
+                    var $latitude = document.getElementById('latitude');
+                    var $longitude = document.getElementById('longitude');
+                    var $coord = document.getElementById('report_coord');
+
+                    function initialize() {
+                      geocoder = new google.maps.Geocoder();
+                      var latlng = new google.maps.LatLng(34.16473667601063, -40.57035354999999);
+                      mapOptions = {
+                        zoom: 3,
+                        center: latlng,
+                        scrollwheel: true,
+                        zoomControl: true,
+                        scaleControl: true,
+                        streetViewControl: true,
+                        overviewMapControl: true
+                      }
+                      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                    }
+                     
+
+
+                    function codeAddress() {
+
+                      geocoder = new google.maps.Geocoder();
+                      mapOptions = {
+                        zoom: 8
+                      }
+                      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+                      var address = document.getElementById('report_location').value;
+                      geocoder.geocode( { 'address': address}, function(results, status) {
+                        if (status == google.maps.GeocoderStatus.OK) {
+                          map.setCenter(results[0].geometry.location);
+                          marker = new google.maps.Marker({
+                              map: map,
+                              position: results[0].geometry.location,
+                              draggable: true
+                          });
+
+                          
+                          //$latitude.value = results[0].geometry.location.lat();
+                          //$longitude.value = results[0].geometry.location.lng();
+                          //<input type="text" id="latitude" placeholder="latitude">
+                          //<input type="text" id="longitude" placeholder="longitude">
+
+                          $coord.value =  results[0].geometry.location.lng() + "," + results[0].geometry.location.lat() ;
+
+                          google.maps.event.addListener(marker, 'dragend', function(marker){
+                                var latLng = marker.latLng;
+                                $latitude.value = latLng.lat();
+                                $longitude.value = latLng.lng();
+                                $coord.value =  latLng.lng() + "," + latLng.lat() ;
+                          });
+                          // populate yor box/field with lat, lng
+                          
+                        } else {
+                          alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                      });
+                    }
+
+
+                    google.maps.event.addDomListener(window, 'load', initialize);
+
+                    </script>     

@@ -78,7 +78,13 @@ class ReportsController < ApplicationController
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
     @tmp["status"] = 0
-    #@tmp["coord"] = []
+
+    if [].empty?
+      @tmp["coord"] = [0,0]
+    else
+      @tmp["coord"] = @tmp["coord"].split(",").map { |s| s.to_f }
+    end
+
     @tmp["source"] = "ufo-hunters.com"
     @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d') 
     @tmp["reported_at"] = Date.strptime(@tmp["reported_at"], '%m/%d/%Y').strftime('%Y%m%d')
