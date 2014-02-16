@@ -79,7 +79,7 @@ class ReportsController < ApplicationController
     @tmp["links"] = @tmp["links"].values
     @tmp["status"] = 0
 
-    if [].empty?
+    if @tmp["coord"].empty?
       @tmp["coord"] = [0,0]
     else
       @tmp["coord"] = @tmp["coord"].split(",").map { |s| s.to_f }
