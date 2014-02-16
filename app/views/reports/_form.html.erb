@@ -174,8 +174,8 @@ $(document).ready(function(){
 
                           google.maps.event.addListener(marker, 'dragend', function(marker){
                                 var latLng = marker.latLng;
-                                $latitude.value = latLng.lat();
-                                $longitude.value = latLng.lng();
+                                //$latitude.value = latLng.lat();
+                                //$longitude.value = latLng.lng();
                                 $coord.value =  latLng.lng() + "," + latLng.lat() ;
                           });
                           // populate yor box/field with lat, lng
