@@ -30,13 +30,14 @@ h2 {
 h3 {
     font: 170% Arial,Helvetica,sans-serif;
 }
-a {
+a , a:visited{
     color: #959C16;
     text-decoration: none;
 }
-a:hover, a:focus {
-    color: #7D8212;
-    text-decoration: underline;
+a:hover, a:focus { 
+    color: #7D8212 ;
+    text-decoration: underline; 
+    background-color: none !important;
 }
 .top {
     text-align: left;
@@ -247,6 +248,25 @@ ul#menunew li a:hover {
 
 /*styles button send report*/
 
+.submit-button-coordenate {
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #D7DF21;
+    /*padding:0 3px 0 3px;*/
+    font-weight: bold;
+    display:inline-block;
+    text-decoration:none;
+    background:#D7DF21;
+    padding:5px;
+    margin-top: 0px;
+    cursor:pointer;
+}
+.submit-button-coordenate:hover { 
+    text-decoration:none; 
+    cursor:pointer;
+    border:1px solid gray;
+}
 .submit-button {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -267,11 +287,83 @@ ul#menunew li a:hover {
     cursor:pointer;
     border:1px solid gray;
 }
+.textarea100 {
+    width:90%;
+    height:400px;
+    margin-top: 10px;
+}
 
+.error {
+    font-weight: bold;
+    color: #FF0000;
+    display:inline-block;
+    margin-bottom: 30px;
+    font: 155% Arial,Helvetica,sans-serif;
+}
+
+.divrojo {
+    font-weight: bold;
+    color: #FF0000;
+    display:inline-block;
+    font: 115% Arial,Helvetica,sans-serif;
+}
+.caja-text {
+    float:left;
+}
 .thankyoureport {
     font-weight: bold;
     display:inline-block;
+    color: #21610B;
     padding-top: 30px;
     text-align: center;
-    font: 155% Arial,Helvetica,sans-serif;
+    font: 175% Arial,Helvetica,sans-serif;
 }
+.map-canvas {
+    height:400px  !important;
+    width:100% !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+img {
+    max-width: none;
+} 
+/*
+
+.carousel-control {
+    background: none !important;
+    border: 3px solid #000000;
+    border-radius: 23px;
+    color: #000000;
+    font-size: 60px;
+    font-weight: 100;
+    height: 40px;
+    left: 15px;
+    line-height: 30px;
+    margin-top: -20px;
+    opacity: 0.5;
+    position: absolute;
+    text-align: center;
+    top: 40%;
+    width: 40px;
+}
+
+.carousel-control:hover {
+    color: #959C16;
+    border: 3px solid #959C16;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.carousel-control:focus {
+    background: none !important;
+    border: 3px solid #000000;
+    border-radius: 23px;
+    color: #000000;
+    opacity: 0.5;
+    position: absolute;
+    text-align: center;
+
+}
+
+*/
