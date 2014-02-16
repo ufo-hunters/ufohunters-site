@@ -114,8 +114,7 @@ $(document).ready(function(){
   </div>
  
 
-<% end %>           <input type="text" id="latitude" placeholder="latitude">
-                          <input type="text" id="longitude" placeholder="longitude">
+<% end %>          
                                 
                     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
                     <script>
@@ -169,16 +168,16 @@ $(document).ready(function(){
                           });
 
                           
-                          $latitude.value = results[0].geometry.location.lat();
-                          $longitude.value = results[0].geometry.location.lng();
+                          //$latitude.value = results[0].geometry.location.lat();
+                          //$longitude.value = results[0].geometry.location.lng();
                           
 
                           $coord.value =  results[0].geometry.location.lng() + "," + results[0].geometry.location.lat() ;
 
                           google.maps.event.addListener(marker, 'map-canvas', function(marker){
                                 var latLng = marker.latLng;
-                                $latitude.value = latLng.lat();
-                                $longitude.value = latLng.lng();
+                                //$latitude.value = latLng.lat();
+                                //$longitude.value = latLng.lng();
                                 $coord.value =  latLng.lng() + "," + latLng.lat() ;
                           });
                           // populate yor box/field with lat, lng
