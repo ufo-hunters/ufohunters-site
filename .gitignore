@@ -9,6 +9,7 @@
 *.doc
 *.bmp
 *.3g2
+*.tar
 # Ignore bundler config
 /.bundle
 
