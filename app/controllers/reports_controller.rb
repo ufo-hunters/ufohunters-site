@@ -11,7 +11,7 @@ class ReportsController < ApplicationController
     @reports = Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100)
 
     respond_to do |format|
-      format.html # index.html.erb
+      #format.html # index.html.erb
       format.json { render json: @reports }
     end
   end
