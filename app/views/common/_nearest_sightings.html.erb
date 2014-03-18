@@ -1,0 +1,45 @@
+            <div class="" style="margin-top: 20px;margin-bottom: 20px">
+
+		     			<h3>Nearest sightings sorted by proximity (100 miles radius):</h3>
+		     			
+				      <table class="table table-responsive table-striped">
+				      	<thead>
+									<tr>
+										<th>Location
+										</th>
+										<th>Sighted on
+										</th>
+										<th>Shape
+										</th>
+										<th class="hidden-phone">Duration
+										</th>
+							  	</tr>
+								</thead>
+								<tbody>
+							   	<% 
+							   	# In order to avoid the same sighting as nearest sighting
+							   	@nearest_sightings.each do |sighting|
+							    	if ufo_id == sighting.id
+							       	next
+							     	end
+									%>
+			  		   			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
+						       		<td itemprop="name">
+						       			<%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %>
+						       		</td>
+						       		<td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>">
+							    			<%= format_date sighting.sighted_at %>
+							    		</td>
+							    		<td>
+							    			<%=sighting.shape%>
+						       		</td>
+						       		<td class="hidden-phone">
+							    			<%= sighting.duration %>
+						       		</td>
+										</tr>
+								  <% 
+								  end 
+								  %>
+							  </tbody>
+							</table>
+					  </div>
