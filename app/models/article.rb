@@ -5,4 +5,5 @@ class Article
   field :published_date, type: Date
   field :teaser, type: String
   field :body, type: String
+  field :partial_1, type: String
 end
