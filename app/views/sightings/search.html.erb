@@ -81,7 +81,7 @@
 		        map.addLayer(lyrMarkers);
 				var location = '';
 				    
-		      <% @listaUFOlist.each do |ovni|%>
+		      <% @nearest_sightings.each do |ovni|%>
             	location = "<%=ovni.location%>"; 			
                addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>',0);
 				<% end %>
@@ -298,60 +298,15 @@
 	    <div class="row">
 				<div class="span8">
 
-				<% 
-		     	if @listaUFOlist
-		     	%>	
-		     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
-
-		     			<h3>Nearest sightings sorted by proximity (100 miles radius):</h3>
-		     			
-				      			<table class="table table-responsive table-striped">
-				      				<thead>
-											<tr>
-													<th>Location
-													</th>
-													<th>Sighted on
-													</th>
-													<th>Shape
-													</th>
-													<th class="hidden-phone">Duration
-													</th>
-											</tr>
-									</thead>
-									<tbody>
-							     	<% 
-							      	# In order to avoid the same sighting as nearest sighting
-							      	@listaUFOlist.each do |ovni|
-								      	if @listaUFO.id == ovni.id
-								         	next
-								       	end
-										%>
-							    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
-								         		<td itemprop="name">
-								         			<%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %>
-								         		</td>
-								         		<td itemprop="dateCreated" content="<%= format_date_microdata ovni.sighted_at %>">
-									    			<%= format_date ovni.sighted_at %>
-									    		</td>
-									    		<td>
-									    			<%=ovni.shape%>
-								         		</td>
-								         		<td class="hidden-phone">
-									    			<%= ovni.duration %>
-								         		</td>
-											</tr>
-									<% 
-									end 
-
-									%>
-								    </tbody>
-								</table>
-					</div>
- 				
+				  <% 
+				  # Less than two because the current sighting is returned
+		      unless @nearest_sightings.blank? || @nearest_sightings.count < 2
+            %><%= render partial: "common/nearest_sightings", locals: {ufo_id: @listaUFO.id}, object: @nearest_sightings %>
 		     	<%
-		        end
-		        %>
-			    </div>
+		      end
+		      %>
+
+			  </div>
 			    <div class="span4">
 
 			 						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
