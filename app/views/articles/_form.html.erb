@@ -21,7 +21,7 @@
   </div>
   <div class="field">
     <%= f.label :published_date %><br />
-    <%= f.date_select :published_date %>
+    <%= f.text_field :published_date %>
   </div>
   <div class="field">
     <%= f.label :teaser %><br />
@@ -30,6 +30,10 @@
   <div class="field">
     <%= f.label :body %><br />
     <%= f.text_field :body %>
+  </div>
+  <div class="field">
+    <%= f.label :partial_1 %><br />
+    <%= f.text_field :partial_1 %>
   </div>
   <div class="actions">
     <%= f.submit %>

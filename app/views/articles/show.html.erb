@@ -1,30 +1,84 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Title:</b>
-  <%= @article.title %>
-</p>
-
-<p>
-  <b>Author:</b>
-  <%= @article.author %>
-</p>
-
-<p>
-  <b>Published date:</b>
-  <%= @article.published_date %>
-</p>
-
-<p>
-  <b>Teaser:</b>
-  <%= @article.teaser %>
-</p>
-
-<p>
-  <b>Body:</b>
-  <%= @article.body %>
-</p>
-
-
 <%= link_to 'Edit', edit_article_path(@article) if logged_in? %> |
 <%= link_to 'Back', articles_path %>
+
+      
+<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+  <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4760111415025425"
+             data-ad-slot="6918386485"
+             data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+</div>
+
+
+<div itemscope itemtype="http://schema.org/Article" class="row">  
+  
+  <div class="span8">
+    <article>
+      <meta itemprop="articleSection" content="UFO Sightings">
+      <header>
+        <h2 itemprop="name" class="title"><%= @article.title  %></h2>
+      </header>
+      <p class="meta">
+      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong><br/>
+        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+        <meta itemprop="name" content="ufo-hunters.com">
+      </span>
+      </small>
+      </p>
+      <div class="entry">
+          <p><%=@article.teaser%></p>
+      </div>
+      
+      <% 
+      unless @article.partial_1.blank?
+      %>
+      <div>
+        <%= render partial: @article.partial_1 %>
+      </div>
+      <%
+      end
+      %>
+
+      <div class="entry">
+          <p itemprop="articleBody">
+            <p><%=@article.body%></p>
+          </p>
+      </div>
+    </article>
+
+    <div id="disqus_thread" style="margin-left:10px" class="row"></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'ufo-hunters'; // required: replace example with your forum shortname
+
+      (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  <div class="span4" itemscope itemtype="http://schema.org/WPAdBlock">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- AnuncioAdaptable3 -->
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-4760111415025425"
+               data-ad-slot="4432690882"
+               data-ad-format="auto"></ins>
+          <script>
+          (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>     
+  </div>
+</div>
