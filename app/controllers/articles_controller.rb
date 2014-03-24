@@ -17,11 +17,13 @@ class ArticlesController < ApplicationController
   # GET /articles/1.json
   def show
     @article = Article.find(params[:id])
+    @listaUFOlist = Report.where(:sighted_at => "20090919")
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @article }
     end
+
   end
 
   # GET /articles/new
@@ -83,4 +85,6 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
 end
