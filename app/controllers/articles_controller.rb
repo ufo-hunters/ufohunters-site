@@ -2,6 +2,8 @@ class ArticlesController < ApplicationController
 
   before_filter :check_user, only: [:edit, :update, :create, :destroy, :new]
 
+  include ArticlesHelper
+
   # GET /articles
   # GET /articles.json
   def index
@@ -17,7 +19,10 @@ class ArticlesController < ApplicationController
   # GET /articles/1.json
   def show
     @article = Article.find(params[:id])
-    @listaUFOlist = Report.where(:sighted_at => "20090919")
+    
+    if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
+      @listaUFOlist = ArticlesHelper.send @article.article_helper_method.to_sym, @article
+    end
 
     respond_to do |format|
       format.html # show.html.erb
