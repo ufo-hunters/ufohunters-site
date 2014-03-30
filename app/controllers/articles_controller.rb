@@ -4,10 +4,17 @@ class ArticlesController < ApplicationController
 
   include ArticlesHelper
 
+  caches_page :index, :expires_in => 3.hour
+  caches_page :show, :expires_in => 24.hour
+
   # GET /articles
   # GET /articles.json
   def index
+    @numUFO = Report.where(:status => 1).count()
+    @menu = "articles"
     @articles = Article.all
+    @page_title = "Articles"
+    @page_description = "Latest Articles"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -18,7 +25,11 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
+    @numUFO = Report.where(:status => 1).count()
+    @menu = "articles"
     @article = Article.find(params[:id])
+    @page_title = ArticlesHelper.friendly_title(@article)
+    @page_description = @article.teaser[0..200] + "..."
     
     if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
       @listaUFOlist = ArticlesHelper.send @article.article_helper_method.to_sym, @article
