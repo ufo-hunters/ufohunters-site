@@ -1,31 +1,88 @@
-<h1>Listing articles</h1>
+<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-4760111415025425"
+                         data-ad-slot="6918386485"
+                         data-ad-format="auto"></ins>
+                    <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+    </div>
+</div>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Published date</th>
-    <th>Teaser</th>
-    <th>Body</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="row">
+  <h2>Articles</h2>
+  <div class="span8" itemscope itemtype="http://schema.org/ItemList">
+    <meta itemprop="itemListOrder" content="Descending"/>
+  <% 
+  unless @articles.blank? 
+    
+    @articles.each do |article| %>
+    <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+      
+      <article>
+        <meta itemprop="articleSection" content="Articles"><%
+        unless article.image_thumbnail.blank?
+      %>
+        <div class="span3">
+          <figure>
+            <%= image_tag(article.image_thumbnail, :itemprop => "image", :title => article.title, :alt => article.title, :class => "img-polaroid", :style => "max-width:100%;")%>
+          </figure>
+        </div>
+        <div class="span5">
+      <%
+        else
+      %>
+        <div class="span8">
+      <%
+        end
+      %>
+          <header>
+            <h3 itemprop="name" class="title"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
+          </header>
+          <p class="meta">
+            <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>"><%= format_date article.published_date %></strong><br/>
+              <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
+              By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><%=article.author%></strong></span>
+              <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="ufo-hunters.com">
+              </span>
+            </small>
+          </p>
+          <div class="entry">
+            <p itemprop="description"><%= article.teaser.html_safe %></p>
+          </div>
+          <p><%= link_to 'Edit', edit_article_path(article) if logged_in? %></p>
+          <p><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete if logged_in? %></p>
+        </div>
 
-<% @articles.each do |article| %>
-  <tr>
-    <td><%= article.title %></td>
-    <td><%= article.author %></td>
-    <td><%= article.published_date %></td>
-    <td><%= article.teaser %></td>
-    <td><%= article.body %></td>
-    <td><%= link_to 'Show', article %></td>
-    <td><%= link_to 'Edit', edit_article_path(article) if logged_in? %></td>
-    <td><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete if logged_in? %></td>
-  </tr>
-<% end %>
-</table>
+      </article>
+      
+    </div>
+  <% 
+    end
+  %>
+  </div>
+  <div class="span4" itemscope itemtype="http://schema.org/WPAdBlock">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- AnuncioAdaptable2 -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-4760111415025425"
+         data-ad-slot="9142092084"
+         data-ad-format="auto"></ins>
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+  </div>
+  <%
+  end
+  %>
 
-<br />
+  <br />
 
-<%= link_to 'New Article', new_article_path if logged_in? %>
+  <%= link_to 'New Article', new_article_path if logged_in? %>
+
+</div>

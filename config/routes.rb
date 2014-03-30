@@ -5,6 +5,8 @@ Ufo::Application.routes.draw do
   resources :sessions
 
   resources :articles
+  match 'articles/:id(/:title)' => 'articles#show'
+  match 'articles/:id' => 'articles#show'
 
   get "sightings/index"
   # The priority is based upon order of creation:

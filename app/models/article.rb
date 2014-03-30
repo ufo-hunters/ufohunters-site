@@ -6,6 +6,7 @@ class Article
   field :teaser, type: String
   field :body, type: String
   field :article_type, type: String
+  field :image_thumbnail, type: String
   # date to filter the reports returned
   field :date_filter, type: String
   field :article_helper_method, type: String

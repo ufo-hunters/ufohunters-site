@@ -86,8 +86,9 @@
             <a class="visible-phone" href="#"><%= image_tag image_path('navicon2.png') %></a>
             <nav class="nav-collapse">
               
-              <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"><!--  class="current" -->
+              <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
                 <li <%if @menu.blank? == false && @menu == "northamerica"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>North America</div>"), {:controller => "sightings", :action => "northamerica"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
