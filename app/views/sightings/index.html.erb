@@ -13,11 +13,11 @@
 		      %>,<%
 		      	end
 		      %>
-					  ['<%=ufo.location%>',
+					  ['<%=ufo.location.gsub("'", %q(\\\'))%>',
              <%=ufo.coord[1]%>,
              <%=ufo.coord[0]%>,
              <%=index += 1%>,
-             '<strong><%=ufo.location%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>'
+             '<strong><%=ufo.location.gsub("'", %q(\\\'))%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>'
 					  ]
 				  <% 
 				  rescue => ex
