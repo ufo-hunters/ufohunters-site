@@ -1,91 +1,78 @@
-    <script type="text/javascript">          
-		
-		  var iconSize = new OpenLayers.Size(22, 22);
-		  var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		  var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
-		                   iconSize, iconOffset);
-		  var zoom, center, currentPopup, map, lyrMarkers;
-		  var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-		        "autoSize": true,
-		        "minSize": new OpenLayers.Size(300, 50),
-		        "maxSize": new OpenLayers.Size(500, 300),
-		        "keepInMap": true
-		  });
-		  var bounds = new OpenLayers.Bounds();
-		  var ua = navigator.userAgent;
-			
-		  function addMarker(lng, lat, info) {
-		    var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
-		    bounds.extend(pt);
-		    var feature = new OpenLayers.Feature(lyrMarkers, pt);
-		    feature.closeBox = true;
-		    feature.popupClass = popupClass;
-		    feature.data.popupContentHTML = info;
-		    feature.data.overflow = "auto";
-		    var marker = new OpenLayers.Marker(pt, icon.clone());
-		    var markerClick = function(evt) {
-		      if (currentPopup != null && currentPopup.visible()) {
-		        currentPopup.hide();
-		      }
-		      if (this.popup == null) {
-		        this.popup = this.createPopup(this.closeBox);
-		        map.addPopup(this.popup);
-		        this.popup.show();
-		      } else {
-		        this.popup.toggle();
-		      }
-		        currentPopup = this.popup;
-		        OpenLayers.Event.stop(evt);
-		      };
-		        
-		      var clickEvent = "click";
-
-		      if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
-		      	clickEvent = "touchstart";
-		   	  }
-	    	
-	    	  marker.events.register(clickEvent, feature, markerClick);
-		    	
-		      lyrMarkers.addMarker(marker);
-		    }
-		    function init() {
-		        
-				  var zoom = 1;
-				 	
-				  var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-				  var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-				  
-				  var position =  new OpenLayers.Bounds();
-				 
-				  map = new OpenLayers.Map("basicMap");
-				  var mapnik = new OpenLayers.Layer.OSM();
-				  map.addLayer(mapnik);
-				 
-				  var markers = new OpenLayers.Layer.Markers( "Markers" );
-				  map.addLayer(markers);
-				  markers.addMarker(new OpenLayers.Marker(position)); 
-		                    
-				  lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		      map.addLayer(lyrMarkers);
-				  var location = '';
-		      <% 
-		      @listaUFO.each do |ovni| 
-		        begin
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
+    <script type="text/javascript">
+      var map;
+      var iterator = 0;
+      var markers = [];
+      var infoWindow;
+      var sightings = [
+      	<%
+      	index = 0
+      	@listaUFO.each do |ufo| 
+		      begin
+		        unless index == 0
+		      %>,<%
+		      	end
 		      %>
-					    location = "<%=ovni.location%>";
-		  		    addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
+					  ['<%=ufo.location%>',
+             <%=ufo.coord[1]%>,
+             <%=ufo.coord[0]%>,
+             <%=index += 1%>,
+             '<strong><%=ufo.location%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>'
+					  ]
 				  <% 
-				    rescue => ex
-              logger.info "Data error with doc #{ovni.id} - #{ex.class}: #{ex.message}"
-              next
-				    end
-				  end 
-				  %>
-				              
-				  map.setCenter(position, zoom);
-				  map.zoomToMaxExtent();
-		
-		    }
+				  rescue => ex
+            logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
+            next
+				  end
+				end 
+				%>
+      ];
+
+      function initialize() {
+        var mapOptions = {
+          zoom: 2,
+          center: new google.maps.LatLng(34.16473667601063, -40.57035354999999)
+        }
+        map = new google.maps.Map(document.getElementById('sightings-map'), mapOptions);
+        infoWindow = new google.maps.InfoWindow({content: ''});
+        setMarkers(map, sightings);
+      }    	
+
+      function setMarkers(map, locations) {
+  
+      	for (var i = 0; i < locations.length; i++) {
+      		setTimeout(function() {
+            addMarker();
+          }, i * 100);
+
+        }
+
+      }
+
+      function addMarker() {
+      	  var image = '<%= image_path('platillo_verde.png') %>';
+      	  var location = sightings[iterator];
+      	  var myLatLng = new google.maps.LatLng(location[1], location[2]);
+          var marker = new google.maps.Marker({
+            position: myLatLng,
+            map: map,
+            icon: image,
+            title: location[0],
+            zIndex: location[3],
+            draggable: false,
+            clickable: true,
+            animation: google.maps.Animation.DROP
+          });
+          marker.info = location[4];
+          google.maps.event.addListener(marker, 'click', function() {
+             infoWindow.content = marker.info;
+             infoWindow.open(map, marker);
+    });
+          markers.push(marker);
+          iterator++;
+      }
+
+      google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
 
@@ -165,7 +152,7 @@
 
 		<div class="row">
 		  <div class="span12">
-		    <div id="basicMap" style="width: 100%; height: 600px;"></div>
+		    <div id="sightings-map" style="width: 100%; height: 600px;"></div>
 		  </div>
 		</div>			   
 		
