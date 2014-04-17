@@ -76,10 +76,11 @@
           google.maps.event.addListener(marker, 'click', function() {
              infoWindow.content = marker.info;
              infoWindow.open(map, marker);
+          });
           google.maps.event.addListener(marker, 'touchstart', function() {
              infoWindow.content = marker.info;
              infoWindow.open(map, marker);
-    });
+          });
 
           markers.push(marker);
           iterator++;
