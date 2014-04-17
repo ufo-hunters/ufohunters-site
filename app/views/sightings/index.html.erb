@@ -77,7 +77,11 @@
             animation: google.maps.Animation.DROP
           });
           marker.info = location[4];
-          google.maps.event.addListener(marker, 'mousedown', function() {
+          google.maps.event.addListener(marker, 'touchstart', function() {
+             infoWindow.content = marker.info;
+             infoWindow.open(map, marker);
+    });
+          google.maps.event.addListener(marker, 'click', function() {
              infoWindow.content = marker.info;
              infoWindow.open(map, marker);
     });
