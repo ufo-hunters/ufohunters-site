@@ -315,7 +315,7 @@ class SightingsController < ApplicationController
    	@numUFO = Report.where(:status => 1).count()
       @menu = "about"
    	@page_title = "About"
-      @page_description = "About ufo-hunters.com and who's behind this site"
+      @page_description = "About ufo-hunters.com and who is behind this site"
    end
 
    def sitemap
