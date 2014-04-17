@@ -68,6 +68,6 @@ module Ufo
     # Add Rails Admin assets (required)
     
     #config.assets.precompile += ['sightings.css', 'sightings.css.scss']
-    config.assets.paths << Rails.root.join("app", "assets", "fonts")
+    #config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end
