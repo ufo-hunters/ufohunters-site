@@ -19,7 +19,7 @@ class SightingsController < ApplicationController
    caches_page :sitemap, :expires_in => 96.hour                    
                             
    def index  	
-      @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
+      @ufo_list = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
@@ -28,18 +28,18 @@ class SightingsController < ApplicationController
 
    def search
       @numUFO = Report.where(:status => 1).count()
-      idUfo = params[:id]
-      @listaUFO = Report.find idUfo
-      @coordenadas = @listaUFO.coord
+      id_ufo = params[:id]
+      @ufo_list = Report.find id_ufo
+      @coords = @ufo_list.coord
       distance = 100 #km 
 
-      if @listaUFO.coord
-         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
+      if @ufo_list.coord
+         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
       end
       
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
-      @page_title = friendly_title(@listaUFO)
-      @page_description = "UFO Report: " + @listaUFO.description[0..200] + "..."
+      @page_title = friendly_title(@ufo_list)
+      @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
    end
 
    def spain
