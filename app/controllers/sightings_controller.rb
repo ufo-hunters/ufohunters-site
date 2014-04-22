@@ -99,7 +99,7 @@ class SightingsController < ApplicationController
    end
   
    def northamerica 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-169.45, 71.41],
             [-177.54, 51.40 ],
             [-123.04, 30.75 ],
@@ -122,7 +122,7 @@ class SightingsController < ApplicationController
    end
 
    def oceania
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[138.69141, 1.40611],
                [175.42969, -14.09396],
                [177.18750, -52.69636],
@@ -149,7 +149,7 @@ class SightingsController < ApplicationController
    end
 
    def southamerica 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-77.87, 11.00], 
             [-68.20, 14.26 ], 
             [-47.46, 4.39 ],
@@ -179,7 +179,7 @@ class SightingsController < ApplicationController
    end
 
    def africa 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[5.09,38.41],
             [-8.08,35.17],
             [-20.39,28.14],
@@ -208,7 +208,7 @@ class SightingsController < ApplicationController
    end
 
    def europe 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-10.41,36.73],
             [-6.37,35.99],
             [-2.27,36.16],
@@ -241,7 +241,7 @@ class SightingsController < ApplicationController
    end
 
    def asia 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[30.93,74.68],
             [32.34,30.14],
             [41.13,12.55],
@@ -303,7 +303,7 @@ class SightingsController < ApplicationController
    end
 
    def videos   
-      @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
+      @ufo_list = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "videos"
       @page_title = "Recent UFO Sighting Videos"
