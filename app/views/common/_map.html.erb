@@ -4,6 +4,9 @@
   ufo_icon = image_path('platillo_verde.png')
   report_selected_icon = ufo_icon
 
+  zoom = map_zoom if defined?(map_zoom)
+  center = map_center if defined?(map_center) 
+
   if defined?(selected_ufo) && selected_ufo.coord
     zoom = 8
     center = [selected_ufo.coord[1], selected_ufo.coord[0]]
