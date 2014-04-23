@@ -265,39 +265,39 @@ class SightingsController < ApplicationController
    end
 
    def country 
-     codeCountry = params[:id]
-      listaPais = Countries.where({"cod" => codeCountry}).limit(1)
+      country_code = params[:id]
+      country_list = Countries.where({"cod" => country_code}).limit(1)
       
-      listaPais.each do |country| 
-         @nameCountry = country.name
-         @coordCountry = country.center
+      country_list.each do |country| 
+         @country_name = country.name
+         @country_coord = country.center
          @zoom = country.zoom
-         @pais = country.geometry  
+         @the_country = country.geometry  
       end
       
       type = ""
       coordinates = ""
-      @pais.each_with_index do |datos, index| 
+      @the_country.each_with_index do |data, index| 
          if index==0
-            type = datos[1]                  
+            type = data[1]                  
          else
-            coordinates =  datos[1]
+            coordinates =  data[1]
          end
       end
 
       if type == 'Polygon'
-         @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+         @ufo_list = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
       else
-         coordinates.each_with_index do |coordinatesdatos,index|  
+         coordinates.each_with_index do |data, index|  
             if index == 0
-               @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+               @ufo_list = Report.where(:coord => {"$geoWithin" => {"$polygon" => data[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             else
-               @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+               @ufo_list = @ufo_list + Report.where(:coord => {"$geoWithin" => {"$polygon" => data[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             end         
          end
       end           
-      @page_title = "UFO Sightings in " + @nameCountry
-      @page_description = "Latest UFO Sightings Maps: " + @nameCountry + " - UFO Reports in " + @nameCountry
+      @page_title = "UFO Sightings in " + @country_name
+      @page_description = "Latest UFO Sightings Maps: " + @country_name + " - UFO Reports in " + @country_name
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
    end

@@ -123,7 +123,7 @@
 
     <p>When you hover the mouse over each one of the countries, a tooltip will appear and will show the country's name. </p>
 
-    <p>Discover your country's maps by a simple mouse-click on the one which is of interest for you. </p>
+    <p>Discover your country maps by a simple mouse-click on the one which is of interest for you. </p>
 
 
 
@@ -161,7 +161,7 @@
         .on("mousedown", mousedown)
         .on("mousedown.drag", mousedown);
 
-    d3.json("/assets/world-countries.json", function(collection) {
+    d3.json("/json/world-countries.json", function(collection) {
         feature = svg.selectAll("path").data(collection.features).enter().append("svg:path").attr("d", clip).on("click", click);
         feature.append("svg:title").text(function(d) { return d.properties.name; });
     });
@@ -224,7 +224,7 @@
 
 <div class="row">    
   <div class="span12">
-                    <p>If you prefer, you can explore the latest sightings in your country on this list. Click on the names of the countries below</p>
+                    <p>If you prefer, you can explore the latest sightings in your country using this list. Click on the names of the countries below</p>
   </div>
 </div>                    
 
