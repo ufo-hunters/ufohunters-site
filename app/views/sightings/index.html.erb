@@ -1,88 +1,12 @@
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
-    <script type="text/javascript">
-      var map;
-      var iterator = 0;
-      var markers = [];
-      var infoWindow;
-      var sightings = [
-      	<%
-      	index = 0
-      	@listaUFO.each do |ufo| 
-		      begin
-		        unless index == 0
-		      %>,<%
-		      	end
-		      %>
-					  ['<%=ufo.location%>',
-             <%=ufo.coord[1]%>,
-             <%=ufo.coord[0]%>,
-             <%=index += 1%>,
-             '<strong><%=ufo.location%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>'
-					  ]
-				  <% 
-				  rescue => ex
-            logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
-            next
-				  end
-				end 
-				%>
-      ];
-
-      function initialize() {
-        var mapOptions = {
-          zoom: 2,
-          center: new google.maps.LatLng(34.16473667601063, -40.57035354999999)
-        }
-        map = new google.maps.Map(document.getElementById('sightings-map'), mapOptions);
-        infoWindow = new google.maps.InfoWindow({content: ''});
-        setMarkers(map, sightings);
-      }    	
-
-      function setMarkers(map, locations) {
-  
-      	for (var i = 0; i < locations.length; i++) {
-      		setTimeout(function() {
-            addMarker();
-          }, i * 100);
-
-        }
-
-      }
-
-      function addMarker() {
-      	  var image = '<%= image_path('platillo_verde.png') %>';
-      	  var location = sightings[iterator];
-      	  var myLatLng = new google.maps.LatLng(location[1], location[2]);
-          var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            icon: image,
-            title: location[0],
-            zIndex: location[3],
-            draggable: false,
-            clickable: true,
-            animation: google.maps.Animation.DROP
-          });
-          marker.info = location[4];
-          google.maps.event.addListener(marker, 'click', function() {
-             infoWindow.content = marker.info;
-             infoWindow.open(map, marker);
-    });
-          markers.push(marker);
-          iterator++;
-      }
-
-      google.maps.event.addDomListener(window, 'load', initialize);
-
-    </script>
+    <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
 
 		<div class="row">
 		  <div class="span4">
 		    <h3>Recent UFO Activity</h3>
-		    <p>20 latest UFO sightings all over the world</p>
+		    <p>Latest UFO sightings all over the world</p>
 			</div>
 			<div class="span8">
-			  <%=	render :partial => 'common/gcs' %>
+			  <%=	render partial: 'common/gcs' %>
       </div>
 		</div>
 		
@@ -93,7 +17,7 @@
 					<script type="text/javascript">
 			   	  $(document).ready(function() {
 					    $("#mycarousel").carousel({
-					      interval: 10000;
+					      interval: 10000
 					    });
 					  });
 					</script>
@@ -116,9 +40,9 @@
 							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
 							                          	<div style="width:85%;margin-left:auto;margin-bottom:15px">
-								                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0"><%= @listaUFO[i].location.size > 40 ? @listaUFO[i].location.partition("(")[0] : @listaUFO[i].location %></p>
-								                            <p itemprop="dateCreated" content="<%= format_date_microdata @listaUFO[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @listaUFO[i].sighted_at %></p>
-								                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @listaUFO[i].id, :title => friendly_title(@listaUFO[i]) %></p>
+								                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0"><%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %></p>
+								                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
+								                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
 							                        	</div>
 
 							                          </div>

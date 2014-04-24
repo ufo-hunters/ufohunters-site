@@ -19,7 +19,7 @@ class SightingsController < ApplicationController
    caches_page :sitemap, :expires_in => 96.hour                    
                             
    def index  	
-      @listaUFO = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
+      @ufo_list = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "index"
       @page_title = "Recent UFO Activity"
@@ -28,18 +28,18 @@ class SightingsController < ApplicationController
 
    def search
       @numUFO = Report.where(:status => 1).count()
-      idUfo = params[:id]
-      @listaUFO = Report.find idUfo
-      @coordenadas = @listaUFO.coord
+      id_ufo = params[:id]
+      @ufo_list = Report.find id_ufo
+      @coords = @ufo_list.coord
       distance = 100 #km 
 
-      if @listaUFO.coord
-         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
+      if @ufo_list.coord
+         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)  
       end
       
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
-      @page_title = friendly_title(@listaUFO)
-      @page_description = "UFO Report: " + @listaUFO.description[0..200] + "..."
+      @page_title = friendly_title(@ufo_list)
+      @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
    end
 
    def spain
@@ -99,7 +99,7 @@ class SightingsController < ApplicationController
    end
   
    def northamerica 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-169.45, 71.41],
             [-177.54, 51.40 ],
             [-123.04, 30.75 ],
@@ -122,7 +122,7 @@ class SightingsController < ApplicationController
    end
 
    def oceania
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[138.69141, 1.40611],
                [175.42969, -14.09396],
                [177.18750, -52.69636],
@@ -149,7 +149,7 @@ class SightingsController < ApplicationController
    end
 
    def southamerica 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-77.87, 11.00], 
             [-68.20, 14.26 ], 
             [-47.46, 4.39 ],
@@ -179,7 +179,7 @@ class SightingsController < ApplicationController
    end
 
    def africa 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[5.09,38.41],
             [-8.08,35.17],
             [-20.39,28.14],
@@ -208,7 +208,7 @@ class SightingsController < ApplicationController
    end
 
    def europe 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[-10.41,36.73],
             [-6.37,35.99],
             [-2.27,36.16],
@@ -241,7 +241,7 @@ class SightingsController < ApplicationController
    end
 
    def asia 
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
+      @ufo_list = Report.where(:coord => {"$geoWithin" => 
       {"$polygon" => [[30.93,74.68],
             [32.34,30.14],
             [41.13,12.55],
@@ -265,45 +265,45 @@ class SightingsController < ApplicationController
    end
 
    def country 
-     codeCountry = params[:id]
-      listaPais = Countries.where({"cod" => codeCountry}).limit(1)
+      country_code = params[:id]
+      country_list = Countries.where({"cod" => country_code}).limit(1)
       
-      listaPais.each do |country| 
-         @nameCountry = country.name
-         @coordCountry = country.center
+      country_list.each do |country| 
+         @country_name = country.name
+         @country_coord = country.center
          @zoom = country.zoom
-         @pais = country.geometry  
+         @the_country = country.geometry  
       end
       
       type = ""
       coordinates = ""
-      @pais.each_with_index do |datos, index| 
+      @the_country.each_with_index do |data, index| 
          if index==0
-            type = datos[1]                  
+            type = data[1]                  
          else
-            coordinates =  datos[1]
+            coordinates =  data[1]
          end
       end
 
       if type == 'Polygon'
-         @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+         @ufo_list = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
       else
-         coordinates.each_with_index do |coordinatesdatos,index|  
+         coordinates.each_with_index do |data, index|  
             if index == 0
-               @listaUFO = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+               @ufo_list = Report.where(:coord => {"$geoWithin" => {"$polygon" => data[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             else
-               @listaUFO = @listaUFO + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
+               @ufo_list = @ufo_list + Report.where(:coord => {"$geoWithin" => {"$polygon" => data[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             end         
          end
       end           
-      @page_title = "UFO Sightings in " + @nameCountry
-      @page_description = "Latest UFO Sightings Maps: " + @nameCountry + " - UFO Reports in " + @nameCountry
+      @page_title = "UFO Sightings in " + @country_name
+      @page_description = "Latest UFO Sightings Maps: " + @country_name + " - UFO Reports in " + @country_name
       @numUFO = Report.where(:status => 1).count()
       @menu = "maps"
    end
 
    def videos   
-      @listaUFO = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
+      @ufo_list = Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
       @numUFO = Report.where(:status => 1).count()
       @menu = "videos"
       @page_title = "Recent UFO Sighting Videos"
@@ -315,7 +315,7 @@ class SightingsController < ApplicationController
    	@numUFO = Report.where(:status => 1).count()
       @menu = "about"
    	@page_title = "About"
-      @page_description = "About ufo-hunters.com and who's behind this site"
+      @page_description = "About ufo-hunters.com and who is behind this site"
    end
 
    def sitemap

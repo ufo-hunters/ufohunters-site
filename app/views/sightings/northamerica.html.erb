@@ -1,97 +1,15 @@
 
-      
-
-		<script type="text/javascript">
-		
-			var iconSize = new OpenLayers.Size(22, 22);
-		    var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-		    var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
-		                   iconSize, iconOffset);
-		    var zoom, center, currentPopup, map, lyrMarkers;
-		    var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-		        "autoSize": true,
-		        "minSize": new OpenLayers.Size(300, 50),
-		        "maxSize": new OpenLayers.Size(500, 300),
-		        "keepInMap": true
-		    });
-		    var bounds = new OpenLayers.Bounds();
-		    var ua = navigator.userAgent;	
-		    
-		    function addMarker(lng, lat, info) {
-		        var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
-		        bounds.extend(pt);
-		        var feature = new OpenLayers.Feature(lyrMarkers, pt);
-		        feature.closeBox = true;
-		        feature.popupClass = popupClass;
-		        feature.data.popupContentHTML = info;
-		        feature.data.overflow = "auto";
-		        var marker = new OpenLayers.Marker(pt, icon.clone());
-		        var markerClick = function(evt) {
-		            if (currentPopup != null && currentPopup.visible()) {
-		                currentPopup.hide();
-		            }
-		            if (this.popup == null) {
-		                this.popup = this.createPopup(this.closeBox);
-		                map.addPopup(this.popup);
-		                this.popup.show();
-		            } else {
-		                this.popup.toggle();
-		            }
-		            currentPopup = this.popup;
-		            OpenLayers.Event.stop(evt);
-		        };		        
-		        
-		        if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
-		        	marker.events.register("touchstart", feature, markerClick);
-		    	} else {
-	    			marker.events.register("click", feature, markerClick);
-		    	}
-
-		        lyrMarkers.addMarker(marker);
-		    }
-		    function init() {
-		        
-				    var zoom           = 3;
-				 
-				    var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-				    var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-				
-				    var lon = -105.46;
-				    var lat = 50.73;
-				    var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
-				 
-				    map = new OpenLayers.Map("basicMap");
-				    var mapnik = new OpenLayers.Layer.OSM();
-				    map.addLayer(mapnik);
-				 
-				    var markers = new OpenLayers.Layer.Markers( "Markers" );
-				    map.addLayer(markers);
-		                    
-				    lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-		            map.addLayer(lyrMarkers);
-				    var location = '';
-		            <% @listaUFO.each do |ovni| %>
-						location = "<%=ovni.location%>";
-		  			 	addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>');
-				    <% end %>
-				              
-				    map.setCenter(position, zoom);
-		
-		      }
-		      
-		</script>
-
-
+  <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: 3, map_center: [50.73, -105.46]} %>
 
 	<div class="row">
 			<div class="span12">
-							<h3>Latest sightings in North America</h3>							
+				<h3>Latest UFO sightings in North America</h3>							
 			</div>			   
     </div>
 							
 	<div class="row">
 			<div class="span12">
-					<div id="basicMap" style="width: 100%; height: 550px;"></div>
+					<div id="sightings-map" style="width: 100%; height: 550px;"></div>
 			</div>			   
     </div>
 
@@ -119,7 +37,7 @@
 	<div class="row">
 				<div class="span8">
 				<% 
-		     	if @listaUFO
+		     	if @ufo_list
 		     	%>	
 		     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
 		     			
@@ -139,20 +57,20 @@
 									<tbody>
 							     	<% 
 							      	# In order to avoid the same sighting as nearest sighting
-							      	@listaUFO.each do |ovni|
+							      	@ufo_list.each do |ufo|
 										%>
 							    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
 								         		<td itemprop="name">
-								         			<%= link_to ovni.location, :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %>
+								         			<%= link_to ufo.location, :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %>
 								         		</td>
-								         		<td itemprop="dateCreated" content="<%= format_date_microdata ovni.sighted_at %>">
-									    			<%= format_date ovni.sighted_at %>
+								         		<td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>">
+									    			<%= format_date ufo.sighted_at %>
 									    		</td>
 									    		<td>
-									    			<%=ovni.shape%>
+									    			<%=ufo.shape%>
 								         		</td>
 								         		<td class="hidden-phone">
-									    			<%= ovni.duration %>
+									    			<%= ufo.duration %>
 								         		</td>
 											</tr>
 									<% 
