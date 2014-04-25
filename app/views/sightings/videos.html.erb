@@ -1,4 +1,38 @@
 
+
+	<script type="text/javascript">
+	function init() {
+	}
+	</script>
+	<div class="row">
+		<div class="span12">	
+							<h3>Recent UFO Activity</h3>
+							<p>Discover 100 latest UFO sightings videos all over the world</p>
+		</div>
+	</div>
+
+			   
+    
+    <div class="row">
+		  <div class="span12">	
+		  	<p>Drag with the mouse (i.e. clicking plus holding the button down and then moving it), this way be able to surf and watch several ufo videos.</p>
+		  </div>
+    </div>
+	
+	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+		    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
+		 		    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+					<!-- AnuncioAdaptable3 -->
+					<ins class="adsbygoogle"
+					     style="display:block"
+					     data-ad-client="ca-pub-4760111415025425" 
+					     data-ad-slot="4432690882"
+					     data-ad-format="auto"></ins>
+					<script>
+					(adsbygoogle = window.adsbygoogle || []).push({});
+					</script>		
+			</div>	
+=======
   <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: 2} %>
 
 	<div class="row">
@@ -12,7 +46,7 @@
 		<div class="span12">	
 							<script type="text/javascript">
 			   					      $(document).ready(function() {
-						                  $("#mycarousel").carousel({
+						                  $("#mycarousel").carousel({ 
 						                     interval: 10000
 						                  });
 						              });
@@ -79,6 +113,74 @@
 			<div id="sightings-map" style="width: 100%; height: 550px;"></div>
 		</div>					   					  
 	</div>
+
+	<div class="row">
+		    <div class="span12">	
+			    <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
+					  <div class="slides"></div>
+					  <h3 class="title"></h3>
+					  <a class="prev">‹</a>
+					  <a class="next">›</a>
+					  <a class="play-pause"></a>
+					  
+				</div>
+			</div>
+    </div>
+
+	<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
+
+   <script type="text/javascript">
+				
+				blueimp.Gallery([
+				<%
+					video_cont = 0
+		    		@listaUFO.each do |ovni| 
+
+		        		video_urls, other_urls = select_youtube_videos(ovni.links)
+
+						unless video_urls.blank?
+							
+							video_urls.each do |vid|
+
+								video_id = youtube_video_id(vid)
+
+								url_image_video = Ufo::THUMBS_URL_BASE + video_id.to_s + "/0.jpg"
+
+								if video_cont != 0
+					              	%>
+					                   ,
+					              	<%
+					            end
+
+								%>
+							    {
+							        title: '<%=friendly_title(ovni)%>',
+							        href: '<%=vid%>',
+							        type: 'text/html',
+							        youtube: '<%=video_id%>',
+							        poster: '<%=url_image_video%>'
+							    }
+							    <%	
+							    video_cont += 1
+
+							end
+
+						end 
+
+					end
+				%>
+				    
+
+
+				], {
+			        container: '#blueimp-gallery-carousel',
+			        carousel: true
+			    });
+
+
+    </script>
+
+    
 
 	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
 		    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
