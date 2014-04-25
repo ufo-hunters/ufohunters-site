@@ -66,6 +66,8 @@ module Ufo
     # Prevent initializing the application before assets are precompiled (required for heroku)
     config.assets.initialize_on_precompile = false
     # Add Rails Admin assets (required)
-    config.assets.precompile += ['sightings.css', 'sightings.css.scss']
+    
+    #config.assets.precompile += ['sightings.css', 'sightings.css.scss']
+    #config.assets.paths << Rails.root.join("app", "assets", "fonts")
   end
 end
