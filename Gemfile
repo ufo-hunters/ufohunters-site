@@ -30,6 +30,8 @@ end
 gem 'jquery-rails'
 #gem 'prettyphoto-rails'
 
+gem 'blueimp-gallery', '~> 2.11.0.1'
+
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
 
