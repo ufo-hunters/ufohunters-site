@@ -311,6 +311,15 @@ class SightingsController < ApplicationController
 
    end
 
+   def images   
+      @ufo_list = Report.where(:status => 1, :links.in => [/.*.gif.*/, /.*.GIF.*/,/.*.jpg.*/, /.*.JPG.*/], :coord.ne => nil).desc(:sighted_at).limit(100)
+      @numUFO = Report.where(:status => 1).count()
+      @menu = "images"
+      @page_title = "Recent UFO Sighting Images"
+      @page_description = "Latest UFO Sighting Reports and Images as witnesses reported them"
+
+   end
+
    def about
    	@numUFO = Report.where(:status => 1).count()
       @menu = "about"
