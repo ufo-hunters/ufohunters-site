@@ -7,15 +7,13 @@
 	<div class="row">
 		<div class="span12">	
 							<h3>Recent UFO Activity</h3>
-							<p>Discover 100 latest UFO sightings videos all over the world</p>
+							<p>Discover the latest UFO sightings videos all over the world</p>
 		</div>
 	</div>
-
 			   
-    
     <div class="row">
 		  <div class="span12">	
-		  	<p>Drag with the mouse (i.e. clicking plus holding the button down and then moving it), this way be able to surf and watch several ufo videos.</p>
+		  	<p>Drag the videos so that you can take a look at the UFO Video Gallery</p>
 		  </div>
     </div>
 	
@@ -32,86 +30,7 @@
 					(adsbygoogle = window.adsbygoogle || []).push({});
 					</script>		
 			</div>	
-=======
-  <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: 2} %>
 
-	<div class="row">
-		<div class="span12">	
-			<h3>Recent UFO Activity</h3>
-			<p>100 latest UFO sightings videos all over the world</p>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="span12">	
-							<script type="text/javascript">
-			   					      $(document).ready(function() {
-						                  $("#mycarousel").carousel({ 
-						                     interval: 10000
-						                  });
-						              });
-							</script>
-							<meta itemprop="itemListOrder" content="Descending"/>
-							<div class="well">
-              					<div id="mycarousel" class="carousel slide" style="margin-bottom: 0px;">
-              						<div class="carousel-inner" style="width:80%;margin:auto;">
-			          			            <% 
-												recent_sighting_cont = 0
-
-												for i in 0..79 
-
-													if recent_sighting_cont % 4 == 0
-							                %>	
-														<div class="item <%= "active" if recent_sighting_cont == 0 %>">
-													    <div class="row-fluid">								   								
-			                                <%
-											    end
-											%>
-							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-
-							                          	<div style="width:85%;margin-left:auto;margin-bottom:10px">
-								                          	<strong itemprop="name"><%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %></strong><br/>
-								                            <span itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>"><%= format_date @ufo_list[i].sighted_at %></span><br/>
-								                            <strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></strong>
-							                        	</div>
-
-							                          </div>
-							                <%
-							                    recent_sighting_cont += 1
-
-							                    if recent_sighting_cont % 4 == 0 
-							                %>
-							                        </div>
-							                      </div>
-							                <%
-							                    end
-							                  end
-
-							                  if recent_sighting_cont % 4 != 0 
-							                %>
-							                        </div>
-							                      </div>
-							                <%
-							                  end 
-							                %>
-							        </div>
-									<a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
-                  <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
-								</div>
-							</div>
-    	</div>
-	</div>					   
-    
-    <div class="row">
-		  <div class="span12">	
-		  	<p>Click the icons in the map to access the sighting reports and <strong>watch the videos</strong> submitted by the witnesses. Judge yourself and share your opinion with the community.</p>
-		  </div>
-    </div>
-	
-	<div class="row">
-		<div class="span12">	
-			<div id="sightings-map" style="width: 100%; height: 550px;"></div>
-		</div>					   					  
 	</div>
 
 	<div class="row">
@@ -134,9 +53,9 @@
 				blueimp.Gallery([
 				<%
 					video_cont = 0
-		    		@listaUFO.each do |ovni| 
+		    		@ufo_list.each do |ufo| 
 
-		        		video_urls, other_urls = select_youtube_videos(ovni.links)
+		        		video_urls, other_urls = select_youtube_videos(ufo.links)
 
 						unless video_urls.blank?
 							
@@ -154,7 +73,7 @@
 
 								%>
 							    {
-							        title: '<%=friendly_title(ovni)%>',
+							        title: '<%=friendly_title(ufo)%>',
 							        href: '<%=vid%>',
 							        type: 'text/html',
 							        youtube: '<%=video_id%>',
