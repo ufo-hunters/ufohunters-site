@@ -116,7 +116,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
       
    end
@@ -143,7 +143,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
 
    end
@@ -173,7 +173,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
 
    end
@@ -202,7 +202,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
 
    end
@@ -235,7 +235,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
 
    end
@@ -260,7 +260,7 @@ class SightingsController < ApplicationController
 
       respond_to do |format|
         format.html # index.html.erb
-        format.json { render json: @listaUFO }
+        format.json { render json: @ufo_list }
       end
    end
 
