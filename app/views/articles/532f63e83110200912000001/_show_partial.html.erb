@@ -1,112 +1,13 @@
      
-    <script type="text/javascript">
-    
-        var iconSize = new OpenLayers.Size(22, 22);
-        var iconOffset = new OpenLayers.Pixel(-(iconSize.w / 2), -iconSize.h);
-        var icon = new OpenLayers.Icon("<%= image_path('platillo_verde.png') %>",
-                       iconSize, iconOffset);
-        
-        iconSize = new OpenLayers.Size(50, 57);
-        var iconRocket = new OpenLayers.Icon("<%= image_path('blackbrant.png') %>",
-                       iconSize, iconOffset);
-        var zoom, center, currentPopup, map, lyrMarkers;
-        var popupClass = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-            "autoSize": true,
-            "minSize": new OpenLayers.Size(300, 50),
-            "maxSize": new OpenLayers.Size(500, 300),
-            "keepInMap": true
-        });
-        var bounds = new OpenLayers.Bounds();
-        var ua = navigator.userAgent; 
-        
-        function addMarker(lng, lat, info, icono) {
-            var pt = new OpenLayers.LonLat(lng, lat).transform(new OpenLayers.Projection("EPSG:4326"),map.getProjectionObject());
-            bounds.extend(pt);
-            var feature = new OpenLayers.Feature(lyrMarkers, pt);
-            feature.closeBox = true;
-            feature.popupClass = popupClass;
-            feature.data.popupContentHTML = info;
-            feature.data.overflow = "auto";
+    <%
 
-            var marker = new OpenLayers.Marker(pt, icon.clone());
+    rocket_black_brant = Report.new
+    rocket_black_brant.coord = [-75.45257, 37.91062]
+    rocket_black_brant.location = 'Black Brant 12 (Wallops Island)'
+    rocket_black_brant.description = 'A rocket experiment that may shed light on the highest clouds in the Earth’s atmosphere was conducted from NASA\'s Wallops Flight Facility in Virginia on September 19, 2009. The experiment was launched on a NASA Black Brant XII Sounding Rocket.'
 
-            if(icono==1){
-                marker = new OpenLayers.Marker(pt, iconRocket.clone());
-            }
+    %><%= render partial: 'common/map', locals: {ufo_list: ufo_list, map_id: 'basicMap', marker: rocket_black_brant, marker_icon: 'blackbrant.png', map_zoom: 4} %>
 
-
-            var markerClick = function(evt) {
-                if (currentPopup != null && currentPopup.visible()) {
-                    currentPopup.hide();
-                }
-                if (this.popup == null) {
-                    this.popup = this.createPopup(this.closeBox);
-                    map.addPopup(this.popup);
-                    this.popup.show();
-                } else {
-                    this.popup.toggle();
-                }
-                currentPopup = this.popup;
-                OpenLayers.Event.stop(evt);
-            };            
-            
-            if(ua.match(/iPad/i) || ua.match(/iPhone/i) || ua.match(/webOS/i) || ua.match(/Mobile/i) ){
-              marker.events.register("touchstart", feature, markerClick);
-          } else {
-            marker.events.register("click", feature, markerClick);
-          }
-
-            lyrMarkers.addMarker(marker);
-        }
-        function init() {
-            
-            var zoom = 4;
-         
-            var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-            var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-        
-            //var lat            = 37.09024;
-            //var lon            = -95.71289;
-            var lat            = 37.91062;
-            var lon            = -75.45257;
-            var position = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
-         
-            map = new OpenLayers.Map("basicMap");
-
-            var mapnik = new OpenLayers.Layer.OSM();
-            map.addLayer(mapnik);
-         
-            var markers = new OpenLayers.Layer.Markers( "Markers" );
-            map.addLayer(markers);
-                        
-            lyrMarkers = new OpenLayers.Layer.Markers("Markers");
-                map.addLayer(lyrMarkers);
-            var location = '';
-            <% 
-            unless ufo_list.blank?
-              ufo_list.each do |ovni| %>
-                location = "<%=ovni.location%>";
-                addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>',0);
-            <% 
-              end 
-
-            end
-            %>
-            
-              
-              location = "Black Brant 12 (Wallops Island)";
-              addMarker(-75.45257,37.91062, '<strong>Black Brant 12 (Wallops Island)</strong><br/>A rocket experiment that may shed light on the highest clouds in the Earth’s atmosphere was conducted from NASA\'s Wallops Flight Facility in Virginia on September 19, 2009. The experiment was launched on a NASA Black Brant XII Sounding Rocket.',1);
-
-
-            map.setCenter(position, zoom);
-
-
-    
-          }
-          
-    </script>
-
-  
     <div class="row">
                 <div class="span8">         
                         <div id="basicMap" style="width: 100%; height: 550px;"></div>       
@@ -117,7 +18,7 @@
                 <div class="span8">
                                        
                         <p class="meta" style="padding-top: 10px">
-                            On 19 September 2009 MUFON and NUFORC received lots of sighting reports. The map below shows all of them. The influence area was the East Coast of the United States.
+                            On 19 September 2009 MUFON and NUFORC received lots of sighting reports. The map above shows all of them. The influence area was the East Coast of the United States.
                         </p>
                         <p class="meta">
                             In the map we have placed a marker in the location where the rocket was launched and around it, there are lots of sightings that were reported to MUFON and NUFORC (you can click on the icons to see the report). Most of the sightings were reported with the following: <strong>"cone-shaped burst of light"</strong>.
