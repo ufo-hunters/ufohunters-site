@@ -131,6 +131,9 @@
       iterator++;
     }
 
+    <%
+    if defined?(marker)
+    %>
     function addCustomMarker(map) {
       var image = {
         url: '<%= image_path(report_selected_icon) %>',
@@ -159,7 +162,9 @@
 
       markers.push(customMarker);
     }
-
+    <%
+    end
+    %>
     google.maps.event.addDomListener(window, 'load', initialize);
 
   </script>
