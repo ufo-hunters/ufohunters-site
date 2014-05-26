@@ -1,3 +1,7 @@
+<script type="text/javascript">
+  function init() {
+  }
+</script>
 <p id="notice"><%= notice %></p>
 
 <%= link_to 'Edit', edit_article_path(@article) if logged_in? %> |
@@ -42,7 +46,7 @@
       unless @article.partial_1.blank?
       %>
       <div>
-        <%= render partial: @article.partial_1, locals: {listaUFOlist: @listaUFOlist} %>
+        <%= render partial: @article.partial_1, locals: {ufo_list: @ufo_list} %>
       </div>
       <%
       end

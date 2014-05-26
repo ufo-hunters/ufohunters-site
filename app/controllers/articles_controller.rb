@@ -12,7 +12,7 @@ class ArticlesController < ApplicationController
   def index
     @numUFO = Report.where(:status => 1).count()
     @menu = "articles"
-    @articles = Article.all
+    @articles = Article.all.desc(:published_date)
     @page_title = "Articles"
     @page_description = "Latest Articles"
 
@@ -32,7 +32,7 @@ class ArticlesController < ApplicationController
     @page_description = @article.teaser[0..200] + "..."
     
     if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
-      @listaUFOlist = ArticlesHelper.send @article.article_helper_method.to_sym, @article
+      @ufo_list = ArticlesHelper.send @article.article_helper_method.to_sym, @article
     end
 
     respond_to do |format|
