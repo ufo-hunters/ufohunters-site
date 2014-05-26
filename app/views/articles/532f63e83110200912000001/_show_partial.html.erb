@@ -60,11 +60,7 @@
         }
         function init() {
             
-            var zoom           = 4;
-
-
-            
-
+            var zoom = 4;
          
             var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
             var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
@@ -87,8 +83,8 @@
                 map.addLayer(lyrMarkers);
             var location = '';
             <% 
-            unless listaUFOlist.blank?
-              listaUFOlist.each do |ovni| %>
+            unless ufo_list.blank?
+              ufo_list.each do |ovni| %>
                 location = "<%=ovni.location%>";
                 addMarker(<%=ovni.coord[0]%>,<%=ovni.coord[1]%>, '<strong>' + location + '</strong><br/><%= format_date ovni.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ovni.id, :title => friendly_title(ovni) %></strong>',0);
             <% 
@@ -121,13 +117,13 @@
                 <div class="span8">
                                        
                         <p class="meta" style="padding-top: 10px">
-                            MUFON and NUFORC received many sighting reports on this date. We can see on the map all of them. The influence area would be east coast of United States.
+                            On 19 September 2009 MUFON and NUFORC received lots of sighting reports. The map below shows all of them. The influence area was the East Coast of the United States.
                         </p>
                         <p class="meta">
-                            In the map we have picked where the rocket was launched (with its icon) and around it, there are a lot of sightings with their icons (you can click on the icons and see the selected report). The sightings are usually found with this description: "cone-shaped burst of light".
+                            In the map we have placed a marker in the location where the rocket was launched and around it, there are lots of sightings that were reported to MUFON and NUFORC (you can click on the icons to see the report). Most of the sightings were reported with the following: <strong>"cone-shaped burst of light"</strong>.
                         </p>
                         <p class="meta">
-                            This cone-shaped burst of light was an artificial noctilucent cloud formed by the exhaust particles of the rocket's fourth stage at an altitude of about 278 km (173 mi). Here several sketch which were reported to MUFON:
+                            This cone-shaped burst of light was an artificial noctilucent cloud formed by the exhaust particles of the rocket's fourth stage at an altitude of about 278 km (173 mi). Here are several sketches which were reported to MUFON:
                             
                            
                             <div class="well" style="padding: 0">
@@ -158,7 +154,7 @@
                         </p>
 
                          <p class="meta">
-                            Below can see photos of this cone-shaped lighting:
+                            Below you can see some photos of this cone-shaped lighting:
 
                             <div class="well" style="padding: 0">
                                 <div id="gallery" class="carousel slide" style="margin: 0">
