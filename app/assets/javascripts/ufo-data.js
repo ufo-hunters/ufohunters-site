@@ -1,7 +1,7 @@
 var ufo_data = (function() {
 
     var urls = {      //API urls
-        shape  : "http://ufo-hunters-2013.herokuapp.com/stats/shape.json",
+        shape  : "http://www.ufo-hunters.com/stats/shape.json",
         ask   : "http://hndroidapi.appspot.com/ask/format/json/page/?appid=vishna&callback=?",
         newest: "http://hndroidapi.appspot.com/newest/format/json/page/?appid=vishna&callback=?",
         best  : "http://hndroidapi.appspot.com/best/format/json/page/?appid=vishna&callback=?"
@@ -183,65 +183,10 @@ var ufo_data = (function() {
         }
     }
   
-/*
-    function legend() {
-
-        var linearGradient = svg.append("defs")
-                .append("linearGradient")
-                .attr("id", "legendGradient")
-                .attr("x1", "0%")
-                .attr("y1", "0%")
-                .attr("x2", "0%")
-                .attr("y2", "100%")
-                .attr("spreadMethod", "pad");
-
-        linearGradient
-            .append("stop")
-            .attr("offset", "0%")
-            .attr("stop-color", "#ff7f0c")
-            .attr("stop-opacity", "0.1");
-
-        linearGradient
-            .append("stop")
-            .attr("offset", "100%")
-            .attr("stop-color", "#ff7f0c")
-            .attr("stop-opacity", "1");
-
-        var legend = svg.append("g")
-                .attr("id", "legend");
-
-        legend
-            .append("rect")
-            .attr("x", "20")
-            .attr("y", "20")
-            .attr("width", "20")
-            .attr("height", "200")
-            .attr("style", "fill:url(#legendGradient);");
-
-        legend
-            .append("text")
-            .attr("x", 45)
-            .attr("y", 30)
-            .text("Oldest");
-
-        legend
-            .append("text")
-            .attr("x", 45)
-            .attr("y", 220)
-            .text("Newest");
-
-    }
-*/
 
     function highlight( data, i, element ) {
         d3.select( element ).attr( "stroke", "black" );
   
-    /*
-        var description = data.description.split("|"),
-            content = '<span class=\"title\"><a href=\"' + data.url + '\">' + data.title + '</a></span><br/>' +
-                       description[0] + "<br/>" +
-                      '<a href=\"http://news.ycombinator.com/item?id='+ data.item_id +'\">' + description[1] + '</a>';
-    */
     
     var content = '<span class=\"title\"><strong>Shape:</strong> \"' + data._id.shape + '\"</span><br/>' +
                        '<span><strong>Number of sightings:</strong> ' + data.count + '</span>';
