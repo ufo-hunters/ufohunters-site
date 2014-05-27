@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UfoModelsControllerTest < ActionController::TestCase
+class ReportsControllerTest < ActionController::TestCase
   setup do
     @report = reports(:one)
   end
@@ -17,7 +17,7 @@ class UfoModelsControllerTest < ActionController::TestCase
   end
 
   test "should create report" do
-    assert_difference('UfoModel.count') do
+    assert_difference('Report.count') do
       post :create, report: @report.attributes
     end
 
@@ -40,7 +40,7 @@ class UfoModelsControllerTest < ActionController::TestCase
   end
 
   test "should destroy report" do
-    assert_difference('UfoModel.count', -1) do
+    assert_difference('Report.count', -1) do
       delete :destroy, id: @report
     end
 

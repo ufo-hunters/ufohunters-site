@@ -3,7 +3,7 @@ class StatsController < ApplicationController
 	caches_action :shape
 
    def shape
-      @ufos = UfoModel.collection.aggregate({
+      @ufos = Report.collection.aggregate({
          "$group" => { "_id" => {"shape" => "$shape"}, 
                        "count" => { "$sum" => 1 }} })
       respond_to do |format|
