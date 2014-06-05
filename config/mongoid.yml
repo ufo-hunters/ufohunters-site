@@ -69,7 +69,7 @@ development:
 test:
   sessions:
     default:
-      database: test
+      database: sightings_test
       hosts:
         - localhost:27017
       options:
@@ -77,11 +77,11 @@ test:
         # In the test environment we lower the retries and retry interval to
         # low amounts for fast failures.
         max_retries: 1
-        retry_interval: 0 
+        retry_interval: 0
 
 
-production:   
+production:
   sessions:
     default:
-        uri: <%= ENV['MONGOHQ_URL'] %>  
-   
+        uri: <%= ENV['MONGOHQ_URL'] %>
+
