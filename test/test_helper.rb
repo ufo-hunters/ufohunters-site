@@ -7,7 +7,14 @@ class ActiveSupport::TestCase
   #
   # Note: You'll currently still have to declare fixtures explicitly in integration tests
   # -- they do not yet inherit this setting
-  fixtures :all
+  #fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  teardown :clean_mongodb
+
+  def clean_mongodb
+    Mongoid.default_session['ufo'].drop
+    Mongoid.default_session['articles'].drop
+  end
+
 end
