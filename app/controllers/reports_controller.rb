@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  
+
   include SimpleCaptcha::ControllerHelpers
 
   caches_action :index, :expires_in => 24.hour
@@ -27,47 +27,43 @@ class ReportsController < ApplicationController
     end
   end
 
-  # GET /reports/nearof/1234/5678      
+  # GET /reports/nearof/1234/5678
   # GET /reports/nearof/1234/5678.json
   def nearof
       @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]
       #@coordenadas = [-84.799473,35.250002]
-      distance = 100 #km 
+      distance = 100 #km
 
       if @coordenadas
-         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)  
+         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)
       end
-      
+
       respond_to do |format|
 	      format.html # nearof.html.erb
 	      format.json { render json: @nearest }
       end
-  end   
+  end
 
 
   # GET /reports/new
   # GET /reports/new.json
   def new
-    
+
     @numUFO = Report.where(:status => 1).count()
-    
+
     @report = Report.new
 
     @menu = "report"
     @page_title = "Report a UFO"
     @page_description = "Have you seen a UFO? Report your experience filling in the report form"
-    @notice = 'Introduce the text of the image' 
+    @notice = 'Introduce the text of the image'
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @report }
     end
-    
+
   end
-    
-  # GET /reports/1/edit
-  def edit
-    #@report = Report.find(params[:id])
-  end
+
 
   # POST /reports
   # POST /reports.json
@@ -86,12 +82,12 @@ class ReportsController < ApplicationController
     end
 
     @tmp["source"] = "ufo-hunters.com"
-    @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d') 
+    @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d')
     @tmp["reported_at"] = Date.strptime(@tmp["reported_at"], '%m/%d/%Y').strftime('%Y%m%d')
 
     @report = Report.new(@tmp)
-    
-    if simple_captcha_valid?        
+
+    if simple_captcha_valid?
 
         respond_to do |format|
           if @report.save
@@ -107,44 +103,17 @@ class ReportsController < ApplicationController
         @report["sighted_at"] = ""
         @report["reported_at"] = ""
         @report["links"] = ""
-        respond_to do |format| 
-            @notice = 'You must enter the text of the image'         
+        respond_to do |format|
+            @notice = 'You must enter the text of the image'
             format.html { render action: "new", notice: 'You must enter the text of the image'}
             format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
         end
 
     end
 
-    
+
   end
 
-  # PUT /reports/1
-  # PUT /reports/1.json
-  def update
-    #@report = Report.find(params[:id])
-
-    #respond_to do |format|
-     # if @report.update_attributes(params[:report])
-       # format.html { redirect_to @report, notice: 'Ufo model was successfully updated.' }
-       # format.json { head :no_content }  
-      #else
-      #  format.html { render action: "edit" }
-      #  format.json { render json: @report.errors, status: :unprocessable_entity }
-      #end
-    #end
-  end
-
-  # DELETE /reports/1
-  # DELETE /reports/1.json
-  def destroy 
-   # @report = Report.find(params[:id])
-    #@report.destroy
-
-    #respond_to do |format|
-    #  format.html { redirect_to reports_url }
-    #  format.json { head :no_content }
-    #end
-  end
 
   def sightings
     @reports = Report.where(:status => 1, :source => "ufo-hunters.com", :coord =>  {"$exists" => 1}).without(:email,:links,:source,:status,:shape,:duration).desc(:sighted_at).limit(100)
@@ -155,22 +124,22 @@ class ReportsController < ApplicationController
   end
 
 
-  def country 
+  def country
      codeCountry = params[:id]
       listaPais = Countries.where({"cod" => codeCountry}).limit(1)
-      
-      listaPais.each do |country| 
+
+      listaPais.each do |country|
          @nameCountry = country.name
          @coordCountry = country.center
          @zoom = country.zoom
          @pais = country.geometry
       end
-      
+
       type = ""
       coordinates = ""
-      @pais.each_with_index do |datos, index| 
+      @pais.each_with_index do |datos, index|
          if index==0
-            type = datos[1]                  
+            type = datos[1]
          else
             coordinates =  datos[1]
          end
@@ -179,15 +148,15 @@ class ReportsController < ApplicationController
       if type == 'Polygon'
          @reports = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinates[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
       else
-         coordinates.each_with_index do |coordinatesdatos,index|  
+         coordinates.each_with_index do |coordinatesdatos,index|
             if index == 0
                @reports = Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
             else
                @reports = @reports + Report.where(:coord => {"$geoWithin" => {"$polygon" => coordinatesdatos[0]}}).and(:status => 1).order_by(:sighted_at.desc).limit(100)
-            end         
+            end
          end
-      end           
-     
+      end
+
       respond_to do |format|
          format.xml
       end
