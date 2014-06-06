@@ -3,17 +3,7 @@ require 'test_helper'
 class ArticleTest < ActiveSupport::TestCase
 
   setup do
-    @report = Report.new
-    @report.sighted_at = "20120101"
-    @report.reported_at = "20120102"
-    @report.location = "My Location"
-    @report.shape = "My Shape"
-    @report.duration = "1 min."
-    @report.description = "My description"
-    @report.coord = [4.0314, 36.5411]
-    @report.links = ["http://www.youtube.com", "http://www.google.com"]
-    @report.source = "My Source"
-    @report.email = "email@email.com"
+    @report = create_dummy_report
   end
 
   test "should not save report without a location" do

@@ -1,12 +1,17 @@
 require 'test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
+
   setup do
-    @report = reports(:one)
+    @report = create_dummy_report
+    @report.sighted_at = "01/01/2012"
+    @report.reported_at = "02/01/2012"
+    @report.coord = "4.0314, 36.5411"
+    @report.links = {:link1 => "http://www.youtube.com", :link2 => "http://www.google.com"}
   end
 
   test "should get index" do
-    get :index
+    get :index, {:format => :json}
     assert_response :success
     assert_not_nil assigns(:reports)
   end
@@ -25,25 +30,10 @@ class ReportsControllerTest < ActionController::TestCase
   end
 
   test "should show report" do
-    get :show, id: @report
+    @report = create_dummy_report
+    @report.save
+    get :show, id: Report.first.id
     assert_response :success
   end
 
-  test "should get edit" do
-    get :edit, id: @report
-    assert_response :success
-  end
-
-  test "should update report" do
-    put :update, id: @report, report: @report.attributes
-    assert_redirected_to report_path(assigns(:report))
-  end
-
-  test "should destroy report" do
-    assert_difference('Report.count', -1) do
-      delete :destroy, id: @report
-    end
-
-    assert_redirected_to reports_path
-  end
 end
