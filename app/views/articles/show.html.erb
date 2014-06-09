@@ -32,11 +32,11 @@
         <h2 itemprop="name" class="title"><%= @article.title  %></h2>
       </header>
       <p class="meta">
-      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong><br/>
+      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= @article.author %></strong><br/>
         <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-        <meta itemprop="name" content="ufo-hunters.com">
-      </span>
-      </small>
+          <meta itemprop="name" content="ufo-hunters.com">
+        </span>
+      
       </p>
       <div class="entry">
           <p><%=@article.teaser.html_safe%></p>
