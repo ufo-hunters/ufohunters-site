@@ -63,17 +63,17 @@ Ufo::Application.routes.draw do
   match 'reports/:id/country(.:format)' => 'reports#country'
   match 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', :constraints => { :longitud => /[^\/]+/, :latitud => /[^\/]+/}
   resources :reports
-      
+
   # root search and spain, same controller
   get 'sitemap', :to => 'sightings#sitemap'
   match 'sightings/country/:id(/:title)' => 'sightings#country'
   match 'sightings/search/:id(/:title)' => 'sightings#search'
   match 'sightings/search/:id' => 'sightings#search'
-  match 'sightings/spain' => 'sightings#spain'  
-  match 'stats/statistics' => 'stats#statistics'
-  # See how all your routes lay out with "rake routes"  
+  match 'sightings/spain' => 'sightings#spain'
+  match 'stats' => 'stats#index'
+  # See how all your routes lay out with "rake routes"
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   match ':controller(/:action(/:id))(.:format)'
-  
+
 end
