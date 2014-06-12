@@ -18,14 +18,16 @@
 
 <div class="row">
   <h2>Articles</h2>
+  <p><strong>Do you want to get involved?</strong>
+  If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com">contact us!</a> </p>
   <div class="span8" itemscope itemtype="http://schema.org/ItemList">
     <meta itemprop="itemListOrder" content="Descending"/>
-  <% 
-  unless @articles.blank? 
-    
+  <%
+  unless @articles.blank?
+
     @articles.each do |article| %>
     <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-      
+
       <article>
         <meta itemprop="articleSection" content="Articles"><%
         unless article.image_thumbnail.blank?
@@ -63,9 +65,9 @@
         </div>
 
       </article>
-      
+
     </div>
-  <% 
+  <%
     end
   %>
   </div>
@@ -81,7 +83,7 @@
     (adsbygoogle = window.adsbygoogle || []).push({});
     </script>
   </div>
-  <% 
+  <%
   else
   %>
     <div class="alert alert-error">
