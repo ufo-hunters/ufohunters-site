@@ -17,7 +17,7 @@ end
 module Ufo
 
   THUMBS_URL_BASE = "http://img.youtube.com/vi/"
-  
+
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -66,8 +66,8 @@ module Ufo
     # Prevent initializing the application before assets are precompiled (required for heroku)
     config.assets.initialize_on_precompile = false
     # Add Rails Admin assets (required)
-    
-    #config.assets.precompile += ['sightings.css', 'sightings.css.scss']
-    #config.assets.paths << Rails.root.join("app", "assets", "fonts")
+
+    config.assets.precompile += %w( *.css *.js *.woff *.eot *.svg *.ttf)
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
   end
 end
