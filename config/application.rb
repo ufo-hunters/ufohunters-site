@@ -68,6 +68,6 @@ module Ufo
     # Add Rails Admin assets (required)
 
     config.assets.precompile += %w( *.css *.js *.woff *.eot *.svg *.ttf)
-    config.assets.paths << Rails.root.join("public", "fonts")
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
   end
 end
