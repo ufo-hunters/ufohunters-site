@@ -50,6 +50,7 @@ Ufo::Application.configure do
   config.assets.precompile = ['*.js', '*.css', '*.png', '*.ico', '*.jpg']
   config.assets.precompile += %w('d3.geo.js.js')
   config.assets.precompile += ['world/d3.geo.js.js']
+  config.assets.precompile += %w(*.woff *.eot *.svg *.ttf)
 
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
@@ -67,7 +68,7 @@ Ufo::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
-  config.action_mailer.default_url_options = { :host => 'smtp.sendgrid.net'} 
-  config.action_mailer.delivery_method = :smtp 
+  config.action_mailer.default_url_options = { :host => 'smtp.sendgrid.net'}
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
 end
