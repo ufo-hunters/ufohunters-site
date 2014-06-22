@@ -51,6 +51,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'therubyracer' #, :path => 'D:\cosas\PROYECTO\UFO_BOOSTRAP\therubyracer_for_windows-master', :platform => 'mingw'
 gem 'execjs'
 
+gem 'cloudinary'
+
 # to handle form validation
 gem "jquery-validation-rails"
  
