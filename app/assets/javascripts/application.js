@@ -13,6 +13,8 @@
 
 //= require jquery
 //= require jquery_ujs
+//= require jquery.validate
 //= require twitter/bootstrap
 //= require blueimp-gallery-all
+//= require cloudinary
 //= require_tree .
