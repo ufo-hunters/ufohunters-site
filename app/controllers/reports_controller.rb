@@ -39,8 +39,8 @@ class ReportsController < ApplicationController
       end
 
       respond_to do |format|
-	      format.html # nearof.html.erb
-	      format.json { render json: @nearest }
+        format.html # nearof.html.erb
+        format.json { render json: @nearest }
       end
   end
 
@@ -73,7 +73,9 @@ class ReportsController < ApplicationController
 
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
+    @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
     @tmp["status"] = 0
+    @tmp["image"] = ""
 
     if @tmp["coord"].empty?
       @tmp["coord"] = [0,0]
