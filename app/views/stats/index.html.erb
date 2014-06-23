@@ -1,24 +1,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
     <script>
 // Adding 1000 Data Points
-var map, pointarray, heatmap;
-
-var ufoData = [
-<%
-index = 0
-
-@ufo_list.each do |ufo|
-  unless index == 0
-  %>,<%
-  end
-
-  index += 1
-%>
-  new google.maps.LatLng(<%= ufo.coord[1] %>, <%= ufo.coord[0] %>)
-<%
-end
-%>
-];
+var map, pointarray, heatmapLayer;
 
 function initialize() {
   var mapOptions = {
@@ -30,14 +13,18 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'),
       mapOptions);
 
-  var pointArray = new google.maps.MVCArray(ufoData);
-
-  heatmap = new google.maps.visualization.HeatmapLayer({
-    data: pointArray
+  heatmapLayer = new google.maps.FusionTablesLayer({
+    query: {
+      select: 'latitude, longitude',
+      from: '1dsJO2_SxD3ypYepYBxHKfpofkEVVq5eU3E7qvOrv'
+    },
+    heatmap: {
+      enabled: true
+    }
   });
 
-  heatmap.setMap(map);
-  heatmap.set('radius', 20);
+  heatmapLayer.setMap(map);
+  heatmapLayer.set('radius', 20);
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
