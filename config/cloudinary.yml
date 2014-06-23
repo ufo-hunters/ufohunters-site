@@ -1,0 +1,10 @@
+---
+development:
+  cloud_name: dr3vzmqaf
+  uri: <%= ENV['CLOUDINARY_URL'] %>
+production:
+  cloud_name: dr3vzmqaf
+  uri: <%= ENV['CLOUDINARY_URL'] %>
+test:
+  cloud_name: dr3vzmqaf
+  uri: <%= ENV['CLOUDINARY_URL'] %>
