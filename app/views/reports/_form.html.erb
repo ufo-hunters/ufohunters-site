@@ -95,8 +95,12 @@ $(document).ready(function(){
 
                <label for="report_duration"><h4>Add your photos or pictures to our site</h4></label>
                   <div class="form_controls">
-                      <div class="upload_button_holder">                                   
-                          <%= f.cl_image_upload(:image,:html => { :multiple => true }) %>
+                      <div class="upload_button_holder">
+                          <%
+                              time = Time.new
+                              datetimeNow = "reported_date_" + time.strftime("%Y%m%d").to_s 
+                          %>                                   
+                          <%= f.cl_image_upload(:image,:html => { :multiple => true }, :folder => datetimeNow, :use_filename => true) %>
                       </div>
                       <span class="status"></span>
                   </div>
@@ -189,6 +193,7 @@ $(document).ready(function(){
                             //var img = "";
                             var img = document.createElement("input");
                             var img_hidden = document.createElement("input");
+
                             $.each(upload, function(k,v){
                               if(k=="url"){
                                     //img = $('<img />',{ src: JSON.stringify(v)}).appendTo($('#YourDiv'));
