@@ -10,6 +10,7 @@
 *.bmp
 *.3g2
 *.tar
+*.wmv
 # Ignore bundler config
 /.bundle
 
