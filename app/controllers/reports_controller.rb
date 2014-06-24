@@ -1,5 +1,7 @@
 class ReportsController < ApplicationController
 
+  skip_before_filter :verify_authenticity_token, :only => [:create]
+  
   include SimpleCaptcha::ControllerHelpers
 
   caches_action :index, :expires_in => 24.hour
@@ -73,7 +75,9 @@ class ReportsController < ApplicationController
 
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values
-    @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
+    unless @tmp["image_cloudinary"].blank?  
+        @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
+    end
     @tmp["status"] = 0
     @tmp["image"] = ""
 

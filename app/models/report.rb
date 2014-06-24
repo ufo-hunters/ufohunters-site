@@ -16,6 +16,7 @@ class Report
   field :source, type: String
   field :email, type: String
   field :image_cloudinary, type: Array
+  field :image, type: String
 
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
