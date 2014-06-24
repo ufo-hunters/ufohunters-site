@@ -5,36 +5,24 @@
 	}
 	</script>
 	<div class="row">
-		<div class="span12">	
+		<div class="span12">
 							<h3>Recent UFO Activity</h3>
 							<p>Discover the latest UFO sightings images all over the world</p>
 		</div>
 	</div>
-			   
+
     <div class="row">
-		  <div class="span12">	
+		  <div class="span12">
 		  	<p>Drag the images so that you can take a look at the UFO Image Gallery</p>
 		  </div>
     </div>
-	
-	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
-		    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
-		 		    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-					<!-- AnuncioAdaptable3 -->
-					<ins class="adsbygoogle"
-					     style="display:block"
-					     data-ad-client="ca-pub-4760111415025425" 
-					     data-ad-slot="4432690882"
-					     data-ad-format="auto"></ins>
-					<script>
-					(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>		
-			</div>	
 
+	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+    <%= render partial: 'common/ads/adaptable3', locals: {span: 'span12'} %>
 	</div>
 
 	<div class="row">
-		    <div class="span12">	
+		    <div class="span12">
 			   <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
 				    <div class="slides"></div>
 				    <h3 class="title"></h3>
@@ -51,12 +39,12 @@
 			blueimp.Gallery([
 			    <%
 			    	image_cont = 0
-					@ufo_list.each do |ufo| 
+					@ufo_list.each do |ufo|
 
 		        		image_urls, other_urls = select_url_images(ufo.links)
 
 						unless image_urls.blank?
-							
+
 							image_urls.each do |vid|
 
 								if image_cont != 0
@@ -70,15 +58,15 @@
 									title: '<%=friendly_title(ufo)%>',
 							        href: '<%=vid%>',
 							        type: 'image/jpeg',
-							        thumbnail: '<%=vid%>'									
+							        thumbnail: '<%=vid%>'
 								}
-							    <%	
+							    <%
 
 							    image_cont += 1
 
 							end
 
-						end 
+						end
 
 					end
 		      %>],
@@ -88,22 +76,6 @@
 			    }
 			);
 	</script>
-
-    
-
-	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
-		    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-							<ins class="adsbygoogle"
-							     style="display:block"
-							     data-ad-client="ca-pub-4760111415025425"
-							     data-ad-slot="6918386485"
-							     data-ad-format="auto"></ins>
-							<script>
-							(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
-		    </div>
-	</div>
-
- 
-
+  <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+    <%= render partial: 'common/ads/horizontal_ad' %>
+  </div>
