@@ -4,7 +4,7 @@
 <script>
 function init() {}
 </script>
-<div id="site_content">			
+<div id="site_content">
    <div id="content">
       <div class="content_item">
           <h2>A glance at our data</h2>
@@ -26,40 +26,30 @@ function init() {}
                 (0...30).each do |i|
                 #@listaUFO.each do |ufo|
                   ufo = @listaUFO[i]
-              %>    
+              %>
                 <tr <%= count % 2 == 0 ? "class='even'" : ""%>>
                    <td class="stats_table_left"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
                    <td class="stats_table_right"><%= ufo['count'] %></td>
                 </tr>
-              <% 
+              <%
                 count += 1
               end %>
-              
+
               </tbody>
             </table>
-			
+
 			     <article style="float: left; max-width: 950px" >
              <div class="top">
              </div>
             </article>
 			     <div style="clear: both"></div>
           </div>
-		   
+
           <%= javascript_include_tag "ufo-data.js" %>
-         
+
        </div>
     </div>
-</div> 
+</div>
 <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-        <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-              <ins class="adsbygoogle"
-                   style="display:block"
-                   data-ad-client="ca-pub-4760111415025425"
-                   data-ad-slot="6918386485"
-                   data-ad-format="auto"></ins>
-              <script>
-              (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
-        </div>
+  <%= render partial: 'common/ads/horizontal_ad' %>
 </div>

@@ -3,11 +3,11 @@
     %>
 
     <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
-		
+
 		<%
 		end
 		%>
-	
+
 	 	<div class="row">
 		    <div class="span12">
 			   	<%
@@ -19,29 +19,17 @@
 				%>
 		   	</div>
 		</div>
-		
-	    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-		    <div class="span12" itemscope itemtype="http://schema.org/WPAdBlock" >
-					<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-							<ins class="adsbygoogle"
-							     style="display:block"
-							     data-ad-client="ca-pub-4760111415025425"
-							     data-ad-slot="6918386485"
-							     data-ad-format="auto"></ins>
-							<script>
-							(adsbygoogle = window.adsbygoogle || []).push({});
-					</script>
-		    </div>
-	    </div>
+    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+      <%= render partial: 'common/ads/horizontal_ad' %>
+    </div>
 
-		
-		<div itemscope itemtype="http://schema.org/Article" class="row">	
-				
+		<div itemscope itemtype="http://schema.org/Article" class="row">
+
 				<div class="span8">
 					<article>
 						<meta itemprop="articleSection" content="UFO Sightings">
 						<header>
-							<h2 itemprop="name" class="title"><%= @ufo_list.location  %></h2>
+							<h2 itemprop="name" class="title"><%= @ufo_list.location %></h2>
 						</header>
 						<p class="meta">
 						<small>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>"><%= format_date @ufo_list.sighted_at %></strong><br/>
@@ -55,7 +43,7 @@
 						</p>
 						<div class="entry">
 				   			<p itemprop="articleBody"><%=@ufo_list.description.html_safe%></p>
-				   			<% unless @ufo_list.links.blank?	%>
+				   			<% unless @ufo_list.links.blank? %>
 				   				<script type="text/javascript">
 			   					      $(document).ready(function() {
 						                  $("#gallery").carousel({
@@ -84,11 +72,10 @@
 
 				   							    image_urls.each do |img|
 
-				   							  
 				   							    	  if img_cont % 3 == 0
-				   							          %>	
+				   							          %>
 							   								<div class="item <%= "active" if img_cont == 0 %>">
-							   								    <div class="row-fluid">								   								
+							   								    <div class="row-fluid">
 						   						      <%
 									              end
 										            %>
@@ -99,31 +86,31 @@
 									            						</figure>
 									        							</a>
 									        						</div>
-				        						      <%									                  
+				        						      <%
 
 									               img_cont += 1
 
-									               if img_cont % 3 == 0 
+									               if img_cont % 3 == 0
 							                %>
 							                      </div>
 							                  </div>
 							                <%
 							                  end
-									                
+
 				        					  end
-				        					  
-				        					  if img_cont % 3 != 0 
+
+				        					  if img_cont % 3 != 0
 							              %>
 							                  </div>
 							                </div>
 							              <%
-							              end 
+							              end
 							              %>
 
 				        					</div>
 				        					<a class="left carousel-control" href="#gallery" data-slide="prev">‹</a>
                          	<a class="right carousel-control" href="#gallery" data-slide="next">›</a>
-				   						</div>				   						
+				   						</div>
 				   					</div>
 
 				   					<%# image lightbox %>
@@ -133,7 +120,7 @@
 													<h3 class="modal-title">Heading</h3>
 											</div>
 											<div class="modal-body">
-												
+
 											</div>
 											<div class="modal-footer">
 												<button class="btn" data-dismiss="modal">Close</button>
@@ -151,7 +138,7 @@
 				   						%><h2>Videos</h2><%
 
 					   					video_urls.each do |vid|
-					   						%><%=youtube_video(vid)%><%	
+					   						%><%=youtube_video(vid)%><%
 					   					end
 
 					   				end
@@ -168,14 +155,14 @@
 				   						end
 				   					%>
 				   					  </ul>
-				   				<% 
+				   				<%
 				   					end
 
 				   				end
 
-				   			end 
+				   			end
 				   			%>
-	   						 
+
    						</div>
    					</article>
 
@@ -193,25 +180,13 @@
 	   				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 	   			</div>
-	   			<div class="span4" itemscope itemtype="http://schema.org/WPAdBlock">
-					     		    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-									<!-- AnuncioAdaptable3 -->
-									<ins class="adsbygoogle"
-									     style="display:block"
-									     data-ad-client="ca-pub-4760111415025425"
-									     data-ad-slot="4432690882"
-									     data-ad-format="auto"></ins>
-									<script>
-									(adsbygoogle = window.adsbygoogle || []).push({});
-									</script>			
-				</div>
+          <%= render partial: 'common/ads/adaptable3' %>
 	    </div>
-		
 
 	    <div class="row">
 				<div class="span8">
 
-				  <% 
+				  <%
 				  # Less than two because the current sighting is returned
 		      unless @nearest_sightings.blank? || @nearest_sightings.count < 2
             %><%= render partial: "common/nearest_sightings", locals: {ufo_id: @ufo_list.id}, object: @nearest_sightings %>
@@ -220,17 +195,5 @@
 		      %>
 
 			  </div>
-			    <div class="span4" itemscope itemtype="http://schema.org/WPAdBlock">
-
-			 						<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-									<!-- AnuncioAdaptable2 -->
-									<ins class="adsbygoogle"
-									     style="display:block"
-									     data-ad-client="ca-pub-4760111415025425"
-									     data-ad-slot="9142092084"
-									     data-ad-format="auto"></ins>
-									<script>
-									(adsbygoogle = window.adsbygoogle || []).push({});
-									</script>
-			    </div>
+			  <%= render partial: 'common/ads/adaptable' %>
 	  	</div>
