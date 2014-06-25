@@ -8,6 +8,9 @@ class StatsController < ApplicationController
     @menu = "statistics"
     @page_title = "UFO Data Stats"
     @page_description = "A glance at our UFO Data using Data-Driven Documents"
+
+    @reports = reports_by_year
+
   end
 
   def shape
@@ -17,6 +20,23 @@ class StatsController < ApplicationController
     respond_to do |format|
        format.json { render json: @ufos }
     end
+  end
+
+  private
+  def reports_by_year
+    Report.collection.aggregate(
+       {
+        "$group" => {"_id" => {"$substr" => ["$sighted_at", 0, 4]},
+                     "count" => {"$sum" => 1}}
+       },
+       {
+        "$match" => {"_id" => {"$gte" => "1850"}}
+       },
+       {
+        "$sort" => {"_id" => 1}
+       }
+    )
+
   end
 
 end

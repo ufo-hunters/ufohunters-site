@@ -5,18 +5,18 @@
   <%= stylesheet_link_tag "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
-  <meta content="text/html; charset=utf-8" http-equiv="content-type" /> 
+  <meta content="text/html; charset=utf-8" http-equiv="content-type" />
   <meta name='keywords' content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports'/>
   <meta name='description' content='<%= @page_description %>'/>
   <meta property="og:type" content="website"/>
   <meta property="og:title" content="<%= @page_title %> - UFO Hunters"/>
-  <meta property="og:site_name" content="<%= @page_title %> - UFO Hunters"/>      
+  <meta property="og:site_name" content="<%= @page_title %> - UFO Hunters"/>
   <meta property="og:description" content="<%= @page_description %>"/>
   <meta property="og:image" content="http://www.ufo-hunters.com/usa/20130807/ufo_sighting_in_deltona_florida.png" />
   <meta property="og:locale" content="en_US" />
-  <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" /> 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">   
-  <script type="text/javascript">var switchTo5x=true;</script>                 
+  <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript">var switchTo5x=true;</script>
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 </head>
@@ -42,12 +42,12 @@
 		    <div class="span4">
         	<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
 			  </div>
-	           
-        <div class="span4" style="margin-top:20px;margin-bottom:10px;">  
+
+        <div class="span4" style="margin-top:20px;margin-bottom:10px;">
           <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
         </div>
 
-			  <div class="span1">	  
+			  <div class="span1">
 				  <!-- AddThis Smart Layers BEGIN -->
           <!-- Go to http://www.addthis.com/get/smart-layers to customize -->
           <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
@@ -57,21 +57,21 @@
               'share' : {
                 'position' : 'right',
                 'numPreferredServices' : 4
-              }, 
+              },
               'follow' : {
                 'services' : [
                   {'service': 'facebook', 'id': 'UfoHuntersCom'},
                   {'service': 'twitter', 'id': 'UfoHuntersCom'},
                   {'service': 'google_follow', 'id': '+UfohuntersCom'}
                 ]
-              }   
+              }
             });
           </script>
           <!-- AddThis Smart Layers END -->
 			  </div>
       </div>
 	  </header>
-	
+
 	  <div class="row">
       <div class="navbar navbar-inverse">
         <div class="navbar-inner">
@@ -83,11 +83,11 @@
             </a>
             <a class="visible-phone" href="#"><%= image_tag image_path('navicon2.png') %></a>
             <nav class="nav-collapse">
-              
+
               <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "sightings", :action => "statistics"}, :itemprop => "url")%></li>                
+                <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "stats"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "northamerica"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>North America</div>"), {:controller => "sightings", :action => "northamerica"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
@@ -109,9 +109,9 @@
       </div>
 
     </div%>
-	
+
 	  <%= yield %>
-	
+
     <script type="text/javascript">
     $(document).ready(function() {
       $("#video_thumb_carousel").carousel({
@@ -119,7 +119,7 @@
       });
     });
     </script>
-  
+
     <div class="row" style="background-color:#d7df21;margin-top: 45px">
       <div class="span12" itemscope itemtype="http://schema.org/ItemList">
         <meta itemprop="itemListOrder" content="Descending"/>
@@ -129,14 +129,14 @@
               <%
               video_thumb_list = video_list
               video_cont = 0
-              
+
               video_thumb_list.each do |thumb|
                 thumb.links.each do |link|
                   if youtube_link? link
                     video_id = youtube_video_id(link)
 
                     if video_id
-                  
+
                       if video_cont % 4 == 0
               %>
                         <div class="item <%= "active" if video_cont == 0 %>">
@@ -156,7 +156,7 @@
               <%
                       video_cont += 1
 
-                      if video_cont % 4 == 0 
+                      if video_cont % 4 == 0
               %>
                           </div>
                         </div>
@@ -165,10 +165,10 @@
 
                     end
                   end
-                end                           
+                end
               end
-              
-              if video_cont % 4 != 0 
+
+              if video_cont % 4 != 0
               %>
                           </div>
                         </div>
@@ -180,11 +180,11 @@
             <a class="left carousel-control" href="#video_thumb_carousel" data-slide="prev" style="top: 61%;left: -15px">‹</a>
             <a class="right carousel-control" href="#video_thumb_carousel" data-slide="next" style="top: 61%">›</a>
           </div>
-         
+
         </div>
       </div>
     </div>
-    
+
 	  <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
 		  <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
 		  <div class="span2"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
@@ -192,7 +192,7 @@
       <div class="span2"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
       <div class="span3 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
     </footer>
-	
+
     <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
