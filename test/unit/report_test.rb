@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ArticleTest < ActiveSupport::TestCase
+class ReportTest < ActiveSupport::TestCase
 
   setup do
     @report = create_dummy_report
