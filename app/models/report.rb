@@ -16,7 +16,6 @@ class Report
   field :source, type: String
   field :email, type: String
   field :image_cloudinary, type: Array
-  field :image, type: String
   field :status, type: Integer
 
   
