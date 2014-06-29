@@ -20,7 +20,6 @@ class Report
   field :status, type: Integer
 
   
-
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
   validates_presence_of :location, :message => "Location is mandatory"
