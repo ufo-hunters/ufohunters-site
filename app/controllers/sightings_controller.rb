@@ -41,25 +41,7 @@ class SightingsController < ApplicationController
       @page_title = friendly_title(@ufo_list)
       @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
    end
-
-   def spain
-      @listaUFO = Report.where(:coord => {"$geoWithin" => 
-		{"$polygon" => [[ -9.26 , 43.64 ],
-				[ -1.9, 43.42 ],
-				[ 3.24,42.73 ],
-				[ 4.77, 39.43 ],
-				[-1.35,36.22],
-				[ -7.26 , 36.02 ],
-				[ -7.19 , 41.70 ],
-				[ -9.15 , 42.02 ],
-				[ -9.26 , 43.64 ]]
-		}}).and(:status => 1).order_by(:location.asc)
-
-      @numUFO = Report.where(:status => 1).count()
-      @menu = "spain"
-      @page_title = "UFO Sightings in Spain"
-      @page_description = "UFO Sighting Reports in Spain"
-   end
+  
 
    def statistics 
       @numUFO = Report.where(:status => 1).count()
@@ -327,8 +309,5 @@ class SightingsController < ApplicationController
       @page_description = "About ufo-hunters.com and who is behind this site"
    end
 
-   def sitemap
-      @numUFO = Report.where(:status => 1)
-   end
-
+   
 end

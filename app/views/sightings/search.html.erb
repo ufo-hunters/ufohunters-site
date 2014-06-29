@@ -1,19 +1,22 @@
+<%  unless @ufo_list.nil? %>    
+
+
     <%
-    if @ufo_list.coord
+    	unless @ufo_list.coord.nil? || @ufo_list.coord == ""
     %>
 
     <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
 
-		<%
+	<%
 		end
-		%>
+	%>
 
 	 	<div class="row">
 		    <div class="span12">
 			   	<%
-	      	if @ufo_list.coord
+	      	      unless @ufo_list.coord.nil? || @ufo_list.coord == ""
 	      		%>
-	      		<div id="sightings-map" style="width: 100%; height: 450px;"></div>
+	      					<div id="sightings-map" style="width: 100%; height: 450px;"></div>
 				  <%
 				  end
 				%>
@@ -29,7 +32,14 @@
 					<article>
 						<meta itemprop="articleSection" content="UFO Sightings">
 						<header>
-							<h2 itemprop="name" class="title"><%= @ufo_list.location %></h2>
+							<h2 itemprop="name" class="title">
+									<%
+						      	      unless @ufo_list.location.nil? || @ufo_list.location == ""
+						      		%>
+												<%= @ufo_list.location %></h2>
+									<%
+									  end
+									%>
 						</header>
 						<p class="meta">
 						<small>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>"><%= format_date @ufo_list.sighted_at %></strong><br/>
@@ -197,3 +207,4 @@
 			  </div>
 			  <%= render partial: 'common/ads/adaptable' %>
 	  	</div>
+<%  end %>   	  	
