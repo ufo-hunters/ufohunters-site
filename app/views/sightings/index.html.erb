@@ -40,9 +40,19 @@
 							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
 							                          	<div style="width:85%;margin-left:auto;margin-bottom:15px">
-								                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0"><%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %></p>
-								                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
-								                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
+
+							                          		<%  unless @ufo_list[i].nil? %>
+
+										                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0">
+										                          	
+										                          		<%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %>
+										                          	
+										                          	</p>
+										                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
+										                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
+
+								                            <%  end %>
+
 							                            </div>
 
 							                          </div>
