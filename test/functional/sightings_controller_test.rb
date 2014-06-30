@@ -4,7 +4,7 @@ require 'test_helper'
 class SightingsControllerTest < ActionController::TestCase
 
   setup do
-  	Mongoid.default_session['ufo'].indexes.create(coord:'2d')
+    Mongoid.default_session['ufo'].indexes.create(coord:'2d')
   	Mongoid.default_session['ufo'].indexes.create(status:1,links:1)
   	Mongoid.default_session['ufo'].indexes.create(status:1,location:1)
   	Mongoid.default_session['ufo'].indexes.create(status:1,sighted_at:-1)
@@ -115,17 +115,13 @@ class SightingsControllerTest < ActionController::TestCase
   	  assert_response :success
   end
 
-  test "should maps country (HONDURAS)" do
-  	  get :country, id: 'HND'
-  	  assert_response :success
-  end
+  test "should maps country" do
+    country = create_country
+    country.save
 
-  test "should maps country (ESP)" do
-  	  get :country, id: 'ESP'
-  	  assert_response :success
+    get :country, id: 'ESP'
+    assert_response :success
   end
-
-   
 
 end
- 
+
