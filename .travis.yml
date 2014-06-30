@@ -3,3 +3,5 @@ rvm:
   - 1.9.3
 services:
   - mongodb
+env:
+  - secure: "AUJecmUOjKnbj2OfgOT19uvMl4ufzYXzHPxdvuw6MmMnZjoupTyr0jkKU1kdcW6nWLMC8l1wwVYvvBpcIuPM0Tmbjm7cIB0PSCsZL5Q1YHhXi+j9A7n6UAPpaKOr4vajlL/9lpjsb8cCflqxERaKLUsaFUXs77k+enGth5tUmYY="
