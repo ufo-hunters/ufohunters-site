@@ -4,4 +4,4 @@ rvm:
 services:
   - mongodb
 env:
-  - secure: "MfexnzrmRv3IBJTq0umpa0XqpklthyVAalPHgf2oDuGBm9g8Ywk+lP3goeFW80UGD0CsLhIp4EZwjd4Bl3r6pJspPiY0gBY+3C6mrEIlSCGu3OymSvU8EIrUfquZMpk3OpXiIYw9Fm4IyE07r8oSItKUtEEJLuYjwDWEMsQzI48="
+  - secure: "dsggwdMklqdYOp8Ygp5QFvmR7xKVR2gaY9pRtPNGAYHLaLRlRVxA+l6EP/tLewqTE2cFKHjc7HVZEiu219P25ZO/p9DPF12RWE6d6szr73bVo+xvYFChMrvH5W2RB4xz0N0SFApj8kxD92zNz9qcKQcdVs6+U8jHUHDtLtWGGkY="
