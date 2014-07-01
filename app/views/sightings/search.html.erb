@@ -70,6 +70,7 @@
 												});
 								</script>
 				   				<%
+				   				image_urls = []
 				   				image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
 				   				image_urls = image_urls + @ufo_list.image_cloudinary unless @ufo_list.image_cloudinary.blank?
 
