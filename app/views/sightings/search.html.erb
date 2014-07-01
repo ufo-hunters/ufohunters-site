@@ -1,4 +1,4 @@
-<%  unless @ufo_list.nil? %>    
+<%  unless @ufo_list.nil? %>
 
 
     <%
@@ -53,7 +53,7 @@
 						</p>
 						<div class="entry">
 				   			<p itemprop="articleBody"><%=@ufo_list.description.html_safe%></p>
-				   			<% unless @ufo_list.links.blank? %>
+				   			<% unless @ufo_list.links.blank? && @ufo_list.image_cloudinary.blank? %>
 				   				<script type="text/javascript">
 			   					      $(document).ready(function() {
 						                  $("#gallery").carousel({
@@ -70,7 +70,8 @@
 												});
 								</script>
 				   				<%
-				   				image_urls, other_urls = select_url_images(@ufo_list.links)
+				   				image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
+				   				image_urls = image_urls + @ufo_list.image_cloudinary unless @ufo_list.image_cloudinary.blank?
 
 				   				unless image_urls.blank?
 				   				%><h2>Images</h2>
@@ -207,4 +208,4 @@
 			  </div>
 			  <%= render partial: 'common/ads/adaptable' %>
 	  	</div>
-<%  end %>   	  	
+<%  end %>
