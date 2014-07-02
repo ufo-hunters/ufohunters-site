@@ -19,17 +19,17 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test "should format string date" do
     expected_responses = ["Monday 20. May 2013", "Tuesday 01. January 2013", "Saturday 31. August 1901"]
-    assert_string_date_format :format_date, "%A %d. %B %Y", @dates_to_format, expected_responses
+    assert_string_date_format :format_date, @dates_to_format, expected_responses
   end
 
   test "should format string date for rss" do
     expected_responses = ["Mon, 20 May 2013 00:00:00", "Tue, 01 January 2013 00:00:00", "Sat, 31 August 1901 00:00:00"]
-    assert_string_date_format :format_date_rss, "%a, %d %B %Y %T", @dates_to_format, expected_responses
+    assert_string_date_format :format_date_rss, @dates_to_format, expected_responses
   end
 
   test "should format string date for microdata" do
     expected_responses = ["2013-05-20", "2013-01-01", "1901-08-31"]
-    assert_string_date_format :format_date_microdata, "%Y-%m-%d", @dates_to_format, expected_responses
+    assert_string_date_format :format_date_microdata, @dates_to_format, expected_responses
   end
 
   test "should detect youtube urls" do
@@ -74,7 +74,7 @@ class ApplicationHelperTest < ActionView::TestCase
   end
 
 private
-  def assert_string_date_format(method_name, format, dates_to_format, expected_responses)
+  def assert_string_date_format(method_name, dates_to_format, expected_responses)
     actual_responses = []
 
     dates_to_format.each do |date_to_format|
