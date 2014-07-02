@@ -5,7 +5,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%A %d. %B %Y")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
@@ -16,7 +16,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%a, %d %B %Y %T")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
@@ -27,7 +27,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%Y-%m-%d")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
@@ -59,7 +59,7 @@ module ApplicationHelper
          end
 
       rescue => ex
-         logger.info "Invalid uri - #{ex.class}: #{ex.message}"
+         Rails.logger.info "Invalid uri - #{ex.class}: #{ex.message}"
          return nil
       end
    end
