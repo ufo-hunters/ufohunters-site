@@ -5,21 +5,10 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%A %d. %B %Y")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"    
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
-   end
-
-   def format_date2 date
-      unless date.blank?
-         begin
-            date.to_date.strftime("%Y-%m-%d")
-         rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
-            return ""
-         end 
-      end               
    end
 
    def format_date_rss date
@@ -27,7 +16,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%a, %d %B %Y %T")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
@@ -38,7 +27,7 @@ module ApplicationHelper
          begin
             date.to_date.strftime("%Y-%m-%d")
          rescue => ex
-            logger.info "Invalid date - #{ex.class}: #{ex.message}"
+            Rails.logger.info "Invalid date - #{ex.class}: #{ex.message}"
             return ""
          end
       end
@@ -68,18 +57,18 @@ module ApplicationHelper
             video_id = uri.path
             video_id = video_id[1..-1]
          end
-         
+
       rescue => ex
-         logger.info "Invalid uri - #{ex.class}: #{ex.message}"
+         Rails.logger.info "Invalid uri - #{ex.class}: #{ex.message}"
          return nil
       end
    end
 
-   def friendly_title(ovni)
+   def friendly_title(ufo_report)
       title = "UFO Sighting"
-      unless ovni.blank?
-         title += " in " + ovni.location unless ovni.location.blank? 
-         title += " on " + format_date(ovni.sighted_at) unless ovni.sighted_at.blank?
+      unless ufo_report.blank?
+         title += " in " + ufo_report.location unless ufo_report.location.blank?
+         title += " on " + format_date(ufo_report.sighted_at) unless ufo_report.sighted_at.blank?
          title.gsub("'","").gsub("/","-").gsub("&", "-").gsub("?","-").gsub(".","")
       end
    end
