@@ -15,10 +15,7 @@ $(document).ready(function(){
     });
 });
 
-
-
 </script>
-
 
   <div class="row">
           <div class="span12">
@@ -46,7 +43,6 @@ $(document).ready(function(){
                               <script>
                                 $(function() {
                                   $( "#report_sighted_at" ).datepicker();
-                                  $( "#report_reported_at" ).datepicker();
                                 });
                                 cont = 0;
                                 function addlink() {
@@ -59,34 +55,47 @@ $(document).ready(function(){
   <div class="row">
           <div class="span4">
                                 <label for="sighted_at">Sighted on <span class="divrojo">*</span></label>
-                                <%= f.text_field :sighted_at, :size => 12, :class => 'required fieldufo'  %>
+                                <%
+                                sighted_at_value = nil
+                                unless params[:report].blank?
+                                  sighted_at_value = Date.strptime(params[:report]["sighted_at"], '%Y%m%d').strftime('%m/%d/%Y')
+                                end
+                                %>
+
+                                <%= f.text_field :sighted_at, :size => 12, :class => 'required fieldufo', :value => sighted_at_value %>
           </div>
-          <div class="span4">
-                                <label for="reported_at">Reported on <span class="divrojo">*</span></label>
-                                <%= f.text_field :reported_at, :size => 12, :class => 'required fieldufo'  %>
-          </div>
+          <%
+              reported_at_value = Time.new.strftime('%m/%d/%Y').to_s
+          %>
+          <%= f.hidden_field :reported_at, :value => reported_at_value %>
+
           <div class="span4">
                                 <label for="report_shape">Shape <span class="divrojo">*</span></label>
                                 <%= f.text_field :shape, :size => 12, :class => 'required fieldufo' %>
           </div>
-  </div>
-  <div class="row">
 
           <div class="span4">
 
                                 <label for="report_duration">Duration <span class="divrojo">*</span></label>
                                 <%= f.text_field :duration, :size => 12, :class => 'required fieldufo' %>
           </div>
+  </div>
+  <div class="row">
+
           <div class="span4">
-            <label for="report_email" class="report_location">Email contact (your email address<br> will never be published or shared)</label>
+            <label for="report_email" class="report_location">Contact email (your email address<br/> will never be published or shared)</label>
                                 <%= f.text_field :email, :class => 'fieldufo' %>
           </div>
+          <div class="span4">
+            <label for="report_email_confirmation" class="report_location">Contact email confirmation<br/> (repeat your email to make sure it is OK)</label>
+                                <%= f.text_field :email_confirmation, :class => 'fieldufo' %>
+          </div>
+
           <div class="span4">
                                 <label for="report_links" class="report_location">Links (videos, images, articles...)</label>
                                 <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
                                 <div class="fieldlinks"></div>
                                 <a href="javascript:addlink();">(Add more links)</a>
-
           </div>
   </div>
   <div class="row">

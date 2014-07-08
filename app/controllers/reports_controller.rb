@@ -72,6 +72,9 @@ class ReportsController < ApplicationController
 
   def create
     @numUFO = Report.count()
+    @menu = "report"
+    @page_title = "Report a UFO"
+    @page_description = "Have you seen a UFO? Report your experience filling in the report form"
 
     @tmp = params[:report]
     @tmp["links"] = @tmp["links"].values unless @tmp["links"].empty?

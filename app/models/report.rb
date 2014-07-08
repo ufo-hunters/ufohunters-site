@@ -18,13 +18,14 @@ class Report
   field :image_cloudinary, type: Array
   field :status, type: Integer
 
-  
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
   validates_presence_of :location, :message => "Location is mandatory"
   validates_presence_of :duration, :message => "Duration is mandatory"
   validates_presence_of :shape, :message => "Shape is mandatory"
   validates_presence_of :description, :message => "Description is mandatory"
+  validates_confirmation_of :email, :message => "Should match contact email confirmation"
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i
 
   #db.ufo.ensureIndex({"coord":"2d"}, {"background":true,"safe":true})
   index({coord:'2d'},{background:true})
