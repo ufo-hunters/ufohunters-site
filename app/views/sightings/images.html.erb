@@ -49,7 +49,7 @@
 
 							unless image_urls.blank?
 
-							  image_urls.each do |vid|
+							  image_urls.each do |img|
 
 									if image_cont != 0
 						              	%>
@@ -57,12 +57,18 @@
 						              	<%
 						      end
 
+						      img_thumb = img
+
+						      if image_hosting_link?(img)
+									  img_thumb = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit)
+
+									end
 									%>
 									{
 										title: '<%=friendly_title(ufo)%>',
-								        href: '<%=vid%>',
+								        href: '<%=img%>',
 								        type: 'image/jpeg',
-								        thumbnail: '<%=vid%>'
+								        thumbnail: '<%=img_thumb%>'
 									}
 								    <%
 

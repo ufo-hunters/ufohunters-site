@@ -94,7 +94,17 @@
 										              		<div class="span4">
 										              			<a href="<%=img%>" class="thumbnail">
 									   											<figure>
-									            							<img src="<%=img%>" alt="<%=@ufo_list.location%>" width="140" title="<%=@ufo_list.location%>" />
+									   												<%
+									   												if image_hosting_link?(img)
+									   												%>
+									   												<%= cl_image_tag(image_id(img), :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
+									   												<%
+									   												else
+									   												%>
+									   												<%= image_tag img, :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
+									            							<%
+									            							end
+									            							%>
 									            						</figure>
 									        							</a>
 									        						</div>
