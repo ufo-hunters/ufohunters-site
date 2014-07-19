@@ -64,6 +64,22 @@ module ApplicationHelper
       end
    end
 
+   def image_hosting_link?(link)
+      link =~ /cloudinary.com/
+   end
+
+   def image_id(url)
+      begin
+         uri = URI.parse(url)
+         path = uri.path.split('/')
+         path[-2] << '/' << path[-1]
+
+      rescue => ex
+         Rails.logger.info "Invalid uri - #{ex.class}: #{ex.message}"
+         return nil
+      end
+   end
+
    def friendly_title(ufo_report)
       title = "UFO Sighting"
       unless ufo_report.blank?

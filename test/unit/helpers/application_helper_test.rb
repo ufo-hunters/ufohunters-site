@@ -15,6 +15,10 @@ class ApplicationHelperTest < ActionView::TestCase
       Report.new(:location => "Chicago?", :sighted_at => "20131209"),
       Report.new(:location => "This' a location? with.lots of.'chars' to??remove/&replace.", :sighted_at => "20130329")
     ]
+    @image_urls = ["http://www.mufoncms.com/files/15313_submitter_file1__strangecloudinthesky2.jpg",
+                   "http://www.mufoncms.com/files/15313_submitter_file3__strangeeyeintheclouds.jpg"]
+    @external_image_urls = ["http://res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140716/sun3_qpslqn.jpg",
+             "http://res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg"]
   end
 
   test "should format string date" do
@@ -50,6 +54,31 @@ class ApplicationHelperTest < ActionView::TestCase
 
     @youtube_urls.each do |link|
       actual_responses << youtube_video_id(link)
+    end
+
+    assert_equal actual_responses, expected_responses, "Looks like the ids has not been correctly extracted"
+  end
+
+  test "should detect external hosted images" do
+    @external_image_urls.each do |link|
+      assert image_hosting_link?(link), "Should detect external image links"
+    end
+  end
+
+  test "should not detect all images as external" do
+
+    @image_urls.each do |link|
+      assert !image_hosting_link?(link), "Should detect only our external image links"
+    end
+
+  end
+
+  test "should extract image id" do
+    actual_responses = []
+    expected_responses = ["reported_date_20140716/sun3_qpslqn.jpg", "reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg"]
+
+    @external_image_urls.each do |link|
+      actual_responses << image_id(link)
     end
 
     assert_equal actual_responses, expected_responses, "Looks like the ids has not been correctly extracted"
