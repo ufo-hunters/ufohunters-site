@@ -1,7 +1,7 @@
             <div class="" style="margin-top: 20px;margin-bottom: 20px">
 
-		     			<h3>Nearest sightings sorted by proximity (100 miles radius):</h3>
-		     			
+		     			<h3>Top 50 nearest sightings ordered by sighting date (100 miles radius):</h3>
+
 				      <table class="table table-responsive table-striped">
 				      	<thead>
 									<tr>
@@ -16,14 +16,14 @@
 							  	</tr>
 								</thead>
 								<tbody>
-							   	<% 
+							   	<%
 							   	# In order to avoid the same sighting as nearest sighting
 							   	@nearest_sightings.each do |sighting|
 							    	if ufo_id == sighting.id
 							       	next
 							     	end
 									%>
-			  		   			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article"> 
+			  		   			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 						       		<td itemprop="name">
 						       			<%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %>
 						       		</td>
@@ -37,8 +37,8 @@
 							    			<%= sighting.duration %>
 						       		</td>
 										</tr>
-								  <% 
-								  end 
+								  <%
+								  end
 								  %>
 							  </tbody>
 							</table>
