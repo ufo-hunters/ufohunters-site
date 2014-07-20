@@ -34,7 +34,7 @@ class SightingsController < ApplicationController
       distance = 100 #km
 
       if @ufo_list.coord
-         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).limit(50)
+         @nearest_sightings = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).desc(:sighted_at).limit(50)
       end
 
       @menu = "index" # se podría crear una pestaña search para búsquedas por fecha y por continente
