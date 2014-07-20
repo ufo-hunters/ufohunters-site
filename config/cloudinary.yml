@@ -1,7 +1,18 @@
 ---
 development:
+<<<<<<< HEAD
   uri: <%= ENV['CLOUDINARY_URL'] %>
   cdn_subdomain: true
+=======
+  cloud_name: dr3vzmqaf
+  uri: <%= ENV['CLOUDINARY_URL'] %>
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: dr3vzmqaf
+  uri: <%= ENV['CLOUDINARY_URL'] %>
+  cdn_subdomain: true 
+>>>>>>> 59f103f166db399ca5150383e3b9fe6d0d14043a
   enhance_image_tag: true
   static_image_support: true
 test:
