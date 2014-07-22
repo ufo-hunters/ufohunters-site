@@ -5,7 +5,7 @@
   report_selected_icon = ufo_icon
 
   zoom = map_zoom if defined?(map_zoom)
-  center = map_center if defined?(map_center) 
+  center = map_center if defined?(map_center)
 
   if defined?(selected_ufo) && selected_ufo.coord
     zoom = 8
@@ -28,11 +28,22 @@
     var sightings = [
     <%
     	index = 0
-     	ufo_list.each do |ufo| 
+     	ufo_list.each do |ufo|
 		    begin
-		      unless index == 0
-		      %>,<%
-		   	end
+		      if index == 0
+            if defined?(selected_ufo)
+          %>
+            ['<%=selected_ufo.location.gsub("'", %q(\\\'))%>',
+            <%=selected_ufo.coord[1]%>,
+            <%=selected_ufo.coord[0]%>,
+            <%=index += 1%>,
+            '<strong><%=selected_ufo.location.gsub("'", %q(\\\'))%></strong><br/><%= format_date selected_ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => selected_ufo.id, :title => friendly_title(selected_ufo) %></strong>',
+            true],
+          <%
+            end
+		      else
+          %>,<%
+		      end
 		    %>
 			  ['<%=ufo.location.gsub("'", %q(\\\'))%>',
           <%=ufo.coord[1]%>,
@@ -41,12 +52,12 @@
           '<strong><%=ufo.location.gsub("'", %q(\\\'))%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>',
           <%= defined?(selected_ufo) && (selected_ufo.id == ufo.id) ? 'true' : 'false' %>
 			  ]
-			  <% 
+			  <%
 			  rescue => ex
           logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
           next
 			  end
-			end 
+			end
 		%>
     ];
 
@@ -66,10 +77,10 @@
       <%
       end
       %>
-    }    	
+    }
 
     function setMarkers(map, locations) {
-  
+
     	for (var i = 0; i < locations.length; i++) {
      		setTimeout(function() {
           addMarker();
@@ -95,7 +106,7 @@
       var image = {
         url: '<%= ufo_icon %>'
       };
-      
+
       if (location[5] == true) {
 
         image = {
@@ -138,7 +149,7 @@
       var image = {
         url: '<%= image_path(report_selected_icon) %>',
       };
-      
+
       var customMarker = new google.maps.Marker({
           position: new google.maps.LatLng(<%= center[0] %>, <%= center[1] %>),
           map: map,
