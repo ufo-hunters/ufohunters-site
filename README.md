@@ -31,6 +31,6 @@ request][pull-requests].
 If there's some other way you'd like to contribute, feel free to contact us! Thanks for your interest!
 
 [ufo-hunters]: http://github.com/ufo-hunters/ufohunters-site
-[issues]: http://github.com/sinatra/sinatra-book/issues
+[issues]: https://github.com/ufo-hunters/ufohunters-site/issues
 [forking]: http://help.github.com/forking/
 [pull-requests]: http://help.github.com/pull-requests/
