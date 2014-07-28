@@ -32,4 +32,20 @@ class ReportTest < ActiveSupport::TestCase
     assert !@report.save, "Saved the report without a description"
   end
 
+  test "should save report with a blank email" do
+    @report.email = nil
+    assert @report.save, "Did not save the report with a blank email"
+  end
+
+  test "should not save report with not valid email" do
+    @report.email = 'novalidemail'
+    assert !@report.save, "Saved the report with not valid email"
+  end
+
+  test "should not save report if confirmation email does not match email" do
+    @report.email = 'test@email.com'
+    @report.email_confirmation = 'doesnotmatch@email.com'
+    assert !@report.save, "Saved the report with not matching emails"
+  end
+
 end
