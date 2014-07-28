@@ -2,7 +2,7 @@ development:
   uri: <%= ENV['CLOUDINARY_URL'] %>
   cdn_subdomain: true
   enhance_image_tag: true
-  static_image_support: false
+  static_image_support: true
 test:
   uri: <%= ENV['CLOUDINARY_URL'] %>
   cdn_subdomain: true
