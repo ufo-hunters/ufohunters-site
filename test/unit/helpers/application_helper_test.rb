@@ -17,8 +17,8 @@ class ApplicationHelperTest < ActionView::TestCase
     ]
     @image_urls = ["http://www.mufoncms.com/files/15313_submitter_file1__strangecloudinthesky2.jpg",
                    "http://www.mufoncms.com/files/15313_submitter_file3__strangeeyeintheclouds.jpg"]
-    @external_image_urls = ["http://res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140716/sun3_qpslqn.jpg",
-             "http://res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg"]
+    @external_image_urls = ["http://a1.res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140716/sun3_qpslqn.jpg",
+             "http://a2.res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg"]
   end
 
   test "should format string date" do
