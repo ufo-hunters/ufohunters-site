@@ -30,6 +30,9 @@
 
 				<div class="span8">
 					<article>
+						<!-- Go to www.addthis.com/dashboard to customize your tools -->
+						<div class="addthis_sharing_toolbox"></div>
+
 						<meta itemprop="articleSection" content="UFO Sightings">
 						<header>
 							<h2 itemprop="name" class="title">
@@ -90,6 +93,8 @@
 							   								    <div class="row-fluid">
 						   						      <%
 									              end
+
+									              img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
 										            %>
 										              		<div class="span4">
 										              			<a href="<%=img%>" class="thumbnail">

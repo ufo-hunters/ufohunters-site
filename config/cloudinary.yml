@@ -1,15 +1,15 @@
----
 development:
-  cloud_name: dr3vzmqaf
   uri: <%= ENV['CLOUDINARY_URL'] %>
-  enhance_image_tag: true
-  static_image_support: false
-production:
-  cloud_name: dr3vzmqaf
-  uri: <%= ENV['CLOUDINARY_URL'] %>
-  cdn_subdomain: true 
+  cdn_subdomain: true
   enhance_image_tag: true
   static_image_support: true
 test:
-  cloud_name: dr3vzmqaf
   uri: <%= ENV['CLOUDINARY_URL'] %>
+  cdn_subdomain: true
+  enhance_image_tag: true
+  static_image_support: true
+production:
+  uri: <%= ENV['CLOUDINARY_URL'] %>
+  cdn_subdomain: true
+  enhance_image_tag: true
+  static_image_support: true
