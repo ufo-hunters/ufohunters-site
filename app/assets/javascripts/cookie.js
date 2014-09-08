@@ -1,4 +1,6 @@
-document.write("<style>.msgcookie{display:block;position:fixed;bottom:0;background: none repeat scroll 0 0 #959c16;;color:#fff;font-size:11px;font-family:sans-serif}.msgcookie p{margin:5px;background:url(/assets/cookie.png) 0 0 no-repeat;padding:10px 20px 10px 30px}.msgcookie p a:link,.msgcookie p a:active,.msgcookie p a:visited,.msgcookie p a:hover{color:#fff}.msgcookie a.close {background: url(/assets/cookie.png) no-repeat scroll 0 -54px rgba(0, 0, 0, 0);display: block;height: 50px;opacity: 0.5;overflow: hidden;position: absolute;right: 0;text-indent: -800px;top: 8px;right: 8px;width: 16px;}a.close:hover{opacity:1}</style>");
+document.write("<style>.msgcookie{display:block;position:fixed;bottom:0;background: none repeat scroll 0 0 #959c16;;color:#fff;font-size:11px;font-family:sans-serif;z-index: 1;}.msgcookie p{margin:5px;background:url(/assets/cookie.png) 0 0 no-repeat;padding:10px 20px 10px 30px}.msgcookie p a:link,.msgcookie p a:active,.msgcookie p a:visited,.msgcookie p a:hover{color:#fff}.msgcookie a.close {background: url(/assets/cookie.png) no-repeat scroll 0 -54px rgba(0, 0, 0, 0);display: block;height: 50px;opacity: 0.5;overflow: hidden;position: absolute;right: 0;text-indent: -800px;top: 8px;right: 8px;width: 16px;}a.close:hover{opacity:1} .msgcookie2{display:block;padding:15px;position:fixed;bottom:20%;background: none repeat scroll 0 0 #959c16;;color:#fff;font-size:11px;font-family:sans-serif;z-index: 1;} .msgcookie2 p{margin:5px;}.msgcookie2 p a:link,.msgcookie2 p a:active,.msgcookie2 p a:visited,.msgcookie2 p a:hover{color:#fff}.msgcookie2 a.close2 {background: url(/assets/cookie.png) no-repeat scroll 0 -54px rgba(0, 0, 0, 0);display: block;height: 50px;opacity: 0.5;overflow: hidden;position: absolute;right: 0;text-indent: -800px;top: 8px;right: 8px;width: 16px;}a.close2:hover{opacity:1}</style>");
+
+
 
 /*!
  * jQuery Cookie Plugin v1.4.0
@@ -65,7 +67,7 @@ document.write("<style>.msgcookie{display:block;position:fixed;bottom:0;backgrou
 			return (document.cookie = [
 				encode(key), '=', stringifyCookieValue(value),
 				options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-				options.path    ? '; path=' + options.path : '',
+				options.path    ? '; path=/' : '; path=/',
 				options.domain  ? '; domain=' + options.domain : '',
 				options.secure  ? '; secure' : ''
 			].join(''));
@@ -121,17 +123,22 @@ $(document).ready(function()
 {
 	if (!$.cookie("msgcookie"))
 	{
-		$("body").prepend("<div class='row'><div class='span11'><div class='msgcookie'><p><a href='#' class='close'>cerrar mensaje</a>This site uses cookies and third-party cookies to provide you with a better experience and service. When navigating or using our services, you agree to our use of them. You can change your cookie settings at any time. <a href='#'>More information</a></p></div></div></div>");
+		$("body").prepend("<div class='row'><div class='span12'><div class='msgcookie'><p><a href='#' class='close'>close message</a>This site uses cookies and third-party cookies to provide you with a better experience and service. When navigating or using our services, you agree to our use of them. You can change your cookie settings at any time. <a href='#'>More information</a></p></div></div></div><div class='row'><div class='span12'><div class='msgcookie2' id='sec_box' style='display: none;'><p><a href='#' class='close2'>close message</a><strong>PRIVACY POLICY:</strong><br><br> We are committed to protecting your privacy. We will only use the information that we collect about you lawfully (in accordance with the Data Protection Act 1998 and the EU Privacy and Communications Directive).<br/><br/>This webpage displays Google Adsense Ads which follows the following:<br/>- Third party vendors, including Google, use cookies to serve ads based on a user's prior visits to this website.<br/>- Google's use of the DoubleClick cookie enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the Internet.<br/>- You may opt out of the use of the DoubleClick cookie for interest-based advertising by visiting Ads Settings (<a href='http://www.google.com/ads/preferences/' target='_blank'>http://www.google.com/ads/preferences/</a>)<br/><br/>You can find more about Google Adsense ads using this link (<a href='http://www.google.com/adsense' target='_blank'>http://www.google.com/adsense</a>).<br/>You can also visit <a href='http://www.aboutads.info' target='_blank'>http://www.aboutads.info</a> and <a href='http://www.allaboutcookies.org/cookies/' target='_blank'>http://www.allaboutcookies.org/cookies/</a> to find out more.<br/>If you have any questions/comments about privacy, you should email us ufohunterscom@gmail.com<br/></p></div></div></div>");
 		
 		$("body").on("click", ".close", function(e) {
 			e.preventDefault();
-			$.cookie('msgcookie', 'aceptado');
+			$.cookie('msgcookie', 'accepted');
 			$(".msgcookie").fadeOut();
+		});
+
+		$("body").on("click", ".close2", function(e) {
+			$(".msgcookie2").fadeOut();
 		});
 		
 		$("body").on("click", ".msgcookie p a:not(.close)", function(e) {
 			e.preventDefault();
-			alert("Este enlace debe ir a tu pol\u00EDtica de privacidad");
+			//alert("Este enlace debe ir a tu pol\u00EDtica de privacidad");
+			 $('#sec_box').show();
 		});
 	}
 });
