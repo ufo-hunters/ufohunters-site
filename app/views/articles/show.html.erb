@@ -20,7 +20,7 @@
         <h2 itemprop="name" class="title"><%= @article.title  %></h2>
       </header>
       <p class="meta">
-      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= @article.author %></strong><br/>
+      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= @article.user.username %></strong><br/>
         <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
           <meta itemprop="name" content="ufo-hunters.com">
         </span>

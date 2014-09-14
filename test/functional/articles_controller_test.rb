@@ -2,6 +2,7 @@ require 'test_helper'
 
 class ArticlesControllerTest < ActionController::TestCase
   setup do
+    @user = create_dummy_user
     @article = create_dummy_article
   end
 
@@ -12,6 +13,7 @@ class ArticlesControllerTest < ActionController::TestCase
   end
 
   test "should show article" do
+    @user.save
     @article.save
     get :show, id: Article.first.id
     assert_response :success
