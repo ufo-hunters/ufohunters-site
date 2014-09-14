@@ -109,7 +109,7 @@ class ActiveSupport::TestCase
   end
 
   # Add more helper methods to be used by all tests here...
-  #teardown :clean_mongodb
+  teardown :clean_mongodb
 
   def clean_mongodb
     Mongoid.default_session['ufo'].drop
