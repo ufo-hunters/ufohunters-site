@@ -15,10 +15,7 @@
     <%= f.label :title %><br />
     <%= f.text_field :title %>
   </div>
-  <div class="field">
-    <%= f.label :author %><br />
-    <%= f.text_field :author %>
-  </div>
+  <%= f.hidden_field :user_id, :value => session[:user_id] %>
   <div class="field">
     <%= f.label :published_date %><br />
     <%= f.text_field :published_date %>
@@ -30,26 +27,6 @@
   <div class="field">
     <%= f.label :body %><br />
     <%= f.text_area :body %>
-  </div>
-  <div class="field">
-    <%= f.label :article_type %><br />
-    <%= f.text_field :article_type %>
-  </div>
-    <div class="field">
-    <%= f.label :image_thumbnail %><br />
-    <%= f.text_field :image_thumbnail %>
-  </div>
-  <div class="field">
-    <%= f.label :date_filter %> (yyyymmdd)<br />
-    <%= f.text_field :date_filter %>
-  </div>
-  <div class="field">
-    <%= f.label :article_helper_method %> (articles_helper.rb method to call)<br />
-    <%= f.text_field :article_helper_method %>
-  </div>
-  <div class="field">
-    <%= f.label :partial_1 %><br />
-    <%= f.text_area :partial_1 %>
   </div>
   <div class="actions">
     <%= f.submit %>
