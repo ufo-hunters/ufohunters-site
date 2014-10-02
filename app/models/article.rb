@@ -12,7 +12,6 @@ class Article
   field :partial_1, type: String
   belongs_to :user
 
-  validates_presence_of :user_id
   validates_presence_of :title, :message => "Title is mandatory"
   validates_presence_of :teaser, :message => "Teaser is mandatory"
   validates_presence_of :body, :message => "Body is mandatory"
