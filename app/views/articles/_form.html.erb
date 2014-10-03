@@ -22,11 +22,11 @@
   </div>
   <div class="field">
     <%= f.label :teaser %><br />
-    <%= f.cktext_area :teaser, :ckeditor => {:uiColor => '#D7DF21', :toolbar => 'mini'} %>
+    <%= f.text_area :teaser %>
   </div>
   <div class="field">
     <%= f.label :body %><br />
-    <%= f.cktext_area :body, :ckeditor => {:uiColor => '#D7DF21', :toolbar => 'mini'} %>
+    <%= f.text_area :body %>
   </div>
   <div class="actions">
     <%= f.submit %>
