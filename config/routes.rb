@@ -1,4 +1,6 @@
 Ufo::Application.routes.draw do
+  mount Ckeditor::Engine => '/ckeditor'
+
   #get "users/new"
   resources :users
 
