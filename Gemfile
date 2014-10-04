@@ -13,12 +13,12 @@ gem 'mongoid', '~> 3.0.0'
 gem 'wolcanus-simple_captcha', :require => 'simple_captcha', :git => 'git://github.com/v1rtual/simple-captcha.git'
 #gem "rserve-simpler", "~> 0.0.6"
 
-# Gems used only for assets and not required 
+# Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-             
+
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
 
@@ -48,11 +48,14 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 #gem 'therubyracer'
-gem 'therubyracer' #, :path => 'D:\cosas\PROYECTO\UFO_BOOSTRAP\therubyracer_for_windows-master', :platform => 'mingw'
+gem 'therubyracer'
 gem 'execjs'
 
+gem 'ckeditor'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'mini_magick'
 gem 'cloudinary'
 
 # to handle form validation
 gem "jquery-validation-rails"
- 
+
