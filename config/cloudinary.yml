@@ -1,15 +1,18 @@
 development:
-  uri: <%= ENV['CLOUDINARY_URL'] %>
-  cdn_subdomain: true
+  cloud_name: dr3vzmqaf
+  api_key: '647994293539175'
+  api_secret: liIvbuQWAp5t1vX5Z4QeZwfmhL8
+  enhance_image_tag: true
+  static_image_support: false
+production:
+  cloud_name: dr3vzmqaf
+  api_key: '647994293539175'
+  api_secret: liIvbuQWAp5t1vX5Z4QeZwfmhL8
   enhance_image_tag: true
   static_image_support: true
 test:
-  uri: <%= ENV['CLOUDINARY_URL'] %>
-  cdn_subdomain: true
+  cloud_name: dr3vzmqaf
+  api_key: '647994293539175'
+  api_secret: liIvbuQWAp5t1vX5Z4QeZwfmhL8
   enhance_image_tag: true
-  static_image_support: true
-production:
-  uri: <%= ENV['CLOUDINARY_URL'] %>
-  cdn_subdomain: true
-  enhance_image_tag: true
-  static_image_support: true
+  static_image_support: false
