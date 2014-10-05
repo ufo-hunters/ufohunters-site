@@ -1,0 +1,83 @@
+<script type="text/javascript">
+  function init() {
+  }
+</script>
+
+<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+  <%= render partial: 'common/ads/horizontal_ad' %>
+</div>
+
+<div class="row">
+  <h2>Articles</h2>
+  <p><strong>Do you want to get involved?</strong>
+  If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com">contact us!</a> </p>
+  <div class="span8" itemscope itemtype="http://schema.org/ItemList">
+    <meta itemprop="itemListOrder" content="Descending"/>
+  <%
+  unless @articles.blank?
+
+    @articles.each do |article| %>
+    <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+
+      <article>
+        <meta itemprop="articleSection" content="Articles"><%
+        unless article.image_thumbnail.blank?
+      %>
+        <div class="span3">
+          <figure>
+            <%= image_tag(article.image_thumbnail, :itemprop => "image", :title => article.title, :alt => article.title, :class => "img-polaroid", :style => "max-width:100%;")%>
+          </figure>
+        </div>
+        <div class="span5">
+      <%
+        else
+      %>
+        <div class="span8">
+      <%
+        end
+      %>
+          <header>
+            <h3 itemprop="name" class="title"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
+          </header>
+          <p class="meta">
+            <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>"><%= format_date article.published_date %></strong><br/>
+              <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
+              By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><%=article.user.username%></strong></span>
+              <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+                <meta itemprop="name" content="ufo-hunters.com">
+              </span>
+            </small>
+          </p>
+          <div class="entry">
+            <p itemprop="description"><%= article.teaser.html_safe %></p>
+          </div>
+          <p><%= link_to 'Edit', edit_article_path(article) if logged_in? %></p>
+          <p><%= link_to 'Destroy', article, confirm: 'Are you sure?', method: :delete if logged_in? %></p>
+        </div>
+
+      </article>
+
+    </div>
+  <%
+    end
+  %>
+  </div>
+
+  <%= render partial: 'common/ads/adaptable' %>
+
+  <%
+  else
+  %>
+    <div class="alert alert-error">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      No content available
+    </div>
+  <%
+  end
+  %>
+
+  <br/>
+
+  <%= link_to 'New Article', new_article_path if logged_in? %>
+
+</div>

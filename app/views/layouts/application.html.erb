@@ -21,7 +21,7 @@
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 </head>
 
-<body onload="init()" itemscope itemtype="http://schema.org/WebPage"> session:<%=session[:user_id]%>
+<body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
@@ -39,18 +39,26 @@
       		<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
         </div>
 
-		    <div class="span4">
+		    <div class="span3">
         	<h2><%=@numUFO%> sightings reported...<BR/>and growing</h2>
 			  </div>
 
-        <div class="span4" style="margin-top:20px;margin-bottom:10px;">
+        <div class="span2" style="margin-top:20px;margin-bottom:10px;">
           <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
         </div>
 
-			  <div class="span1">
+        <div class="span2" style="margin-top: 10px;" class="row hidden-phone">
+              <h5 style="color:#d7df21">
+                  <%= link_to(raw("Do you want to join our UFO research team?"), {:controller => "articles", :action => "uforesearch"}, :itemprop => "url")%>
+              </h5>
+        </div>
+
+        <div class="span2">
           <!-- Go to www.addthis.com/dashboard to customize your tools -->
             <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script> 
-			  </div>
+        </div>
+
+			
       </div>
 	  </header>
 
@@ -70,12 +78,21 @@
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "stats"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "northamerica"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>North America</div>"), {:controller => "sightings", :action => "northamerica"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Other Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
+               
+                <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "images"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Images</div>"), {:controller => "sightings", :action => "images"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
+
+                <li <%if @menu.blank? == false && @menu == "uforesearch"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearch"}, :itemprop => "url")%></li>
+
+                <% if logged_in? %> 
+
+                <li <%if @menu.blank? == false && @menu == "myspace"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name' style='color:#688A08'>My space</div>"), {:controller => "articles", :action => "myspace"}, :itemprop => "url")%></li>
+
+                <% end %>
+
               </ul>
             </nav>
 	        </div>

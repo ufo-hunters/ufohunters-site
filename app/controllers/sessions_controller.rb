@@ -6,10 +6,11 @@ class SessionsController < ApplicationController
 	  user = User.where(:username => params[:username]).first
 	  if user && user.authenticate(params[:password])
 	    session[:user_id] = user.id
-	    redirect_to root_url, :notice => "Logged in!"
+	    redirect_to :controller => 'articles', :action =>'myspace'
 	  else
 	    flash.now.alert = "Invalid username or password"
-	    render "new"
+	    redirect_to :controller => 'articles', :action =>'uforesearch'
+
 	  end
 	end
 

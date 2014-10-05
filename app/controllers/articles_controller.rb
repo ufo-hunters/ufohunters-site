@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 
-  before_filter :check_user, only: [:edit, :update, :create, :destroy, :new]
+  before_filter :check_user, only: [:edit, :update, :create, :destroy, :myspace ]
 
   include ArticlesHelper
 
@@ -101,6 +101,32 @@ class ArticlesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to articles_url }
       format.json { head :no_content }
+    end
+  end
+
+  def uforesearch
+    @numUFO = Report.where(:status => 1).count()
+    @menu = "uforesearch"
+    @articles = Article.all.desc(:published_date)
+    @page_title = "Articles"
+    @page_description = "Latest Articles"
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @articles }
+    end
+  end
+
+  def myspace
+    @numUFO = Report.where(:status => 1).count()
+    @menu = "myspace"
+    @articles = Article.all.desc(:published_date)
+    @page_title = "Articles"
+    @page_description = "Latest Articles"
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @articles }
     end
   end
 
