@@ -16,6 +16,6 @@
 //= require jquery.validate
 //= require twitter/bootstrap
 //= require blueimp-gallery-all
-//= require cloudinary
 //= require ckeditor/init
+//= require cloudinary
 //= require_tree .

@@ -48,15 +48,14 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 #gem 'therubyracer'
-gem 'therubyracer' #, :path => 'D:\cosas\PROYECTO\UFO_BOOSTRAP\therubyracer_for_windows-master', :platform => 'mingw'
+gem 'therubyracer'
 gem 'execjs'
 
+gem 'ckeditor'
+gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'mini_magick'
 gem 'cloudinary'
 
 # to handle form validation
 gem "jquery-validation-rails"
 
-# CKEditor + Mongoid + CarrierWave
-gem 'ckeditor'
-gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
-gem 'mini_magick'
