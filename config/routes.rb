@@ -6,6 +6,8 @@ Ufo::Application.routes.draw do
 
   resources :sessions
 
+  match 'articles/uforesearch' => 'articles#uforesearch'
+  match 'articles/myspace' => 'articles#myspace'
   resources :articles
   match 'articles/:id(/:title)' => 'articles#show'
   match 'articles/:id' => 'articles#show'

@@ -11,6 +11,7 @@
 *.3g2
 *.tar
 *.wmv
+*.yml
 # Ignore bundler config
 /.bundle
 
