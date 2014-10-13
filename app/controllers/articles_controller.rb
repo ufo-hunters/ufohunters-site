@@ -110,6 +110,7 @@ class ArticlesController < ApplicationController
     @articles = Article.all.desc(:published_date)
     @page_title = "Articles"
     @page_description = "Latest Articles"
+    @user = User.new
 
     respond_to do |format|
       format.html # index.html.erb
@@ -120,7 +121,9 @@ class ArticlesController < ApplicationController
   def myspace
     @numUFO = Report.where(:status => 1).count()
     @menu = "myspace"
-    @articles = Article.all.desc(:published_date)
+    #@articles = Article.all.desc(:published_date)
+    @articles = Article.where(:user => session[:user_id])
+
     @page_title = "Articles"
     @page_description = "Latest Articles"
 
