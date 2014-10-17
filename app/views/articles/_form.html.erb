@@ -1,34 +1,60 @@
-<%= form_for(@article) do |f| %>
-  <% if @article.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+<div class="row">
+  <div class="span12">
+    <%= form_for(@article) do |f| %>
+      <% if @article.errors.any? %>
+        <div class="row">
+          <div class="span12" id="error_explanation">
+            <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
 
-      <ul>
-      <% @article.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :title %><br />
-    <%= f.text_field :title %>
+            <ul>
+            <% @article.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+            </ul>
+          </div>
+        </div>
+        <% end %>
+        <div class="row">
+          <div class="field span12">
+            <%= f.label :title %>
+            <%= f.text_field :title, required: '' %>
+          </div>
+        </div>
+        <%= f.hidden_field :user_id, :value => session[:user_id] %>
+        <%= f.hidden_field :published_date, :value =>  Time.new.strftime('%Y%m%d').to_s %>
+        <div class="row">
+          <div class="field span7">
+            <%= f.label :teaser %>
+            <%= f.cktext_area :teaser, :ckeditor => {:uiColor => '#d7df21', :toolbar => 'mini'}, required: '' %>
+          </div>
+          <div class="span5">
+            <div class="well">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <p><strong>Guidelines</strong></p>
+              <ul>
+                <li>All the fields are mandatory</li>
+                <li>Please use the default font size and type, but feel free to format the text (alignment, bold text, italics, etc.) as you consider</li>
+                <li>Images can be uploaded by clicking this icon <i class="icon-picture"></i> in the toolbar. Once the pop-up is opened, click <strong>Browse Server</strong> and select <strong>Upload</strong>. Now you can choose the file from your computer and it will be automatically uploaded to our server. Once the image becomes available, click on it and it will appear on the preview window. You are encouraged to write an alternative text. Finally, click <strong>OK</strong> and the image will be inserted in the editor.
+                <li>Images can be aligned and resized from the editor</li>
+                <li>Add links to any other resources you may consider as relevant</li>
+                <li>Do not forget to click the <strong>Create Article</strong> button when you are finished</li>
+                <li>Your username and the current date are automatically sent as author and publication date when the article is saved</li>
+                <li>Please do not hesitate to contact us at ufohunterscom@gmail.com if you have any problem</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field span12">
+            <%= f.label :body %>
+            <%= f.cktext_area :body, :ckeditor => {:uiColor => '#d7df21', :toolbar => 'mini'}, required: '' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="actions span12">
+            <%= f.submit class: 'submit-button'%>
+          </div>
+        </div>
+    <% end %>
   </div>
-  <%= f.hidden_field :user_id, :value => session[:user_id] %>
-  <div class="field">
-    <%= f.label :published_date %><br />
-    <%= f.text_field :published_date %>
-  </div>
-  <div class="field">
-    <%= f.label :teaser %><br />
-    <%= f.cktext_area :teaser, :ckeditor => {:uiColor => '#d7df21', :toolbar => 'mini'} %>
-  </div>
-  <div class="field">
-    <%= f.label :body %><br />
-    <%= f.cktext_area :body, :ckeditor => {:uiColor => '#d7df21', :toolbar => 'mini'} %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
