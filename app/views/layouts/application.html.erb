@@ -85,7 +85,7 @@
                 <li <%if @menu.blank? == false && @menu == "images"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Images</div>"), {:controller => "sightings", :action => "images"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
 
-                <li <%if @menu.blank? == false && @menu == "uforesearch"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearch"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "uforesearchteam"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%></li>
 
                 <% if logged_in? %> 
 
