@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   include SimpleCaptcha::ControllerHelpers
 
   def new
-    @user = User.new
+    #@user = User.new
   end
 
   def create

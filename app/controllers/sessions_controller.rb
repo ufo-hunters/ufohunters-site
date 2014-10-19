@@ -1,16 +1,16 @@
 class SessionsController < ApplicationController
 	def new
-		@numUFO = Report.where(:status => 1).count()
-	    @menu = "uforesearch"
-	    @articles = Article.all.desc(:published_date)
-	    @page_title = "UFO Resarch Team - Articles"
-	    @page_description = "Latest Articles"
-	    @user = User.new
+		#@numUFO = Report.where(:status => 1).count()
+	    #@menu = "uforesearch"
+	    #@articles = Article.all.desc(:published_date)
+	    #@page_title = "UFO Resarch Team - Articles"
+	    #@page_description = "Latest Articles"
+	    #@user = User.new
 
-	    respond_to do |format|
-	      	format.html # index.html.erb
-	      	format.json { render json: @articles }
-    	end
+	    #respond_to do |format|
+	    #  	format.html # index.html.erb
+	    #  	format.json { render json: @articles }
+    	#end
 	end
 
 	def create
