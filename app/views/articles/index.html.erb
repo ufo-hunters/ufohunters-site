@@ -42,7 +42,16 @@
           <p class="meta">
             <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>"><%= format_date article.published_date %></strong><br/>
               <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
-              By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><%=article.user.username%></strong></span>
+              By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name">
+              <%
+               unless article.user.nil? 
+              %>
+                  <%=article.user.username%>
+              <%
+              end
+              %>
+
+            </strong></span>
               <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
                 <meta itemprop="name" content="ufo-hunters.com">
               </span>

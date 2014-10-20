@@ -103,21 +103,9 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def uforesearch
-    @numUFO = Report.where(:status => 1).count()
-    @menu = "uforesearch"
-    @articles = Article.all.desc(:published_date)
-    @page_title = "Articles"
-    @page_description = "Latest Articles"
-    @user = User.new
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @articles }
-    end
-  end
-
+  
+  # GET /articles/myspace
+  # GET /articles/myspace.json
   def myspace
     @numUFO = Report.where(:status => 1).count()
     @menu = "myspace"
@@ -126,6 +114,23 @@ class ArticlesController < ApplicationController
 
     @page_title = "Articles"
     @page_description = "Latest Articles"
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @articles }
+    end
+  end
+
+  # GET /articles/myspace
+  # GET /articles/myspace.json
+  def uforesearchteam
+    @numUFO = Report.where(:status => 1).count()
+    @menu = "uforesearchteam"
+    @user = User.new
+    #@articles = Article.all.desc(:published_date)
+    
+    @page_title = "UFO Research Team - Articles"
+    @page_description = "Do you want to join our research team?"
 
     respond_to do |format|
       format.html # index.html.erb
