@@ -30,9 +30,11 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
     @page_title = ArticlesHelper.friendly_title(@article)
     @page_description = @article.teaser[0..200] + "..."
-    
-    if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
-      @ufo_list = ArticlesHelper.send @article.article_helper_method.to_sym, @article
+
+    unless @article.article_helper_method.blank?
+      if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
+        @ufo_list = ArticlesHelper.send @article.article_helper_method.to_sym, @article
+      end
     end
 
     respond_to do |format|
