@@ -6,12 +6,12 @@ Ufo::Application.routes.draw do
 
   resources :sessions
 
-  match 'articles/myspace' => 'articles#myspace'
-  match 'articles/uforesearchteam' => 'articles#uforesearchteam'
+  get 'articles/myspace' => 'articles#myspace'
+  get 'articles/uforesearchteam' => 'articles#uforesearchteam'
 
   resources :articles
-  match 'articles/:id(/:title)' => 'articles#show'
-  match 'articles/:id' => 'articles#show'
+  get 'articles/:id(/:title)' => 'articles#show'
+  get 'articles/:id' => 'articles#show'
 
   get "sightings/index"
   # The priority is based upon order of creation:
@@ -65,20 +65,20 @@ Ufo::Application.routes.draw do
   # just remember to delete public/index.html.
   root :to => 'sightings#index'
   get 'reports/sightings', :to  => 'reports#sightings'
-  match 'reports/:id/country(.:format)' => 'reports#country'
-  match 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', :constraints => { :longitud => /[^\/]+/, :latitud => /[^\/]+/}
+  get 'reports/:id/country(.:format)' => 'reports#country'
+  get 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', :constraints => { :longitud => /[^\/]+/, :latitud => /[^\/]+/}
   resources :reports
 
   # root search and spain, same controller
   get 'sitemap', :to => 'sightings#sitemap'
-  match 'sightings/country/:id(/:title)' => 'sightings#country'
-  match 'sightings/search/:id(/:title)' => 'sightings#search'
-  match 'sightings/search/:id' => 'sightings#search'
-  match 'sightings/spain' => 'sightings#spain'
-  match 'stats' => 'stats#index'
+  get 'sightings/country/:id(/:title)' => 'sightings#country'
+  get 'sightings/search/:id(/:title)' => 'sightings#search'
+  get 'sightings/search/:id' => 'sightings#search'
+  get 'sightings/spain' => 'sightings#spain'
+  get 'stats' => 'stats#index'
   # See how all your routes lay out with "rake routes"
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':controller(/:action(/:id))(.:format)'
+  get ':controller(/:action(/:id))(.:format)'
 
 end
