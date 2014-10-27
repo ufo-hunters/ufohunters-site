@@ -13,12 +13,12 @@ gem 'mongoid', '~> 3.0.0'
 gem 'wolcanus-simple_captcha', :require => 'simple_captcha', :git => 'git://github.com/v1rtual/simple-captcha.git'
 #gem "rserve-simpler", "~> 0.0.6"
 
-# Gems used only for assets and not required 
+# Gems used only for assets and not required
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-             
+
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer'
 
@@ -39,7 +39,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # gem 'jbuilder'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
+
+gem "rack-timeout"
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -55,4 +57,4 @@ gem 'cloudinary'
 
 # to handle form validation
 gem "jquery-validation-rails"
- 
+
