@@ -1,10 +1,20 @@
-            <div class="" style="margin-top: 20px;margin-bottom: 20px">
+          <script language="javascript">
+                $(document).ready(function() {
+				    $('#tabledata').DataTable(
+				    	{
+		    				 "order": [[ 1, "desc" ]]
+				        }
+				    	
+				    )});
+		
+          </script>
 
-		     			<h3>Top 50 nearest sightings ordered by sighting date (100 miles radius):</h3>
+                <div  class="" style="margin-top: 20px;margin-bottom: 20px">
+		     		  <h3>Top 100 nearest sightings ordered by sighting date (100 miles radius):</h3>
 
-				      <table class="table table-responsive table-striped">
-				      	<thead>
-									<tr>
+				      <table id="tabledata" class="table table-responsive table-striped">
+				      		<thead>
+								<tr>
 										<th>Location
 										</th>
 										<th>Sighted on
@@ -14,8 +24,20 @@
 										<th class="hidden-phone">Duration
 										</th>
 							  	</tr>
-								</thead>
-								<tbody>
+							</thead>
+							<tfoot>
+								<tr>
+										<th>Location
+										</th>
+										<th>Sighted on
+										</th>
+										<th>Shape
+										</th>
+										<th class="hidden-phone">Duration
+										</th>
+							  	</tr>
+							</tfoot>
+							<tbody>
 							   	<%
 							   	# In order to avoid the same sighting as nearest sighting
 							   	@nearest_sightings.each do |sighting|
@@ -28,7 +50,7 @@
 						       			<%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %>
 						       		</td>
 						       		<td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>">
-							    			<%= format_date sighting.sighted_at %>
+							    			<%= format_date_microdata sighting.sighted_at %>
 							    		</td>
 							    		<td>
 							    			<%=sighting.shape%>
@@ -41,5 +63,5 @@
 								  end
 								  %>
 							  </tbody>
-							</table>
-					  </div>
+					 </table>
+			    </div>

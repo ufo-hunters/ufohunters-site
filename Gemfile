@@ -44,12 +44,13 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'jquery-datatables-rails', '~> 2.2.3'
 #gem 'prettyphoto-rails'
 
 gem 'blueimp-gallery', '~> 2.11.0.1'
 
 # To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.5'
+# gem 'bcrypt-ruby', '~> 3.1.5'imp
 gem 'bcrypt'
 
 # To use Jbuilder templates for JSON

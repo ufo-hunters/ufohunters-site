@@ -11,5 +11,6 @@
  *= require bootstrap_and_overrides
  *= require blueimp-gallery-all
  *= require_self
+ *= require dataTables/jquery.dataTables
  *= require_tree .
 */
