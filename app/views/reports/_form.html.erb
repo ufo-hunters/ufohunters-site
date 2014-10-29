@@ -47,7 +47,7 @@ $(document).ready(function(){
                                 cont = 0;
                                 function addlink() {
                                         cont = cont + 1;
-                                         $(".fieldlinks").append("<input type='text' size='30' class='fieldufo' name='report[links[" + cont + "]]' id='report_links'/>");
+                                         $(".fieldlinks").append("<input type='text' size='30' class='fieldufo' name='report[links][]' id='report_links_" + cont + "'/>");
                                 }
                               </script>
 
@@ -93,7 +93,7 @@ $(document).ready(function(){
 
           <div class="span4">
                                 <label for="report_links" class="report_location">Links (videos, images, articles...)</label>
-                                <input id="report_links" class="fieldufo" type="text" size="30" name="report[links[0]]">
+                                <input id="report_links_0" class="fieldufo" type="text" size="30" name="report[links][]">
                                 <div class="fieldlinks"></div>
                                 <a href="javascript:addlink();">(Add more links)</a>
           </div>
@@ -142,7 +142,7 @@ $(document).ready(function(){
   <div class="row">
 
           <div class="span6">
-                              <%= show_simple_captcha(:label => "")%>
+                              <%#= show_simple_captcha(:label => "")%>
                               <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
 
           </div>

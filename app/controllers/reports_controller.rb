@@ -76,8 +76,11 @@ class ReportsController < ApplicationController
     @page_title = "Report a UFO"
     @page_description = "Have you seen a UFO? Report your experience filling in the report form"
 
-    @tmp = params[:report]
-    @tmp["links"] = @tmp["links"].values unless @tmp["links"].empty?
+    @tmp = report_params
+
+    @tmp["links"] = params[:report][:links] unless params[:report][:links].blank?
+    @tmp["image_cloudinary"] = params[:report][:image_cloudinary]
+
     unless @tmp["image_cloudinary"].blank?
         @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
     end
@@ -85,7 +88,7 @@ class ReportsController < ApplicationController
     # Remove image_id
     @tmp.except! :image_id
 
-    if @tmp["coord"].empty?
+    if @tmp["coord"].blank?
       @tmp["coord"] = [0,0]
     else
       @tmp["coord"] = @tmp["coord"].split(",").map { |s| s.to_f }
@@ -171,6 +174,12 @@ class ReportsController < ApplicationController
          format.xml
       end
 
-   end
+  end
+
+  private
+
+    def report_params
+      params.require(:report).permit(:location, :shape, :duration, :description, :coord, :status, :email, :links, :image_cloudinary, :reported_at, :sighted_at, :source)
+    end
 
 end

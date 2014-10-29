@@ -9,7 +9,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
 
     if simple_captcha_valid?
 
@@ -20,7 +20,7 @@ class UsersController < ApplicationController
             flash["form"]=2
             flash["error"]="Sorry, username already exists. please enter a different username"
             redirect_to :controller => 'articles', :action =>'uforesearchteam'
-                  
+
         end
 
      else
@@ -30,5 +30,13 @@ class UsersController < ApplicationController
      end
 
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:username, :password)
+    end
+
+
 end
 

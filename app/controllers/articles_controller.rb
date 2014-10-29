@@ -63,7 +63,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(params[:article])
+    @article = Article.new(article_params)
 
     respond_to do |format|
       if @article.save
@@ -103,7 +103,7 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   # GET /articles/myspace
   # GET /articles/myspace.json
   def myspace
@@ -128,7 +128,7 @@ class ArticlesController < ApplicationController
     @menu = "uforesearchteam"
     @user = User.new
     #@articles = Article.all.desc(:published_date)
-    
+
     @page_title = "UFO Research Team - Articles"
     @page_description = "Do you want to join our research team?"
 
@@ -138,5 +138,10 @@ class ArticlesController < ApplicationController
     end
   end
 
+  private
+
+    def article_params
+      params.require(:article).permit(:title, :teaser, :body, :published_date, :user_id)
+    end
 
 end
