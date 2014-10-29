@@ -33,57 +33,7 @@
 			 	<% end %>
 
             	<div class="row">
-						<div class="span8">
-
-								<%
-						     	if @ufo_list
-						     	%>
-						     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
-
-								      			<table class="table table-responsive table-striped">
-								      				<thead>
-															<tr>
-																	<th>Location
-																	</th>
-																	<th>Sighted on
-																	</th>
-																	<th>Shape
-																	</th>
-																	<th class="hidden-phone">Duration
-																	</th>
-															</tr>
-													</thead>
-													<tbody>
-											     	<%
-											      	# In order to avoid the same sighting as nearest sighting
-											      	@ufo_list.each do |ufo|
-														%>
-											    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-												         		<td itemprop="name">
-												         			<%= link_to ufo.location, :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %>
-												         		</td>
-												         		<td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>">
-													    			<%= format_date ufo.sighted_at %>
-													    		</td>
-													    		<td>
-													    			<%=ufo.shape%>
-												         		</td>
-												         		<td class="hidden-phone">
-													    			<%= ufo.duration %>
-												         		</td>
-															</tr>
-													<%
-													end
-
-													%>
-												    </tbody>
-												</table>
-									</div>
-
-						     	<%
-						        end
-						        %>
-					    </div>
+						<%= render partial: 'common/latest_sightings' %>
 					    <%= render partial: 'common/ads/adaptable3' %>
 	  			</div>
 
