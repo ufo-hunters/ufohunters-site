@@ -1,9 +1,10 @@
 class Countries
-  
-  include Mongoid::Document  
 
-  store_in collection: "countries"  
-  
+  include Mongoid::Document
+  include Mongoid::Attributes::Dynamic
+
+  store_in collection: "countries"
+
   field :id, type: String
   field :cod, type: String
   field :name, type: String
