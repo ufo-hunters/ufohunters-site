@@ -2,21 +2,21 @@ class SightingsController < ApplicationController
 
    include ApplicationHelper
 
-   caches_page :index, :expires_in => 1.hour
-   caches_page :spain, :expires_in => 12.hour
-   caches_page :statistics, :expires_in => 24.hour
-   caches_page :maps, :expires_in => 24.hour
-   caches_page :northamerica, :expires_in => 3.hour
-   caches_page :oceania, :expires_in => 3.hour
-   caches_page :southamerica, :expires_in => 3.hour
-   caches_page :africa, :expires_in => 3.hour
-   caches_page :europe, :expires_in => 3.hour
-   caches_page :asia, :expires_in => 3.hour
-   caches_page :videos, :expires_in => 3.hour
-   caches_page :about, :expires_in => 24.hour
-   caches_page :search, :expires_in => 3.hour
-   caches_page :country, :expires_in => 24.hour
-   caches_page :sitemap, :expires_in => 96.hour
+   caches_action :index, :expires_in => 3.hour
+   caches_action :search, :expires_in => 12.hour
+   caches_action :statistics, :expires_in => 24.hour
+   caches_action :maps, :expires_in => 12.hour
+   caches_action :countriesList, :expires_in => 24.hour
+   caches_action :northamerica, :expires_in => 12.hour
+   caches_action :oceania, :expires_in => 12.hour
+   caches_action :southamerica, :expires_in => 12.hour
+   caches_action :africa, :expires_in => 12.hour
+   caches_action :europe, :expires_in => 12.hour
+   caches_action :asia, :expires_in => 12.hour
+   caches_action :country, :expires_in => 12.hour
+   caches_action :videos, :expires_in => 12.hour
+   caches_action :images, :expires_in => 12.hour
+   caches_action :about, :expires_in => 24.hour
 
    def index
       @ufo_list = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100)

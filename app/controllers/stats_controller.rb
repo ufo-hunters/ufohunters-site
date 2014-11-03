@@ -1,6 +1,8 @@
 class StatsController < ApplicationController
 
-  caches_action :shape
+  caches_action :index, :expires_in => 24.hour
+  caches_action :shape, :expires_in => 1.month
+  caches_action :reports_by_year, :expires_in => 24.hour
 
   def index
     @ufo_list = Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(2500)
@@ -23,20 +25,19 @@ class StatsController < ApplicationController
   end
 
   private
-  def reports_by_year
-    Report.collection.aggregate(
-       {
-        "$group" => {"_id" => {"$substr" => ["$sighted_at", 0, 4]},
-                     "count" => {"$sum" => 1}}
-       },
-       {
-        "$match" => {"_id" => {"$gte" => "1850"}}
-       },
-       {
-        "$sort" => {"_id" => 1}
-       }
-    )
-
-  end
+    def reports_by_year
+      Report.collection.aggregate(
+         {
+          "$group" => {"_id" => {"$substr" => ["$sighted_at", 0, 4]},
+                       "count" => {"$sum" => 1}}
+         },
+         {
+          "$match" => {"_id" => {"$gte" => "1850"}}
+         },
+         {
+          "$sort" => {"_id" => 1}
+         }
+      )
+    end
 
 end

@@ -4,8 +4,8 @@ class ArticlesController < ApplicationController
 
   include ArticlesHelper
 
-  caches_page :index, :expires_in => 3.hour
-  caches_page :show, :expires_in => 24.hour
+  caches_action :index, :expires_in => 24.hour
+  caches_action :show, :expires_in => 24.hour
 
   # GET /articles
   # GET /articles.json
@@ -74,6 +74,10 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
+
+    expire_action :action => :index
+    expire_action :action => :show, :id => @article.id
+
   end
 
   # PUT /articles/1
@@ -82,7 +86,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
 
     respond_to do |format|
-      if @article.update_attributes(params[:article])
+      if @article.update_attributes(article_params)
         format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
@@ -90,6 +94,10 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
+
+    expire_action :action => :index
+    expire_action :action => :show, :id => @article.id
+
   end
 
   # DELETE /articles/1
@@ -102,6 +110,10 @@ class ArticlesController < ApplicationController
       format.html { redirect_to articles_url }
       format.json { head :no_content }
     end
+
+    expire_action :action => :index
+    expire_action :action => :show, :id => @article.id
+
   end
 
   # GET /articles/myspace

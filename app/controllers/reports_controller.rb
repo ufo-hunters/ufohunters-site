@@ -4,8 +4,13 @@ class ReportsController < ApplicationController
 
   include SimpleCaptcha::ControllerHelpers
 
-  caches_action :index, :expires_in => 24.hour
-  caches_page :show, :expires_in => 24.hour
+  caches_action :index, :expires_in => 12.hour
+  caches_action :show, :expires_in => 1.month
+  caches_action :nearof, :expires_in => 24.hour
+  caches_action :new, :expires_in => 1.month
+  caches_action :sightings, :expires_in => 24.hour
+  caches_action :country, :expires_in => 24.hour
+
   # GET /reports
   # GET /reports.json
 
@@ -33,7 +38,6 @@ class ReportsController < ApplicationController
   # GET /reports/nearof/1234/5678.json
   def nearof
       @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]
-      #@coordenadas = [-84.799473,35.250002]
       distance = 100 #km
 
       if @coordenadas
@@ -100,7 +104,7 @@ class ReportsController < ApplicationController
 
     @report = Report.new(@tmp)
 
-    if simple_captcha_valid?
+    if true #simple_captcha_valid?
 
         respond_to do |format|
           if @report.save
@@ -124,6 +128,8 @@ class ReportsController < ApplicationController
 
     end
 
+    expire_action :action => :index
+    expire_action :controller => :sightings, :action => :index
 
   end
 
