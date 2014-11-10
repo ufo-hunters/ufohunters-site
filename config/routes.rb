@@ -4,7 +4,9 @@ Ufo::Application.routes.draw do
   #get "users/new"
   resources :users
 
+  get 'sessions/destroy' => 'sessions#destroy'
   resources :sessions
+
 
   get 'articles/myspace' => 'articles#myspace'
   get 'articles/uforesearchteam' => 'articles#uforesearchteam'

@@ -1,17 +1,4 @@
 class SessionsController < ApplicationController
-	def new
-		#@numUFO = Report.where(:status => 1).count()
-	    #@menu = "uforesearch"
-	    #@articles = Article.all.desc(:published_date)
-	    #@page_title = "UFO Resarch Team - Articles"
-	    #@page_description = "Latest Articles"
-	    #@user = User.new
-
-	    #respond_to do |format|
-	    #  	format.html # index.html.erb
-	    #  	format.json { render json: @articles }
-    	#end
-	end
 
 	def create
 	  @page_title = "UFO Resarch Team - Articles"
@@ -29,7 +16,7 @@ class SessionsController < ApplicationController
 
 	def destroy
 		session[:user_id] = nil
-		redirect_to root_url, :notice => "Logged out!"
+		redirect_to :controller => 'articles', :action =>'uforesearchteam', :notice => "Logged out!"
 	end
 
 end

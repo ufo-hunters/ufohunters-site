@@ -86,7 +86,6 @@
                 <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "images"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Images</div>"), {:controller => "sightings", :action => "images"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "uforesearchteam"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%></li>
                 <%
                 #end
                 %>
@@ -94,6 +93,11 @@
                 <% if logged_in? %>
 
                 <li <%if @menu.blank? == false && @menu == "myspace"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name' style='color:#688A08'>My space</div>"), {:controller => "articles", :action => "myspace"}, :itemprop => "url")%></li>
+                <li><%= link_to(raw("<div itemprop='name' style='color:#688A08'>Logout</div>"), {:controller => "sessions", :action => "destroy"}, :itemprop => "url")%></li>
+
+                <% else %>
+
+                <li <%if @menu.blank? == false && @menu == "uforesearchteam"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%></li>
 
                 <% end %>
 
