@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+<% cache("common/head/#{@page_title}") do %>
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
   <%= stylesheet_link_tag "application", :media => "all" %>
@@ -20,7 +21,7 @@
   <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
   <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
 </head>
-
+<% end %>
 <body onload="init()" itemscope itemtype="http://schema.org/WebPage">
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
