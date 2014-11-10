@@ -12,35 +12,34 @@
 
   <%
   unless @articles.blank?
-    %>
+  %>
 
-        <p><strong>Do you want to get involved?</strong>
-  If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com">contact us!</a> </p>
+  <p><strong>Do you want to get involved?</strong>
+  If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com">contact us!</a> or join our <%= link_to('UFO Research Network', {:controller => "articles", :action => "uforesearchteam"})%></p>
   <div class="span8" itemscope itemtype="http://schema.org/ItemList">
     <meta itemprop="itemListOrder" content="Descending"/>
-
     <%
-
     @articles.each do |article| %>
     <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
       <article>
-        <meta itemprop="articleSection" content="Articles"><%
+        <meta itemprop="articleSection" content="Articles">
+        <%
         unless article.image_thumbnail.blank?
-      %>
+        %>
         <div class="span3">
           <figure>
             <%= image_tag(article.image_thumbnail, :itemprop => "image", :title => article.title, :alt => article.title, :class => "img-polaroid", :style => "max-width:100%;")%>
           </figure>
         </div>
         <div class="span5">
-      <%
+        <%
         else
-      %>
+        %>
         <div class="span8">
-      <%
+        <%
         end
-      %>
+        %>
           <header>
             <h3 itemprop="name" class="title"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
           </header>
@@ -63,11 +62,9 @@
       </article>
 
     </div>
-
-    </div>
-  <%
+    <%
     end
-  %>
+    %>
   </div>
 
   <%= render partial: 'common/ads/adaptable' %>
@@ -75,21 +72,16 @@
   <%
   else
   %>
-    <div class="alert alert-error">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      No content available
-    </div>
+  <div class="alert alert-error">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    No content available
+  </div>
   <%
   end
   %>
 
-
-
-
 </div>
 
 <div class="row">
-    <p><strong>
-      Are you ready?, creates your article --> <%= link_to 'New Article', new_article_path if logged_in? %>
-     </strong></p>
+  <p><strong>Are you ready? Create your article here: <%= link_to 'New Article', new_article_path if logged_in? %></strong></p>
 </div>
