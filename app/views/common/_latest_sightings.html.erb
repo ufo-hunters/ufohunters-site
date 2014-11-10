@@ -1,12 +1,15 @@
+  <%
+  cache("common/partials/recent_sightings/#{@ufo_list.hash}", expires_in: 12.hours) do
+  %>
 	<script language="javascript">
                 $(document).ready(function() {
 				    $('#tabledata').DataTable(
 				    	{
 		    				 "order": [[ 1, "desc" ]]
 				        }
-				    	
+
 				    )});
-		
+
     </script>
 
 
@@ -72,3 +75,4 @@
 	        end
 	        %>
 	</div>
+  <% end %>

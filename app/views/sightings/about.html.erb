@@ -1,4 +1,7 @@
 
+<%
+cache("about/content") do
+%>
 <script type="text/javascript">
   function init() {
   }
@@ -182,7 +185,7 @@
 				<p>The current responsive version of the site has been developed using <a href="http://getbootstrap.com/">Twitter BootStrap</a>.</p>
 		</div>
 </div>
-
+<% end %>
 <div class="row" style="margin-top: 20px;margin-bottom: 20px">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>

@@ -3,19 +3,11 @@ class ReportsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:create]
 
   include SimpleCaptcha::ControllerHelpers
-=begin
-  caches_action :index, :expires_in => 12.hour
-  caches_action :show, :expires_in => 1.month
-  caches_action :nearof, :expires_in => 24.hour
-  caches_action :new, :expires_in => 1.month
-=end
 
   caches_action :sightings, :expires_in => 1.day
   caches_action :country, :expires_in => 1.day
 
-  # GET /reports
   # GET /reports.json
-
   def index
     @reports = Rails.cache.fetch("reports/latest", :expires_in => 8.hours) do
       Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100).entries
