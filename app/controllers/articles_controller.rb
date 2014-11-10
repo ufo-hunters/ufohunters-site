@@ -92,7 +92,7 @@ class ArticlesController < ApplicationController
     end
 
     Rails.cache.delete "articles/index"
-    Rails.cache.delete_matched Regexp.new("#{article.id}")
+    Rails.cache.delete_matched Regexp.new("#{@article.id}")
 
   end
 
@@ -108,7 +108,7 @@ class ArticlesController < ApplicationController
     end
 
     Rails.cache.delete "articles/index"
-    Rails.cache.delete_matched Regexp.new("#{article.id}")
+    Rails.cache.delete_matched Regexp.new("#{@article.id}")
 
   end
 
