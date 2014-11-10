@@ -32,25 +32,25 @@
 	}(document, 'script', 'facebook-jssdk'));</script>
 
   <div class="container">
-
+    <% cache("common/header", skip_digest: true) do %>
     <header itemscope itemtype="http://schema.org/WPHeader">
-  	  <div class="row hidden-phone">
-		    <div class="span3">
-      		<h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
+      <div class="row hidden-phone">
+        <div class="span3">
+          <h1><%= image_tag image_path('ufo-hunters-logo.png') %></h1>
         </div>
 
-		    <div class="span3">
-        	<h2><%=num_reports%> sightings reported...<br/>and growing</h2>
-			  </div>
+        <div class="span3">
+          <h2><%=num_reports%> sightings reported...<br/>and growing</h2>
+        </div>
 
         <div class="span2" style="margin-top:20px;margin-bottom:10px;">
           <a href='http://www.pledgie.com/campaigns/21122'><img alt='Click here to lend your support to: Support ufo-huntersHunters and make a donation at www.pledgie.com !' src='http://www.pledgie.com/campaigns/21122.png?skin_name=chrome' border='0' /></a>
         </div>
 
         <div class="span2" style="margin-top: 10px;" class="row hidden-phone">
-              <h5 style="color:#d7df21">
-                  <%= link_to(raw("Do you want to join our UFO research team?"), {:controller => "articles", :action => "uforesearch"}, :itemprop => "url")%>
-              </h5>
+          <h5 style="color:#d7df21">
+            <%= link_to(raw("Do you want to join our UFO research team?"), {:controller => "articles", :action => "uforesearch"}, :itemprop => "url")%>
+          </h5>
         </div>
 
         <div class="span2">
@@ -60,9 +60,10 @@
 
 
       </div>
-	  </header>
+    </header>
+    <% end %>
 
-	  <div class="row">
+    <div class="row">
       <div class="navbar navbar-inverse">
         <div class="navbar-inner">
           <div class="container">
@@ -76,7 +77,7 @@
 
               <ul class="nav" id="menunew" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
                 <%
-                #cache("menu/#{@menu}#{'/private' if logged_in?}") do
+                cache("common/menu/#{@menu}", expires_in: 1.week) do
                 %>
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
@@ -86,20 +87,24 @@
                 <li <%if @menu.blank? == false && @menu == "videos"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Videos</div>"), {:controller => "sightings", :action => "videos"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "images"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Images</div>"), {:controller => "sightings", :action => "images"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "about"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>About us</div>"), {:controller => "sightings", :action => "about"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "uforesearchteam"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%></li>
                 <%
-                #end
+                end
                 %>
 
-                <% if logged_in? %>
+                <%
+                if logged_in?
 
+                  cache("common/menu/user/#{@menu}", expires_in: 1.week) do
+                %>
                 <li <%if @menu.blank? == false && @menu == "myspace"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name' style='color:#688A08'>My space</div>"), {:controller => "articles", :action => "myspace"}, :itemprop => "url")%></li>
                 <li><%= link_to(raw("<div itemprop='name' style='color:#688A08'>Logout</div>"), {:controller => "sessions", :action => "destroy"}, :itemprop => "url")%></li>
 
-                <% else %>
+                <%
+                  end
 
-                <li <%if @menu.blank? == false && @menu == "uforesearchteam"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFO Research Team</div>"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%></li>
-
-                <% end %>
+                end
+                %>
 
               </ul>
             </nav>
@@ -126,7 +131,9 @@
       });
     });
     </script>
-
+    <%
+    cache("common/video_carousel", expires_in: 12.hours, skip_digest: true) do
+    %>
     <div class="row" style="background-color:#d7df21;margin-top: 45px">
       <div class="span12" itemscope itemtype="http://schema.org/ItemList">
         <meta itemprop="itemListOrder" content="Descending"/>
@@ -191,11 +198,15 @@
         </div>
       </div>
     </div>
+    <%
+    end
 
-	  <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
-		  <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
-		  <div class="span2"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
-	    <div class="span2"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
+    cache ("common/footer") do
+    %>
+    <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
+      <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
+      <div class="span2"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
+      <div class="span2"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
       <div class="span2"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
       <div class="span3 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
     </footer>
@@ -214,7 +225,9 @@
     <div class="postfooter">
       <div class="span12"></div>
     </div>
-
+    <%
+    end
+    %>
   </div>
 </body>
 </html>
