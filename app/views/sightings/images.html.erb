@@ -1,4 +1,4 @@
-
+<% cache("images/content", expires_in: 12.hours) do %>
 
 	<script type="text/javascript">
 	function init() {
@@ -68,7 +68,7 @@
 										title: '<%=friendly_title(ufo)%>',
 								        href: '<%=img_thumb%>',
 								        type: 'image/jpeg',
-								        thumbnail: '<%=img_thumb%>'   
+								        thumbnail: '<%=img_thumb%>'
 									}
 								    <%
 
@@ -90,3 +90,4 @@
   <div class="row" style="margin-top: 20px;margin-bottom: 20px">
     <%= render partial: 'common/ads/horizontal_ad' %>
   </div>
+<% end %>
