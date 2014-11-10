@@ -1,7 +1,9 @@
 module ArticlesHelper
 
   def self.get_articles_by_date(article)
-    Report.where(:sighted_at => article.date_filter)
+    Rails.cache.fetch("articles/#{article.id}/#{article.date_filter}", :expires_in => 1.month) do
+      Report.where(:sighted_at => article.date_filter).entries
+    end
   end
 
   def self.friendly_title(article)

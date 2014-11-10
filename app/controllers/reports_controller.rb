@@ -3,22 +3,25 @@ class ReportsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:create]
 
   include SimpleCaptcha::ControllerHelpers
-
+=begin
   caches_action :index, :expires_in => 12.hour
   caches_action :show, :expires_in => 1.month
   caches_action :nearof, :expires_in => 24.hour
   caches_action :new, :expires_in => 1.month
-  caches_action :sightings, :expires_in => 24.hour
-  caches_action :country, :expires_in => 24.hour
+=end
+
+  caches_action :sightings, :expires_in => 1.day
+  caches_action :country, :expires_in => 1.day
 
   # GET /reports
   # GET /reports.json
 
   def index
-    @reports = Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100)
+    @reports = Rails.cache.fetch("reports/latest", :expires_in => 8.hours) do
+      Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100).entries
+    end
 
     respond_to do |format|
-      #format.html # index.html.erb
       format.json { render json: @reports }
     end
   end
@@ -26,7 +29,9 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
-    @report = Report.without(:email).find(params[:id])
+    @report = Rails.cache.fetch("reports/#{params[:id]}", :expires_in => 1.week) do
+      Report.without(:email).find(params[:id])
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -41,7 +46,9 @@ class ReportsController < ApplicationController
       distance = 100 #km
 
       if @coordenadas
-         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)
+        @nearest = Rails.cache.fetch("reports/near/#{params[:longitud].to_i},#{params[:latitud].to_i}", :expires_in => 8.hours) do
+          Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50).entries
+        end
       end
 
       respond_to do |format|
@@ -54,9 +61,6 @@ class ReportsController < ApplicationController
   # GET /reports/new
   # GET /reports/new.json
   def new
-
-    @numUFO = Report.where(:status => 1).count()
-
     @report = Report.new
 
     @menu = "report"
@@ -75,7 +79,6 @@ class ReportsController < ApplicationController
   # POST /reports.json
 
   def create
-    @numUFO = Report.count()
     @menu = "report"
     @page_title = "Report a UFO"
     @page_description = "Have you seen a UFO? Report your experience filling in the report form"
@@ -104,7 +107,7 @@ class ReportsController < ApplicationController
 
     @report = Report.new(@tmp)
 
-    if true #simple_captcha_valid?
+    if simple_captcha_valid?
 
         respond_to do |format|
           if @report.save
@@ -128,8 +131,9 @@ class ReportsController < ApplicationController
 
     end
 
-    expire_action :action => :index
-    expire_action :controller => :sightings, :action => :index
+    # Invalidate cache for sightings/latest, reports/latest and so on
+    Rails.cache.delete_matched /latest/
+    Rails.cache.delete "common/num_reports"
 
   end
 
@@ -137,9 +141,9 @@ class ReportsController < ApplicationController
   def sightings
     @reports = Report.where(:status => 1, :source => "ufo-hunters.com", :coord =>  {"$exists" => 1}).without(:email,:links,:source,:status,:shape,:duration).desc(:sighted_at).limit(100)
 
-     respond_to do |format|
-       format.xml
-     end
+    respond_to do |format|
+      format.xml
+    end
   end
 
 
