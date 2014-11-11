@@ -1,12 +1,6 @@
 class UsersController < ApplicationController
 
-	#before_filter :check_user
-
   include SimpleCaptcha::ControllerHelpers
-
-  def new
-    #@user = User.new
-  end
 
   def create
     @user = User.new(user_params)
@@ -18,7 +12,7 @@ class UsersController < ApplicationController
           redirect_to :controller => 'articles', :action =>'myspace'
         else
             flash["form"]=2
-            flash["error"]="Sorry, username already exists. please enter a different username"
+            flash["error"]="Sorry, username already exists. Please enter a different username"
             redirect_to :controller => 'articles', :action =>'uforesearchteam'
 
         end

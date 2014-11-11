@@ -4,15 +4,13 @@ class ArticlesController < ApplicationController
 
   include ArticlesHelper
 
-  caches_page :index, :expires_in => 3.hour
-  caches_page :show, :expires_in => 24.hour
-
   # GET /articles
   # GET /articles.json
   def index
-    @numUFO = Report.where(:status => 1).count()
     @menu = "articles"
-    @articles = Article.all.desc(:published_date)
+    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do
+      Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+    end
     @page_title = "Articles"
     @page_description = "Latest Articles"
 
@@ -25,9 +23,10 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
-    @numUFO = Report.where(:status => 1).count()
     @menu = "articles"
-    @article = Article.find(params[:id])
+    @article = Rails.cache.fetch("articles/#{params[:id]}", :expires_in => 1.month) do
+      Article.without(:email).find(params[:id])
+    end
     @page_title = ArticlesHelper.friendly_title(@article)
     @page_description = @article.teaser[0..200] + "..."
 
@@ -45,13 +44,11 @@ class ArticlesController < ApplicationController
   end
 
   # GET /articles/new
-  # GET /articles/new.json
   def new
     @article = Article.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @article }
     end
   end
 
@@ -74,6 +71,9 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
+
+    Rails.cache.delete "articles/index"
+
   end
 
   # PUT /articles/1
@@ -82,7 +82,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
 
     respond_to do |format|
-      if @article.update_attributes(params[:article])
+      if @article.update_attributes(article_params)
         format.html { redirect_to @article, notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
@@ -90,6 +90,10 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_entity }
       end
     end
+
+    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched Regexp.new("#{@article.id}")
+
   end
 
   # DELETE /articles/1
@@ -102,39 +106,35 @@ class ArticlesController < ApplicationController
       format.html { redirect_to articles_url }
       format.json { head :no_content }
     end
+
+    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched Regexp.new("#{@article.id}")
+
   end
 
   # GET /articles/myspace
-  # GET /articles/myspace.json
   def myspace
-    @numUFO = Report.where(:status => 1).count()
     @menu = "myspace"
-    #@articles = Article.all.desc(:published_date)
     @articles = Article.where(:user => session[:user_id])
 
     @page_title = "Articles"
-    @page_description = "Latest Articles"
+    @page_description = "My Latest Articles"
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @articles }
     end
   end
 
   # GET /articles/myspace
-  # GET /articles/myspace.json
   def uforesearchteam
-    @numUFO = Report.where(:status => 1).count()
     @menu = "uforesearchteam"
     @user = User.new
-    #@articles = Article.all.desc(:published_date)
 
     @page_title = "UFO Research Team - Articles"
     @page_description = "Do you want to join our research team?"
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @articles }
     end
   end
 
