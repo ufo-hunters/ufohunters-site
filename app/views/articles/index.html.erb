@@ -1,3 +1,5 @@
+<% cache("articles/content", skip_digest: true, expires_in: 1.week) do %>
+
 <script type="text/javascript">
   function init() {
   }
@@ -15,6 +17,8 @@
     <meta itemprop="itemListOrder" content="Descending"/>
   <%
   unless @articles.blank?
+
+
 
     @articles.each do |article| %>
     <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
@@ -44,7 +48,7 @@
               <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
               By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name">
               <%
-               unless article.user.nil? 
+               unless article.user.nil?
               %>
                   <%=article.user.username%>
               <%
@@ -86,3 +90,4 @@
   <br/>
 
 </div>
+<% end %>

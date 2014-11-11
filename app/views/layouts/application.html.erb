@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<% cache("common/head/#{@page_title}/#{@page_description.hash}") do %>
+<% cache("common/head/#{@page_title}/#{@page_description.hash}", expires_in: 12.hours) do %>
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
   <%= stylesheet_link_tag "application", :media => "all" %>

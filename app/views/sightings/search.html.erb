@@ -1,7 +1,7 @@
-<%  unless @ufo_list.nil? %>
+<%  unless @ufo_list.nil?
 
+      cache("sightings/report/#{@ufo_list.id}", skip_digest: true, expires_in: 12.hours) do
 
-    <%
     	unless @ufo_list.coord.nil? || @ufo_list.coord == ""
     %>
 
@@ -224,4 +224,7 @@
 			  </div>
 			  <%= render partial: 'common/ads/adaptable' %>
 	  	</div>
-<%  end %>
+<%
+      end
+    end
+%>
