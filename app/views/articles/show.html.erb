@@ -1,3 +1,5 @@
+<% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
+
 <script type="text/javascript">
   function init() {
   }
@@ -21,7 +23,7 @@
       <p class="meta">
       <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>">
         <%
-          unless @article.user.nil? 
+          unless @article.user.nil?
               %>
               <%= @article.user.username %></strong><br/>
         <%
@@ -91,3 +93,4 @@
           </script>
   </div>
 </div>
+<% end %>
