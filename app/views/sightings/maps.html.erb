@@ -9,7 +9,7 @@
 </div>
 
 
-
+<% cache ("maps/content/continents") do %>
 <div class="row">
   <div class="span12">
 
@@ -20,7 +20,6 @@
         });
       });
     </script>
-
     <div class="well">
       <div id="thumb_continent" class="carousel slide" style="margin-bottom: 0px;">
         <div class="carousel-inner" style="width:80%;margin:auto;">
@@ -72,8 +71,8 @@
       </div>
     </div>
   </div>
-
 </div>
+<% end %>
 <div class="row" style="margin-top: 20px;margin-bottom: 20px">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
@@ -212,7 +211,7 @@
     <p>If you prefer, you can explore the latest sightings in your country using this list. Click on the names of the countries below</p>
   </div>
 </div>
-
+<% cache ("maps/content/countries/north_america") do %>
 <div class="row">
   <div class="span12">
       <p><strong>North America</strong></br>
@@ -221,7 +220,8 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>
+<% cache ("maps/content/countries/south_america") do %>
 <div class="row">
   <div class="span12">
       <p><strong>South America</strong></br>
@@ -230,7 +230,8 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>
+<% cache ("maps/content/countries/africa") do %>
 <div class="row">
   <div class="span12">
       <p><strong>Africa</strong></br>
@@ -239,7 +240,8 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>
+<% cache ("maps/content/countries/asia") do %>
 <div class="row">
   <div class="span12">
       <p><strong>Asia</strong></br>
@@ -248,7 +250,8 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>
+<% cache ("maps/content/countries/europe") do %>
 <div class="row">
   <div class="span12">
       <p><strong>Europe</strong></br>
@@ -257,7 +260,8 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>
+<% cache ("maps/content/countries/oceania") do %>
 <div class="row">
   <div class="span12">
       <p><strong>Oceania</strong></br>
@@ -266,4 +270,4 @@
       <% end %></p>
   </div>
 </div>
-
+<% end %>

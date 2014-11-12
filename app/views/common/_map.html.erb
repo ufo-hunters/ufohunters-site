@@ -1,4 +1,7 @@
   <%
+
+  cache("common/partials/maps/#{@ufo_list.hash}", expires_in: 12.hours) do
+
   zoom = 2
   center = [34.16473667601063, -40.57035354999999]
   ufo_icon = image_path('platillo_verde.png')
@@ -179,3 +182,6 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 
   </script>
+  <%
+  end
+  %>

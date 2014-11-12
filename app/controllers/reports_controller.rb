@@ -4,16 +4,16 @@ class ReportsController < ApplicationController
 
   include SimpleCaptcha::ControllerHelpers
 
-  caches_action :index, :expires_in => 24.hour
-  caches_page :show, :expires_in => 24.hour
-  # GET /reports
-  # GET /reports.json
+  caches_action :sightings, :expires_in => 1.day
+  caches_action :country, :expires_in => 1.day
 
+  # GET /reports.json
   def index
-    @reports = Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100)
+    @reports = Rails.cache.fetch("reports/latest", :expires_in => 8.hours) do
+      Report.where(:status => 1).without(:email,:description,:links,:status).desc(:sighted_at).limit(100).entries
+    end
 
     respond_to do |format|
-      #format.html # index.html.erb
       format.json { render json: @reports }
     end
   end
@@ -21,7 +21,9 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
-    @report = Report.without(:email).find(params[:id])
+    @report = Rails.cache.fetch("reports/#{params[:id]}", :expires_in => 1.week) do
+      Report.without(:email).find(params[:id])
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -33,11 +35,12 @@ class ReportsController < ApplicationController
   # GET /reports/nearof/1234/5678.json
   def nearof
       @coordenadas = [params[:longitud].to_i,params[:latitud].to_i]
-      #@coordenadas = [-84.799473,35.250002]
       distance = 100 #km
 
       if @coordenadas
-         @nearest = Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50)
+        @nearest = Rails.cache.fetch("reports/near/#{params[:longitud].to_i},#{params[:latitud].to_i}", :expires_in => 8.hours) do
+          Report.where(:coord => { "$nearSphere" => @coordenadas , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).without(:email,:description,:links,:source,:status,:reported_at,:shape,:duration).limit(50).entries
+        end
       end
 
       respond_to do |format|
@@ -50,9 +53,6 @@ class ReportsController < ApplicationController
   # GET /reports/new
   # GET /reports/new.json
   def new
-
-    @numUFO = Report.where(:status => 1).count()
-
     @report = Report.new
 
     @menu = "report"
@@ -71,13 +71,15 @@ class ReportsController < ApplicationController
   # POST /reports.json
 
   def create
-    @numUFO = Report.count()
     @menu = "report"
     @page_title = "Report a UFO"
     @page_description = "Have you seen a UFO? Report your experience filling in the report form"
 
-    @tmp = params[:report]
-    @tmp["links"] = @tmp["links"].values unless @tmp["links"].empty?
+    @tmp = report_params
+
+    @tmp["links"] = params[:report][:links] unless params[:report][:links].blank?
+    @tmp["image_cloudinary"] = params[:report][:image_cloudinary]
+
     unless @tmp["image_cloudinary"].blank?
         @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
     end
@@ -85,7 +87,7 @@ class ReportsController < ApplicationController
     # Remove image_id
     @tmp.except! :image_id
 
-    if @tmp["coord"].empty?
+    if @tmp["coord"].blank?
       @tmp["coord"] = [0,0]
     else
       @tmp["coord"] = @tmp["coord"].split(",").map { |s| s.to_f }
@@ -121,6 +123,10 @@ class ReportsController < ApplicationController
 
     end
 
+    # Invalidate cache for sightings/latest, reports/latest and so on
+    Rails.cache.delete_matched /latest/
+    Rails.cache.delete "common/num_reports"
+    expire_fragment "common/header"
 
   end
 
@@ -128,9 +134,9 @@ class ReportsController < ApplicationController
   def sightings
     @reports = Report.where(:status => 1, :source => "ufo-hunters.com", :coord =>  {"$exists" => 1}).without(:email,:links,:source,:status,:shape,:duration).desc(:sighted_at).limit(100)
 
-     respond_to do |format|
-       format.xml
-     end
+    respond_to do |format|
+      format.xml
+    end
   end
 
 
@@ -171,6 +177,12 @@ class ReportsController < ApplicationController
          format.xml
       end
 
-   end
+  end
+
+  private
+
+    def report_params
+      params.require(:report).permit(:location, :shape, :duration, :description, :coord, :status, :email, :links, :image_cloudinary, :reported_at, :sighted_at, :source)
+    end
 
 end

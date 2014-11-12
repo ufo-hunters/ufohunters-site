@@ -1,10 +1,11 @@
+<% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
+
 <script type="text/javascript">
   function init() {
   }
 </script>
 <p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_article_path(@article) if logged_in? %> |
 <%= link_to 'Back', articles_path %>
 
 <div class="row" style="margin-top: 20px;margin-bottom: 20px">
@@ -20,7 +21,14 @@
         <h2 itemprop="name" class="title"><%= @article.title  %></h2>
       </header>
       <p class="meta">
-      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= @article.author %></strong><br/>
+      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>">
+        <%
+          unless @article.user.nil?
+              %>
+              <%= @article.user.username %></strong><br/>
+        <%
+               end
+        %>
         <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
           <meta itemprop="name" content="ufo-hunters.com">
         </span>
@@ -85,3 +93,4 @@
           </script>
   </div>
 </div>
+<% end %>

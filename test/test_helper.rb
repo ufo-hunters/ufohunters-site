@@ -89,10 +89,18 @@ class ActiveSupport::TestCase
                 )
   end
 
+  def create_dummy_user
+
+    User.new(:username => "user1",
+             :password => "secret"
+             )
+
+  end
+
   def create_dummy_article
 
     Article.new(:title => "Article title",
-                :author => "The author",
+                :user_id => "user1",
                 :published_date => "20120102",
                 :teaser => "Article teaser",
                 :body => "Article body",
@@ -105,6 +113,7 @@ class ActiveSupport::TestCase
 
   def clean_mongodb
     Mongoid.default_session['ufo'].drop
+    Mongoid.default_session['user'].drop
     Mongoid.default_session['articles'].drop
     Mongoid.default_session['countries'].drop
   end
