@@ -40,7 +40,7 @@ group :assets do
   gem 'uglifier', '>= 1.3.0'
 
   gem 'less-rails'
-  gem 'twitter-bootstrap-rails'
+  gem 'twitter-bootstrap-rails', '2.2.8'
 end
 
 gem 'jquery-rails'
@@ -57,7 +57,8 @@ gem 'bcrypt'
 # gem 'jbuilder'
 
 # Use unicorn as the web server
-# gem 'unicorn'
+gem 'unicorn'
+gem "rack-timeout"
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -65,7 +66,6 @@ gem 'bcrypt'
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-#gem 'therubyracer'
 gem 'therubyracer'
 gem 'execjs'
 
