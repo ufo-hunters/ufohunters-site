@@ -1,18 +1,36 @@
 class UsersController < ApplicationController
 
-	before_filter :check_user
-
-  def new
-    @user = User.new
-  end
+  include SimpleCaptcha::ControllerHelpers
 
   def create
-    @user = User.new(params[:user])
-    if @user.save
-      redirect_to root_url, :notice => "Signed up!"
-    else
-      render "new"
-    end
+    @user = User.new(user_params)
+
+    if simple_captcha_valid?
+
+        if @user.save
+          session[:user_id] = @user.id
+          redirect_to :controller => 'articles', :action =>'myspace'
+        else
+            flash["form"]=2
+            flash["error"]="Sorry, username already exists. Please enter a different username"
+            redirect_to :controller => 'articles', :action =>'uforesearchteam'
+
+        end
+
+     else
+          flash["form"]=2
+          flash["error"]="You must enter the text of the image!"
+          redirect_to :controller => 'articles', :action =>'uforesearchteam'
+     end
+
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(:username, :password)
+    end
+
+
 end
 

@@ -1,2 +1,4 @@
 User-Agent: *
-Disallow:
+Disallow: /articles/myspace
+Disallow: /sessions/*
+Disallow: /users/*

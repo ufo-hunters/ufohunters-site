@@ -3,6 +3,7 @@ span_class = 'span4'
 
 span_class = span if defined?(span)
 
+cache("common/partials/ads/adaptable3/#{span_class}") do
 %>
 <div class="<%=span_class%>" itemscope itemtype="http://schema.org/WPAdBlock">
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -16,3 +17,6 @@ span_class = span if defined?(span)
     (adsbygoogle = window.adsbygoogle || []).push({});
   </script>
 </div>
+<%
+end
+%>

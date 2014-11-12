@@ -9,7 +9,7 @@
 			  <%=	render partial: 'common/gcs' %>
       </div>
 		</div>
-
+		<% cache("index/carousel/latest", expires_in: 3.hours) do %>
 		<div class="row">
 		  <div class="span12">
 			  <div itemscope itemtype="http://schema.org/ItemList">
@@ -28,7 +28,7 @@
           						<%
 												recent_sighting_cont = 0
 
-												for i in 0..79
+												for i in 0...80
 
 													if recent_sighting_cont % 4 == 0
 							        %>
@@ -44,9 +44,9 @@
 							                          		<%  unless @ufo_list[i].nil? %>
 
 										                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0">
-										                          	
+
 										                          		<%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %>
-										                          	
+
 										                          	</p>
 										                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
 										                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
@@ -83,7 +83,7 @@
 				</div>
 			</div>
     </div>
-
+    <% end %>
 		<div class="row">
 		  <div class="span12">
 		    <div id="sightings-map" style="width: 100%; height: 600px;"></div>
@@ -97,7 +97,7 @@
 				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
 			</div>
 		</div>
-
+		<% cache("index/modules") do %>
     <div class="row">
 			<div class="span4" style="text-align: center; margin-top: 15px">
 				<%= image_tag image_path('world.png') %>
@@ -115,3 +115,4 @@
 				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Download our App and take a look at the most recent sightings, or those near you.
 			</div>
 	  </div>
+	  <% end %>

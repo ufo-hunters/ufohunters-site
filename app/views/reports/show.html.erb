@@ -35,7 +35,7 @@ function init() {}
       <label for="report_location"><strong>Location </strong></label>
       <p><%= @report['location']%></p>
     </div>
-    <% unless @report['links'].size == 0 || @report['links'][0].blank? %>
+    <% unless @report['links'].blank? || @report['links'].size == 0 || @report['links'][0].blank? %>
     <div class="span6">
       <label for="report_links"><strong>Links </strong></label>
       <p><%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%></p>

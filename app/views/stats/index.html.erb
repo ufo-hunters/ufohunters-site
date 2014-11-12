@@ -1,5 +1,7 @@
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
-    <script>
+<% cache("stats/content", expires_in: 1.day) do %>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+<script>
 // Adding 2500 Data Points. Fusion Tables currently has a limit of 1000, that is the reason why we are not using Fusion Tables right now
 var map, pointarray, heatmap;
 
@@ -175,3 +177,4 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <div class="row" style="margin-top: 20px;margin-bottom: 20px">
       <%= render partial: 'common/ads/horizontal_ad' %>
     </div>
+<% end %>
