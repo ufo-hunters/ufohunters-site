@@ -41,6 +41,9 @@ Ufo::Application.configure do
 
   # Use a different cache store in production
   # config.cache_store = :mem_cache_store
+  if ENV["REDISCLOUD_URL"]
+    config.cache_store = :redis_store, ENV["REDISCLOUD_URL"]
+  end
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
