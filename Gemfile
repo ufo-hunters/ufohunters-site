@@ -70,3 +70,5 @@ gem "jquery-validation-rails"
 
 gem 'redis-rails'
 gem 'newrelic_rpm'
+
+gem 'rails_12factor'
