@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
 
+	protect_from_forgery except: :create
+
 	def create
 	  @page_title = "UFO Resarch Team - Articles"
 	  @user = User.new
