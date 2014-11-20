@@ -1,6 +1,11 @@
 Ufo::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
+
+  %w( 404 422 500 ).each do |code|
+    get code, :to => "sightings#error"
+  end
+
   #get "users/new"
   resources :users
 
@@ -77,10 +82,13 @@ Ufo::Application.routes.draw do
   get 'sightings/search/:id(/:title)' => 'sightings#search'
   get 'sightings/search/:id' => 'sightings#search'
   get 'sightings/spain' => 'sightings#spain'
+  get 'sightings/error' => 'sightings#error'
   get 'stats' => 'stats#index'
   # See how all your routes lay out with "rake routes"
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   get ':controller(/:action(/:id))(.:format)'
+
+ 
 
 end
