@@ -331,12 +331,4 @@ class SightingsController < ApplicationController
       @page_description = "About ufo-hunters.com and who is behind this site"
    end
 
-
-   def error
-     
-      @page_title = "ERROR - UFO Activity"
-      @page_description = "About ufo-hunters.com and who is behind this site"
-   end
-
-
 end

@@ -2,9 +2,10 @@ Ufo::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
 
-  %w( 404 422 500 ).each do |code|
-    get code, :to => "sightings#error"
-  end
+  get "/404", :to => "errors#not_found"
+  get "/422", :to => "errors#unacceptable"
+  get "/500", :to => "errors#internal_error"
+
 
   #get "users/new"
   resources :users
