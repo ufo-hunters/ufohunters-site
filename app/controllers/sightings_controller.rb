@@ -331,5 +331,4 @@ class SightingsController < ApplicationController
       @page_description = "About ufo-hunters.com and who is behind this site"
    end
 
-
 end

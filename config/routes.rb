@@ -1,6 +1,12 @@
 Ufo::Application.routes.draw do
   mount Ckeditor::Engine => '/ckeditor'
 
+
+  get "/404", :to => "errors#not_found"
+  get "/422", :to => "errors#unacceptable"
+  get "/500", :to => "errors#internal_error"
+
+
   #get "users/new"
   resources :users
 
@@ -82,5 +88,7 @@ Ufo::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   get ':controller(/:action(/:id))(.:format)'
+
+ 
 
 end
