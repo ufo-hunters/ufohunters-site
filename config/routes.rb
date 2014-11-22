@@ -83,7 +83,6 @@ Ufo::Application.routes.draw do
   get 'sightings/search/:id(/:title)' => 'sightings#search'
   get 'sightings/search/:id' => 'sightings#search'
   get 'sightings/spain' => 'sightings#spain'
-  get 'sightings/error' => 'sightings#error'
   get 'stats' => 'stats#index'
   # See how all your routes lay out with "rake routes"
   # This is a legacy wild controller route that's not recommended for RESTful applications.
