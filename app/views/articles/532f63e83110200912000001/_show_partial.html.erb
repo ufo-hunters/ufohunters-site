@@ -1,4 +1,4 @@
-     
+
     <%
 
     rocket_black_brant = Report.new
@@ -9,14 +9,14 @@
     %><%= render partial: 'common/map', locals: {ufo_list: ufo_list, map_id: 'basicMap', marker: rocket_black_brant, marker_icon: 'blackbrant.png', map_zoom: 4} %>
 
     <div class="row">
-                <div class="span8">         
-                        <div id="basicMap" style="width: 100%; height: 550px;"></div>       
+                <div class="span8">
+                        <div id="basicMap" style="width: 100%; height: 550px;"></div>
                 </div>
     </div>
 
-    <div class="row">                    
+    <div class="row">
                 <div class="span8">
-                                       
+
                         <p class="meta" style="padding-top: 10px">
                             On 19 September 2009 MUFON and NUFORC received lots of sighting reports. The map above shows all of them. The influence area was the East Coast of the United States.
                         </p>
@@ -25,30 +25,33 @@
                         </p>
                         <p class="meta">
                             This cone-shaped burst of light was an artificial noctilucent cloud formed by the exhaust particles of the rocket's fourth stage at an altitude of about 278 km (173 mi). Here are several sketches which were reported to MUFON:
-                            
-                           
+
+
                             <div class="well" style="padding: 0">
                                 <div id="gallery" class="carousel slide" style="margin: 0">
-                                            <div class="carousel-inner" style="width: 90%; margin: auto;">
+                                    <div class="carousel-inner" style="width: 90%; margin: auto;">
 
                                           <div class="item active">
                                             <div class="row-fluid">
 
-                                              <div class="span6" style="text-align:center">
-                                                <a href="http://www.mufoncms.com/files/19462_submitter_file1__object.jpg" target="_blank"><img src="http://www.mufoncms.com/files/19462_submitter_file1__object.jpg" alt="sighting sketch" width="300"/></a>
+                                              <div class="span4" style="text-align:center">
+                                                <% img = cl_image_path('reported_date_20090920/ufo_sighting_in_barnstable_massachusetts_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
+                                                <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090920/ufo_sighting_in_barnstable_massachusetts_usa_20090919.jpg', :alt => "Sighting sketch", :size => '140x105', :crop => :fit) %></a>
                                               </div>
 
-                                              <div class="span3" style="text-align:center">
-                                                 <a href="http://www.mufoncms.com/files/21409_submitter_file1__ufosept19Zoom.jpg" target="_blank"><img src="http://www.mufoncms.com/files/21409_submitter_file1__ufosept19Zoom.jpg" alt="sighting sketch" width="160"/></a>
+                                              <div class="span4" style="text-align:center">
+                                                 <% img = cl_image_path('reported_date_20100109/ufo_sighting_in_thetford_mines_quebec_canada_20090919.jpg', :size => '1024x768', :crop => :fit) %>
+                                                 <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20100109/ufo_sighting_in_thetford_mines_quebec_canada_20090919.jpg', :alt => "Sighting sketch", :size => '140x105', :crop => :fit) %></a>
                                               </div>
-                                              
-                                              <div class="span3" style="text-align:center">
-                                                 <a href="http://www.mufoncms.com/files/19457_submitter_file1__091909.jpg" target="_blank"><img src="http://www.mufoncms.com/files/19457_submitter_file1__091909.jpg" width="160"/></a>
+
+                                              <div class="span4" style="text-align:center">
+                                                 <% img = cl_image_path('reported_date_20090919/ufo_sighting_in_harrisburg_pennsylvania_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
+                                                 <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090919/ufo_sighting_in_harrisburg_pennsylvania_usa_20090919.jpg', :alt => "UFO Sighting in Harrington", :size => '140x105', :crop => :fit) %></a>
                                               </div>
 
                                             </div>
                                           </div>
-                                                
+
                                       </div>
                                 </div>
                             </div>
@@ -65,22 +68,24 @@
                                             <div class="row-fluid">
 
                                               <div class="span6" style="text-align:center">
-                                                <a href="http://www.mufoncms.com/files/19394_submitter_file1__sept192009.jpg"><img src="http://www.mufoncms.com/files/19394_submitter_file1__sept192009.jpg" width="300"/></a>
+                                                <% img = cl_image_path('reported_date_20090919/ufo_sighting_in_toronto_ontario_canada_20090919.jpg', :size => '1024x768', :crop => :fit) %>
+                                                <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090919/ufo_sighting_in_toronto_ontario_canada_20090919.jpg', :alt => "UFO Sighting in Toronto", :size => '300x205', :crop => :fit) %></a>
                                               </div>
 
                                               <div class="span6" style="text-align:center">
-                                                 <a href="http://www.mufoncms.com/files/19550_submitter_file3__teardropturnsredatdusk.JPG" target="_blank"><img src="http://www.mufoncms.com/files/19550_submitter_file3__teardropturnsredatdusk.JPG" width="300"/></a>
+                                                 <% img = cl_image_path('reported_date_20090921/ufo_sighting_in_bernalillo_new_mexico_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
+                                                 <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090921/ufo_sighting_in_bernalillo_new_mexico_usa_20090919.jpg', :alt => "UFO Sighting in Bernalillo", :size => '300x205', :crop => :fit) %></a>
                                               </div>
-                                              
+
                                             </div>
                                           </div>
-                                                
+
                                       </div>
                                 </div>
                             </div>
 
                         </p>
 
-                </div>               
+                </div>
     </div>
-      
+
