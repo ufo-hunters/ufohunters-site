@@ -1,9 +1,4 @@
 <% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
-
-<script type="text/javascript">
-  function init() {
-  }
-</script>
 <p id="notice"><%= notice %></p>
 
 <%= link_to 'Back', articles_path %>
