@@ -4,7 +4,7 @@
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
   <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "application"%>
   <%= csrf_meta_tags %>
   <meta content="text/html; charset=utf-8" http-equiv="content-type" />
   <meta name='keywords' content='UFO, UFO Sightings, UFO Activity, Latest UFO Activity, Latest UFO Sightings, Recent UFO Activity, Recent UFO Sightings, UFO stats, UFO Reports, Latest UFO Reports, Recent UFO Reports, UFO Maps, UFO Hunters, UFO Videos, UFO Sightings Videos, UFO Sightings Reports'/>
@@ -17,9 +17,7 @@
   <meta property="og:locale" content="en_US" />
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script type="text/javascript">var switchTo5x=true;</script>
-  <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
-  <script type="text/javascript">stLight.options({publisher: "0f3d2694-bb70-4df6-a2dd-bfc0da82b253", doNotHash: false, doNotCopy: false, hashAddressBar: false});</script>
+ 
 </head>
 <% end %>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -56,8 +54,9 @@
         </div>
 
         <div class="span2">
-          <!-- Go to www.addthis.com/dashboard to customize your tools -->
-            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1"></script>
+            <!-- Go to www.addthis.com/dashboard to customize your tools -->
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52b6f9892a2afcc1" async="async"></script>
+
         </div>
 
 
