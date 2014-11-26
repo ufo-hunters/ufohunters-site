@@ -317,7 +317,7 @@ class SightingsController < ApplicationController
 
    def images
       @ufo_list = Rails.cache.fetch("sightings/image_gallery", :expires_in => 12.hours) do
-         Report.where(:status => 1 , :$or => [{:links => /(.jpg|.jpeg|.bmp|.gif|.png)$/i}, {:image_cloudinary.ne => nil}], :coord.ne => nil).desc(:sighted_at).limit(100).entries
+         Report.where(:status => 1 , :$or => [{:links => /^(?!.*mufon).*(.jpg|.jpeg|.bmp|.gif|.png)$/i}, {:image_cloudinary.ne => nil}], :coord.ne => nil).desc(:sighted_at).limit(100).entries
       end
 
       @menu = "images"
