@@ -114,7 +114,7 @@ class ReportsController < ApplicationController
     else
         @report["sighted_at"] = ""
         @report["reported_at"] = ""
-        @report["links"] = ""
+        @report["links"] = []
         respond_to do |format|
             @notice = 'You must enter the text of the image'
             format.html { render action: "new", notice: 'You must enter the text of the image'}
