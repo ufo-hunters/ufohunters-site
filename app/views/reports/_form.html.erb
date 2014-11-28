@@ -41,7 +41,7 @@ $(document).ready(function(){
   </div>
                               <script>
                                 $(function() {
-                                  $( "#report_sighted_at" ).datepicker("option", "dateFormat", "mm/dd/yy");
+                                  $( "#report_sighted_at" ).datepicker({dateFormat: "mm/dd/yy"});
                                 });
                                 cont = 0;
                                 function addlink() {
