@@ -1,5 +1,6 @@
 class Article
   include Mongoid::Document
+
   field :title, type: String
   field :published_date, type: String
   field :teaser, type: String
@@ -10,6 +11,9 @@ class Article
   field :date_filter, type: String
   field :article_helper_method, type: String
   field :partial_1, type: String
+  field :status, type: Integer, default: 0
+
+
   belongs_to :user
 
   validates_presence_of :title, :message => "Title is mandatory"
