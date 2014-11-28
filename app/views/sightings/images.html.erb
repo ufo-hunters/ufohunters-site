@@ -34,11 +34,10 @@
 			blueimp.Gallery([
 			    <%
 			    image_cont = 0
-			    image_urls = []
 
 			    unless @ufo_list.blank?
 						@ufo_list.each do |ufo|
-
+							image_urls = []
 			        image_urls, other_urls = select_url_images(ufo.links) unless ufo.links.blank?
 			        image_urls = image_urls + ufo.image_cloudinary unless ufo.image_cloudinary.blank?
 
