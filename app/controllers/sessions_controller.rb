@@ -10,8 +10,8 @@ class SessionsController < ApplicationController
 	    session[:user_id] = user.id
 	    redirect_to :controller => 'articles', :action =>'myspace'
 	  else
-	  	flash["form"]=1
-	    flash["error"]="Invalid username or password"
+	  	flash[:form] = 1
+	    flash[:error] = "Invalid username or password"
         redirect_to :controller => 'articles', :action =>'uforesearchteam'
 	  end
 	end
