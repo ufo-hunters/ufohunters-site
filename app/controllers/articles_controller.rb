@@ -6,13 +6,14 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   # GET /articles.json
+  #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = "articles"
-    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do
-      Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do  
+      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
     end
-    @page_title = "Articles"
-    @page_description = "Latest Articles"
+    @page_title = "Articles" 
+    @page_description = "Latest Articles" 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -144,7 +145,7 @@ class ArticlesController < ApplicationController
   private
 
     def article_params
-      params.require(:article).permit(:title, :teaser, :body, :published_date, :user_id)
+      params.require(:article).permit(:title, :status, :teaser, :body, :published_date, :user_id)
     end
 
 end
