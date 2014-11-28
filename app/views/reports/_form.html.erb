@@ -41,7 +41,7 @@ $(document).ready(function(){
   </div>
                               <script>
                                 $(function() {
-                                  $( "#report_sighted_at" ).datepicker();
+                                  $( "#report_sighted_at" ).datepicker({dateFormat: "mm/dd/yy"});
                                 });
                                 cont = 0;
                                 function addlink() {
@@ -57,7 +57,7 @@ $(document).ready(function(){
                                 <%
                                 sighted_at_value = nil
                                 unless params[:report].blank?
-                                  sighted_at_value = Date.strptime(params[:report]["sighted_at"], '%Y%m%d').strftime('%m/%d/%Y')
+                                  sighted_at_value = params[:report]["sighted_at"]
                                 end
                                 %>
 
