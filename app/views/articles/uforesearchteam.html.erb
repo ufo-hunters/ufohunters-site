@@ -30,18 +30,33 @@
           <div class="actions"><%= submit_tag "Log in" %></div>
         <% end %>
 
-            <% if flash["form"]==1%>
+            <% if flash[:form] == 1%>
                 <div class="alert alert-dismissable alert-danger">
                     <button data-dismiss="alert" class="close" type="button">×</button>
-                    <strong><%=flash["error"]%></strong>
-                </div> 
-            <% end %> 
-         
+                    <strong><%=flash[:error]%></strong>
+                </div>
+            <% end %>
+
   </div>
 
    <div class="span5 well">
         <h3>Sign up</h3>
-       
+
+        <%
+        if flash[:form] == 2
+          unless flash[:error].blank?
+            flash[:error].each do |msg|
+        %>
+            <div class="alert alert-dismissable alert-danger">
+              <button data-dismiss="alert" class="close" type="button">×</button>
+              <strong><%= msg %></strong>
+            </div>
+        <%
+            end
+          end
+        end
+        %>
+
         <%= form_for @user do |f| %>
             <% if @user.errors.any? %>
               <div class="error_messages">
@@ -55,15 +70,23 @@
             <% end %>
             <div class="field">
               <%= f.label :username %>
-              <%= f.text_field :username %>
+              <%= f.text_field :username, :class => 'required fieldufo' %>
             </div>
             <div class="field">
               <%= f.label :password %>
-              <%= f.password_field :password %>
+              <%= f.password_field :password, :class => 'required fieldufo' %>
             </div>
             <div class="field">
               <%= f.label :password_confirmation %>
-              <%= f.password_field :password_confirmation %>
+              <%= f.password_field :password_confirmation, :class => 'required fieldufo' %>
+            </div>
+            <div class="field">
+              <%= f.label :email %>
+              <%= f.text_field :email, :class => 'required fieldufo' %>
+            </div>
+            <div class="field">
+              <%= f.label :email_confirmation %>
+              <%= f.text_field :email_confirmation, :class => 'required fieldufo' %>
             </div>
              <div class="field">
                   <%= show_simple_captcha(:label => "")%>
@@ -71,14 +94,6 @@
             </div>
             <div class="actions"><%= submit_tag "Sign up" %></div>
         <% end %>
-
-            <% if flash["form"]==2%>
-                <div class="alert alert-dismissable alert-danger">
-                    <button data-dismiss="alert" class="close" type="button">×</button>
-                    <strong><%=flash["error"]%></strong>
-                </div> 
-            <% end %> 
-      
   </div>
 
 </div>
