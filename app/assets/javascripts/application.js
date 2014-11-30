@@ -15,7 +15,6 @@
 //= require jquery_ujs
 //= require jquery.validate
 //= require twitter/bootstrap
-//= require blueimp-gallery-all
 //= require ckeditor/init
 //= require cloudinary
 //= require dataTables/jquery.dataTables
