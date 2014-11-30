@@ -39,8 +39,6 @@ end
 gem 'jquery-rails'
 gem 'jquery-datatables-rails', '~> 2.2.3'
 
-gem 'blueimp-gallery', '~> 2.11.0.1'
-
 # To use ActiveModel has_secure_password
 gem 'bcrypt'
 
