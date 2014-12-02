@@ -43,6 +43,15 @@ ufo-hunters.com uses MongoDB as document database and Cloudinary as cloud-based 
     gem install bundler
     bundle install
 
+Built With
+------------
+
+•	Ruby on Rails — Our site is a Rails app.
+•	Ember.js — Our front end is an Ember.js app that communicates with the Rails API.
+•	MongoDB — Our main data store.
+•	Redis — We use Redis as a cache and for transient data.
+    
+
 How to contribute
 -----------------
 
