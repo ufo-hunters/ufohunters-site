@@ -31,6 +31,8 @@ The current responsive version of the site has been developed using Twitter Boot
 
 All maps are implemented with Google Maps API V3.
 
+[Pledgie]: http://www.pledgie.com/campaigns/21122
+
 
 Dependencies
 ------------
