@@ -47,8 +47,11 @@ Built With
 ------------
 
 •	Ruby on Rails — Our site is a Rails app.
-•	Ember.js — Our front end is an Ember.js app that communicates with the Rails API.
+
+•	Bootstrap - Built our responsive site with Bootstrap.
+
 •	MongoDB — Our main data store.
+
 •	Redis — We use Redis as a cache and for transient data.
     
 
