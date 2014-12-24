@@ -17,6 +17,7 @@ class Report
   field :email, type: String
   field :image_cloudinary, type: Array
   field :status, type: Integer
+  field :case_number, type: Integer
 
   validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
   validates_presence_of :reported_at, :message => "Reported date is mandatory"
@@ -26,6 +27,14 @@ class Report
   validates_presence_of :description, :message => "Description is mandatory"
   validates_confirmation_of :email, :message => "Should match contact email confirmation"
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true
+
+  before_create :set_case_number
+
+  private
+  def set_case_number
+    last_case_number = Report.max(:case_number)
+    self.case_number = last_case_number + 1 if last_case_number
+  end
 
   #db.ufo.ensureIndex({"coord":"2d"}, {"background":true,"safe":true})
   index({coord:'2d'},{background:true})
