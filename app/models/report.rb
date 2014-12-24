@@ -32,7 +32,7 @@ class Report
 
   private
   def set_case_number
-    last_case_number = Report.max(:case_number)
+    last_case_number = Report.where(source: 'ufo-hunters.com').max(:case_number)
     self.case_number = last_case_number + 1 if last_case_number
   end
 
