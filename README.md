@@ -53,6 +53,14 @@ Built With
 •	MongoDB — Our main data store.
 
 •	Redis — We use Redis as a cache and for transient data.
+
+•	Cloudinary - Image management and manipulation in the cloud.
+
+•	CloudFlare - It is a very popular and free CDN.
+
+•	Unicorn - This web server enable the concurrent processing of requests.
+
+
     
 
 How to contribute
