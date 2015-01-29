@@ -19,8 +19,9 @@ class ActiveSupport::TestCase
                :description => "My description",
                :coord => [-0.29393, 40.87880],
                :links => ["http://www.youtube.com", "http://www.google.com"],
-               :source => "My Source",
-               :email => "email@email.com")
+               :source => "ufo-hunters.com",
+               :email => "email@email.com",
+               :case_number => 1041)
   end
 
   def create_country
