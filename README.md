@@ -11,21 +11,13 @@ Overview
 
 This site is built with an incredibly powerful web framework called Ruby on Rails, that uses the most eloquent and elegant programming language we've ever used.
 
-UFO-hunters.com was realized from scratch with Ruby 1.9 and Rails 3.3.2 and now upgrade to Ruby 2.1.2 and Rails 4.1.2 .
+UFO-hunters.com was realized from scratch with Ruby 1.9 and Rails 3.3.2 and it has been recently upgraded to Ruby 2.1.2 and Rails 4.1.2 .
 
-All UFO data we collect is regularly imported into a NoSQL database called MongoDB, with geospatial "2dsphere" indexes that considerably ease all the stuff with coordinates and geolocation. 
+All the UFO data we collect is regularly imported into a NoSQL database called MongoDB, with geospatial "2dsphere" indexes that considerably ease all the stuff with coordinates and geolocation. 
 
-The site allow access to private zone with session variables. The user can to create his own articles.
+The site allows access to a private area where the users can create their own articles. 
 
-Video Gallery and image gallery are Blueimp Gallery implementations.
-
-We also used some resources available at freeCSStemplates.org
-
-Some of the images in this site are available at OpenClipArt.org
-
-We've applied lots of javascript resources, such as the well known jQuery, jQuery.carouFredSel "a plugin that turns any kind of HTML element into a carousel", and D3.js for data-driven documents generation.
-
-The funny bubble graph showing the distribution of UFO's shapes is made from the code shared at github by ricardmo.
+Video and Image Galleries are Blueimp Gallery implementations.
 
 The current responsive version of the site has been developed using Twitter BootStrap.
 
@@ -58,7 +50,7 @@ Built With
 
 •	CloudFlare - It is a very popular and free CDN.
 
-•	Unicorn - This web server enable the concurrent processing of requests.
+•	Unicorn - This web server enables the concurrent processing of requests.
 
 
     
