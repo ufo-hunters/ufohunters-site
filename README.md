@@ -25,7 +25,7 @@ All maps are implemented with Google Maps API V3.
 
 [Pledgie]: http://www.pledgie.com/campaigns/21122
 
-[![You can support the development of Ufo-Hunters via Pledgie - thanks for your help](https://pledgie.com/campaigns/18379.png?skin_name=chrome)][Pledgie]
+[![You can support the development of Ufo-Hunters via Pledgie - thanks for your help](https://pledgie.com/campaigns/21122.png?skin_name=chrome)][Pledgie]
 
 Dependencies
 ------------
