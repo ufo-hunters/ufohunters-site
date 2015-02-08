@@ -9,11 +9,11 @@ class ArticlesController < ApplicationController
   #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = "articles"
-    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do  
+    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do
       Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
     end
-    @page_title = "Articles" 
-    @page_description = "Latest Articles" 
+    @page_title = "Articles"
+    @page_description = "Latest Articles"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -65,7 +65,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
+        format.html { redirect_to action: 'myspace', notice: 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
       else
         format.html { render action: "new" }
@@ -85,7 +85,7 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       if @article.update_attributes(article_params)
-        format.html { redirect_to @article, notice: 'Article was successfully updated.' }
+        format.html { redirect_to action: 'myspace', notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
@@ -106,7 +106,7 @@ class ArticlesController < ApplicationController
     @article.destroy
 
     respond_to do |format|
-      format.html { redirect_to articles_url }
+      format.html { redirect_to action: 'myspace' }
       format.json { head :no_content }
     end
 
@@ -119,7 +119,7 @@ class ArticlesController < ApplicationController
   # GET /articles/myspace
   def myspace
     @menu = "myspace"
-    @articles = Article.where(:user => session[:user_id])
+    @articles = Article.where(:user => session[:user_id]).desc(:published_date)
 
     @page_title = "Articles"
     @page_description = "My Latest Articles"
