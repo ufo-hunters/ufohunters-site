@@ -22,7 +22,7 @@
   end
 
   %>
-  
+
   <script type="text/javascript">
     var map;
     var iterator = 0;
@@ -133,11 +133,11 @@
       });
       marker.info = location[4];
       google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.content = marker.info;
+        infoWindow.setContent(marker.info);
         infoWindow.open(map, marker);
       });
       google.maps.event.addListener(marker, 'touchstart', function() {
-        infoWindow.content = marker.info;
+        infoWindow.setContent(marker.info);
         infoWindow.open(map, marker);
       });
 
@@ -166,11 +166,11 @@
 
       customMarker.info = '<strong><%= marker.location.gsub("'", %q(\\\')) %></strong><br/><%= marker.description.gsub("'", %q(\\\')) %>';
       google.maps.event.addListener(customMarker, 'click', function() {
-        infoWindow.content = customMarker.info;
+        infoWindow.setContent(customMarker.info);
         infoWindow.open(map, customMarker);
       });
       google.maps.event.addListener(customMarker, 'touchstart', function() {
-        infoWindow.content = customMarker.info;
+        infoWindow.setContent(customMarker.info);
         infoWindow.open(map, customMarker);
       });
 
@@ -183,9 +183,7 @@
 
   </script>
 
-
   <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false&callback=initialize"></script>
-
 
   <%
   end
