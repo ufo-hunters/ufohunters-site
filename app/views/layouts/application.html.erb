@@ -17,7 +17,7 @@
   <meta property="og:locale" content="en_US" />
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
+
 </head>
 <% end %>
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -48,7 +48,7 @@
         </div>
 
         <div class="span2" style="margin-top: 10px;" class="row hidden-phone">
-          <h5 style="color:#d7df21"> 
+          <h5 style="color:#d7df21">
             <%= link_to(raw("Do you want to join our UFO research team?"), {:controller => "articles", :action => "uforesearchteam"}, :itemprop => "url")%>
           </h5>
         </div>
@@ -204,11 +204,33 @@
     cache ("common/footer") do
     %>
     <footer class="row footer" itemscope itemtype="http://schema.org/WPFooter">
-      <div class="span3"><a href="mailto:ufohunterscom@gmail.com">ufohunterscom@gmail.com</a></div>
-      <div class="span2"><a href="http://www.facebook.com/UfoHuntersCom">facebook/UfoHuntersCom</a></div>
-      <div class="span2"><a href="http://twitter.com/UfoHuntersCom">twitter/UfoHuntersCom</a></div>
-      <div class="span2"><a href="https://plus.google.com/115233509348028051068" rel="publisher">Google+</a></div>
-      <div class="span3 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
+      <div class="span2">
+        &copy;<%=Date.today.strftime("%Y")%> ufo-hunters.com
+      </div>
+      <div class="span2">
+        <a href="#disclaimerModal" role="button" data-toggle="modal" class="disclaimer">Disclaimer</a>
+        <div aria-hidden="true" aria-labelledby="disclaimerModalLabel" role="dialog" tabindex="-1" class="modal hide fade disclaimer" id="disclaimerModal">
+          <div class="modal-header disclaimer">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+            <h3 id="disclaimerModalLabel" class="black-txt">Disclaimer</h3>
+          </div>
+          <div class="modal-body disclaimer">
+            <p class="black-txt">The views, opinions, and facts expressed on this web site are solely those of the original authors, witnesses and other contributors. These views and opinions do not necessarily represent those of ufo-hunters.com staff, and/or any/all contributors to this site.</p>
+          </div>
+          <div class="modal-footer">
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="span4" class="social">
+        <a class="footer-link" href="mailto:ufohunterscom@gmail.com"><i class="icon-envelope social-icon"></i></a>
+        <a class="footer-link" href="http://www.facebook.com/UfoHuntersCom" target="_blank"><i class="icon-facebook social-icon"></i></a>
+        <a class="footer-link" href="http://twitter.com/UfoHuntersCom" target="_blank"><i class="icon-twitter social-icon"></i></a>
+        <a rel="publisher" class="footer-link" href="https://plus.google.com/115233509348028051068" target="_blank"><i class="icon-google-plus social-icon"></i></a>
+      </div>
+
+      <div class="span4 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
     </footer>
 
     <script>
