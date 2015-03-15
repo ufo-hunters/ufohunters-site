@@ -1,6 +1,7 @@
 class SightingsController < ApplicationController
 
    include ApplicationHelper
+   include SimpleCaptcha::ControllerHelpers
 
    caches_action :countriesList, :expires_in => 1.month
 
@@ -32,6 +33,74 @@ class SightingsController < ApplicationController
       @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
    end
 
+   def ufosearch
+
+      @menu = "ufosearch"
+      @page_title = "UFOs Search"
+      @page_description = "UFO search all sightings around the world between two dates and one location"  
+      
+   end
+
+   def ufosearchresults
+
+
+      if simple_captcha_valid?
+
+            #startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01"
+            @startdateview = params["startdate"]
+
+            startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
+            
+            #logger.debug "startdate"
+            #logger.debug startdate
+            
+            #lastdaymonth = (Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01").to_date.end_of_month.day
+
+            #enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+lastdaymonth.to_s
+            @enddateview = params["enddate"]
+            enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
+            
+            #logger.debug "enddate"  
+            #logger.debug enddate
+            @coords = params["coord"].split(",").map { |s| s.to_f }
+
+            @map_center=[]
+            @map_center.push(@coords[1])
+            @map_center.push(@coords[0])
+            
+
+            distance = 200 #km
+
+            @ufo_list = Rails.cache.fetch("sightings/maps/search", :expires_in => 60.seconds) do
+                  Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
+            end 
+
+            @menu = "ufosearch"
+            @page_title = "UFOs Search results"
+            @page_description = "UFO search all sightings around the world between two dates and one location"  
+      
+
+            respond_to do |format|
+              format.html # index.html.erb
+              format.json { render json: @ufo_list }
+            end
+
+      else
+           
+           @menu = "ufosearch"
+           @page_title = "UFOs Search"
+           @page_description = "UFO search all sightings around the world between two dates and one location"  
+      
+           respond_to do |format|
+               @notice = 'You must enter the text of the image'
+               format.html { render action: "ufosearch", notice: 'You must enter the text of the image'}
+               format.json { render json: @ufo_list, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
+           end
+
+       end
+    
+
+   end
 
    def statistics
       @menu = "statistics"
