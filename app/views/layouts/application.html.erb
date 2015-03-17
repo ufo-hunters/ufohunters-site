@@ -80,7 +80,8 @@
                 cache("common/menu/#{@menu}", expires_in: 1.week) do
                 %>
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
+                <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>                
+                <li <%if @menu.blank? == false && @menu == "ufosearch"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFOs Search</div>"), {:controller => "sightings", :action => "ufosearch"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "stats"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "report"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Report a UFO</div>"), {:controller => "reports", :action => "new"}, :itemprop => "url")%></li>
