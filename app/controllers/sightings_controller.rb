@@ -71,10 +71,8 @@ class SightingsController < ApplicationController
 
             distance = 200 #km
 
-            @ufo_list = Rails.cache.fetch("sightings/maps/search", :expires_in => 60.seconds) do
-                  Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
-            end 
-
+            @ufo_list = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
+            
             @menu = "ufosearch"
             @page_title = "UFOs Search results"
             @page_description = "UFO search all sightings around the world between two dates and one location"  
