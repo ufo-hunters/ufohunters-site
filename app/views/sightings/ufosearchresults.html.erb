@@ -1,0 +1,28 @@
+
+  <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map-search', map_zoom: 7, map_center: @map_center} %> 
+
+  <div class="row"> 
+    <div class="span12">
+      <h3>UFO search results between two dates (<%=@startdateview%> - <%=@enddateview%>), <%= link_to(raw("do you want to do a new search?"), {:controller => "sightings", :action => "ufosearch"}, :itemprop => "url")%></h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="span12">
+      <div id="sightings-map-search" style="width: 100%; height: 550px;"></div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+    <%= render partial: 'common/ads/horizontal_ad' %>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <h3>100 UFO sightings on the dates and location:</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <%= render partial: 'common/latest_sightings' %>
+    <%= render partial: 'common/ads/adaptable3' %>
+  </div>
