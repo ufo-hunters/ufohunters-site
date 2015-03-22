@@ -9,9 +9,16 @@ class ArticlesController < ApplicationController
   #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = "articles"
+    @num_articles = num_articles
     @page_number = 1
     begin
       @page_number = params[:page].to_i unless params[:page].blank?
+      last_page = (@num_articles / Ufo::MAX_PAGE_ITEMS) + 1
+      if @page_number <= 0
+        @page_number = 1
+      elsif @page_number > last_page
+        @page_number = last_page
+      end
     rescue
       logger.error "Page number not valid!"
     end
@@ -20,7 +27,6 @@ class ArticlesController < ApplicationController
     end
     @page_title = "Articles"
     @page_description = "Latest Articles"
-    @num_articles = num_articles
 
     respond_to do |format|
       format.html # index.html.erb
