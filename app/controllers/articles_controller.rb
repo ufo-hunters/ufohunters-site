@@ -80,7 +80,7 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched /articles\/index/
     expire_fragment "articles/content"
 
   end
@@ -100,7 +100,7 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
     expire_fragment "articles/content"
 
@@ -117,7 +117,7 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
 
-    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
     expire_fragment "articles/content"
 
