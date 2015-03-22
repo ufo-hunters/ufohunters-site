@@ -13,7 +13,7 @@ class ArticlesController < ApplicationController
     begin
       @page_number = params[:page].to_i unless params[:page].blank?
     rescue
-      logger.error "Page nummber not valid!"
+      logger.error "Page number not valid!"
     end
     @articles = Rails.cache.fetch("articles/index/#{@page_number}", :expires_in => 1.week) do
       Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).skip((@page_number-1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
@@ -81,7 +81,7 @@ class ArticlesController < ApplicationController
     end
 
     Rails.cache.delete_matched /articles\/index/
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -102,7 +102,7 @@ class ArticlesController < ApplicationController
 
     Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -119,7 +119,7 @@ class ArticlesController < ApplicationController
 
     Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/content/
 
   end
 

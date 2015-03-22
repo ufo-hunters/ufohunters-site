@@ -1,4 +1,4 @@
-<% cache("articles/content", skip_digest: true, expires_in: 1.week) do %>
+<% cache("articles/content/#{@page_number}", skip_digest: true, expires_in: 1.week) do %>
 <div class="row" style="margin-top: 20px;margin-bottom: 20px">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
