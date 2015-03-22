@@ -9,11 +9,18 @@ class ArticlesController < ApplicationController
   #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = "articles"
-    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do
-      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+    @page_number = 1
+    begin
+      @page_number = params[:page].to_i unless params[:page].blank?
+    rescue
+      logger.error "Page nummber not valid!"
+    end
+    @articles = Rails.cache.fetch("articles/index/#{@page_number}", :expires_in => 1.week) do
+      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).skip((@page_number-1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
     end
     @page_title = "Articles"
     @page_description = "Latest Articles"
+    @num_articles = num_articles
 
     respond_to do |format|
       format.html # index.html.erb
@@ -139,6 +146,12 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+    end
+  end
+
+  def num_articles
+    Rails.cache.fetch("articles/num_articles", :expires_in => 8.hours) do
+      Article.where(:status => 1).count()
     end
   end
 

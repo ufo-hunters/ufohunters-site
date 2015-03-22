@@ -12,8 +12,6 @@
   <%
   unless @articles.blank?
 
-
-
     @articles.each do |article| %>
     <div class="row" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
@@ -65,7 +63,27 @@
     </div>
   <%
     end
+
   %>
+    <ul class="pager">
+      <%
+      unless @page_number <= 1
+      %>
+      <li class="previous">
+        <%= link_to "&larr; Previous".html_safe, articles_path(page: @page_number - 1) %>
+      </li>
+      <%
+      end
+      unless (@page_number * Ufo::MAX_PAGE_ITEMS) >= @num_articles
+      %>
+      <li class="next">
+        <%= link_to "Next &rarr;".html_safe, articles_path(page: @page_number + 1) %>
+      </li>
+      <%
+      end
+      %>
+    </ul>
+
   </div>
 
   <%= render partial: 'common/ads/adaptable' %>

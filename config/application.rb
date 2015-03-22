@@ -16,6 +16,7 @@ end
 module Ufo
 
   THUMBS_URL_BASE = "http://img.youtube.com/vi/"
+  MAX_PAGE_ITEMS = 5
 
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
@@ -69,7 +70,7 @@ module Ufo
     # Add Rails Admin assets (required)
 
     config.assets.precompile += %w( *.css *.js *.woff *.eot *.svg *.ttf)
-    config.assets.paths << "#{Rails.root}/app/assets/fonts" 
+    config.assets.paths << "#{Rails.root}/app/assets/fonts"
 
     config.exceptions_app = self.routes
 
