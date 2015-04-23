@@ -18,19 +18,19 @@ $(document).ready(function(){
   <div class="row">
           <div class="span12">
       <p>
-        Before anything else, i would like to thank you for using our ufo search engine. Here you can search our huge database, choosing a location and a date range.
+        First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.
       </p>
       <p>
-        The search will be on the dates chosen and in the location (<u>will be done within a radius of 200 miles from the chosen location</u>).
+        The search will be performed between the dates chosen, around the location (<u>within a radius of 200 miles from the selected location</u>).
       </p>
       <p>
-        In the start date field, you must select a date from which you want to search sightings. In the field end date should be the date until which you want to search.
+        In the <strong>Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong>End Date</strong> field indicates the upper limit for your date range.
       </p>
       <p>
-        And finally the location field, where you have to write your chosen location. After, don't forget do click "Find location" and this way you would know if your field location is well written and can be searched on the map.
+        Finally, fill in the <strong>Location</strong> field, as you would do in Google Maps. Once done, don't forget to click <strong>Find Location</strong> to know whether the provided location is valid or not.
       </p>
       <p>
-        Fill in the captcha field with the letters you see in the image and click on "SEARCH UFOS". 
+        Just below the map, type in the captcha field the letters you see in the image, and click on <strong>SEARCH UFOS</strong> to get the results.
       </p>
     </div>
    </div>
@@ -39,9 +39,9 @@ $(document).ready(function(){
 
       $(function() {
         $( "#startdate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" });
-     
-        $( "#enddate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" }); 
-      
+
+        $( "#enddate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" });
+
         $('form').validate({
               messages: {
                 "coord": {
@@ -50,26 +50,26 @@ $(document).ready(function(){
               }
         });
 
-      });              
+      });
 
 </script>
 
 <%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch')  do %>
-  
+
   <div class="row">
-           
+
 
           <div class="span6">
 
-                                <label for="startdate">Start date <span class="divrojo">*</span></label>
-                               
+                                <label for="startdate">Start Date <span class="divrojo">*</span></label>
+
                                 <input type="text" id="startdate" name="startdate" size="12" class="required date">
 
           </div>
-          <div class="span6"> 
-                    
-                                <label for="enddate">End date <span class="divrojo">*</span></label>
-                                
+          <div class="span6">
+
+                                <label for="enddate">End Date <span class="divrojo">*</span></label>
+
                                 <input type="text" id="enddate" name="enddate" size="12" class="required date">
           </div>
 
@@ -79,12 +79,12 @@ $(document).ready(function(){
           <div class="span12">
                                 <label for="report_location">Location <span class="divrojo">*</span></label>
                                 <input type="text" name="report_location" id="report_location" class="required">
-                                <a class="submit-button-coordenate" href="javascript:codeAddress();">Find location</a>
-                                
+                                <a class="submit-button-coordenate" href="javascript:codeAddress();">Find Location</a>
+
                                 <input type="text" size="30" name="coord" id="coord" class="required" style="visibility: hidden;">
                                 <div id="map-canvas" class="map-canvas"></div>
           </div>
-         
+
   </div>
   <div class="row">
 
