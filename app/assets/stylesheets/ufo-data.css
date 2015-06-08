@@ -163,6 +163,9 @@ ul#menunew li a:hover {
       margin-bottom: 10px;
       /*padding-left: 10px;*/
 }
+.footer div.modal-body.disclaimer{
+    height: 100px;
+}
 .postfooter {
       height: 100px;
 }
