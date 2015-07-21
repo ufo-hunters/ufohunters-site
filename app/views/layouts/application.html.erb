@@ -161,7 +161,10 @@
               %>
                             <div class="span3" style="text-align: center" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
                               <h4 itemprop="name" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis" title="<%=thumb.location%>"><%= thumb.location %></h4>
+                              <meta itemprop="description" content="<%= friendly_title(thumb) %>"/>
                               <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+                              <meta itemprop="uploadDate" content="<%= format_date_microdata thumb.reported_at %>"/>
+                              <meta itemprop="thumbnailUrl" content="<%= Ufo::THUMBS_URL_BASE + video_id + "/1.jpg" %>"/>
                               <div>
                                 <figure>
                                 <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
