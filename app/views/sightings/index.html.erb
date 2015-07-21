@@ -49,6 +49,8 @@
 
 										                          	</p>
 										                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
+										                            <meta itemprop="datePublished" content="<%= format_date_microdata @ufo_list[i].reported_at %>"/>
+										                            <meta itemprop="headline" content="<%= friendly_title(@ufo_list[i]) %>"/>
 										                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
 
 								                            <%  end %>

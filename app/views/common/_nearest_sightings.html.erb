@@ -16,7 +16,8 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
                 <div  class="" style="margin-top: 20px;margin-bottom: 20px">
 		     		  <h3>Top 100 nearest sightings ordered by sighting date (100 miles radius):</h3>
 
-				      <table id="tabledata" class="table table-responsive table-striped">
+				      <table id="tabledata" class="table table-responsive table-striped" itemscope itemtype="http://schema.org/ItemList">
+				      	  <meta itemprop="itemListOrder" content="Descending"/>
 				      		<thead>
 								<tr>
 										<th>Location
