@@ -34,20 +34,20 @@
       %>
           <header>
             <h3 itemprop="name" class="title"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
+            <meta itemprop="headline" content="<%= article.title %>"/>
           </header>
           <p class="meta">
             <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>"><%= format_date article.published_date %></strong><br/>
               <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
-              By: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name">
               <%
                unless article.user.nil?
               %>
+              By: <span itemprop="author" itemscope itemtype="http://schema.org/Person"><strong itemprop="name">
                   <%=article.user.username%>
+                  </strong></span>
               <%
               end
               %>
-
-            </strong></span>
               <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
                 <meta itemprop="name" content="ufo-hunters.com">
               </span>
