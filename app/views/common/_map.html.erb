@@ -23,6 +23,10 @@
 
   %>
 
+
+  <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
+
+
   <script type="text/javascript">
     var map;
     var iterator = 0;
@@ -161,7 +165,7 @@
           zIndex: <%= ufo_list.length + 1 %>,
           draggable: false,
           clickable: true,
-          animation: google.maps.Animation.DROP
+          animation: google.maps.Animation.DROP 
       });
 
       customMarker.info = '<strong><%= marker.location.gsub("'", %q(\\\')) %></strong><br/><%= marker.description.gsub("'", %q(\\\')) %>';
@@ -179,11 +183,9 @@
     <%
     end
     %>
-    //google.maps.event.addDomListener(window, 'load', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);
 
   </script>
-
-  <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false&callback=initialize"></script>
 
   <%
   end
