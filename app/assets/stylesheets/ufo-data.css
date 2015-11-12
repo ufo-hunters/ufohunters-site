@@ -163,6 +163,9 @@ ul#menunew li a:hover {
       margin-bottom: 10px;
       /*padding-left: 10px;*/
 }
+.footer div.modal-body.disclaimer{
+    height: 100px;
+}
 .postfooter {
       height: 100px;
 }
@@ -316,4 +319,44 @@ div.social {
     -moz-transition: color 0.2s ease 0s;
     width:40px;
     text-decoration: none;
+}
+
+/* About */
+.collab {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.main-collab-pic {
+    max-width:100%;
+    margin-left: 10px;
+    vertical-align:middle;
+}
+
+.collab-pic {
+    max-width:100%;
+    margin: 38px 0 0 10px;
+    vertical-align:middle;
+}
+
+.collab-inner {
+    margin: 38px 0 0 10px;
+}
+
+.collab-icons-row {
+    margin-bottom: 20px;
+}
+
+.collab-icon-link {
+    margin: 0 10px 0 0;
+    text-decoration: none;
+    color: #7D8212;
+}
+
+i.collab {
+    color: #444444;
+    display: inline-block;
+    font-size: 30px;
+    transition: color 0.2s ease 0s;
+    width:40px;
 }

@@ -50,6 +50,8 @@
 						      	@ufo_list.each do |ufo|
 									%>
 						    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+						    					<meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
+										      <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
 							         		<td itemprop="name">
 							         			<%= link_to ufo.location, :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %>
 							         		</td>

@@ -80,7 +80,7 @@
                 cache("common/menu/#{@menu}", expires_in: 1.week) do
                 %>
                 <li <%if @menu.blank? == false && @menu == "index"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Home</div>"), {:controller => "sightings"}, :itemprop => "url")%></li>
-                <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>                
+                <li <%if @menu.blank? == false && @menu == "articles"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Articles</div>"), {:controller => "articles"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "ufosearch"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>UFOs Search</div>"), {:controller => "sightings", :action => "ufosearch"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "statistics"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Statistics</div>"), {:controller => "stats"}, :itemprop => "url")%></li>
                 <li <%if @menu.blank? == false && @menu == "maps"%>class="active"<% end %>><%= link_to(raw("<div itemprop='name'>Maps</div>"), {:controller => "sightings", :action => "maps"}, :itemprop => "url")%></li>
@@ -161,7 +161,10 @@
               %>
                             <div class="span3" style="text-align: center" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
                               <h4 itemprop="name" style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis" title="<%=thumb.location%>"><%= thumb.location %></h4>
+                              <meta itemprop="description" content="<%= friendly_title(thumb) %>"/>
                               <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>"><%= format_date thumb.sighted_at %></p>
+                              <meta itemprop="uploadDate" content="<%= format_date_microdata thumb.reported_at %>"/>
+                              <meta itemprop="thumbnailUrl" content="<%= Ufo::THUMBS_URL_BASE + video_id + "/1.jpg" %>"/>
                               <div>
                                 <figure>
                                 <%= link_to(image_tag(Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", :itemprop => "image", :style => "max-width:100%;", :alt => "UFO Sighting at " + thumb.location), :controller => "sightings", :action => "search", :id => thumb.id, :title => friendly_title(thumb)) %>
@@ -216,6 +219,7 @@
             <h3 id="disclaimerModalLabel" class="black-txt">Disclaimer</h3>
           </div>
           <div class="modal-body disclaimer">
+            <p class="black-txt">The information on this site that is not produced by ufo-hunters.com is covered under the <strong><a href="http://www.copyright.gov/fls/fl102.html" target="_blank" title="Copyright Disclaimer Under Section 107 of the Copyright Act 1976">Copyright Disclaimer Under Section 107 of the Copyright Act 1976</a></strong></p>
             <p class="black-txt">The views, opinions, and facts expressed on this web site are solely those of the original authors, witnesses and other contributors. These views and opinions do not necessarily represent those of ufo-hunters.com staff, and/or any/all contributors to this site.</p>
           </div>
           <div class="modal-footer">
@@ -224,14 +228,31 @@
         </div>
       </div>
 
-      <div class="span4" class="social">
+      <div class="span2">
+        <a href="#privacyModal" role="button" data-toggle="modal" class="disclaimer">Privacy Policy</a>
+        <div aria-hidden="true" aria-labelledby="privacyModalLabel" role="dialog" tabindex="-1" class="modal hide fade disclaimer" id="privacyModal">
+          <div class="modal-header disclaimer">
+            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+            <h3 id="privacyModalLabel" class="black-txt">Privacy Policy</h3>
+          </div>
+          <div class="modal-body disclaimer">
+            <p class="black-txt"><strong>ufo-hunters.com</strong> does not require any personal information from you other than a valid email address, and is not responsible for any personal information you choose to share through reports, articles, comments or any kind of content.</p>
+            <p class="black-txt"><strong>ufo-hunters.com</strong> does not share your email address with third-parties, and is not responsible for the republishing of your contents (reports, pictures, videos, articles, comments) on other web sites.</p>
+          </div>
+          <div class="modal-footer">
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="span3" class="social">
         <a class="footer-link" href="mailto:ufohunterscom@gmail.com"><i class="icon-envelope social-icon"></i></a>
         <a class="footer-link" href="http://www.facebook.com/UfoHuntersCom" target="_blank"><i class="icon-facebook social-icon"></i></a>
         <a class="footer-link" href="http://twitter.com/UfoHuntersCom" target="_blank"><i class="icon-twitter social-icon"></i></a>
         <a rel="publisher" class="footer-link" href="https://plus.google.com/115233509348028051068" target="_blank"><i class="icon-google-plus social-icon"></i></a>
       </div>
 
-      <div class="span4 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
+      <div class="span3 span_android"><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android1">Android</a><a href="https://play.google.com/store/apps/details?id=com.ufohunters"><%= image_tag image_path('android_white.png') %></a><a href="https://play.google.com/store/apps/details?id=com.ufohunters" rel="publisher" class="link_android2">App</a></div>
     </footer>
 
     <script>

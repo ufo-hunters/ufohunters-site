@@ -15,19 +15,28 @@
       <div class="addthis_sharing_toolbox"></div>
       <meta itemprop="articleSection" content="UFO Sightings">
       <header>
-        <h2 itemprop="name" class="title"><%= @article.title  %></h2>
+        <h2 itemprop="name" class="title"><%= @article.title %></h2>
+        <meta itemprop="headline" content="<%= @article.title %>"/>
       </header>
+      <%
+      unless @article.image_thumbnail.blank?
+      %>
+        <meta itemprop="image" content="<%= @article.image_thumbnail %>"/>
+      <%
+      end
+      %>
       <p class="meta">
-      <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>,  by <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>">
+        <meta itemprop="datePublished" content="<%= format_date_microdata @article.published_date %>"/>
+        <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>
         <%
           unless @article.user.nil?
-              %>
-              <%= @article.user.username %></strong><br/>
+        %>
+          , by <strong itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><%= @article.user.username %></span></strong><br/>
         <%
-               end
+          end
         %>
         <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-          <meta itemprop="name" content="ufo-hunters.com">
+          <meta itemprop="name" content="ufo-hunters.com"/>
         </span>
        </small>
       </p>

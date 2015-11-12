@@ -16,7 +16,7 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
                 <div  class="" style="margin-top: 20px;margin-bottom: 20px">
 		     		  <h3>Top 100 nearest sightings ordered by sighting date (100 miles radius):</h3>
 
-				      <table id="tabledata" class="table table-responsive table-striped">
+				      <table id="tabledata" class="table table-responsive table-striped" itemscope itemtype="http://schema.org/ItemList">
 				      		<thead>
 								<tr>
 										<th>Location
@@ -50,8 +50,10 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
 							     	end
 									%>
 			  		   			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-						       		<td itemprop="name">
-						       			<%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %>
+						       		<td>
+						       			<meta itemprop="datePublished" content="<%= format_date_microdata sighting.reported_at %>"/>
+										  	<meta itemprop="headline" content="<%= friendly_title(sighting) %>"/>
+						       			<span itemprop="name"><%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %></span>
 						       		</td>
 						       		<td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>">
 							    			<%= format_date_microdata sighting.sighted_at %>

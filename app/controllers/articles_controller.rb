@@ -9,8 +9,21 @@ class ArticlesController < ApplicationController
   #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = "articles"
-    @articles = Rails.cache.fetch("articles/index", :expires_in => 1.week) do
-      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+    @num_articles = num_articles
+    @page_number = 1
+    begin
+      @page_number = params[:page].to_i unless params[:page].blank?
+      last_page = (@num_articles / Ufo::MAX_PAGE_ITEMS) + 1
+      if @page_number <= 0
+        @page_number = 1
+      elsif @page_number > last_page
+        @page_number = last_page
+      end
+    rescue
+      logger.error "Page number not valid!"
+    end
+    @articles = Rails.cache.fetch("articles/index/#{@page_number}", :expires_in => 1.week) do
+      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).skip((@page_number-1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
     end
     @page_title = "Articles"
     @page_description = "Latest Articles"
@@ -73,8 +86,8 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete "articles/index"
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/index/
+    Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -93,9 +106,9 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -110,9 +123,9 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
 
-    Rails.cache.delete "articles/index"
+    Rails.cache.delete_matched /articles\/index/
     Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    expire_fragment "articles/content"
+    Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -139,6 +152,12 @@ class ArticlesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+    end
+  end
+
+  def num_articles
+    Rails.cache.fetch("articles/num_articles", :expires_in => 8.hours) do
+      Article.where(:status => 1).count()
     end
   end
 

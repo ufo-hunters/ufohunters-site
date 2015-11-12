@@ -14,7 +14,7 @@
 	 	<div class="row">
 		    <div class="span12">
 			   	<%
-	      	      unless @ufo_list.coord.nil? || @ufo_list.coord == ""
+	      	unless @ufo_list.coord.nil? || @ufo_list.coord == ""
 	      		%>
 	      					<div id="sightings-map" style="width: 100%; height: 450px;"></div>
 				  <%
@@ -37,12 +37,13 @@
 						<header>
 							<h2 itemprop="name" class="title">
 									<%
-						      	      unless @ufo_list.location.nil? || @ufo_list.location == ""
+						      	unless @ufo_list.location.nil? || @ufo_list.location == ""
 						      		%>
 												<%= @ufo_list.location %></h2>
 									<%
 									  end
 									%>
+									<meta itemprop="headline" content="<%= friendly_title(@ufo_list) %>">
 						</header>
 						<p class="meta">
 						<small>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>"><%= format_date @ufo_list.sighted_at %></strong><br/>
@@ -81,7 +82,7 @@
 				   				%><h2>Images</h2>
 				   					<div class="well" style="padding: 0">
                       					<div id="gallery" class="carousel slide" style="margin: 0">
-                      						<div class="carousel-inner" style="width: 90%; margin: auto;">
+                      						<div class="carousel-inner" style="width: 90%; margin: auto;" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 				   							    <%
 				   							    img_cont = 0
 
@@ -102,11 +103,11 @@
 									   												<%
 									   												if image_hosting_link?(img)
 									   												%>
-									   												<%= cl_image_tag(image_id(img), :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
+									   												<%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
 									   												<%
 									   												else
 									   												%>
-									   												<%= image_tag img, :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
+									   												<%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
 									            							<%
 									            							end
 									            							%>
