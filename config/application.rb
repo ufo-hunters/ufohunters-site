@@ -8,7 +8,7 @@ require "rails/test_unit/railtie"
 
 require 'mongoid'
 
-Mongoid.load!(File.expand_path('mongoid.yml', './config'))
+Mongoid.load!(File.expand_path('mongoid.yml', :production))
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
