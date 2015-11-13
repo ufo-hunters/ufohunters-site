@@ -11,7 +11,7 @@ gem 'rake', '10.3.2'
 #gem 'sqlite3'
 
 #gema para conexion a mongodb
-gem 'mongoid', git: 'https://github.com/mongoid/mongoid.git'
+gem 'mongoid', '~> 5.0.0'
 
 gem 'simple_captcha2', require: 'simple_captcha'
 
