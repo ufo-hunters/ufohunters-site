@@ -55,7 +55,7 @@ gem "rack-timeout"
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
-gem 'therubyracer'
+gem 'therubyracer', :platforms => :ruby
 gem 'execjs'
 
 gem 'ckeditor'
