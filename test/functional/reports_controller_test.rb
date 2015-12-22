@@ -16,10 +16,10 @@ class ReportsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:reports)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
+  #test "should get new" do
+    #get :new
+    #assert_response :success
+  #end
 
   test "should create report" do
     assert_difference('Report.count') do
