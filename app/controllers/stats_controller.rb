@@ -38,9 +38,7 @@ class StatsController < ApplicationController
            },
            {
             "$sort" => {"_id" => 1}
-           }], {
-                       allowDiskUse: true
-            }
+           }]
         )
       #end
     end
