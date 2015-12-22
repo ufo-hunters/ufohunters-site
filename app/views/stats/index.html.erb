@@ -15,9 +15,12 @@ index = 0
   end
 
   index += 1
+
+  if (ufo.coord[1] && ufo.coord[0])
 %>
   new google.maps.LatLng(<%= ufo.coord[1] %>, <%= ufo.coord[0] %>)
 <%
+  end
 end
 %>
 ];
