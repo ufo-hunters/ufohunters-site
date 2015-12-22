@@ -27,20 +27,22 @@ class StatsController < ApplicationController
 
   private
     def reports_by_year
-      Rails.cache.fetch("stats/reports_by_year", :expires_in => 1.day) do
+      #Rails.cache.fetch("stats/reports_by_year", :expires_in => 1.day) do
         Report.collection.aggregate(
-           {
+           [{
             "$group" => {"_id" => {"$substr" => ["$sighted_at", 0, 4]},
                          "count" => {"$sum" => 1}}
            },
            {
-            "$match" => {"_id" => {"$gte" => "1850"}}
+            "$match" => {"_id" => {"$gte" => "1950"}}
            },
            {
             "$sort" => {"_id" => 1}
-           }
+           }], {
+                       allowDiskUse: true
+            }
         )
-      end
+      #end
     end
 
 end
