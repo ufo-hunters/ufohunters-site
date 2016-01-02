@@ -4,12 +4,12 @@ require 'test_helper'
 class SightingsControllerTest < ActionController::TestCase
 
   setup do
-    Mongoid.default_session['ufo'].indexes.create(coord:'2d')
-    Mongoid.default_session['ufo'].indexes.create(status:1,links:1)
-    Mongoid.default_session['ufo'].indexes.create(status:1,location:1)
-    Mongoid.default_session['ufo'].indexes.create(status:1,sighted_at:-1)
-    Mongoid.default_session['ufo'].indexes.create(location:1)
-    Mongoid.default_session['ufo'].indexes.create(sighted_at:-1)
+    Mongoid.default_session['ufo'].indexes.create_one(coord:'2d')
+    Mongoid.default_session['ufo'].indexes.create_one(status:1,links:1)
+    Mongoid.default_session['ufo'].indexes.create_one(status:1,location:1)
+    Mongoid.default_session['ufo'].indexes.create_one(status:1,sighted_at:-1)
+    Mongoid.default_session['ufo'].indexes.create_one(location:1)
+    Mongoid.default_session['ufo'].indexes.create_one(sighted_at:-1)
   end
 
 
@@ -25,10 +25,10 @@ class SightingsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get statistics" do
-    get :statistics
-    assert_response :success
-  end
+  #test "should get statistics" do
+    #get :statistics
+    #assert_response :success
+  #end
 
   test "should maps statistics" do
     get :maps
