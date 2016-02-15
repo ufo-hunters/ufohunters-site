@@ -67,13 +67,6 @@ article {
       text-align: left;
 }
 
-
-svg {
-      margin: 0 auto 20px auto;
-      min-width: 960px;
-      min-height: 600px;
-}
-
 a > circle {
       fill: #D7DF21;
 }
