@@ -28,3 +28,51 @@
 //
 // Example:
 // @linkColor: #ff0000;
+.carousel-control {
+  line-height: 42px;
+}
+
+#video_thumb_carousel a.left {
+  top: 61%;
+  left: -15px;
+}
+
+#video_thumb_carousel a.right {
+  top: 61%;
+}
+
+/********** Medium devices only **********/
+@media (min-width: 992px) and (max-width: 1199px) {
+  #video_thumb_carousel a.right {
+    right: 3px;
+  }
+}
+
+/********** Small devices only **********/
+@media (min-width: 768px) and (max-width: 991px) {
+  .carousel-control {
+    line-height: 30px;
+    width: 30px;
+    height: 30px;
+    font-size: 40px;
+  }
+  #video_thumb_carousel a.right {
+    right: 3px;
+  }
+}
+
+/********** Extra small devices only **********/
+@media (max-width: 767px) {
+  .carousel-control {
+    line-height: 42px;
+    width: 40px;
+    height: 40px;
+    font-size: 60px;
+  }
+  #video_thumb_carousel a.left {
+    left: 15px;
+  }
+  #video_thumb_carousel a.right {
+    right: 15px;
+  }
+}
