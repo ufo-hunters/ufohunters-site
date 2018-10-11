@@ -32,8 +32,6 @@ group :assets do
 
   gem 'uglifier', '>= 1.3.0'
 
-  gem "less-rails", "~> 2.8.0"
-  gem 'twitter-bootstrap-rails', '2.2.8'
 end
 
 gem 'jquery-rails'
@@ -56,6 +54,8 @@ gem "rack-timeout"
 # gem 'ruby-debug19', :require => 'ruby-debug'
 
 gem 'therubyracer', :platforms => :ruby
+gem "less-rails", "~> 2.8.0"
+gem 'twitter-bootstrap-rails', '2.2.8'
 gem 'execjs'
 
 gem 'ckeditor'
