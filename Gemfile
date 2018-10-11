@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.3.7'
+ruby '2.4.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.2'
+gem 'rails', '4.2.8'
 gem 'rake', '10.3.2'
 
 # Bundle edge Rails instead:
@@ -11,7 +11,7 @@ gem 'rake', '10.3.2'
 #gem 'sqlite3'
 
 #gema para conexion a mongodb
-gem 'mongoid', '~> 5.0.0'
+gem 'mongoid', '~> 5.1.6'
 
 gem 'simple_captcha2', require: 'simple_captcha'
 
@@ -32,7 +32,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.3.0'
 
-  gem 'less-rails'
+  gem "less-rails", "~> 2.8.0"
   gem 'twitter-bootstrap-rails', '2.2.8'
 end
 
