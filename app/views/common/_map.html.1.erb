@@ -1,0 +1,192 @@
+  <%
+
+  cache("common/partials/maps/#{@ufo_list.hash}", expires_in: 12.hours) do
+
+  zoom = 2
+  center = [34.16473667601063, -40.57035354999999]
+  ufo_icon = image_path('platillo_verde.png')
+  report_selected_icon = ufo_icon
+
+  zoom = map_zoom if defined?(map_zoom)
+  center = map_center if defined?(map_center)
+
+  if defined?(selected_ufo) && selected_ufo.coord
+    zoom = 8
+    center = [selected_ufo.coord[1], selected_ufo.coord[0]]
+    ufo_icon = image_path('platillo_negro.png')
+  end
+
+  if defined?(marker)
+    center = [marker.coord[1], marker.coord[0]]
+    report_selected_icon = marker_icon
+  end
+
+  %>
+
+
+  <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
+
+
+  <script type="text/javascript">
+    var map;
+    var iterator = 0;
+    var markers = [];
+    var infoWindow;
+    var sightings = [
+    <%
+    	index = 0
+     	ufo_list.each do |ufo|
+		    begin
+		      if index == 0
+            if defined?(selected_ufo)
+          %>
+            ['<%=selected_ufo.location.gsub("'", %q(\\\'))%>',
+            <%=selected_ufo.coord[1]%>,
+            <%=selected_ufo.coord[0]%>,
+            <%=index += 1%>,
+            '<strong><%=selected_ufo.location.gsub("'", %q(\\\'))%></strong><br/><%= format_date selected_ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => selected_ufo.id, :title => friendly_title(selected_ufo) %></strong>',
+            true],
+          <%
+            end
+		      else
+          %>,<%
+		      end
+		    %>
+			  ['<%=ufo.location.gsub("'", %q(\\\'))%>',
+          <%=ufo.coord[1]%>,
+          <%=ufo.coord[0]%>,
+          <%=index += 1%>,
+          '<strong><%=ufo.location.gsub("'", %q(\\\'))%></strong><br/><%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>',
+          <%= defined?(selected_ufo) && (selected_ufo.id == ufo.id) ? 'true' : 'false' %>
+			  ]
+			  <%
+			  rescue => ex
+          logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
+          next
+			  end
+			end
+		%>
+    ];
+
+    function initialize() {
+      var mapOptions = {
+        zoom: <%= zoom %>,
+        center: new google.maps.LatLng(<%= center[0] %>, <%= center[1] %>),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      }
+      map = new google.maps.Map(document.getElementById('<%=map_id%>'), mapOptions);
+      infoWindow = new google.maps.InfoWindow({content: ''});
+      setMarkers(map, sightings);
+      <%
+      if defined?(marker)
+      %>
+      addCustomMarker(map);
+      <%
+      end
+      %>
+    }
+
+    function setMarkers(map, locations) {
+
+    	for (var i = 0; i < locations.length; i++) {
+     		setTimeout(function() {
+          addMarker();
+        }, i * 100);
+
+      }
+
+    }
+
+    function getEventType() {
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+
+		  return isMobile ? "touchstart" : "click";
+
+    }
+
+    var eventType = getEventType();
+
+    function addMarker() {
+      var location = sightings[iterator];
+      var myLatLng = new google.maps.LatLng(location[1], location[2]);
+
+      var image = {
+        url: '<%= ufo_icon %>'
+      };
+
+      if (location[5] == true) {
+
+        image = {
+          url: '<%= report_selected_icon %>',
+          scaledSize: new google.maps.Size(40, 34)
+        };
+        // Add total length to zIndex so that the selected icon is always placed top
+        location[3] = location[3] + sightings.length;
+
+      }
+
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        map: map,
+        icon: image,
+        title: location[0],
+        zIndex: location[3],
+        draggable: false,
+        clickable: true,
+        animation: google.maps.Animation.DROP
+      });
+      marker.info = location[4];
+      google.maps.event.addListener(marker, 'click', function() {
+        infoWindow.setContent(marker.info);
+        infoWindow.open(map, marker);
+      });
+      google.maps.event.addListener(marker, 'touchstart', function() {
+        infoWindow.setContent(marker.info);
+        infoWindow.open(map, marker);
+      });
+
+      markers.push(marker);
+      iterator++;
+    }
+
+    <%
+    if defined?(marker)
+    %>
+    function addCustomMarker(map) {
+      var image = {
+        url: '<%= image_path(report_selected_icon) %>',
+      };
+
+      var customMarker = new google.maps.Marker({
+          position: new google.maps.LatLng(<%= center[0] %>, <%= center[1] %>),
+          map: map,
+          title: '<%= marker.location.gsub("'", %q(\\\')) %>',
+          icon: image,
+          zIndex: <%= ufo_list.length + 1 %>,
+          draggable: false,
+          clickable: true,
+          animation: google.maps.Animation.DROP 
+      });
+
+      customMarker.info = '<strong><%= marker.location.gsub("'", %q(\\\')) %></strong><br/><%= marker.description.gsub("'", %q(\\\')) %>';
+      google.maps.event.addListener(customMarker, 'click', function() {
+        infoWindow.setContent(customMarker.info);
+        infoWindow.open(map, customMarker);
+      });
+      google.maps.event.addListener(customMarker, 'touchstart', function() {
+        infoWindow.setContent(customMarker.info);
+        infoWindow.open(map, customMarker);
+      });
+
+      markers.push(customMarker);
+    }
+    <%
+    end
+    %>
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+
+  <%
+  end
+  %>

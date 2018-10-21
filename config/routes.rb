@@ -85,6 +85,7 @@ Ufo::Application.routes.draw do
   get 'sightings/spain' => 'sightings#spain'
   post 'sightings/ufosearchresults' => 'sightings#ufosearchresults'   
   get 'stats' => 'stats#index'
+  get 'map_json' => 'stats#map_json'
   # See how all your routes lay out with "rake routes"
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.

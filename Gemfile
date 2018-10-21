@@ -70,3 +70,5 @@ gem 'redis-rails'
 gem 'newrelic_rpm'
 
 gem 'rails_12factor'
+
+gem 'rgeo-geojson'

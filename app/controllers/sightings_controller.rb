@@ -65,10 +65,9 @@ class SightingsController < ApplicationController
             @coords = params["coord"].split(",").map { |s| s.to_f }
 
             @map_center=[]
-            @map_center.push(@coords[1])
             @map_center.push(@coords[0])
+            @map_center.push(@coords[1])
             
-
             distance = 200 #km
 
             @ufo_list = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
@@ -343,9 +342,9 @@ class SightingsController < ApplicationController
       coordinates = ""
       @the_country.each_with_index do |data, index|
          if index==0
-            type = data[1]
+          coordinates =  data[1]
          else
-            coordinates =  data[1]
+          type = data[1]
          end
       end
 

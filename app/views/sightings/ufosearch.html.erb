@@ -1,5 +1,7 @@
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
+<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
 <script>
 
 $(document).ready(function(){
@@ -27,7 +29,7 @@ $(document).ready(function(){
         In the <strong>Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong>End Date</strong> field indicates the upper limit for your date range.
       </p>
       <p>
-        Finally, fill in the <strong>Location</strong> field, as you would do in Google Maps. Once done, don't forget to click <strong>Find Location</strong> to know whether the provided location is valid or not.
+        Finally, fill in the <strong>search</strong> box, inside the map, the sighting location.
       </p>
       <p>
         Just below the map, type in the captcha field the letters you see in the image, and click on <strong>SEARCH UFOS</strong> to get the results.
@@ -43,9 +45,9 @@ $(document).ready(function(){
         $( "#enddate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" });
 
         $('form').validate({
-              messages: {
+               messages: {
                 "coord": {
-                  required: "The location has to be searched on the map!. Do click \"Find location\" button"
+                  required: "The location has to be searched on the map!. Enter the location in the box of the map"
                 }
               }
         });
@@ -57,122 +59,97 @@ $(document).ready(function(){
 <%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch')  do %>
 
   <div class="row">
-
-
-          <div class="span6">
-
-                                <label for="startdate">Start Date <span class="divrojo">*</span></label>
-
-                                <input type="text" id="startdate" name="startdate" size="12" class="required date">
-
-          </div>
-          <div class="span6">
-
-                                <label for="enddate">End Date <span class="divrojo">*</span></label>
-
-                                <input type="text" id="enddate" name="enddate" size="12" class="required date">
-          </div>
-
+    <div class="span4">
+      <label for="startdate">Start Date <span class="divrojo">*</span></label>
+      <input type="text" id="startdate" name="startdate" size="12" class="required date">
+    </div>
+    <div class="span4">
+      <label for="enddate">End Date <span class="divrojo">*</span></label>
+      <input type="text" id="enddate" name="enddate" size="12" class="required date">
+    </div>
+    <div class="span4">
+      <div name="coord_div" id="coord_div" class="required" style="visibility: hidden;"></div>
+      <input type="text" value="" size="30" name="coord" id="coord" class="required" style="visibility: hidden;"/>
+    </div>
   </div>
 
   <div class="row">
-          <div class="span12">
-                                <label for="report_location">Location <span class="divrojo">*</span></label>
-                                <input type="text" name="report_location" id="report_location" class="required">
-                                <a class="submit-button-coordenate" href="javascript:codeAddress();">Find Location</a>
-
-                                <input type="text" size="30" name="coord" id="coord" class="required" style="visibility: hidden;">
-                                <div id="map-canvas" class="map-canvas"></div>
-          </div>
-
+    <div class="span12">
+      <div id="map-canvas" class="map-canvas"></div>
+    </div>
   </div>
+
   <div class="row">
-
-          <div class="span6">
-                              <%= show_simple_captcha(:label => "")%>
-                              <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
-
-          </div>
-          <div class="span6">
-                              <input type="submit" class="submit-button" value="SEARCH UFOS" name="commit">
-          </div>
+    <div class="span6">
+      <%= show_simple_captcha(:label => "")%>
+      <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
+    </div>
+    <div class="span6">
+      <input type="submit" class="submit-button" value="SEARCH UFOS" name="commit" style="margin: 20px;">
+    </div>
   </div>
 
 
   <% end %>
 
-  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqjT3yR9w2D96HTvEfAdyf8N95MpOisH4&sensor=false"></script>
-                    <script>
+  <script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
+	var map = new mapboxgl.Map({
+	    container: 'map-canvas',
+	    style: 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl',
+	    center: [-73.98,40.76],
+	    zoom: 7
+	});
+
+	var geocoder = new MapboxGeocoder({
+	    accessToken: mapboxgl.accessToken
+	});
+
+	map.addControl(geocoder);
+
+	// After the map style has loaded on the page, add a source layer and default
+	// styling for a single point.
+	map.on('load', function() {
+	    map.addSource('single-point', {
+	        "type": "geojson",
+	        "data": {
+	            "type": "FeatureCollection",
+	            "features": []
+	        }
+	    });
 
 
-                    var geocoder;
-                    var map;
-                    var marker;
-                    var mapOptions;
+	    map.addLayer({
+	        "id": "point",
+	        "source": "single-point",
+	        "type": "circle",
+	        "paint": {
+	            "circle-radius": 10,
+	            "circle-color": "#ff0000"
+	        }
+	    });
 
-                    var $latitude = document.getElementById('latitude');
-                    var $longitude = document.getElementById('longitude');
-                    var $coord = document.getElementById('coord');
+      // Listen for the `geocoder.input` event that is triggered when a user
+    // makes a selection and add a symbol that matches the result.
+    geocoder.on('result', function(ev) {
+        map.getSource('single-point').setData(ev.result.geometry);
+        var styleSpec = ev.result;
+        var styleSpecBox = document.getElementById('coord_div');
+        var styleSpecText = JSON.stringify(styleSpec, null, 2);
+        var syntaxStyleSpecText = syntaxHighlight(styleSpecText);
+        styleSpecBox.innerHTML = syntaxStyleSpecText;
 
-                    function initialize() {
-                      geocoder = new google.maps.Geocoder();
-                      var latlng = new google.maps.LatLng(34.16473667601063, -40.57035354999999);
-                      mapOptions = {
-                        zoom: 3,
-                        center: latlng,
-                        position: [34.16473667601063, -40.57035354999999],
-                        scrollwheel: true,
-                        zoomControl: true,
-                        scaleControl: true,
-                        streetViewControl: true,
-                        overviewMapControl: true
-                      }
-                      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                    }
+        document.getElementById('coord').value = syntaxStyleSpecText;
 
+    });
 
+      
+	});
 
-                    function codeAddress() {
+  function syntaxHighlight(json) {
 
-
-                      geocoder = new google.maps.Geocoder();
-                      mapOptions = {
-                        zoom: 8
-                      }
-                      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-                      var address = document.getElementById('report_location').value;
-                      geocoder.geocode( { 'address': address}, function(results, status) {
-                        if (status == google.maps.GeocoderStatus.OK) {
-                          map.setCenter(results[0].geometry.location);
-                          marker = new google.maps.Marker({
-                              map: map,
-                              position: results[0].geometry.location,
-                              animation: google.maps.Animation.DROP,
-                              draggable: true
-                          });
-
-
-                          //$latitude.value = results[0].geometry.location.lat();
-                          //$longitude.value = results[0].geometry.location.lng();
-
-
-                          $coord.value =  results[0].geometry.location.lng() + "," + results[0].geometry.location.lat() ;
-
-                          google.maps.event.addListener(marker, 'dragend', function(marker){
-                                var latLng = marker.latLng;
-                                //$latitude.value = latLng.lat();
-                                //$longitude.value = latLng.lng();
-                                $coord.value =  latLng.lng() + "," + latLng.lat() ;
-                          });
-                          // populate yor box/field with lat, lng
-
-                        } else {
-                          alert('Geocode was not successful for the following reason: ' + status);
-                        }
-                      });
-                    }
-
-
-                    google.maps.event.addDomListener(window, 'load', initialize);
-                    </script>
+    var obj = JSON.parse(json);
+    return obj.center
+}
+  </script>

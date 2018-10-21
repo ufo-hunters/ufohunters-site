@@ -184,6 +184,9 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
+    rgeo (1.1.2)
+    rgeo-geojson (2.0.0)
+      rgeo (~> 1.0)
     sass (3.2.19)
     sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
@@ -249,6 +252,7 @@ DEPENDENCIES
   rails_12factor
   rake (= 10.3.2)
   redis-rails
+  rgeo-geojson
   sass-rails (~> 4.0.0)
   simple_captcha2
   therubyracer

@@ -1,5 +1,4 @@
-    <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
-
+    
 		<div class="row">
 		  <div class="span4">
 		    <h3>Recent UFO Activity</h3>
@@ -91,6 +90,9 @@
 		    <div id="sightings-map" style="width: 100%; height: 600px;"></div>
 		  </div>
 		</div>
+
+		<%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
+
     <div class="row" style="margin-top: 20px;margin-bottom: 20px">
       <%= render partial: 'common/ads/horizontal_ad' %>
     </div>

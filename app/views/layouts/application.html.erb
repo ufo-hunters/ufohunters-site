@@ -18,6 +18,39 @@
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.49.0/mapbox-gl.css' rel='stylesheet' />
+
+  <style>
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+		.marker {
+			background-image: url('<%=image_path('platillo_verde.png')%>');
+			background-size: cover;
+			width: 29px;
+			height: 25px;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+    .mapboxgl-popup-content {
+      text-align: left;
+      font-family: 'Open Sans', sans-serif;
+      padding: 10px;
+    }
+    .mapboxgl-popup-content h3 {
+      font: 100% Arial,Helvetica,sans-serif;
+      padding-top: 0px;
+      margin-left: 0px;
+      margin-right: 10px;
+      margin-bottom: 5px;
+    }
+  </style>
+
 </head>
 <% end %>
 <body itemscope itemtype="http://schema.org/WebPage">

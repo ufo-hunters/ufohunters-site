@@ -1,3 +1,5 @@
+require 'rgeo/geo_json'
+
 class StatsController < ApplicationController
 
   caches_action :shape, :expires_in => 1.week
@@ -13,6 +15,27 @@ class StatsController < ApplicationController
 
     @reports = reports_by_year
 
+  end
+
+  def map_json
+    @ufo_list = Rails.cache.fetch("stats/latest", :expires_in => 1.day) do
+      Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(2500).entries
+    end
+    features = []
+    @ufo_list.each do |ufo|
+      point = "{\"type\":\"Point\",\"coordinates\": #{ufo.coord}}"
+      geom = RGeo::GeoJSON.decode(point)
+      factory = RGeo::GeoJSON::EntityFactory.instance
+      feature = factory.feature(geom, nil, { id: ufo.id.to_s})
+      features << feature
+    end
+    #feature_encode = RGeo::GeoJSON.encode feature
+    factory = RGeo::GeoJSON::EntityFactory.instance
+    feature_collection = RGeo::GeoJSON.encode factory.feature_collection(features)
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: feature_collection }
+    end
   end
 
   def shape
