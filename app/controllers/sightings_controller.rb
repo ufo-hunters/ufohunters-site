@@ -65,8 +65,8 @@ class SightingsController < ApplicationController
             @coords = params["coord"].split(",").map { |s| s.to_f }
 
             @map_center=[]
-            @map_center.push(@coords[1])
             @map_center.push(@coords[0])
+            @map_center.push(@coords[1])
             
             distance = 200 #km
 
@@ -342,9 +342,9 @@ class SightingsController < ApplicationController
       coordinates = ""
       @the_country.each_with_index do |data, index|
          if index==0
-          coordinates =  data[1]
-         else
           type = data[1]
+         else
+          coordinates =  data[1]
          end
       end
 
