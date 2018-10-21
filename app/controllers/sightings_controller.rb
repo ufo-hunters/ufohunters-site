@@ -65,8 +65,8 @@ class SightingsController < ApplicationController
             @coords = params["coord"].split(",").map { |s| s.to_f }
 
             @map_center=[]
-            @map_center.push(@coords[0])
             @map_center.push(@coords[1])
+            @map_center.push(@coords[0])
             
             distance = 200 #km
 
