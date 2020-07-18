@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<sitemap>
-		<loc>http://www.ufo-hunters.com/sitemap1.xml</loc>
+		<loc>https://www.ufo-hunters.com/sitemap1.xml</loc>
 		<lastmod>2015-07-20</lastmod>
 	</sitemap>
 	<sitemap>
-		<loc>http://www.ufo-hunters.com/sitemap2.xml</loc>
+		<loc>https://www.ufo-hunters.com/sitemap2.xml</loc>
 		<lastmod>2015-07-20</lastmod>
 	</sitemap>
 	<sitemap>
-		<loc>http://www.ufo-hunters.com/sitemap3.xml</loc>
+		<loc>https://www.ufo-hunters.com/sitemap3.xml</loc>
 		<lastmod>2015-07-20</lastmod>
 	</sitemap>
 	<sitemap>
-		<loc>http://www.ufo-hunters.com/sitemap4.xml</loc>
+		<loc>https://www.ufo-hunters.com/sitemap4.xml</loc>
 		<lastmod>2015-07-20</lastmod>
 	</sitemap>
 </sitemapindex>
