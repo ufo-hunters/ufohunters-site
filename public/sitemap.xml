@@ -3,12 +3,10 @@
 	<sitemap>
 		<loc>https://www.ufo-hunters.com/sitemap1.xml</loc>
 		<lastmod>2020-06-30</lastmod>
-		<changefreq>monthly</changefreq>
 	</sitemap>
 	<sitemap>
 		<loc>https://www.ufo-hunters.com/sitemap2.xml</loc>
 		<lastmod>2020-06-30</lastmod>
-		<changefreq>monthly</changefreq>
 	</sitemap>
 	<sitemap>
 		<loc>https://www.ufo-hunters.com/sitemap3.xml</loc>
@@ -18,6 +16,5 @@
 	<sitemap>
 		<loc>https://www.ufo-hunters.com/sitemap4.xml</loc>
 		<lastmod>2020-06-30</lastmod>
-		<changefreq>monthly</changefreq>
 	</sitemap>
 </sitemapindex>
