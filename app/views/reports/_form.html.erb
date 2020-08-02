@@ -1,5 +1,3 @@
-<%= cloudinary_js_config %>
-<% #=Cloudinary::Api.delete_all_resources %>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
@@ -82,26 +80,6 @@
    </div>
 </div>
 <div class="row">
-   <div class="span11 well">
-      <label for="report_duration">
-         <h4>Add your photos or pictures to our site</h4>
-      </label>
-      <div class="form_controls">
-         <div class="upload_button_holder">
-            <%
-               time = Time.new
-               datetimeNow = "reported_date_" + time.strftime("%Y%m%d").to_s
-               %>
-            <%= f.cl_image_upload(:image_id, :html => { :multiple => true }, :folder => datetimeNow, :use_filename => true) %>
-
-         </div>
-         <span class="status"></span>
-      </div>
-      </label>
-      <div id="info" style="margin-top:10px"></div>
-   </div>
-</div>
-<div class="row">
    <div class="span6">
       <label for="report_location">Location <span class="divrojo">*</span></label>
       <%= f.text_field :location, :class => 'required fieldufo' %>
@@ -124,73 +102,7 @@
    <input type="hidden" size="30" name="report[coord]" id="report_coord" class="fieldufo">
 </div>
 <% end %>
-<script>
-  $(document).ready(function() {
-    // Cloudinary jQuery integration library uses jQuery File Upload widget
-    // (see http://blueimp.github.io/jQuery-File-Upload/).
-    // Any file input field with cloudinary-fileupload class is automatically
-    // wrapped using the File Upload widget and configured for Cloudinary uploads.
-    // You can further customize the configuration using .fileupload method
-    // as we do below.
-    $(".cloudinary-fileupload")
-      .fileupload({
-        // Uncomment the following lines to enable client side image resizing and valiation.
-        // Make sure cloudinary/processing is included the js file
-        //disableImageResize: false,
-        //imageMaxWidth: 800,
-        //imageMaxHeight: 600,
-        //acceptFileTypes: /(\.|\/)(gif|jpe?g|png|bmp|ico)$/i,
-        //maxFileSize: 20000000, // 20MB
-        dropZone: "#direct_upload",
-        start: function (e) {
-          $(".status").text("Starting upload...");
-        },
-        progress: function (e, data) {
-          $(".status").text("Uploading... " + Math.round((data.loaded * 100.0) / data.total) + "%");
-        },
-        fail: function (e, data) {
-          $(".status").text("Upload failed");
-        }
-      })
-      .off("cloudinarydone").on("cloudinarydone", function (e, data) {
-        $("#photo_bytes").val(data.result.bytes);
-        $(".status").text("");
-        $(".preview").html(
-          $.cloudinary.image(data.result.public_id, {
-            format: data.result.format, width: 50, height: 50, crop: "fit"
-          })
-        );
-        view_upload_details(data.result);
-      });
-    });
-    var cont = 0;
-    function view_upload_details(upload) {
-        //var img = "";
-        var img = document.createElement("input");
-        var img_hidden = document.createElement("input");
-        $.each(upload, function(k,v){
-          if(k=="url"){
-                //img = $('<img />',{ src: JSON.stringify(v)}).appendTo($('#YourDiv'));
-                img.type = "image";
-                img.src = v;
-                img.width = "100";
-                img.style = "height:100px"
-                img.name = "report[image]"
-                img_hidden.type = "hidden";
-                img_hidden.id = "report_image_cloudinary"
-                img_hidden.value = v;
-                img_hidden.name = "report[image_cloudinary[" + cont + "]]"
-          }
-        });
-        $("#info").append(
-          $(img)
-        );
-        $("#info").append(
-          $(img_hidden)
-        );
-        cont = cont + 1;
-      }
-</script>
+
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
 	var map = new mapboxgl.Map({
