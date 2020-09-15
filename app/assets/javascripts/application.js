@@ -16,6 +16,5 @@
 //= require jquery.validate
 //= require twitter/bootstrap
 //= require ckeditor/init
-//= require cloudinary
 //= require dataTables/jquery.dataTables
 //= require_tree .
