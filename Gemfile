@@ -61,7 +61,7 @@ gem 'execjs'
 gem 'ckeditor'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'mini_magick'
-gem 'cloudinary'
+gem 'dalli'
 
 # to handle form validation
 gem "jquery-validation-rails"
