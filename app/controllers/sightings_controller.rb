@@ -166,7 +166,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "northamerica"
-      @page_title = "UFO Sightings in North America"
+      @page_title = "UFO Sightings map in North America"
       @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
 
       respond_to do |format|
@@ -194,7 +194,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "maps"
-      @page_title = "UFO Sightings in Oceania"
+      @page_title = "UFO Sightings map in Oceania"
       @page_description = "Latest UFO Sightings Maps: Oceania - UFO Reports in Oceania"
 
       respond_to do |format|
@@ -226,7 +226,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "maps"
-      @page_title = "UFO Sightings in South America"
+      @page_title = "UFO Sightings map in South America"
       @page_description = "Latest UFO Sightings Maps: South America - UFO Reports in South America"
 
       respond_to do |format|
@@ -256,7 +256,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "maps"
-      @page_title = "UFO Sightings in Africa"
+      @page_title = "UFO Sightings map in Africa"
       @page_description = "Latest UFO Sightings Maps: Africa - UFO Reports in Africa"
 
       respond_to do |format|
@@ -290,7 +290,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "maps"
-      @page_title = "UFO Sightings in Europe"
+      @page_title = "UFO Sightings map in Europe"
       @page_description = "Latest UFO Sightings Maps: Europe - UFO Reports in Europe"
 
       respond_to do |format|
@@ -316,7 +316,7 @@ class SightingsController < ApplicationController
       end
 
       @menu = "maps"
-      @page_title = "UFO Sightings in Asia"
+      @page_title = "UFO Sightings map in Asia"
       @page_description = "Latest UFO Sightings Maps: Asia - UFO Reports in Asia"
 
       respond_to do |format|
@@ -365,7 +365,7 @@ class SightingsController < ApplicationController
             end
          end
       end
-      @page_title = "UFO Sightings in " + @country_name
+      @page_title = "UFO Sightings map in " + @country_name
       @page_description = "Latest UFO Sightings Maps: " + @country_name + " - UFO Reports in " + @country_name
 
       @menu = "maps"
