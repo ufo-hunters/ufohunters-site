@@ -86,8 +86,8 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete_matched /articles\/index/
-    Rails.cache.delete_matched /articles\/content/
+    #Rails.cache.delete_matched /articles\/index/
+    #Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -106,9 +106,9 @@ class ArticlesController < ApplicationController
       end
     end
 
-    Rails.cache.delete_matched /articles\/index/
-    Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    Rails.cache.delete_matched /articles\/content/
+    #Rails.cache.delete_matched /articles\/index/
+    #Rails.cache.delete_matched Regexp.new("#{@article.id}")
+    #Rails.cache.delete_matched /articles\/content/
 
   end
 
@@ -123,9 +123,9 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
 
-    Rails.cache.delete_matched /articles\/index/
-    Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    Rails.cache.delete_matched /articles\/content/
+    #Rails.cache.delete_matched /articles\/index/
+    #Rails.cache.delete_matched Regexp.new("#{@article.id}")
+    #Rails.cache.delete_matched /articles\/content/
 
   end
 
