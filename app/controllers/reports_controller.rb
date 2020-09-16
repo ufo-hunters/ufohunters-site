@@ -124,8 +124,8 @@ class ReportsController < ApplicationController
     end
 
     # Invalidate cache for sightings/latest, reports/latest and so on
-    Rails.cache.delete_matched /latest/
-    Rails.cache.delete "common/num_reports"
+    #Rails.cache.delete_matched /latest/
+    #Rails.cache.delete "common/num_reports"
     expire_fragment "common/header"
 
   end
