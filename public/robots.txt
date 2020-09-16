@@ -2,3 +2,5 @@ User-Agent: *
 Disallow: /articles/myspace
 Disallow: /sessions/*
 Disallow: /users/*
+
+Sitemap: https://www.ufo-hunters.com/sitemap.xml
