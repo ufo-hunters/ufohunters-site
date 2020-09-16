@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.4.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.8'
-gem 'rake', '10.3.2'
+gem 'rake', '12.3.3'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
