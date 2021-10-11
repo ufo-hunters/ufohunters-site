@@ -93,6 +93,6 @@ module ApplicationHelper
     images_url = images.map do |s|
       s.gsub(/public/, 'https://www.ufo-hunters.com')
     end
-    images_url.sample
+    URI.escape(images_url.sample)
   end
 end
