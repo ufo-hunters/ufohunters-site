@@ -89,7 +89,7 @@ module ApplicationHelper
   end
 
   def randow_image
-    images = Dir.glob('public/*/*.jpg')
+    images = Dir.glob('public/5*/*.jpg')
     images_url = images.map do |s|
       s.gsub(/public/, 'https://www.ufo-hunters.com')
     end
