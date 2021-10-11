@@ -13,7 +13,7 @@
   <meta property="og:title" content="<%= @page_title %> - UFO Hunters"/>
   <meta property="og:site_name" content="<%= @page_title %> - UFO Hunters"/>
   <meta property="og:description" content="<%= @page_description %>"/>
-  <meta property="og:image" content="http://www.ufo-hunters.com/usa/20130807/ufo_sighting_in_deltona_florida.png" />
+  <meta property="og:image" content="<%=randow_image%>%>" />
   <meta property="og:locale" content="en_US" />
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,7 +54,10 @@
 </head>
 <% end %>
 <body itemscope itemtype="http://schema.org/WebPage">
-
+<script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.6/lib/darkmode-js.min.js"></script>
+<script>
+  new Darkmode().showWidget();
+</script>
 	<div id="fb-root"></div>
 	<script>(function(d, s, id) {
 	  var js, fjs = d.getElementsByTagName(s)[0];
