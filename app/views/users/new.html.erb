@@ -35,8 +35,8 @@
     <%= f.password_field :password_confirmation %>
   </div>
   <div class="field">
-        <%= show_simple_captcha(:label => "")%>
-        <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
+    <%= recaptcha_tags %>
+    <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
   </div>
   <div class="actions"><%= f.submit %></div>
 <% end %>

@@ -89,8 +89,8 @@
               <%= f.text_field :email_confirmation, :class => 'required fieldufo' %>
             </div>
              <div class="field">
-                  <%= show_simple_captcha(:label => "")%>
-                  <div class="caja-text"><span class="divrojo"></span></div>
+               <%= recaptcha_tags %>
+               <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
             </div>
             <div class="actions"><%= submit_tag "Sign up" %></div>
         <% end %>

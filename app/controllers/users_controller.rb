@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def create
 
-    if simple_captcha_valid?
+    if verify_recaptcha
 
       @user = User.new(user_params)
 
@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
     else
       flash[:form] = 2
-      flash[:error] = ["You must enter the text of the image!"]
+      flash[:error] = ["reCAPTCHA verification failed, please try again."]
       redirect_to :controller => 'articles', :action =>'uforesearchteam'
     end
 

@@ -81,8 +81,8 @@ $(document).ready(function(){
 
   <div class="row">
     <div class="span6">
-      <%= show_simple_captcha(:label => "")%>
-      <div class="caja-text"><span class="divrojo"><%=@notice%></span></div>
+      <%= recaptcha_tags %>
+      <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
     </div>
     <div class="span6">
       <input type="submit" class="submit-button" value="SEARCH UFOS" name="commit" style="margin: 20px;">

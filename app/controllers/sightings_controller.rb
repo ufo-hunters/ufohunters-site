@@ -1,7 +1,8 @@
 class SightingsController < ApplicationController
 
    include ApplicationHelper
-   #include SimpleCaptcha::ControllerHelpers
+   include Recaptcha::Adapters::ViewMethods
+   include Recaptcha::Adapters::ControllerMethods
 
    caches_action :countriesList, :expires_in => 1.month
 
@@ -34,7 +35,6 @@ class SightingsController < ApplicationController
    end
 
    def ufosearch
-
       @menu = "ufosearch"
       @page_title = "UFOs Search"
       @page_description = "UFO search all sightings around the world between two dates and one location"  
@@ -43,8 +43,7 @@ class SightingsController < ApplicationController
 
    def ufosearchresults
 
-
-      if simple_captcha_valid?
+      if verify_recaptcha
 
             #startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01"
             @startdateview = params["startdate"]
