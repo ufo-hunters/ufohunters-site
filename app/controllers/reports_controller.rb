@@ -54,6 +54,10 @@ class ReportsController < ApplicationController
   # GET /reports/new
   # GET /reports/new.json
   def new
+    
+      ENV['RECAPTCHA_SITE_KEY'] = '6LeKmjEeAAAAABZSb1-sk2XYBeSz0wEwpMabiLy5'
+      ENV['RECAPTCHA_SECRET_KEY'] = '6LeKmjEeAAAAAAWQHG91WbayBgGRLBK2t1GWlY22'
+    
     @report = Report.new
 
     @menu = "report"
