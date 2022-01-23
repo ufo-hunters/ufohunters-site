@@ -2,7 +2,8 @@ class ReportsController < ApplicationController
 
   skip_before_filter :verify_authenticity_token, :only => [:create]
 
-  include SimpleCaptcha::ControllerHelpers
+  include Recaptcha::Adapters::ViewMethods
+  include Recaptcha::Adapters::ControllerMethods
 
   caches_action :sightings, :expires_in => 1.day
   caches_action :country, :expires_in => 1.day
@@ -99,7 +100,7 @@ class ReportsController < ApplicationController
 
     @report = Report.new(@tmp)
 
-    #if simple_captcha_valid?
+    if verify_recaptcha(model: @report)
 
         respond_to do |format|
           if @report.save
@@ -111,17 +112,17 @@ class ReportsController < ApplicationController
           end
         end
 
-    #else
-        #@report["sighted_at"] = ""
-        #@report["reported_at"] = ""
-        #@report["links"] = []
-        #respond_to do |format|
-            #@notice = 'You must enter the text of the image'
-            #format.html { render action: "new", notice: 'You must enter the text of the image'}
-            #format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
-        #end
+    else
+        @report["sighted_at"] = ""
+        @report["reported_at"] = ""
+        @report["links"] = []
+        respond_to do |format|
+            @notice = 'You must enter the text of the image'
+            format.html { render action: "new", notice: 'You must enter the text of the image'}
+            format.json { render json: @report.errors, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
+        end
 
-    #end
+    end
 
     # Invalidate cache for sightings/latest, reports/latest and so on
     #Rails.cache.delete_matched /latest/

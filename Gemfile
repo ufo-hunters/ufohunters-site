@@ -14,7 +14,8 @@ gem 'rake', '10.3.2'
 gem 'mongoid', '~> 5.1.6'
 
 #gem 'simple_captcha2', require: 'simple_captcha'
-gem 'simple_captcha2', '~> 0.3.4'
+#gem 'simple_captcha2', '~> 0.3.4'
+gem 'recaptcha'
 
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'

@@ -91,7 +91,10 @@
    </div>
 </div>
 <div class="row">
-   
+   <div class="span6">
+      <%= flash[:recaptcha_error] %>
+      <%= recaptcha_tags %>
+   </div>
    <div class="span6">
       <input type="submit" class="submit-button" value="SEND UFO'S REPORT" name="commit" style="margin: 20px;">
    </div>
