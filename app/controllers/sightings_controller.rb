@@ -1,7 +1,7 @@
 class SightingsController < ApplicationController
 
    include ApplicationHelper
-   include SimpleCaptcha::ControllerHelpers
+   #include SimpleCaptcha::ControllerHelpers
 
    caches_action :countriesList, :expires_in => 1.month
 

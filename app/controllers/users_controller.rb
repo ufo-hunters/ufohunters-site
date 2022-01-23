@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
 
-  include SimpleCaptcha::ControllerHelpers
+  #include SimpleCaptcha::ControllerHelpers
 
   protect_from_forgery except: :create
 
