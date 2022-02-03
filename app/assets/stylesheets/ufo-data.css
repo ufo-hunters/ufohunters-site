@@ -24,7 +24,6 @@ a , a:visited{
 a:hover, a:focus {
     color: #7D8212 ;
     text-decoration: underline;
-    background-color: none !important;
 }
 .top {
     text-align: left;
