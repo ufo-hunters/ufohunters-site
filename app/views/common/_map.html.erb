@@ -75,13 +75,13 @@
 		%>
                  ]
 			};
-      var map = new mapboxgl.Map({
+      var map = new maplibregl.Map({
         container: 'sightings-map',
         style: 'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
         center: <%=center%>,
         zoom: <%=zoom%>
       });
-      map.addControl(new mapboxgl.NavigationControl());
+      map.addControl(new maplibregl.NavigationControl());
 
       // add markers to map
       geojson.features.forEach(function(marker) {
@@ -91,13 +91,13 @@
         el.className = 'marker';
 
         // make a marker for each feature and add to the map
-        new mapboxgl.Marker(el)
+        new maplibregl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .addTo(map);
 
-        new mapboxgl.Marker(el)
+        new maplibregl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
-        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setPopup(new maplibregl.Popup({ offset: 25 }) // add popups
         .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
         .addTo(map);
         
