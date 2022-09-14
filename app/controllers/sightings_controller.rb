@@ -1,303 +1,299 @@
 class SightingsController < ApplicationController
 
-   include ApplicationHelper
-   include Recaptcha::Adapters::ViewMethods
-   include Recaptcha::Adapters::ControllerMethods
+  include ApplicationHelper
+  include Recaptcha::Adapters::ViewMethods
+  include Recaptcha::Adapters::ControllerMethods
 
-   caches_action :countriesList, :expires_in => 1.month
+  caches_action :countriesList, :expires_in => 1.month
 
-   def index
-      @ufo_list = Rails.cache.fetch("sightings/latest", :expires_in => 3.hours) do
-         Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100).entries
+  def index
+    @ufo_list = Rails.cache.fetch("sightings/latest", :expires_in => 3.hours) do
+        Report.where(:status => 1, :coord.ne => nil).desc(:sighted_at).limit(100).entries
+    end
+    @menu = "index"
+    @page_title = "Recent UFO Activity"
+    @page_description = "Latest UFO Sightings all over the world"
+  end
+
+  def search
+    id_ufo = params[:id]
+    @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", :expires_in => 12.hours) do
+      Report.find id_ufo
+    end
+    @coords = @ufo_list.coord
+    distance = 100 #km
+
+    if @ufo_list.coord
+        @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", :expires_in => 12.hours) do
+          Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).desc(:sighted_at).limit(100).entries
+        end
+    end
+
+    @menu = "index"
+    @page_title = friendly_title(@ufo_list)
+    @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
+  end
+
+  def ufosearch
+    @menu = "ufosearch"
+    @page_title = "UFOs Search"
+    @page_description = "UFO search all sightings around the world between two dates and one location"  
+    
+  end
+
+  def ufosearchresults
+
+    if verify_recaptcha
+      #startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01"
+      @startdateview = params["startdate"]
+
+      startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
+      
+      #logger.debug "startdate"
+      #logger.debug startdate
+      
+      #lastdaymonth = (Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01").to_date.end_of_month.day
+
+      #enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+lastdaymonth.to_s
+      @enddateview = params["enddate"]
+      enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
+      
+      #logger.debug "enddate"  
+      #logger.debug enddate
+      @coords = params["coord"].split(",").map { |s| s.to_f }
+
+      @map_center=[]
+      @map_center.push(@coords[0])
+      @map_center.push(@coords[1])
+      
+      distance = 200 #km
+
+      @ufo_list = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
+      
+      @menu = "ufosearch"
+      @page_title = "UFOs Search results"
+      @page_description = "UFO search all sightings around the world between two dates and one location"  
+
+
+      respond_to do |format|
+        format.html # index.html.erb
+        format.json { render json: @ufo_list }
       end
-      @menu = "index"
-      @page_title = "Recent UFO Activity"
-      @page_description = "Latest UFO Sightings all over the world"
-   end
 
-   def search
-      id_ufo = params[:id]
-      @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", :expires_in => 12.hours) do
-         Report.find id_ufo
-      end
-      @coords = @ufo_list.coord
-      distance = 100 #km
-
-      if @ufo_list.coord
-         @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", :expires_in => 12.hours) do
-            Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).desc(:sighted_at).limit(100).entries
-         end
-      end
-
-      @menu = "index"
-      @page_title = friendly_title(@ufo_list)
-      @page_description = "UFO Report: " + @ufo_list.description[0..200] + "..."
-   end
-
-   def ufosearch
+    else
+          
       @menu = "ufosearch"
       @page_title = "UFOs Search"
       @page_description = "UFO search all sightings around the world between two dates and one location"  
-      
-   end
 
-   def ufosearchresults
+      respond_to do |format|
+        @notice = 'You must enter the text of the image'
+        format.html { render action: "ufosearch", notice: 'You must enter the text of the image'}
+        format.json { render json: @ufo_list, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
+      end
+    end
+  end
 
-      if verify_recaptcha
-
-            #startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01"
-            @startdateview = params["startdate"]
-
-            startdate = Date.strptime(params["startdate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
-            
-            #logger.debug "startdate"
-            #logger.debug startdate
-            
-            #lastdaymonth = (Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+"01").to_date.end_of_month.day
-
-            #enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m').to_s+lastdaymonth.to_s
-            @enddateview = params["enddate"]
-            enddate = Date.strptime(params["enddate"], '%m/%d/%Y').strftime('%Y%m%d').to_s
-            
-            #logger.debug "enddate"  
-            #logger.debug enddate
-            @coords = params["coord"].split(",").map { |s| s.to_f }
-
-            @map_center=[]
-            @map_center.push(@coords[0])
-            @map_center.push(@coords[1])
-            
-            distance = 200 #km
-
-            @ufo_list = Report.where(:coord => { "$nearSphere" => @coords , "$maxDistance" => (distance.fdiv(6371)) }).and(:status => 1).and(:sighted_at => {"$gte" => startdate}).and(:sighted_at => {"$lte" => enddate}).desc(:sighted_at).limit(200).entries
-            
-            @menu = "ufosearch"
-            @page_title = "UFOs Search results"
-            @page_description = "UFO search all sightings around the world between two dates and one location"  
-      
-
-            respond_to do |format|
-              format.html # index.html.erb
-              format.json { render json: @ufo_list }
-            end
-
-      else
-           
-           @menu = "ufosearch"
-           @page_title = "UFOs Search"
-           @page_description = "UFO search all sightings around the world between two dates and one location"  
-      
-           respond_to do |format|
-               @notice = 'You must enter the text of the image'
-               format.html { render action: "ufosearch", notice: 'You must enter the text of the image'}
-               format.json { render json: @ufo_list, status: :unprocessable_entity, notice: 'You must enter the text of the image' }
-           end
-
-       end
+  def statistics
+    @menu = "statistics"
+    @listaUFO = Report.collection.aggregate(
+              { "$group" => {
+                            "_id" => {"shape" => "$shape"},
+                            "count" => { "$sum" => 1 }
+                            }
+              },
+              {"$sort" => { "count" => -1 }}
+    )
     
+    @page_title = "UFO Data Stats"
+    @page_description = "A glance at our UFO Data using Data-Driven Documents"
+  end
 
-   end
+  def maps
+    @listaMapEurope = Rails.cache.fetch("sightings/countries/europe", :expires_in => 1.month) do
+        Countries.where(:continent => "Europe").order_by(:name.asc).entries
+    end
+    @listaMapAsia = Rails.cache.fetch("sightings/countries/asia", :expires_in => 1.month) do
+        Countries.where(:continent => "Asia").order_by(:name.asc).entries
+    end
+    @listaMapNorthAmerica = Rails.cache.fetch("sightings/countries/northamerica", :expires_in => 1.month) do
+        Countries.where(:continent => "North America").order_by(:name.asc).entries
+    end
+    @listaMapSouthAmerica = Rails.cache.fetch("sightings/countries/southamerica", :expires_in => 1.month) do
+        Countries.where(:continent => "South America").order_by(:name.asc).entries
+    end
+    @listaMapAfrica = Rails.cache.fetch("sightings/countries/africa", :expires_in => 1.month) do
+        Countries.where(:continent => "Africa").order_by(:name.asc).entries
+    end
+    @listaMapOceania = Rails.cache.fetch("sightings/countries/oceania", :expires_in => 1.month) do
+        Countries.where(:continent => "Oceania").order_by(:name.asc).entries
+    end
+    @listaMap = Rails.cache.fetch("sightings/countries/all", :expires_in => 1.month) do
+        Countries.all.order_by(:name.asc).entries
+    end
 
-   def statistics
-      @menu = "statistics"
-      @listaUFO = Report.collection.aggregate(
-               { "$group" => {
-                              "_id" => {"shape" => "$shape"},
-                              "count" => { "$sum" => 1 }
-                              }
-               },
-               {"$sort" => { "count" => -1 }}
-      )
-      
-      @page_title = "UFO Data Stats"
-      @page_description = "A glance at our UFO Data using Data-Driven Documents"
-   end
+    @menu = "maps"
+    @page_title = "UFO Sightings Maps"
+    @page_description = "Latest UFO Sightings Maps: Africa, Asia, Europe, North America, Oceania, South America"
+  end
 
-   def maps
-      @listaMapEurope = Rails.cache.fetch("sightings/countries/europe", :expires_in => 1.month) do
-         Countries.where(:continent => "Europe").order_by(:name.asc).entries
-      end
-      @listaMapAsia = Rails.cache.fetch("sightings/countries/asia", :expires_in => 1.month) do
-         Countries.where(:continent => "Asia").order_by(:name.asc).entries
-      end
-      @listaMapNorthAmerica = Rails.cache.fetch("sightings/countries/northamerica", :expires_in => 1.month) do
-         Countries.where(:continent => "North America").order_by(:name.asc).entries
-      end
-      @listaMapSouthAmerica = Rails.cache.fetch("sightings/countries/southamerica", :expires_in => 1.month) do
-         Countries.where(:continent => "South America").order_by(:name.asc).entries
-      end
-      @listaMapAfrica = Rails.cache.fetch("sightings/countries/africa", :expires_in => 1.month) do
-         Countries.where(:continent => "Africa").order_by(:name.asc).entries
-      end
-      @listaMapOceania = Rails.cache.fetch("sightings/countries/oceania", :expires_in => 1.month) do
-         Countries.where(:continent => "Oceania").order_by(:name.asc).entries
-      end
-      @listaMap = Rails.cache.fetch("sightings/countries/all", :expires_in => 1.month) do
-         Countries.all.order_by(:name.asc).entries
-      end
+  # GET sightings/countrieslist.json
+  def countrieslist
+    @countries_list = Countries.all.order_by(:name.asc)
 
-      @menu = "maps"
-      @page_title = "UFO Sightings Maps"
-      @page_description = "Latest UFO Sightings Maps: Africa, Asia, Europe, North America, Oceania, South America"
-   end
+    respond_to do |format|
+      format.json { render json: @countries_list }
+    end
+  end
 
-   # GET sightings/countrieslist.json
-   def countrieslist
-      @countries_list = Countries.all.order_by(:name.asc)
+  def northamerica
+    @ufo_list = Rails.cache.fetch("sightings/maps/northamerica", :expires_in => 6.hours) do
+        Report.where(:coord => {"$geoWithin" =>
+          {"$polygon" => [[-169.45, 71.41],
+              [-177.54, 51.40 ],
+              [-123.04, 30.75 ],
+              [-80.85, 24.20 ],
+              [-42.18, 47.28 ],
+              [-42.18, 47.28 ],
+              [-94.57, 72.18 ],
+              [-169.45, 71.41]]
+          }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
+    end
 
-      respond_to do |format|
-        format.json { render json: @countries_list }
-      end
-   end
+    @menu = "northamerica"
+    @page_title = "UFO Sightings map in North America"
+    @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
 
-   def northamerica
-      @ufo_list = Rails.cache.fetch("sightings/maps/northamerica", :expires_in => 6.hours) do
-         Report.where(:coord => {"$geoWithin" =>
-            {"$polygon" => [[-169.45, 71.41],
-               [-177.54, 51.40 ],
-               [-123.04, 30.75 ],
-               [-80.85, 24.20 ],
-               [-42.18, 47.28 ],
-               [-42.18, 47.28 ],
-               [-94.57, 72.18 ],
-               [-169.45, 71.41]]
-            }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @ufo_list }
+    end
 
-      @menu = "northamerica"
-      @page_title = "UFO Sightings map in North America"
-      @page_description = "Latest UFO Sightings Maps: North America - UFO Reports in North America"
+  end
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @ufo_list }
-      end
+  def oceania
+    @ufo_list = Rails.cache.fetch("sightings/maps/oceania", :expires_in => 12.hours) do
+        Report.where(:coord => {"$geoWithin" =>
+          {"$polygon" => [[138.69141, 1.40611],
+              [175.42969, -14.09396],
+              [177.18750, -52.69636],
+              [103.18359, -42.42346],
+              [110.03906, -25.00597],
+              [124.10156, -14.09396],
+              [129.28711, -9.70906],
+              [132.45117, -6.14055],
+              [130.69336, -2.46018],
+              [129.19922, -0.35156],
+              [133.33008, 4.21494]]
+        }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
+    end
 
-   end
+    @menu = "maps"
+    @page_title = "UFO Sightings map in Oceania"
+    @page_description = "Latest UFO Sightings Maps: Oceania - UFO Reports in Oceania"
 
-   def oceania
-      @ufo_list = Rails.cache.fetch("sightings/maps/oceania", :expires_in => 12.hours) do
-         Report.where(:coord => {"$geoWithin" =>
-            {"$polygon" => [[138.69141, 1.40611],
-               [175.42969, -14.09396],
-               [177.18750, -52.69636],
-               [103.18359, -42.42346],
-               [110.03906, -25.00597],
-               [124.10156, -14.09396],
-               [129.28711, -9.70906],
-               [132.45117, -6.14055],
-               [130.69336, -2.46018],
-               [129.19922, -0.35156],
-               [133.33008, 4.21494]]
-         }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @ufo_list }
+    end
 
-      @menu = "maps"
-      @page_title = "UFO Sightings map in Oceania"
-      @page_description = "Latest UFO Sightings Maps: Oceania - UFO Reports in Oceania"
+  end
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @ufo_list }
-      end
+  def southamerica
+    @ufo_list = Rails.cache.fetch("sightings/maps/southamerica", :expires_in => 12.hours) do
+        Report.where(:coord => {"$geoWithin" =>
+          {"$polygon" => [[-77.87, 11.00],
+              [-68.20, 14.26 ],
+              [-47.46, 4.39 ],
+              [-30.05, -5.61 ],
+              [-36.73, -19.97 ],
+              [-45.70, -31.20 ],
+              [-52.91, -37.71 ],
+              [-61.87, -45.82],
+              [-55.37, -51.61],
+              [-61.17, -55.17],
+              [-70.13, -57.42],
+              [-78.22, -50.06],
+              [-73.12, -20.79],
+              [-84.19, -5.09],
+              [-77.87, 11.00]]
+          }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
+    end
 
-   end
+    @menu = "maps"
+    @page_title = "UFO Sightings map in South America"
+    @page_description = "Latest UFO Sightings Maps: South America - UFO Reports in South America"
 
-   def southamerica
-      @ufo_list = Rails.cache.fetch("sightings/maps/southamerica", :expires_in => 12.hours) do
-         Report.where(:coord => {"$geoWithin" =>
-            {"$polygon" => [[-77.87, 11.00],
-               [-68.20, 14.26 ],
-               [-47.46, 4.39 ],
-               [-30.05, -5.61 ],
-               [-36.73, -19.97 ],
-               [-45.70, -31.20 ],
-               [-52.91, -37.71 ],
-               [-61.87, -45.82],
-               [-55.37, -51.61],
-               [-61.17, -55.17],
-               [-70.13, -57.42],
-               [-78.22, -50.06],
-               [-73.12, -20.79],
-               [-84.19, -5.09],
-               [-77.87, 11.00]]
-            }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @ufo_list }
+    end
 
-      @menu = "maps"
-      @page_title = "UFO Sightings map in South America"
-      @page_description = "Latest UFO Sightings Maps: South America - UFO Reports in South America"
+  end
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @ufo_list }
-      end
+  def africa
+    @ufo_list = Rails.cache.fetch("sightings/maps/africa", :expires_in => 12.hours) do
+        Report.where(:coord => {"$geoWithin" =>
+          {"$polygon" => [[5.09,38.41],
+              [-8.08,35.17],
+              [-20.39,28.14],
+              [-26.19,17.81],
+              [-15.64,4.04],
+              [3.51,0.87],
+              [14.76,-36.03],
+              [32.69,-34.30],
+              [55.89,22.26],
+              [53.08,12.04],
+              [5.09,38.41],
+              [23.40,37.44],
+              [5.09,38.41]]
+          }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
+    end
 
-   end
+    @menu = "maps"
+    @page_title = "UFO Sightings map in Africa"
+    @page_description = "Latest UFO Sightings Maps: Africa - UFO Reports in Africa"
 
-   def africa
-      @ufo_list = Rails.cache.fetch("sightings/maps/africa", :expires_in => 12.hours) do
-         Report.where(:coord => {"$geoWithin" =>
-            {"$polygon" => [[5.09,38.41],
-               [-8.08,35.17],
-               [-20.39,28.14],
-               [-26.19,17.81],
-               [-15.64,4.04],
-               [3.51,0.87],
-               [14.76,-36.03],
-               [32.69,-34.30],
-               [55.89,22.26],
-               [53.08,12.04],
-               [5.09,38.41],
-               [23.40,37.44],
-               [5.09,38.41]]
-            }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @ufo_list }
+    end
 
-      @menu = "maps"
-      @page_title = "UFO Sightings map in Africa"
-      @page_description = "Latest UFO Sightings Maps: Africa - UFO Reports in Africa"
+  end
 
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @ufo_list }
-      end
+  def europe
+    @ufo_list = Rails.cache.fetch("sightings/maps/europe", :expires_in => 12.hours) do
+        Report.where(:coord => {"$geoWithin" =>
+          {"$polygon" => [[-10.41,36.73],
+              [-6.37,35.99],
+              [-2.27,36.16],
+              [10.76,38.82],
+              [12.83,36.45],
+              [17.13,36.13],
+              [22.14,34.88],
+              [27.50,34.37],
+              [29.97,44.02],
+              [39.02,47.69],
+              [32.87,56.75],
+              [32.60,70.08],
+              [18.80,70.98],
+              [10.10,66.33],
+              [-17.05,67.74],
+              [-30.23,66.01],
+              [-10.41,36.73]]
+          }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
+    end
 
-   end
+    @menu = "maps"
+    @page_title = "UFO Sightings map in Europe"
+    @page_description = "Latest UFO Sightings Maps: Europe - UFO Reports in Europe"
 
-   def europe
-      @ufo_list = Rails.cache.fetch("sightings/maps/europe", :expires_in => 12.hours) do
-         Report.where(:coord => {"$geoWithin" =>
-            {"$polygon" => [[-10.41,36.73],
-               [-6.37,35.99],
-               [-2.27,36.16],
-               [10.76,38.82],
-               [12.83,36.45],
-               [17.13,36.13],
-               [22.14,34.88],
-               [27.50,34.37],
-               [29.97,44.02],
-               [39.02,47.69],
-               [32.87,56.75],
-               [32.60,70.08],
-               [18.80,70.98],
-               [10.10,66.33],
-               [-17.05,67.74],
-               [-30.23,66.01],
-               [-10.41,36.73]]
-            }}).and(:status => 1).without(:email,:description).order_by(:sighted_at.desc).limit(100).entries
-      end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @ufo_list }
+    end
 
-      @menu = "maps"
-      @page_title = "UFO Sightings map in Europe"
-      @page_description = "Latest UFO Sightings Maps: Europe - UFO Reports in Europe"
-
-      respond_to do |format|
-        format.html # index.html.erb
-        format.json { render json: @ufo_list }
-      end
-
-   end
+  end
 
    def asia
       @ufo_list = Rails.cache.fetch("sightings/maps/asia", :expires_in => 12.hours) do
