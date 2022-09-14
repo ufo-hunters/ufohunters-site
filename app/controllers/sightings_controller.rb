@@ -81,7 +81,6 @@ class SightingsController < ApplicationController
       end
 
     else
-          
       @menu = "ufosearch"
       @page_title = "UFOs Search"
       @page_description = "UFO search all sightings around the world between two dates and one location"  
