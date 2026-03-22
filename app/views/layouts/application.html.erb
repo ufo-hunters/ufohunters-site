@@ -213,14 +213,18 @@
       </a>
 
       <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] uppercase tracking-[0.1em] text-sm">
+      <div class="hidden md:flex items-center gap-4 lg:gap-6 font-['Space_Grotesk'] uppercase tracking-[0.1em] text-xs lg:text-sm">
         <% menu_items = [
           ["Home", root_path, "index"],
           ["Articles", articles_path, "articles"],
-          ["Search", sightings_ufosearch_path, "ufosearch"],
-          ["Stats", stats_path, "statistics"],
+          ["UFOs Search", sightings_ufosearch_path, "ufosearch"],
+          ["Statistics", stats_path, "statistics"],
           ["Maps", sightings_maps_path, "maps"],
-          ["Report", new_report_path, "report"]
+          ["Report a UFO", new_report_path, "report"],
+          ["Videos", sightings_videos_path, "videos"],
+          ["Images", sightings_images_path, "images"],
+          ["About us", sightings_about_path, "about"],
+          ["Research Team", articles_uforesearchteam_path, "uforesearchteam"]
         ] %>
         <% menu_items.each do |label, path, key| %>
           <%= link_to label, path, class: "no-underline transition-colors #{@menu == key ? 'text-[#D7DF21] border-b-2 border-[#D7DF21] pb-1' : 'text-[#dfe2eb]/70 hover:text-[#dfe2eb]'}", itemprop: "url" %>
@@ -289,11 +293,14 @@
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 px-4 md:px-12 max-w-[1920px] mx-auto" itemscope itemtype="http://schema.org/ItemList">
       <meta itemprop="itemListOrder" content="Descending">
-      <% video_list.first(8).each do |thumb| %>
+      <% video_count = 0 %>
+      <% video_list.each do |thumb|
+           next if video_count >= 4 %>
         <% thumb.links&.each do |link| %>
           <% if youtube_link?(link) %>
             <% video_id = youtube_video_id(link) %>
-            <% if video_id %>
+            <% if video_id && video_count < 4 %>
+              <% video_count += 1 %>
               <div class="group cursor-pointer" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
                 <div class="relative aspect-video rounded-lg overflow-hidden mb-3 border border-[#484833]/20">
                   <%= link_to sightings_search_path(id: thumb.id, title: friendly_title(thumb)) do %>

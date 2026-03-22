@@ -1,6 +1,5 @@
   <%
-
-  cache("common/partials/maps/#{@ufo_list.hash}", expires_in: 12.hours) do
+  cache("common/partials/maps/v2/#{@ufo_list.hash}", expires_in: 12.hours) do
 
   zoom = 2
   center = [-40.57035354999999, 34.16473667601063]
@@ -17,82 +16,93 @@
     center = [marker.coord[1], marker.coord[0]]
   end
 
+  # Build GeoJSON
+  features = []
+
+  if defined?(selected_ufo) && selected_ufo.coord
+    features << {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [selected_ufo.coord[0], selected_ufo.coord[1]] },
+      properties: {
+        title: "<strong>#{selected_ufo.location.gsub("'", "\\\\'").gsub('"', '&quot;')}</strong>",
+        description: "#{format_date selected_ufo.sighted_at}<br/><strong><a href=\"#{sightings_search_path(id: selected_ufo.id, title: friendly_title(selected_ufo))}\">View sighting</a></strong>"
+      }
+    }
+  end
+
+  ufo_list.each do |ufo|
+    begin
+      next if ufo.coord.blank?
+      features << {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [ufo.coord[0], ufo.coord[1]] },
+        properties: {
+          title: "<strong>#{ufo.location.gsub("'", "\\\\'").gsub('"', '&quot;')}</strong>",
+          description: "#{format_date ufo.sighted_at}<br/><strong><a href=\"#{sightings_search_path(id: ufo.id, title: friendly_title(ufo))}\">View sighting</a></strong>"
+        }
+      }
+    rescue => ex
+      logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
+      next
+    end
+  end
+
+  geojson_data = { type: 'FeatureCollection', features: features }.to_json
+  the_map_id = defined?(map_id) ? map_id : 'sightings-map'
   %>
 
-  <script type="text/javascript">
+  <script type="application/json" id="<%= the_map_id %>-data">
+    <%= raw({ geojson: JSON.parse(geojson_data), center: center, zoom: zoom }.to_json) %>
+  </script>
+  <script>
+    (function() {
+      function initMap() {
+        var container = document.getElementById('<%= the_map_id %>');
+        if (!container || container.dataset.mapLoaded) return;
+        container.dataset.mapLoaded = 'true';
 
-    var geojson = {
-				type: 'FeatureCollection',
-				features: [
-    <%
-    	index = 0
-     	ufo_list.each do |ufo|
-		    begin
-		      if index == 0
-            if defined?(selected_ufo)
-              index += 1
-          %>
-            {
-              type: 'Feature',
-              geometry: {
-                type: 'Point',
-                coordinates: [<%=selected_ufo.coord[0]%>, <%=selected_ufo.coord[1]%>]
-              },
-              properties: {
-                title: '<strong><%=selected_ufo.location.gsub("'", %q(\\\'))%></strong>',
-                description: '<%= format_date selected_ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => selected_ufo.id, :title => friendly_title(selected_ufo) %></strong>'
-              }
-            },
-          <%
-            end
-          else
-            
-          %>,<%
+        var dataEl = document.getElementById('<%= the_map_id %>-data');
+        if (!dataEl) return;
+        var config = JSON.parse(dataEl.textContent);
 
-		      end
+        var map = new maplibregl.Map({
+          container: '<%= the_map_id %>',
+          style: 'https://tiles.openfreemap.org/styles/dark',
+          center: config.center,
+          zoom: config.zoom
+        });
+        map.addControl(new maplibregl.NavigationControl());
 
-            index += 1
-		    %>
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [<%=ufo.coord[0]%>, <%=ufo.coord[1]%>]
-          },
-          properties: {
-            title: '<strong><%=ufo.location.gsub("'", %q(\\\'))%></strong>',
-            description: '<%= format_date ufo.sighted_at %><br/><strong><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %></strong>'
-          }
+        config.geojson.features.forEach(function(feature) {
+          new maplibregl.Marker({color: '#D7DF21'})
+            .setLngLat(feature.geometry.coordinates)
+            .setPopup(new maplibregl.Popup({ offset: 25 })
+              .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>'))
+            .addTo(map);
+        });
+
+        // Store reference for cleanup
+        container._mapInstance = map;
+      }
+
+      // Run on both initial load and Turbo navigation
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMap);
+      } else {
+        initMap();
+      }
+      document.addEventListener('turbo:load', initMap);
+
+      // Cleanup on Turbo before-render
+      document.addEventListener('turbo:before-render', function() {
+        var container = document.getElementById('<%= the_map_id %>');
+        if (container && container._mapInstance) {
+          container._mapInstance.remove();
+          container._mapInstance = null;
+          container.dataset.mapLoaded = '';
         }
-			  <%
-			  rescue => ex
-          logger.info "Data error with doc #{ufo.id} - #{ex.class}: #{ex.message}"
-          next
-			  end
-      end
-		%>
-                 ]
-			};
-      var map = new maplibregl.Map({
-        container: 'sightings-map',
-        style: 'https://tiles.openfreemap.org/styles/dark',
-        center: <%=center%>,
-        zoom: <%=zoom%>
       });
-      map.addControl(new maplibregl.NavigationControl());
-
-      // add markers to map
-      geojson.features.forEach(function(marker) {
-
-        // make a marker for each feature and add to the map
-        new maplibregl.Marker({color: '#D7DF21'})
-        .setLngLat(marker.geometry.coordinates)
-        .setPopup(new maplibregl.Popup({ offset: 25 })
-        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
-        .addTo(map);
-        
-      });
-
+    })();
   </script>
 
   <%

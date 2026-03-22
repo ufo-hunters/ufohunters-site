@@ -14,3 +14,6 @@ application.register("carousel", CarouselController)
 
 import GeocoderController from "controllers/geocoder_controller"
 application.register("geocoder", GeocoderController)
+
+import SightingsMapController from "controllers/sightings_map_controller"
+application.register("sightings-map", SightingsMapController)

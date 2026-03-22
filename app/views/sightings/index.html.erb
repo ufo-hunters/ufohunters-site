@@ -120,19 +120,19 @@
         FILE REPORT <span class="material-symbols-outlined text-sm">arrow_forward</span>
       <% end %>
     </div>
-    <!-- Card 3: Mobile -->
+    <!-- Card 3: Images -->
     <div class="glass-panel p-8 rounded-2xl border border-[#484833]/20 relative group hover:border-[#D7DF21]/30 transition-all overflow-hidden">
       <div class="absolute -right-10 -top-10 opacity-5 group-hover:opacity-10 transition-opacity">
-        <span class="material-symbols-outlined text-[160px]">smartphone</span>
+        <span class="material-symbols-outlined text-[160px]">photo_camera</span>
       </div>
       <div class="w-12 h-12 rounded-lg bg-[#D7DF21]/10 flex items-center justify-center mb-8 border border-[#D7DF21]/20">
-        <span class="material-symbols-outlined text-[#D7DF21]">app_shortcut</span>
+        <span class="material-symbols-outlined text-[#D7DF21]">photo_library</span>
       </div>
-      <h3 class="text-2xl font-headline font-bold text-[#dfe2eb] mb-4">MOBILE TERMINAL</h3>
-      <p class="text-[#c9c8ad]/80 text-sm leading-relaxed mb-8">Get real-time push alerts for sightings in your proximity. AR tracking tools and star mapping built into your device.</p>
-      <a href="https://play.google.com/store/apps/details?id=com.ufohunters.sightings" class="flex items-center gap-2 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase hover:gap-4 transition-all no-underline">
-        DOWNLOAD APP <span class="material-symbols-outlined text-sm">arrow_forward</span>
-      </a>
+      <h3 class="text-2xl font-headline font-bold text-[#dfe2eb] mb-4">IMAGE GALLERY</h3>
+      <p class="text-[#c9c8ad]/80 text-sm leading-relaxed mb-8">Browse photographs and visual evidence captured by witnesses around the world. Hundreds of images of unexplained aerial phenomena.</p>
+      <%= link_to sightings_images_path, class: "flex items-center gap-2 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase hover:gap-4 transition-all no-underline" do %>
+        VIEW GALLERY <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      <% end %>
     </div>
   </div>
 </section>

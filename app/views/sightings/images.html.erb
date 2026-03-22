@@ -6,85 +6,53 @@
   <div class="mb-8">
     <div class="flex items-center gap-3 mb-2">
       <span class="material-symbols-outlined text-[#D7DF21] text-3xl">photo_library</span>
-      <h3 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">UFO Image Gallery</h3>
+      <h1 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">UFO Image Gallery</h1>
     </div>
     <p class="text-[#dfe2eb] text-sm">Discover the latest UFO sightings images all over the world</p>
     <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
-  </div>
-
-  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-4 mb-6">
-    <div class="flex items-center gap-2">
-      <span class="material-symbols-outlined text-[#bdf4ff] text-lg">swipe</span>
-      <p class="text-[#c9c8ad] text-sm">Drag the images so that you can take a look at the UFO Image Gallery</p>
-    </div>
   </div>
 
   <div class="my-6">
     <%= render partial: 'common/ads/adaptable3', locals: {span: 'w-full'} %>
   </div>
 
-  <!-- Gallery -->
-  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-2">
-    <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
-      <div class="slides"></div>
-      <h3 class="title"></h3>
-      <a class="prev">&lsaquo;</a>
-      <a class="next">&rsaquo;</a>
-      <a class="play-pause"></a>
-    </div>
-  </div>
+  <!-- Image Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <%
+      unless @ufo_list.blank?
+        @ufo_list.each do |ufo|
+          image_urls = []
+          image_urls, other_urls = select_url_images(ufo.links) unless ufo.links.blank?
+          image_urls = image_urls + ufo.image_cloudinary unless ufo.image_cloudinary.blank?
 
-</div>
-
-<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
-
-<script>
-  blueimp.Gallery([
-  <%
-    image_cont = 0
-
-    unless @ufo_list.blank?
-      @ufo_list.each do |ufo|
-        image_urls = []
-        image_urls, other_urls = select_url_images(ufo.links) unless ufo.links.blank?
-        image_urls = image_urls + ufo.image_cloudinary unless ufo.image_cloudinary.blank?
-
-        unless image_urls.blank?
-          image_urls.each do |img|
-            if image_cont != 0
-  %>
-               ,
-  <%
-            end
-
-            img_thumb = img
-
-            if image_hosting_link?(img)
-              begin
-                img_thumb = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit)
-              rescue CloudinaryException
-                img_thumb = img
+          unless image_urls.blank?
+            image_urls.each do |img|
+              img_thumb = img
+              if image_hosting_link?(img)
+                begin
+                  img_thumb = cl_image_path(image_id(img), :size => '400x300', :crop => :fit)
+                rescue CloudinaryException
+                  img_thumb = img
+                end
               end
+    %>
+              <%= link_to sightings_search_path(id: ufo.id, title: friendly_title(ufo)), class: "group block relative aspect-video rounded-xl overflow-hidden border border-[#484833]/20 hover:border-[#D7DF21]/40 transition-all no-underline" do %>
+                <img src="<%= img_thumb %>" alt="<%= ufo.location %>" loading="lazy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-[#10141a]/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <p class="text-[#D7DF21] font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest truncate"><%= ufo.location %></p>
+                  <p class="text-[#c9c8ad] text-[10px]"><%= format_date ufo.sighted_at %></p>
+                </div>
+              <% end %>
+    <%
             end
-  %>
-            {
-              title: '<%= friendly_title(ufo) %>',
-              href: '<%= img_thumb %>',
-              type: 'image/jpeg',
-              thumbnail: '<%= img_thumb %>'
-            }
-  <%
-            image_cont += 1
           end
         end
       end
-    end
-  %>],
-  {
-      container: '#blueimp-gallery-carousel',
-      carousel: true
-  });
-</script>
+    %>
+  </div>
+
+</div>
 
 <div class="px-4 md:px-12 max-w-[1920px] mx-auto">
   <div class="my-6">
