@@ -1,122 +1,75 @@
-    
-		<div class="row">
-		  <div class="span4">
-		    <h3>Recent UFO Activity</h3>
-		    <p>Latest UFO sightings all over the world</p>
-			</div>
-			<div class="span8">
-			  <%=	render partial: 'common/gcs' %>
+
+<div class="grid grid-cols-12 gap-4">
+  <div class="col-span-12 md:col-span-4">
+    <h1 class="text-xl font-bold text-[#D7DF21]">Recent UFO Activity</h1>
+    <p class="text-gray-300">Latest UFO sightings all over the world</p>
+  </div>
+  <div class="col-span-12 md:col-span-8">
+    <%= render partial: 'common/gcs' %>
+  </div>
+</div>
+
+<div class="w-full mt-6">
+  <div itemscope itemtype="http://schema.org/ItemList">
+    <meta itemprop="itemListOrder" content="Descending"/>
+
+    <div class="bg-[#1D1D1D] border border-gray-700 rounded-lg p-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <% @ufo_list.each do |ufo| %>
+          <div class="p-2" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+            <div class="w-[85%] ml-auto mb-4">
+              <p itemprop="name" class="overflow-hidden text-ellipsis font-bold text-sm mb-0">
+                <%= ufo.location.size > 40 ? ufo.location.partition("(")[0] : ufo.location %>
+              </p>
+              <p itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="mb-0 text-gray-400"><%= format_date ufo.sighted_at %></p>
+              <meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
+              <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
+              <p class="mb-0"><%= link_to "View sighting", sightings_search_path(id: ufo.id, title: friendly_title(ufo)), class: "text-[#D7DF21] hover:underline" %></p>
+            </div>
+          </div>
+        <% end %>
       </div>
-		</div>
-		<% cache("index/carousel/latest", expires_in: 3.hours) do %>
-		<div class="row">
-		  <div class="span12">
-			  <div itemscope itemtype="http://schema.org/ItemList">
-				  <meta itemprop="itemListOrder" content="Descending"/>
-					<script type="text/javascript">
-			   	  $(document).ready(function() {
-					    $("#mycarousel").carousel({
-					      interval: 10000
-					    });
-					  });
-					</script>
-
-				<div class="well">
-		          	<div id="mycarousel" class="carousel slide" style="margin-bottom: 0px;">
-		          		<div class="carousel-inner" style="width:80%;margin:auto;">
-          						<%
-												recent_sighting_cont = 0
-
-												for i in 0...80
-
-													if recent_sighting_cont % 4 == 0
-							        %>
-														<div class="item <%= "active" if recent_sighting_cont == 0 %>">
-													    <div class="row-fluid">
-			                <%
-											    end
-											%>
-							                          <div class="span3" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-
-							                          	<div style="width:85%;margin-left:auto;margin-bottom:15px">
-
-							                          		<%  unless @ufo_list[i].nil? %>
-
-										                          	<p itemprop="name" style=" overflow: hidden;text-overflow: ellipsis; font: bold 14px Arial;margin-bottom: 0">
-
-										                          		<%= @ufo_list[i].location.size > 40 ? @ufo_list[i].location.partition("(")[0] : @ufo_list[i].location %>
-
-										                          	</p>
-										                            <p itemprop="dateCreated" content="<%= format_date_microdata @ufo_list[i].sighted_at %>" style="margin-bottom: 0"><%= format_date @ufo_list[i].sighted_at %></p>
-										                            <meta itemprop="datePublished" content="<%= format_date_microdata @ufo_list[i].reported_at %>"/>
-										                            <meta itemprop="headline" content="<%= friendly_title(@ufo_list[i]) %>"/>
-										                            <p style="margin-bottom:0"><%= link_to "View sighting", :controller => "sightings", :action => "search", :id => @ufo_list[i].id, :title => friendly_title(@ufo_list[i]) %></p>
-
-								                            <%  end %>
-
-							                            </div>
-
-							                          </div>
-							                <%
-							                    recent_sighting_cont += 1
-
-							                    if recent_sighting_cont % 4 == 0
-							                %>
-							                        </div>
-							                      </div>
-							                <%
-							                    end
-							                  end
-
-							                  if recent_sighting_cont % 4 != 0
-							                %>
-							                        </div>
-							                      </div>
-							                <%
-							                  end
-							                %>
-	                    </div>
-	                <a class="left carousel-control" href="#mycarousel" data-slide="prev">‹</a>
-	                <a class="right carousel-control" href="#mycarousel" data-slide="next">›</a>
-	               </div>
-	            </div>
-
-				</div>
-			</div>
     </div>
-    <% end %>
-		<div class="row">
-		  <div class="span12">
-		    <div id="sightings-map" style="width: 100%; height: 600px;"></div>
-		  </div>
-		</div>
 
-		<%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
+    <!-- Pagination -->
+    <nav class="flex justify-center mt-6" aria-label="Pagination">
+      <%== pagy_nav(@pagy) %>
+    </nav>
 
-    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-      <%= render partial: 'common/ads/horizontal_ad' %>
-    </div>
-		<div class="row" >
-		  <div class="span12">
-				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">The map above shows the latest <strong>100 UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong>full report as it was reported by witnesses</strong> and <strong>other near sightings</strong>.</p><p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px;">If you find something interesting <strong>feel free to share it with your friends !!!</strong></p>
-			</div>
-		</div>
-		<% cache("index/modules") do %>
-    <div class="row">
-			<div class="span4" style="text-align: center; margin-top: 15px">
-				<%= image_tag image_path('world.png') %>
-				<h3><%= link_to "Thousands of sightings", :controller => "sightings", :action => "maps"%></h3>
-				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
-			</div>
-			<div class="span4" style="text-align: center; margin-top: 15px">
-				<%= image_tag image_path('ufo.png') %>
-				<h3><%= link_to "Have you seen a UFO?", :controller => "reports", :action => "new"%></h3>
-				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Be quiet, you are not alone. Thousands of people have experienced the same before.
-			</div>
-			<div class="span4" style="text-align: center; margin-top: 15px">
-				<%= image_tag image_path('android.png') %>
-				<h3><%= link_to "UFO Hunters App", "https://play.google.com/store/apps/details?id=com.ufohunters.sightings" %></h3>
-				<p style="color: #5A5A5A; font-size: 15px; margin: 10px 0; padding-right: 10px; line-height: 1.7em;">Download our App and take a look at the most recent sightings, or those near you.
-			</div>
-	  </div>
-	  <% end %>
+  </div>
+</div>
+
+<div class="w-full mt-6">
+  <div id="sightings-map" class="w-full h-[600px] rounded-lg"></div>
+</div>
+
+<%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
+
+<div class="my-5">
+  <%= render partial: 'common/ads/horizontal_ad' %>
+</div>
+
+<div class="w-full">
+  <p class="text-gray-400 text-base my-2.5 pr-2.5">The map above shows the latest <strong class="text-gray-200">UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong class="text-gray-200">full report as it was reported by witnesses</strong> and <strong class="text-gray-200">other near sightings</strong>.</p>
+  <p class="text-gray-400 text-base my-2.5 pr-2.5">If you find something interesting <strong class="text-gray-200">feel free to share it with your friends !!!</strong></p>
+</div>
+
+<% cache("index/modules") do %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div class="text-center mt-4">
+    <%= image_tag image_path('world.png'), class: "mx-auto", loading: "lazy", alt: "UFO sightings world map" %>
+    <h3 class="text-lg font-bold mt-3"><%= link_to "Thousands of sightings", sightings_maps_path, class: "text-[#D7DF21] hover:underline" %></h3>
+    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
+  </div>
+  <div class="text-center mt-4">
+    <%= image_tag image_path('ufo.png'), class: "mx-auto", loading: "lazy", alt: "Report a UFO sighting" %>
+    <h3 class="text-lg font-bold mt-3"><%= link_to "Have you seen a UFO?", new_report_path, class: "text-[#D7DF21] hover:underline" %></h3>
+    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Be quiet, you are not alone. Thousands of people have experienced the same before.</p>
+  </div>
+  <div class="text-center mt-4">
+    <%= image_tag image_path('android.png'), class: "mx-auto", loading: "lazy", alt: "UFO Hunters Android app" %>
+    <h3 class="text-lg font-bold mt-3"><%= link_to "UFO Hunters App", "https://play.google.com/store/apps/details?id=com.ufohunters.sightings", class: "text-[#D7DF21] hover:underline" %></h3>
+    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Download our App and take a look at the most recent sightings, or those near you.</p>
+  </div>
+</div>
+<% end %>

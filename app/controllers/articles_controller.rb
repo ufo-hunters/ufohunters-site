@@ -1,6 +1,6 @@
 class ArticlesController < ApplicationController
 
-  before_filter :check_user, only: [:edit, :update, :create, :destroy, :myspace ]
+  before_action :check_user, only: [:edit, :update, :create, :destroy, :myspace]
 
   include ArticlesHelper
 
@@ -26,7 +26,7 @@ class ArticlesController < ApplicationController
       Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).skip((@page_number-1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
     end
     @page_title = "Articles"
-    @page_description = "Latest Articles"
+    @page_description = "Read the latest UFO research articles, analysis, and investigations from the UFO Hunters community worldwide"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -97,7 +97,7 @@ class ArticlesController < ApplicationController
     @article = Article.find(params[:id])
 
     respond_to do |format|
-      if @article.update_attributes(article_params)
+      if @article.update(article_params)
         format.html { redirect_to action: 'myspace', notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
@@ -135,7 +135,7 @@ class ArticlesController < ApplicationController
     @articles = Article.where(:user => session[:user_id]).desc(:published_date)
 
     @page_title = "Articles"
-    @page_description = "My Latest Articles"
+    @page_description = "Manage and view your published UFO research articles on UFO Hunters"
 
     respond_to do |format|
       format.html # index.html.erb
@@ -148,7 +148,7 @@ class ArticlesController < ApplicationController
     @user = User.new
 
     @page_title = "UFO Research Team - Articles"
-    @page_description = "Do you want to join our research team?"
+    @page_description = "Join the UFO Hunters research team — contribute articles, investigate sightings, and collaborate with UFO researchers worldwide"
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,4 +1,7 @@
+require 'cgi'
+
 module ApplicationHelper
+  include Pagy::Frontend
 
   def format_date date
     unless date.blank?
@@ -93,6 +96,6 @@ module ApplicationHelper
     images_url = images.map do |s|
       s.gsub(/public/, 'https://www.ufo-hunters.com')
     end
-    URI.escape(images_url.sample)
+    CGI.escape(images_url.sample)
   end
 end
