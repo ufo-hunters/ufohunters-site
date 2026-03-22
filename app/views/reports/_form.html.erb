@@ -1,109 +1,156 @@
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
 
-<script>
-   $(document).ready(function(){
-        $("#new_report").validate({
-       });
-   });
-</script>
-<div class="mb-4">
-   <h3 class="text-xl font-semibold text-[#D7DF21]">New report</h3>
-</div>
-<%= form_for(@report) do |f| %>
-<div>
-   <div class="w-full">
-      <% if @report.errors.any? %>
-      <div id="error_explanation" class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
-         <h2 class="font-semibold mb-2"><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
-         <ul class="list-disc list-inside">
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-[#D7DF21] text-3xl">upload_file</span>
+      <h3 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">Submission Portal</h3>
+    </div>
+    <p class="text-[#c9c8ad] text-sm">Report your UFO sighting to the global database</p>
+    <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
+  </div>
+
+  <%= form_for(@report) do |f| %>
+
+    <!-- Error display -->
+    <div>
+      <div class="w-full">
+        <% if @report.errors.any? %>
+        <div id="error_explanation" class="mb-6 bg-red-950/40 border border-red-700/50 text-red-300 px-5 py-4 rounded-xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-red-400">error</span>
+            <h2 class="font-['Space_Grotesk'] text-sm uppercase tracking-widest text-red-300"><%= pluralize(@report.errors.count, "error") %> prohibited this report from being saved:</h2>
+          </div>
+          <ul class="list-disc list-inside text-sm">
             <% @report.errors.full_messages.each do |msg| %>
             <li><%= msg %></li>
             <% end %>
-         </ul>
+          </ul>
+        </div>
+        <% end %>
       </div>
-      <% end %>
-   </div>
+    </div>
+
+    <script>
+       var linkCount = 0;
+       function addlink() {
+         linkCount++;
+         var input = document.createElement('input');
+         input.type = 'text';
+         input.size = 30;
+         input.className = 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none mt-3';
+         input.name = 'report[links][]';
+         input.id = 'report_links_' + linkCount;
+         document.querySelector('.fieldlinks').appendChild(input);
+       }
+    </script>
+
+    <!-- Row 1: Date, Shape, Duration -->
+    <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-[#bdf4ff] text-lg">event</span>
+        <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">Sighting Details</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="sighted_at" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Sighted on <span class="text-red-500">*</span></label>
+          <%
+             sighted_at_value = nil
+             unless params[:report].blank?
+               sighted_at_value = params[:report]["sighted_at"]
+             end
+             %>
+          <%= f.date_field :sighted_at, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none', :value => sighted_at_value %>
+        </div>
+        <%
+           reported_at_value = Time.new.strftime('%m/%d/%Y').to_s
+           %>
+        <%= f.hidden_field :reported_at, :value => reported_at_value %>
+        <div>
+          <label for="report_shape" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Shape <span class="text-red-500">*</span></label>
+          <%= f.text_field :shape, :size => 12, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none' %>
+        </div>
+        <div>
+          <label for="report_duration" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Duration <span class="text-red-500">*</span></label>
+          <%= f.text_field :duration, :size => 12, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: Email, Links -->
+    <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-[#bdf4ff] text-lg">mail</span>
+        <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">Contact & Links</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div>
+          <label for="report_email" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Contact email <span class="text-[#484833] text-[10px] normal-case">(never published or shared)</span></label>
+          <%= f.text_field :email, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none' %>
+        </div>
+        <div>
+          <label for="report_email_confirmation" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Email confirmation</label>
+          <%= f.text_field :email_confirmation, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none' %>
+        </div>
+        <div>
+          <label for="report_links" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Links <span class="text-[#484833] text-[10px] normal-case">(videos, images, articles...)</span></label>
+          <input id="report_links_0" class="w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" type="text" size="30" name="report[links][]">
+          <div class="fieldlinks"></div>
+          <a href="javascript:addlink();" class="text-[#bdf4ff] hover:text-[#D7DF21] text-xs font-['Space_Grotesk'] uppercase tracking-widest mt-2 inline-flex items-center gap-1 transition-colors">
+            <span class="material-symbols-outlined text-sm">add_circle</span> Add more links
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: Location & Description -->
+    <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-[#bdf4ff] text-lg">location_on</span>
+        <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">Location & Description</span>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="report_location" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Location <span class="text-red-500">*</span></label>
+          <%= f.text_field :location, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none' %>
+          <div class="mt-3 border border-[#484833]/20 rounded-lg overflow-hidden">
+            <div id="map-canvas" class="map-canvas" style="height: 300px;"></div>
+          </div>
+        </div>
+        <div>
+          <label for="report_description" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Description <span class="text-red-500">*</span></label>
+          <%= f.text_area :description, :rows => 8, :cols => 84, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none resize-y min-h-[300px]' %>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit row -->
+    <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div>
+          <% if flash[:recaptcha_error].present? %>
+            <p class="text-red-400 text-sm mb-2"><%= flash[:recaptcha_error] %></p>
+          <% end %>
+          <% if ENV['RECAPTCHA_SITE_KEY'].present? %>
+            <%= recaptcha_tags %>
+          <% else %>
+            <p class="text-[#D7DF21]/60 text-sm">[reCAPTCHA disabled — RECAPTCHA_SITE_KEY not set]</p>
+          <% end %>
+        </div>
+        <div class="flex justify-end">
+          <input type="submit" class="bg-[#D7DF21] text-[#313300] hover:bg-[#D7DF21] font-['Space_Grotesk'] uppercase tracking-widest font-bold py-3 px-8 rounded-lg cursor-pointer transition-colors duration-200" value="SEND UFO'S REPORT" name="commit">
+        </div>
+      </div>
+      <div name="coord_div" id="coord_div" class="required" style="visibility: hidden;"></div>
+      <input type="hidden" size="30" name="report[coord]" id="report_coord" class="fieldufo">
+    </div>
+
+  <% end %>
+
 </div>
-<script>
-   $(function() {
-     $( "#report_sighted_at" ).datepicker({dateFormat: "mm/dd/yy"});
-   });
-   cont = 0;
-   function addlink() {
-           cont = cont + 1;
-            $(".fieldlinks").append("<input type='text' size='30' class='w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21] mt-2' name='report[links][]' id='report_links_" + cont + "'/>");
-   }
-</script>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-   <div>
-      <label for="sighted_at" class="block text-sm font-medium text-gray-300 mb-1">Sighted on <span class="text-red-500">*</span></label>
-      <%
-         sighted_at_value = nil
-         unless params[:report].blank?
-           sighted_at_value = params[:report]["sighted_at"]
-         end
-         %>
-      <%= f.text_field :sighted_at, :size => 12, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]', :value => sighted_at_value %>
-   </div>
-   <%
-      reported_at_value = Time.new.strftime('%m/%d/%Y').to_s
-      %>
-   <%= f.hidden_field :reported_at, :value => reported_at_value %>
-   <div>
-      <label for="report_shape" class="block text-sm font-medium text-gray-300 mb-1">Shape <span class="text-red-500">*</span></label>
-      <%= f.text_field :shape, :size => 12, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
-   </div>
-   <div>
-      <label for="report_duration" class="block text-sm font-medium text-gray-300 mb-1">Duration <span class="text-red-500">*</span></label>
-      <%= f.text_field :duration, :size => 12, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
-   </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-   <div>
-      <label for="report_email" class="block text-sm font-medium text-gray-300 mb-1">Contact email (your email address will never be published or shared)</label>
-      <%= f.text_field :email, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
-   </div>
-   <div>
-      <label for="report_email_confirmation" class="block text-sm font-medium text-gray-300 mb-1">Contact email confirmation (repeat your email to make sure it is OK)</label>
-      <%= f.text_field :email_confirmation, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
-   </div>
-   <div>
-      <label for="report_links" class="block text-sm font-medium text-gray-300 mb-1">Links (videos, images, articles...)</label>
-      <input id="report_links_0" class="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" type="text" size="30" name="report[links][]">
-      <div class="fieldlinks"></div>
-      <a href="javascript:addlink();" class="text-[#D7DF21] text-sm hover:underline mt-1 inline-block">(Add more links)</a>
-   </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-   <div>
-      <label for="report_location" class="block text-sm font-medium text-gray-300 mb-1">Location <span class="text-red-500">*</span></label>
-      <%= f.text_field :location, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
-      <div id="map-canvas" class="map-canvas mt-2 rounded-lg overflow-hidden" style="height: 300px;"></div>
-   </div>
-   <div>
-      <label for="report_description" class="block text-sm font-medium text-gray-300 mb-1">Description <span class="text-red-500">*</span></label>
-      <%= f.text_area :description, :rows => 8, :cols => 84, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21] resize-y' %>
-   </div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-   <div>
-      <%= flash[:recaptcha_error] %>
-      <% if ENV['RECAPTCHA_SITE_KEY'].present? %>
-        <%= recaptcha_tags %>
-      <% else %>
-        <p class="text-yellow-400 text-sm">[reCAPTCHA disabled — RECAPTCHA_SITE_KEY not set]</p>
-      <% end %>
-   </div>
-   <div>
-      <input type="submit" class="px-6 py-3 bg-[#D7DF21] text-gray-900 font-bold rounded hover:bg-[#c5cd1e] transition cursor-pointer mt-5" value="SEND UFO'S REPORT" name="commit">
-   </div>
-   <div name="coord_div" id="coord_div" class="required" style="visibility: hidden;"></div>
-   <input type="hidden" size="30" name="report[coord]" id="report_coord" class="fieldufo">
-</div>
-<% end %>
 
 <script>
 	mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';

@@ -1,80 +1,62 @@
   <%
   cache("common/partials/recent_sightings/#{@ufo_list.hash}", expires_in: 12.hours) do
   %>
-	<script language="javascript">
-                $(document).ready(function() {
-				    $('#tabledata').DataTable(
-				    	{
-		    				 "order": [[ 1, "desc" ]]
-				        }
 
-				    )});
+  <div class="w-full" data-controller="datatable" data-datatable-sort-col-value="1" data-datatable-sort-dir-value="desc" data-datatable-per-page-value="25">
 
-    </script>
+    <% if @ufo_list %>
+      <!-- Controls -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+        <div class="flex items-center gap-3">
+          <label class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#c9c8ad]">Show</label>
+          <select data-datatable-target="pageSize" data-action="datatable#changePageSize" class="bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#D7DF21]">
+            <option value="10">10</option>
+            <option value="25" selected>25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#c9c8ad]">Filter</label>
+          <input data-datatable-target="search" data-action="input->datatable#filter" type="text" class="bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-[#D7DF21] w-48" placeholder="Search..."/>
+        </div>
+      </div>
 
+      <!-- Table -->
+      <div class="bg-[#1c2026] rounded-xl border border-[#484833]/20 overflow-hidden">
+        <table class="w-full text-left text-[#dfe2eb] text-sm">
+          <thead class="bg-[#0a0e14] font-['Space_Grotesk'] text-[#D7DF21] uppercase text-xs tracking-widest">
+            <tr>
+              <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="0" data-action="click->datatable#sortBy">Location</th>
+              <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="1" data-action="click->datatable#sortBy">Sighted on</th>
+              <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="2" data-action="click->datatable#sortBy">Shape</th>
+              <th class="px-4 py-3 hidden sm:table-cell cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="3" data-action="click->datatable#sortBy">Duration</th>
+            </tr>
+          </thead>
+          <tbody data-datatable-target="body">
+            <% @ufo_list.each do |ufo| %>
+              <tr class="hover:bg-[#31353c] transition border-b border-[#484833]/15" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+                <meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
+                <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
+                <td itemprop="name" class="px-4 py-3">
+                  <%= link_to ufo.location, {:controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo)}, class: "text-[#bdf4ff] hover:text-[#D7DF21] transition-colors" %>
+                </td>
+                <td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="px-4 py-3 text-[#c9c8ad]">
+                  <%= format_date_microdata ufo.sighted_at %>
+                </td>
+                <td class="px-4 py-3"><%= ufo.shape %></td>
+                <td class="px-4 py-3 hidden sm:table-cell text-[#c9c8ad]"><%= ufo.duration %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
 
-	<div class="w-full lg:w-2/3">
-			<%
-	     	if @ufo_list
-	     	%>
-	     		<div class="mt-5 mb-5">
-
-			      			<table id="tabledata" class="w-full text-left text-gray-300 text-sm">
-			      				<thead class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
-										<tr>
-												<th class="px-4 py-3">Location
-												</th>
-												<th class="px-4 py-3">Sighted on
-												</th>
-												<th class="px-4 py-3">Shape
-												</th>
-												<th class="px-4 py-3 hidden sm:table-cell">Duration
-												</th>
-										</tr>
-								</thead>
-								<tfoot class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
-									<tr>
-											<th class="px-4 py-3">Location
-											</th>
-											<th class="px-4 py-3">Sighted on
-											</th>
-											<th class="px-4 py-3">Shape
-											</th>
-											<th class="px-4 py-3 hidden sm:table-cell">Duration
-											</th>
-								  	</tr>
-								</tfoot>
-								<tbody class="divide-y divide-gray-700">
-						     	<%
-						      	# In order to avoid the same sighting as nearest sighting
-						      	@ufo_list.each do |ufo|
-									%>
-						    			<tr class="hover:bg-gray-800/50 transition" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-						    					<meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
-										      <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
-							         		<td itemprop="name" class="px-4 py-3">
-							         			<%= link_to ufo.location, {:controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo)}, class: "text-[#D7DF21] hover:underline" %>
-							         		</td>
-							         		<td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="px-4 py-3">
-								    			<%= format_date_microdata ufo.sighted_at %>
-								    		</td>
-								    		<td class="px-4 py-3">
-								    			<%=ufo.shape%>
-							         		</td>
-							         		<td class="px-4 py-3 hidden sm:table-cell">
-								    			<%= ufo.duration %>
-							         		</td>
-										</tr>
-								<%
-								end
-
-								%>
-							    </tbody>
-							</table>
-				</div>
-
-	     	<%
-	        end
-	        %>
-	</div>
+      <!-- Footer -->
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4">
+        <div data-datatable-target="info" class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-[#c9c8ad]"></div>
+        <div data-datatable-target="pagination" class="flex items-center gap-1"></div>
+      </div>
+    <% end %>
+  </div>
   <% end %>

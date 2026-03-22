@@ -1,42 +1,67 @@
-<h1 class="text-2xl font-bold text-white mb-6">Sign Up</h1>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
 
-<%= form_for @user do |f| %>
-  <% if @user.errors.any? %>
-    <div class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
-      <h2 class="font-semibold mb-2">Form is invalid</h2>
-      <ul class="list-disc list-inside">
-        <% for message in @user.errors.full_messages %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-[#D7DF21] text-3xl">person_add</span>
+      <h1 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">Sign Up</h1>
     </div>
-  <% end %>
+    <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
+  </div>
 
+  <div class="max-w-lg">
+    <% @user ||= User.new %>
+    <%= form_for @user do |f| %>
+      <% if @user.errors.any? %>
+        <div class="mb-6 bg-red-950/40 border border-red-700/50 text-red-300 px-5 py-4 rounded-xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-red-400">error</span>
+            <h2 class="font-['Space_Grotesk'] text-xs uppercase tracking-widest">Form is invalid</h2>
+          </div>
+          <ul class="list-disc list-inside text-sm">
+            <% for message in @user.errors.full_messages %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
 
-  <% flash.each do |name, msg| %>
-       <div class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
-          <h2 class="font-semibold mb-2">Form is invalid</h2>
-              <ul class="list-disc list-inside">
-                   <li> <%= content_tag :div, msg, :id => "flash#{name}" %>  </li>
-              </ul>
-       </div>
-  <% end %>
+      <% flash.each do |name, msg| %>
+        <div class="mb-6 bg-red-950/40 border border-red-700/50 text-red-300 px-5 py-4 rounded-xl">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="material-symbols-outlined text-red-400">error</span>
+            <h2 class="font-['Space_Grotesk'] text-xs uppercase tracking-widest">Form is invalid</h2>
+          </div>
+          <ul class="list-disc list-inside text-sm">
+            <li><%= content_tag :div, msg, :id => "flash#{name}" %></li>
+          </ul>
+        </div>
+      <% end %>
 
-  <div class="mb-4">
-    <%= f.label :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
-    <%= f.text_field :username, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-8">
+        <div class="mb-5">
+          <%= f.label :username, nil, class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
+          <%= f.text_field :username, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
+        </div>
+        <div class="mb-5">
+          <%= f.label :password, nil, class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
+          <%= f.password_field :password, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
+        </div>
+        <div class="mb-5">
+          <%= f.label :password_confirmation, nil, class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
+          <%= f.password_field :password_confirmation, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
+        </div>
+        <div class="mb-5">
+          <% if ENV['RECAPTCHA_SITE_KEY'].present? %>
+            <%= recaptcha_tags %>
+          <% else %>
+            <p class="text-[#D7DF21]/60 text-sm">[reCAPTCHA disabled]</p>
+          <% end %>
+          <div class="mt-2"><span class="text-red-400 text-sm"><%= flash[:recaptcha_error] %></span></div>
+        </div>
+        <div><%= f.submit class: "bg-[#D7DF21] text-[#313300] hover:bg-[#D7DF21] font-['Space_Grotesk'] uppercase tracking-widest font-bold py-3 px-8 rounded-lg cursor-pointer transition-colors duration-200" %></div>
+      </div>
+    <% end %>
   </div>
-  <div class="mb-4">
-    <%= f.label :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
-    <%= f.password_field :password, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
-  </div>
-  <div class="mb-4">
-    <%= f.label :password_confirmation, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
-    <%= f.password_field :password_confirmation, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
-  </div>
-  <div class="mb-4">
-    <%= recaptcha_tags %>
-    <div class="caja-text"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
-  </div>
-  <div><%= f.submit class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
-<% end %>
+
+</div>
