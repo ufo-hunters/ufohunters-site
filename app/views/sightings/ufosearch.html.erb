@@ -1,5 +1,3 @@
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
 
 <div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
 
@@ -70,52 +68,66 @@
 </div>
 
 <script>
-  mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
-  var map = new mapboxgl.Map({
+  var map = new maplibregl.Map({
       container: 'map-canvas',
-      style: 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl',
-      center: [-73.98,40.76],
+      style: 'https://tiles.openfreemap.org/styles/dark',
+      center: [-73.98, 40.76],
       zoom: 7
   });
+  map.addControl(new maplibregl.NavigationControl());
 
-  var geocoder = new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken
+  var marker = null;
+
+  // Geocode using Nominatim (OpenStreetMap)
+  document.getElementById('map-canvas').insertAdjacentHTML('beforebegin',
+    '<div class="relative mb-3">' +
+    '<input id="geocoder-input" type="text" placeholder="Search location on map..." class="w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none text-sm" />' +
+    '<div id="geocoder-results" class="absolute z-50 w-full bg-[#1c2026] border border-[#484833]/30 rounded-lg mt-1 max-h-48 overflow-y-auto hidden"></div>' +
+    '</div>'
+  );
+
+  var geocoderTimeout;
+  document.getElementById('geocoder-input').addEventListener('input', function() {
+    clearTimeout(geocoderTimeout);
+    var q = this.value.trim();
+    if (q.length < 3) { document.getElementById('geocoder-results').classList.add('hidden'); return; }
+    geocoderTimeout = setTimeout(function() {
+      fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q) + '&limit=5', {
+        headers: { 'User-Agent': 'UFOHunters/1.0 (ufo-hunters.com)' }
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(results) {
+          var el = document.getElementById('geocoder-results');
+          if (results.length === 0) { el.classList.add('hidden'); return; }
+          el.innerHTML = '';
+          results.forEach(function(r) {
+            var div = document.createElement('div');
+            div.className = 'px-4 py-2 text-sm text-[#dfe2eb] hover:bg-[#262a31] cursor-pointer transition-colors';
+            div.dataset.lon = r.lon;
+            div.dataset.lat = r.lat;
+            div.textContent = r.display_name;
+            div.addEventListener('click', function() {
+              selectLocation(parseFloat(r.lon), parseFloat(r.lat));
+              document.getElementById('geocoder-input').value = r.display_name;
+              el.classList.add('hidden');
+            });
+            el.appendChild(div);
+          });
+          el.classList.remove('hidden');
+        })
+        .catch(function(e) { console.warn('Geocoder:', e.message); });
+    }, 500);
   });
 
-  map.addControl(geocoder);
-
-  map.on('load', function() {
-      map.addSource('single-point', {
-          "type": "geojson",
-          "data": {
-              "type": "FeatureCollection",
-              "features": []
-          }
-      });
-
-      map.addLayer({
-          "id": "point",
-          "source": "single-point",
-          "type": "circle",
-          "paint": {
-              "circle-radius": 10,
-              "circle-color": "#ff0000"
-          }
-      });
-
-      geocoder.on('result', function(ev) {
-          map.getSource('single-point').setData(ev.result.geometry);
-          var styleSpec = ev.result;
-          var styleSpecBox = document.getElementById('coord_div');
-          var styleSpecText = JSON.stringify(styleSpec, null, 2);
-          var syntaxStyleSpecText = syntaxHighlight(styleSpecText);
-          styleSpecBox.innerHTML = syntaxStyleSpecText;
-          document.getElementById('coord').value = syntaxStyleSpecText;
-      });
-  });
-
-  function syntaxHighlight(json) {
-      var obj = JSON.parse(json);
-      return obj.center;
+  function selectLocation(lon, lat) {
+    map.flyTo({ center: [lon, lat], zoom: 10 });
+    if (marker) marker.remove();
+    marker = new maplibregl.Marker({ color: '#D7DF21' }).setLngLat([lon, lat]).addTo(map);
+    document.getElementById('coord').value = lon + ',' + lat;
   }
+
+  // Also allow clicking on map
+  map.on('click', function(e) {
+    selectLocation(e.lngLat.lng, e.lngLat.lat);
+  });
 </script>

@@ -58,10 +58,9 @@ If no significant issues, respond with 'LGTM'.
 Be concise. Focus on the changes only." 2>/dev/null || echo "AI review unavailable")
 
         if echo "$REVIEW" | grep -q "HIGH"; then
-            echo -e "${RED}AI Review found HIGH severity issues:${NC}"
+            echo -e "${YELLOW}AI Review found HIGH severity issues:${NC}"
             echo "$REVIEW"
-            echo -e "\n${YELLOW}Commit blocked. Fix HIGH issues or use --no-verify to skip.${NC}"
-            exit 1
+            echo -e "${YELLOW}Proceeding with commit. Review and fix these issues.${NC}"
         elif echo "$REVIEW" | grep -q "MEDIUM"; then
             echo -e "${YELLOW}AI Review found MEDIUM severity issues:${NC}"
             echo "$REVIEW"

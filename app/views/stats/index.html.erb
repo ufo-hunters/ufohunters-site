@@ -21,15 +21,14 @@
           </span>
           <h3 class="text-xl font-bold font-['Space_Grotesk'] text-[#dfe2eb] mt-1">UFO Activity Heat Map</h3>
         </div>
-        <div id="map-canvas" class="w-full" style="height: 600px;"></div>
+        <div id="map-canvas" class="w-full" style="height: 800px;"></div>
       </div>
         <script>
-          mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
-          var map = new mapboxgl.Map({
+          var map = new maplibregl.Map({
               container: 'map-canvas',
-              style: 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl',
-              center: [5, 39],
-              zoom: 1
+              style: 'https://tiles.openfreemap.org/styles/dark',
+              center: [5, 30],
+              zoom: 2
           });
 
           map.on('load', function() {
@@ -94,7 +93,7 @@
                           9, 0
                       ],
                   }
-              }, 'waterway-label');
+              });
 
               map.addLayer({
                   "id": "earthquakes-point",
@@ -145,7 +144,7 @@
                           8, 1
                       ]
                   }
-              }, 'waterway-label');
+              });
           });
         </script>
     </div>

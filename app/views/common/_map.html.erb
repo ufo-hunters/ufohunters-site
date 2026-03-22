@@ -70,14 +70,12 @@
           next
 			  end
       end
-      # 'mapbox://styles/fjfdepedro/cjn5ke8rx0g6c2rpffg1z6una'
-      # 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl'
 		%>
                  ]
 			};
       var map = new maplibregl.Map({
         container: 'sightings-map',
-        style: 'https://api.maptiler.com/maps/streets/style.json?key=YxE3spJiDUfqPqmFg30W',
+        style: 'https://tiles.openfreemap.org/styles/dark',
         center: <%=center%>,
         zoom: <%=zoom%>
       });
