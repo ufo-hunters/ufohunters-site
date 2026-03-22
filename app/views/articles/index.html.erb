@@ -3,25 +3,32 @@
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
 
-<div>
-  <h2 class="text-2xl font-bold text-white mb-4">Articles</h2>
-  <p class="text-gray-300 mb-4"><strong class="text-white">Do you want to get involved?</strong>
-  If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com" class="text-[#D7DF21] hover:underline">contact us!</a> </p>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto">
+  <!-- Section Header -->
+  <div class="mb-8">
+    <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] mb-2 block">
+      <span class="material-symbols-outlined text-[14px] align-middle mr-1">article</span>CLASSIFIED ARCHIVES
+    </span>
+    <h2 class="text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#dfe2eb] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)]">Intelligence Dossiers</h2>
+    <p class="text-[#c9c8ad] mt-2"><strong class="text-[#dfe2eb]">Do you want to get involved?</strong>
+    If you want to share your work or experience here, feel free to <a href="mailto:ufohunterscom@gmail.com" class="text-[#bdf4ff] hover:text-[#D7DF21] transition-colors">contact us!</a></p>
+  </div>
+
   <div class="w-full lg:w-2/3" itemscope itemtype="http://schema.org/ItemList">
     <meta itemprop="itemListOrder" content="Descending"/>
   <%
   unless @articles.blank?
 
     @articles.each do |article| %>
-    <div class="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-gray-800/50 rounded-lg" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+    <div class="flex flex-col sm:flex-row gap-5 mb-6 p-5 bg-[#262a31] border border-[#484833]/20 rounded-xl border-l-4 border-l-[#D7DF21] hover:bg-[#31353c] transition-colors" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 
-      <article class="flex flex-col sm:flex-row gap-4 w-full">
+      <article class="flex flex-col sm:flex-row gap-5 w-full">
         <meta itemprop="articleSection" content="Articles"><%
         unless article.image_thumbnail.blank?
       %>
         <div class="w-full sm:w-1/4 flex-shrink-0">
           <figure>
-            <%= image_tag(article.image_thumbnail, :itemprop => "image", :title => article.title, :alt => article.title, :class => "rounded-lg shadow-md border border-gray-700 w-full h-auto")%>
+            <%= image_tag(article.image_thumbnail, :itemprop => "image", :title => article.title, :alt => article.title, :class => "rounded-lg border border-[#484833]/30 w-full h-auto shadow-lg")%>
           </figure>
         </div>
         <div class="flex-1">
@@ -33,16 +40,19 @@
         end
       %>
           <header>
-            <h3 itemprop="name" class="text-xl font-semibold text-[#D7DF21] hover:text-white"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
+            <h3 itemprop="name" class="text-xl font-semibold font-['Space_Grotesk'] text-[#D7DF21] hover:text-[#bdf4ff] transition-colors"><%= link_to article.title, :controller => "articles", :action => "show", :id => article.id, :title => ArticlesHelper.friendly_title(article) %></h3>
             <meta itemprop="headline" content="<%= article.title %>"/>
           </header>
-          <p class="text-sm text-gray-400 mt-1">
-            <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>" class="text-gray-300"><%= format_date article.published_date %></strong><br/>
+          <p class="text-sm text-[#c9c8ad] mt-2">
+            <small>
+              <span class="material-symbols-outlined text-[12px] align-middle mr-1">schedule</span>
+              Published on <strong itemprop="dateCreated" content="<%= format_date_microdata article.published_date %>" class="text-[#dfe2eb]"><%= format_date article.published_date %></strong><br/>
               <meta itemprop="datePublished" content="<%= format_date_microdata article.published_date %>">
               <%
                unless article.user.nil?
               %>
-              By: <span itemprop="author" itemscope itemtype="http://schema.org/Person"><strong itemprop="name" class="text-gray-300">
+              <span class="material-symbols-outlined text-[12px] align-middle mr-1">person</span>
+              By: <span itemprop="author" itemscope itemtype="http://schema.org/Person"><strong itemprop="name" class="text-[#dfe2eb]">
                   <%=article.user.username%>
                   </strong></span>
               <%
@@ -53,7 +63,7 @@
               </span>
             </small>
           </p>
-          <div class="mt-2 text-gray-300">
+          <div class="mt-3 text-[#dfe2eb] leading-relaxed">
             <p itemprop="description"><%= article.teaser.html_safe %></p>
           </div>
         </div>
@@ -65,19 +75,23 @@
     end
 
   %>
-    <nav class="flex justify-between items-center mt-6">
+    <nav class="flex justify-between items-center mt-8">
       <%
       unless @page_number <= 1
       %>
       <div>
-        <%= link_to "&larr; Previous".html_safe, articles_path(page: @page_number - 1), class: "inline-block px-4 py-2 bg-gray-700 text-[#D7DF21] rounded hover:bg-gray-600 transition" %>
+        <%= link_to articles_path(page: @page_number - 1), class: "inline-flex items-center gap-2 px-5 py-2.5 bg-[#D7DF21] text-[#313300] font-['Space_Grotesk'] uppercase tracking-widest text-xs font-bold rounded-lg hover:bg-[#D7DF21] transition-colors drop-shadow-[0_0_8px_rgba(215,223,33,0.3)]" do %>
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span> Previous
+        <% end %>
       </div>
       <%
       end
       unless (@page_number * Ufo::MAX_PAGE_ITEMS) >= @num_articles
       %>
       <div class="ml-auto">
-        <%= link_to "Next &rarr;".html_safe, articles_path(page: @page_number + 1), class: "inline-block px-4 py-2 bg-gray-700 text-[#D7DF21] rounded hover:bg-gray-600 transition" %>
+        <%= link_to articles_path(page: @page_number + 1), class: "inline-flex items-center gap-2 px-5 py-2.5 bg-[#D7DF21] text-[#313300] font-['Space_Grotesk'] uppercase tracking-widest text-xs font-bold rounded-lg hover:bg-[#D7DF21] transition-colors drop-shadow-[0_0_8px_rgba(215,223,33,0.3)]" do %>
+          Next <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        <% end %>
       </div>
       <%
       end
@@ -91,8 +105,8 @@
   <%
   else
   %>
-    <div class="bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded relative" role="alert">
-      No content available
+    <div class="bg-[#262a31] border border-[#484833]/20 text-[#c9c8ad] px-5 py-4 rounded-xl border-l-4 border-l-red-500" role="alert">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">info</span> No content available
     </div>
   <%
   end

@@ -1,102 +1,130 @@
 <% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
-<p id="notice" class="text-green-400"><%= notice %></p>
+<p id="notice" class="text-[#bdf4ff]"><%= notice %></p>
 
-<%= link_to 'Back', articles_path, class: "text-[#D7DF21] hover:underline" %>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto">
 
-<div class="mt-5 mb-5">
-  <%= render partial: 'common/ads/horizontal_ad' %>
-</div>
+  <%= link_to articles_path, class: "inline-flex items-center gap-2 text-[#bdf4ff] hover:text-[#D7DF21] transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-xs" do %>
+    <span class="material-symbols-outlined text-[16px]">arrow_back</span> Back to Dossiers
+  <% end %>
 
-<div itemscope itemtype="http://schema.org/Article" class="flex flex-col lg:flex-row gap-6">
+  <div class="mt-5 mb-5">
+    <%= render partial: 'common/ads/horizontal_ad' %>
+  </div>
 
-  <div class="w-full lg:w-2/3">
-    <article>
-      <!-- Go to www.addthis.com/dashboard to customize your tools -->
-      <div class="addthis_sharing_toolbox"></div>
-      <meta itemprop="articleSection" content="UFO Sightings">
-      <header>
-        <h2 itemprop="name" class="text-2xl font-bold text-[#D7DF21]"><%= @article.title %></h2>
-        <meta itemprop="headline" content="<%= @article.title %>"/>
-      </header>
-      <%
-      unless @article.image_thumbnail.blank?
-      %>
-        <meta itemprop="image" content="<%= @article.image_thumbnail %>"/>
-      <%
-      end
-      %>
-      <p class="text-sm text-gray-400 mt-2">
-        <meta itemprop="datePublished" content="<%= format_date_microdata @article.published_date %>"/>
-        <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>" class="text-gray-300"><%= format_date @article.published_date %></strong>
-        <%
-          unless @article.user.nil?
-        %>
-          , by <strong itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" class="text-gray-300"><%= @article.user.username %></span></strong><br/>
-        <%
-          end
-        %>
-        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-          <meta itemprop="name" content="ufo-hunters.com"/>
+  <div itemscope itemtype="http://schema.org/Article" class="flex flex-col lg:flex-row gap-8">
+
+    <div class="w-full lg:w-2/3">
+      <article class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 md:p-8">
+        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+        <div class="addthis_sharing_toolbox mb-4"></div>
+        <meta itemprop="articleSection" content="UFO Sightings">
+
+        <!-- Classification Label -->
+        <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] mb-3 block">
+          <span class="material-symbols-outlined text-[14px] align-middle mr-1">folder_special</span>INTELLIGENCE DOSSIER
         </span>
-       </small>
-      </p>
-      <div class="mt-4 text-gray-300 prose prose-invert max-w-none">
-          <p><%=@article.teaser.html_safe%></p>
-      </div>
 
-      <%
-      unless @article.partial_1.blank?
-      %>
-      <div class="mt-4">
-        <%= render partial: @article.partial_1, locals: {ufo_list: @ufo_list} %>
-      </div>
-      <%
-      end
-      %>
-
-      <div class="mt-4 text-gray-300 prose prose-invert max-w-none">
-          <span itemprop="articleBody">
-            <%=@article.body.html_safe%>
+        <header>
+          <h2 itemprop="name" class="text-3xl font-bold font-['Space_Grotesk'] text-[#D7DF21] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)] leading-tight"><%= @article.title %></h2>
+          <meta itemprop="headline" content="<%= @article.title %>"/>
+        </header>
+        <%
+        unless @article.image_thumbnail.blank?
+        %>
+          <meta itemprop="image" content="<%= @article.image_thumbnail %>"/>
+        <%
+        end
+        %>
+        <div class="flex items-center gap-4 mt-4 text-sm text-[#c9c8ad] border-l-4 border-[#D7DF21] pl-4">
+          <meta itemprop="datePublished" content="<%= format_date_microdata @article.published_date %>"/>
+          <span>
+            <span class="material-symbols-outlined text-[14px] align-middle mr-1">schedule</span>
+            Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>" class="text-[#dfe2eb]"><%= format_date @article.published_date %></strong>
+          <%
+            unless @article.user.nil?
+          %>
+            <span class="mx-2 text-[#484833]">|</span>
+            <span class="material-symbols-outlined text-[14px] align-middle mr-1">person</span>
+            <strong itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" class="text-[#dfe2eb]"><%= @article.user.username %></span></strong>
+          <%
+            end
+          %>
+          <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+            <meta itemprop="name" content="ufo-hunters.com"/>
           </span>
+          </span>
+        </div>
+
+        <div class="mt-6 text-[#dfe2eb] prose prose-invert max-w-none leading-relaxed prose-a:text-[#bdf4ff] prose-a:hover:text-[#D7DF21] prose-strong:text-[#dfe2eb]">
+            <p><%=@article.teaser.html_safe%></p>
+        </div>
+
+        <%
+        unless @article.partial_1.blank?
+        %>
+        <div class="mt-6">
+          <%= render partial: @article.partial_1, locals: {ufo_list: @ufo_list} %>
+        </div>
+        <%
+        end
+        %>
+
+        <div class="mt-6 text-[#dfe2eb] prose prose-invert max-w-none leading-relaxed prose-a:text-[#bdf4ff] prose-a:hover:text-[#D7DF21] prose-strong:text-[#dfe2eb]">
+            <span itemprop="articleBody">
+              <%=@article.body.html_safe%>
+            </span>
+        </div>
+      </article>
+
+      <!-- Comments Section -->
+      <div class="mt-8 bg-[#262a31] border border-[#484833]/20 rounded-xl p-6">
+        <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] mb-4 block">
+          <span class="material-symbols-outlined text-[14px] align-middle mr-1">forum</span>DISCUSSION
+        </span>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'ufo-hunters'; // required: replace example with your forum shortname
+
+          (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink text-[#c9c8ad] text-sm">comments powered by <span class="logo-disqus">Disqus</span></a>
       </div>
-    </article>
 
-    <div id="disqus_thread" class="mt-6 ml-2"></div>
-    <script type="text/javascript">
-      var disqus_shortname = 'ufo-hunters'; // required: replace example with your forum shortname
+    </div>
 
-      (function() {
-         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink text-gray-500 text-sm">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <div class="w-full lg:w-1/3 space-y-6" itemscope itemtype="http://schema.org/WPAdBlock">
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-4">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- AnuncioAdaptable3 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4760111415025425"
+             data-ad-slot="4432690882"
+             data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
 
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-4">
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <!-- AnuncioAdaptable2 -->
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-4760111415025425"
+             data-ad-slot="9142092084"
+             data-ad-format="auto"></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </div>
+    </div>
   </div>
-  <div class="w-full lg:w-1/3" itemscope itemtype="http://schema.org/WPAdBlock">
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-          <!-- AnuncioAdaptable3 -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4760111415025425"
-               data-ad-slot="4432690882"
-               data-ad-format="auto"></ins>
-          <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
 
-          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-          <!-- AnuncioAdaptable2 -->
-          <ins class="adsbygoogle"
-               style="display:block"
-               data-ad-client="ca-pub-4760111415025425"
-               data-ad-slot="9142092084"
-               data-ad-format="auto"></ins>
-          <script>
-          (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
-  </div>
 </div>
 <% end %>

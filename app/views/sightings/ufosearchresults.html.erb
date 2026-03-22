@@ -1,30 +1,46 @@
 
-<div class="w-full mb-4">
-  <h3 class="text-xl font-bold text-[#D7DF21]">
-    UFO Search results between <%= @startdateview %> and <%= @enddateview %>,
-    <%= link_to(raw("Would you like to do a new search?"), sightings_ufosearch_path, :itemprop => "url", class: "text-[#D7DF21] hover:underline") %>
-  </h3>
-</div>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
 
-<div class="w-full mb-4">
-  <div id="sightings-map" class="w-full h-[550px] rounded-lg"></div>
-</div>
-
-<%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: 7, map_center: @map_center} %>
-
-<div class="my-5">
-  <%= render partial: 'common/ads/horizontal_ad' %>
-</div>
-
-<div class="w-full mb-4">
-  <h3 class="text-xl font-bold text-gray-200">UFO sightings between <%= @startdateview %> and <%= @enddateview %> within a radius of 200 miles:</h3>
-</div>
-
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-12 lg:col-span-8">
-    <%= render partial: 'common/latest_sightings' %>
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-3">
+      <span class="material-symbols-outlined text-[#D7DF21] text-3xl">radar</span>
+      <h3 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">Search Results</h3>
+    </div>
+    <p class="text-[#dfe2eb] text-sm">
+      Results between <span class="text-[#bdf4ff] font-semibold"><%= @startdateview %></span> and <span class="text-[#bdf4ff] font-semibold"><%= @enddateview %></span>
+      &mdash;
+      <%= link_to(raw("New search?"), sightings_ufosearch_path, :itemprop => "url", class: "text-[#bdf4ff] hover:text-[#D7DF21] transition-colors underline") %>
+    </p>
+    <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
   </div>
-  <div class="col-span-12 lg:col-span-4">
-    <%= render partial: 'common/ads/adaptable3' %>
+
+  <!-- Map -->
+  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-2 mb-6">
+    <div id="sightings-map" class="w-full h-[550px] rounded-lg"></div>
   </div>
+
+  <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: 7, map_center: @map_center} %>
+
+  <div class="my-6">
+    <%= render partial: 'common/ads/horizontal_ad' %>
+  </div>
+
+  <!-- Results table -->
+  <div class="mb-6">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="material-symbols-outlined text-[#bdf4ff] text-xl">list_alt</span>
+      <h3 class="font-['Space_Grotesk'] text-lg font-bold text-[#dfe2eb] uppercase tracking-widest">UFO sightings between <%= @startdateview %> and <%= @enddateview %> within a radius of 200 miles</h3>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-12 gap-6">
+    <div class="col-span-12 lg:col-span-8">
+      <%= render partial: 'common/latest_sightings' %>
+    </div>
+    <div class="col-span-12 lg:col-span-4">
+      <%= render partial: 'common/ads/adaptable3' %>
+    </div>
+  </div>
+
 </div>

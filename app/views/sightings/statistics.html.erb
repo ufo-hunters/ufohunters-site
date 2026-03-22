@@ -1,45 +1,71 @@
-<%= javascript_include_tag "custom-tooltip" %>
-<%= javascript_include_tag "d3.v3.min.js" %>
+<%= javascript_include_tag "d3.v3.min" %>
 
-<div class="max-w-7xl mx-auto">
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold text-[#D7DF21]">A glance at our data</h2>
-    <p class="text-gray-300 mt-2">The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dynamically generated to keep it up to date as our database is updated. <strong class="text-gray-100">More graphs coming soon !!</strong></p>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto">
+
+  <!-- Section Header -->
+  <div class="mb-8">
+    <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] mb-2 block">
+      <span class="material-symbols-outlined text-[14px] align-middle mr-1">analytics</span>MORPHOLOGY ANALYSIS
+    </span>
+    <h2 class="text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#dfe2eb] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)]">A glance at our data</h2>
+    <p class="text-[#c9c8ad] mt-3 leading-relaxed">The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dynamically generated to keep it up to date as our database is updated. <strong class="text-[#D7DF21]">More graphs coming soon !!</strong></p>
   </div>
 
-  <div class="flex flex-col lg:flex-row gap-6">
+  <div class="flex flex-col lg:flex-row gap-8">
+
+    <!-- Data Table Panel -->
     <div class="shrink-0">
-      <table class="w-[250px] border-collapse">
-        <caption class="text-left font-bold text-[#D7DF21] mb-2">UFO Shapes Data</caption>
-        <thead>
-          <tr>
-            <th class="text-left px-3 py-2 border-b border-gray-600 text-gray-300">Shape</th>
-            <th class="text-left px-3 py-2 border-b border-gray-600 text-gray-300">Number of sightings</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%
-            count = 0
-            (0...30).each do |i|
-              ufo = @listaUFO[i]
-              unless ufo.nil?
-          %>
-                <tr class="<%= count % 2 == 0 ? 'bg-gray-800/50' : '' %>">
-                  <td class="px-3 py-1.5 text-gray-300 text-sm"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
-                  <td class="px-3 py-1.5 text-gray-300 text-sm text-right"><%= ufo['count'] %></td>
-                </tr>
-          <%
-                count += 1
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl overflow-hidden">
+        <div class="px-5 py-3 bg-[#0a0e14]">
+          <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff]">
+            <span class="material-symbols-outlined text-[14px] align-middle mr-1">database</span>RAW DATA
+          </span>
+          <h3 class="text-sm font-bold font-['Space_Grotesk'] text-[#dfe2eb] mt-1">UFO Shapes Data</h3>
+        </div>
+        <table class="w-[280px] border-collapse">
+          <thead>
+            <tr class="bg-[#0a0e14]">
+              <th class="text-left px-4 py-2.5 uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] border-b border-[#484833]/30">Shape</th>
+              <th class="text-right px-4 py-2.5 uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] border-b border-[#484833]/30">Sightings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%
+              count = 0
+              lista = @listaUFO.to_a
+              (0...30).each do |i|
+                ufo = lista[i]
+                unless ufo.nil?
+            %>
+                  <tr class="<%= count % 2 == 0 ? 'bg-[#262a31]' : 'bg-[#0a0e14]/40' %> hover:bg-[#31353c] transition-colors">
+                    <td class="px-4 py-2 text-[#dfe2eb] text-sm"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
+                    <td class="px-4 py-2 text-[#D7DF21] text-sm text-right font-mono"><%= ufo['count'] %></td>
+                  </tr>
+            <%
+                  count += 1
+                end
               end
-            end
-          %>
-        </tbody>
-      </table>
+            %>
+          </tbody>
+        </table>
+      </div>
     </div>
 
+    <!-- Bubble Chart Panel -->
     <article class="flex-1 max-w-[950px]">
-      <div class="top"></div>
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl overflow-hidden">
+        <div class="px-5 py-3 bg-[#0a0e14]">
+          <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff]">
+            <span class="material-symbols-outlined text-[14px] align-middle mr-1">bubble_chart</span>VISUALIZATION
+          </span>
+          <h3 class="text-sm font-bold font-['Space_Grotesk'] text-[#dfe2eb] mt-1">Shape Distribution</h3>
+        </div>
+        <div class="p-4">
+          <div class="top"></div>
+        </div>
+      </div>
     </article>
+
   </div>
 </div>
 

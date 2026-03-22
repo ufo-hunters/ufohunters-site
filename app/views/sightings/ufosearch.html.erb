@@ -1,60 +1,73 @@
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
 
-<div class="w-full mb-4">
-  <h3 class="text-xl font-bold text-[#D7DF21]">UFOs Search</h3>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
+
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-[#D7DF21] text-3xl">terminal</span>
+      <h3 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">Archive Search</h3>
+    </div>
+    <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mb-6"></div>
+  </div>
+
+  <!-- Instructions card -->
+  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-8">
+    <div class="flex items-center gap-2 mb-4">
+      <span class="material-symbols-outlined text-[#bdf4ff] text-xl">info</span>
+      <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">How to search</span>
+    </div>
+    <div class="space-y-2 text-[#dfe2eb] text-sm leading-relaxed">
+      <p>First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.</p>
+      <p>The search will be performed between the dates chosen, around the location (<span class="text-[#bdf4ff] underline">within a radius of 200 miles from the selected location</span>).</p>
+      <p>In the <strong class="text-[#D7DF21]">Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong class="text-[#D7DF21]">End Date</strong> field indicates the upper limit for your date range.</p>
+      <p>Finally, fill in the <strong class="text-[#D7DF21]">search</strong> box, inside the map, the sighting location.</p>
+      <p>Just below the map, type in the captcha field the letters you see in the image, and click on <strong class="text-[#D7DF21]">SEARCH UFOS</strong> to get the results.</p>
+    </div>
+  </div>
+
+  <%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch') do %>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div>
+        <label for="startdate" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">Start Date <span class="text-red-500">*</span></label>
+        <input type="date" id="startdate" name="startdate" class="w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" required>
+      </div>
+      <div>
+        <label for="enddate" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">End Date <span class="text-red-500">*</span></label>
+        <input type="date" id="enddate" name="enddate" class="w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" required>
+      </div>
+      <div>
+        <div name="coord_div" id="coord_div" class="hidden"></div>
+        <input type="text" value="" name="coord" id="coord" class="hidden" required/>
+      </div>
+    </div>
+
+    <!-- Map -->
+    <div class="w-full mb-6">
+      <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-2">
+        <div id="map-canvas" class="map-canvas w-full h-[400px] rounded-lg"></div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div>
+        <% if ENV['RECAPTCHA_SITE_KEY'].present? %>
+          <%= recaptcha_tags %>
+        <% else %>
+          <p class="text-[#D7DF21]/60 text-sm">[reCAPTCHA disabled — RECAPTCHA_SITE_KEY not set]</p>
+        <% end %>
+        <div class="mt-2"><span class="text-red-400 text-sm"><%= flash[:recaptcha_error] %></span></div>
+      </div>
+      <div class="flex items-center">
+        <input type="submit" class="bg-[#D7DF21] text-[#313300] hover:bg-[#D7DF21] font-['Space_Grotesk'] uppercase tracking-widest font-bold py-3 px-8 rounded-lg cursor-pointer transition-colors duration-200" value="SEARCH UFOS" name="commit">
+      </div>
+    </div>
+
+  <% end %>
+
 </div>
-
-<div class="w-full mb-6">
-  <p class="text-gray-300 mb-2">
-    First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.
-  </p>
-  <p class="text-gray-300 mb-2">
-    The search will be performed between the dates chosen, around the location (<u>within a radius of 200 miles from the selected location</u>).
-  </p>
-  <p class="text-gray-300 mb-2">
-    In the <strong class="text-gray-100">Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong class="text-gray-100">End Date</strong> field indicates the upper limit for your date range.
-  </p>
-  <p class="text-gray-300 mb-2">
-    Finally, fill in the <strong class="text-gray-100">search</strong> box, inside the map, the sighting location.
-  </p>
-  <p class="text-gray-300 mb-2">
-    Just below the map, type in the captcha field the letters you see in the image, and click on <strong class="text-gray-100">SEARCH UFOS</strong> to get the results.
-  </p>
-</div>
-
-<%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch') do %>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-    <div>
-      <label for="startdate" class="block text-sm font-medium text-gray-300 mb-1">Start Date <span class="text-red-500">*</span></label>
-      <input type="date" id="startdate" name="startdate" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-[#D7DF21]" required>
-    </div>
-    <div>
-      <label for="enddate" class="block text-sm font-medium text-gray-300 mb-1">End Date <span class="text-red-500">*</span></label>
-      <input type="date" id="enddate" name="enddate" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-[#D7DF21]" required>
-    </div>
-    <div>
-      <div name="coord_div" id="coord_div" class="hidden"></div>
-      <input type="text" value="" name="coord" id="coord" class="hidden" required/>
-    </div>
-  </div>
-
-  <div class="w-full mb-4">
-    <div id="map-canvas" class="map-canvas w-full h-[400px] rounded-lg"></div>
-  </div>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-    <div>
-      <%= recaptcha_tags %>
-      <div class="mt-2"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
-    </div>
-    <div class="flex items-center">
-      <input type="submit" class="bg-[#D7DF21] text-[#1D1D1D] font-bold py-3 px-6 rounded hover:bg-[#c5cd1e] cursor-pointer transition m-5" value="SEARCH UFOS" name="commit">
-    </div>
-  </div>
-
-<% end %>
 
 <script>
   mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';

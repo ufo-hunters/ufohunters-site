@@ -1,26 +1,39 @@
 <% cache("videos/content", expires_in: 12.hours) do %>
 
-<div class="w-full mb-4">
-  <h3 class="text-xl font-bold text-[#D7DF21]">Recent UFO Activity</h3>
-  <p class="text-gray-300">Discover the latest UFO sightings videos all over the world</p>
-</div>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto py-10">
 
-<div class="w-full mb-4">
-  <p class="text-gray-300">Drag the videos so that you can take a look at the UFO Video Gallery</p>
-</div>
-
-<div class="my-5">
-  <%= render partial: 'common/ads/adaptable3', locals: {span: 'w-full'} %>
-</div>
-
-<div class="w-full">
-  <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
-    <div class="slides"></div>
-    <h3 class="title"></h3>
-    <a class="prev">&lsaquo;</a>
-    <a class="next">&rsaquo;</a>
-    <a class="play-pause"></a>
+  <!-- Header -->
+  <div class="mb-8">
+    <div class="flex items-center gap-3 mb-2">
+      <span class="material-symbols-outlined text-[#D7DF21] text-3xl">video_library</span>
+      <h3 class="font-['Space_Grotesk'] text-2xl font-bold text-[#D7DF21] uppercase tracking-widest">UFO Video Gallery</h3>
+    </div>
+    <p class="text-[#dfe2eb] text-sm">Discover the latest UFO sightings videos all over the world</p>
+    <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
   </div>
+
+  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-4 mb-6">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-[#bdf4ff] text-lg">swipe</span>
+      <p class="text-[#c9c8ad] text-sm">Drag the videos so that you can take a look at the UFO Video Gallery</p>
+    </div>
+  </div>
+
+  <div class="my-6">
+    <%= render partial: 'common/ads/adaptable3', locals: {span: 'w-full'} %>
+  </div>
+
+  <!-- Gallery -->
+  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-2">
+    <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
+      <div class="slides"></div>
+      <h3 class="title"></h3>
+      <a class="prev">&lsaquo;</a>
+      <a class="next">&rsaquo;</a>
+      <a class="play-pause"></a>
+    </div>
+  </div>
+
 </div>
 
 <script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
@@ -62,8 +75,10 @@
   });
 </script>
 
-<div class="my-5">
-  <%= render partial: 'common/ads/horizontal_ad' %>
+<div class="px-4 md:px-12 max-w-[1920px] mx-auto">
+  <div class="my-6">
+    <%= render partial: 'common/ads/horizontal_ad' %>
+  </div>
 </div>
 
 <% end %>
