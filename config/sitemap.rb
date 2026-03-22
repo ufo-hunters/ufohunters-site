@@ -17,7 +17,7 @@ SitemapGenerator::Sitemap.create do
   end
 
   # Sightings (latest 10,000 for manageable sitemap size)
-  Report.where(status: 1, :coord.ne => nil).desc(:sighted_at).limit(10_000).each do |report|
+  Report.where(status: 1, :coord.ne => nil).desc(:sighted_at).limit(10_000).batch_size(500).each do |report|
     add sightings_search_path(id: report.id, title: report.location&.parameterize),
         lastmod: report.reported_at&.to_date,
         changefreq: 'never',
