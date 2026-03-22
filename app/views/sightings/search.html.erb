@@ -2,59 +2,69 @@
       cache("sightings/report/#{@ufo_list.id}", skip_digest: true, expires_in: 12.hours) do
 %>
 
-<div class="w-full">
-  <%
-    unless @ufo_list.coord.nil? || @ufo_list.coord == ""
-  %>
-    <div id="sightings-map" class="w-full h-[450px] rounded-lg"></div>
-  <%
-    end
-  %>
-</div>
+<!-- Sighting Detail Header -->
+<section class="pt-4 pb-8 px-4 md:px-12 max-w-[1920px] mx-auto">
+  <div class="flex items-center gap-3 mb-6">
+    <span class="inline-flex items-center px-3 py-1 rounded bg-[#D7DF21]/10 border border-[#D7DF21]/30 text-[#D7DF21] font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">Live Intercept</span>
+    <span class="text-[#c9c8ad]/50 font-['Space_Grotesk'] text-[10px] tracking-widest uppercase">Case ID: <%= @ufo_list.id.to_s[-8..] %></span>
+  </div>
 
-<%
-  unless @ufo_list.coord.nil? || @ufo_list.coord == ""
-%>
-  <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
-<%
-  end
-%>
-
-<div class="my-5">
-  <%= render partial: 'common/ads/horizontal_ad' %>
-</div>
-
-<div itemscope itemtype="http://schema.org/Article" class="grid grid-cols-12 gap-4">
-  <div class="col-span-12 lg:col-span-8">
-    <article>
-      <div class="addthis_sharing_toolbox"></div>
-
-      <meta itemprop="articleSection" content="UFO Sightings">
-      <header>
-        <h2 itemprop="name" class="text-2xl font-bold text-[#D7DF21]">
-          <%
-            unless @ufo_list.location.nil? || @ufo_list.location == ""
-          %>
-            <%= @ufo_list.location %></h2>
-          <%
-            end
-          %>
+  <div itemscope itemtype="http://schema.org/Article" class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <!-- Main Content -->
+    <div class="lg:col-span-8">
+      <article>
+        <meta itemprop="articleSection" content="UFO Sightings">
+        <header class="mb-8">
+          <h1 itemprop="name" class="text-3xl md:text-5xl font-headline font-black text-[#dfe2eb] tracking-tighter mb-4">
+            SIGHTING: <%= @ufo_list.location&.upcase %>
+          </h1>
           <meta itemprop="headline" content="<%= friendly_title(@ufo_list) %>">
-      </header>
 
-      <div class="text-sm text-gray-400 my-3">
-        <p>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>" class="text-gray-200"><%= format_date @ufo_list.sighted_at %></strong></p>
-        <p>Reported on <strong itemprop="datePublished" content="<%= format_date_microdata @ufo_list.reported_at %>" class="text-gray-200"><%= format_date @ufo_list.reported_at %></strong></p>
-        <p>Shape: <strong class="text-gray-200"><%= @ufo_list.shape %></strong> | Duration: <strong class="text-gray-200"><%= @ufo_list.duration %></strong></p>
-        <p>Source: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name" class="text-gray-200"><%= @ufo_list.source %></strong></span></p>
-        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-          <meta itemprop="name" content="ufo-hunters.com">
-        </span>
-      </div>
+          <!-- Technical Specs Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div class="bg-[#262a31] p-4 rounded-lg">
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Sighted On</div>
+              <div itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>" class="text-[#bdf4ff] font-headline text-sm font-bold"><%= format_date @ufo_list.sighted_at %></div>
+            </div>
+            <div class="bg-[#262a31] p-4 rounded-lg">
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Reported On</div>
+              <div itemprop="datePublished" content="<%= format_date_microdata @ufo_list.reported_at %>" class="text-[#dfe2eb] font-headline text-sm font-bold"><%= format_date @ufo_list.reported_at %></div>
+            </div>
+            <div class="bg-[#262a31] p-4 rounded-lg">
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Classification</div>
+              <div class="text-[#D7DF21] font-headline text-sm font-bold uppercase"><%= @ufo_list.shape %></div>
+            </div>
+            <div class="bg-[#262a31] p-4 rounded-lg">
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Duration</div>
+              <div class="text-[#dfe2eb] font-headline text-sm font-bold"><%= @ufo_list.duration %></div>
+            </div>
+          </div>
+        </header>
 
-      <div class="prose prose-invert max-w-none mt-4">
-        <p itemprop="articleBody"><%= @ufo_list.description.html_safe %></p>
+        <!-- Map -->
+        <% unless @ufo_list.coord.nil? || @ufo_list.coord == "" %>
+          <div class="mb-8">
+            <div id="sightings-map" class="w-full h-[400px] md:h-[500px] rounded-xl border border-[#484833]/20"></div>
+          </div>
+        <% end %>
 
+        <!-- Witness Testimony -->
+        <div class="bg-[#262a31] rounded-xl p-6 md:p-8 mb-8 border-l-4 border-[#D7DF21]">
+          <h3 class="text-xs font-['Space_Grotesk'] uppercase tracking-widest text-[#c9c8ad] mb-4">Witness Testimony</h3>
+          <blockquote class="text-[#dfe2eb] text-base leading-relaxed italic">
+            <p itemprop="articleBody">"<%= @ufo_list.description.html_safe %>"</p>
+          </blockquote>
+          <div class="mt-4 flex items-center gap-3">
+            <span itemprop="author" itemscope itemtype="http://schema.org/Organization">
+              <span class="text-[#c9c8ad] font-['Space_Grotesk'] text-xs">Source: <strong itemprop="name" class="text-[#dfe2eb]"><%= @ufo_list.source %></strong></span>
+            </span>
+            <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+              <meta itemprop="name" content="ufo-hunters.com">
+            </span>
+          </div>
+        </div>
+
+        <!-- Images -->
         <% unless @ufo_list.links.blank? && @ufo_list.image_cloudinary.blank? %>
           <%
             image_urls = []
@@ -63,92 +73,94 @@
 
             unless image_urls.blank?
           %>
-            <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Images</h2>
-            <div class="bg-[#1D1D1D] border border-gray-700 rounded-lg p-0">
-              <div id="gallery" class="relative overflow-hidden">
-                <div class="carousel-inner w-[90%] mx-auto" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-                  <%
-                    img_cont = 0
-                    image_urls.each do |img|
-                      if img_cont % 3 == 0
-                  %>
-                        <div class="gallery-item <%= "active" if img_cont == 0 %> <%= "hidden" unless img_cont == 0 %>">
-                          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 py-4">
-                  <%
-                      end
+            <div class="mb-8">
+              <h2 class="text-lg font-headline font-bold text-[#dfe2eb] mb-4 uppercase tracking-wider">Intercept Evidence</h2>
+              <div class="bg-[#0a0e14] rounded-xl p-4 border border-[#484833]/20">
+                <div id="gallery" class="relative overflow-hidden">
+                  <div class="carousel-inner w-[90%] mx-auto" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                    <%
+                      img_cont = 0
+                      image_urls.each do |img|
+                        if img_cont % 3 == 0
+                    %>
+                          <div class="gallery-item <%= "active" if img_cont == 0 %> <%= "hidden" unless img_cont == 0 %>">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 py-4">
+                    <%
+                        end
 
-                      img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
-                  %>
-                            <div class="text-center">
-                              <a href="<%= img %>" class="inline-block border border-gray-600 rounded p-1 hover:border-[#D7DF21] transition" target="_blank">
-                                <figure>
-                                  <%
-                                    if image_hosting_link?(img)
-                                  %>
-                                    <%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
-                                  <%
-                                    else
-                                  %>
-                                    <%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
-                                  <%
-                                    end
-                                  %>
-                                </figure>
-                              </a>
+                        img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
+                    %>
+                              <div class="text-center">
+                                <a href="<%= img %>" class="inline-block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
+                                  <figure>
+                                    <%
+                                      if image_hosting_link?(img)
+                                    %>
+                                      <%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
+                                    <%
+                                      else
+                                    %>
+                                      <%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
+                                    <%
+                                      end
+                                    %>
+                                  </figure>
+                                </a>
+                              </div>
+                    <%
+                        img_cont += 1
+                        if img_cont % 3 == 0
+                    %>
                             </div>
-                  <%
-                      img_cont += 1
-                      if img_cont % 3 == 0
-                  %>
                           </div>
-                        </div>
-                  <%
+                    <%
+                        end
                       end
-                    end
 
-                    if img_cont % 3 != 0
-                  %>
+                      if img_cont % 3 != 0
+                    %>
+                            </div>
                           </div>
-                        </div>
-                  <%
-                    end
-                  %>
+                    <%
+                      end
+                    %>
+                  </div>
+                  <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#10141a]/70 text-[#dfe2eb] px-3 py-2 rounded-r text-2xl hover:bg-[#D7DF21]/20 transition" data-gallery="gallery" data-action="prev" aria-label="Previous">&lsaquo;</button>
+                  <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#10141a]/70 text-[#dfe2eb] px-3 py-2 rounded-l text-2xl hover:bg-[#D7DF21]/20 transition" data-gallery="gallery" data-action="next" aria-label="Next">&rsaquo;</button>
                 </div>
-                <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-r text-2xl hover:bg-black/70" data-gallery="gallery" data-action="prev" aria-label="Previous">&lsaquo;</button>
-                <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-l text-2xl hover:bg-black/70" data-gallery="gallery" data-action="next" aria-label="Next">&rsaquo;</button>
               </div>
-            </div>
 
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                var gallery = document.getElementById("gallery");
-                var items = gallery.querySelectorAll(".gallery-item");
-                var currentIndex = 0;
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                  var gallery = document.getElementById("gallery");
+                  if (!gallery) return;
+                  var items = gallery.querySelectorAll(".gallery-item");
+                  var currentIndex = 0;
 
-                function showSlide(index) {
-                  items.forEach(function(item, i) {
-                    item.classList.toggle("hidden", i !== index);
-                    item.classList.toggle("active", i === index);
+                  function showSlide(index) {
+                    items.forEach(function(item, i) {
+                      item.classList.toggle("hidden", i !== index);
+                      item.classList.toggle("active", i === index);
+                    });
+                  }
+
+                  gallery.querySelector('[data-action="prev"]').addEventListener("click", function() {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                    showSlide(currentIndex);
                   });
-                }
 
-                gallery.querySelector('[data-action="prev"]').addEventListener("click", function() {
-                  currentIndex = (currentIndex - 1 + items.length) % items.length;
-                  showSlide(currentIndex);
+                  gallery.querySelector('[data-action="next"]').addEventListener("click", function() {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    showSlide(currentIndex);
+                  });
+
+                  setInterval(function() {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    showSlide(currentIndex);
+                  }, 5000);
                 });
-
-                gallery.querySelector('[data-action="next"]').addEventListener("click", function() {
-                  currentIndex = (currentIndex + 1) % items.length;
-                  showSlide(currentIndex);
-                });
-
-                setInterval(function() {
-                  currentIndex = (currentIndex + 1) % items.length;
-                  showSlide(currentIndex);
-                }, 5000);
-              });
-            </script>
-
+              </script>
+            </div>
           <%
             end
 
@@ -157,68 +169,131 @@
 
               unless video_urls.blank?
           %>
-                <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Videos</h2>
+                <div class="mb-8">
+                  <h2 class="text-lg font-headline font-bold text-[#dfe2eb] mb-4 uppercase tracking-wider">Video Evidence</h2>
           <%
-                video_urls.each do |vid|
+                  video_urls.each do |vid|
           %>
-                  <%= youtube_video(vid) %>
+                    <div class="mb-4 rounded-xl overflow-hidden border border-[#484833]/20">
+                      <%= youtube_video(vid) %>
+                    </div>
           <%
-                end
+                  end
+          %>
+                </div>
+          <%
               end
 
               unless other_urls.blank?
           %>
-                <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Related links</h2>
-                <ul class="list-disc list-inside space-y-1">
+                <div class="mb-8">
+                  <h2 class="text-lg font-headline font-bold text-[#dfe2eb] mb-4 uppercase tracking-wider">Related Links</h2>
+                  <ul class="space-y-2">
           <%
-                other_urls.each do |link|
+                  other_urls.each do |link|
           %>
-                  <li><%= link_to link, link, :target => '_blank', class: "text-[#D7DF21] hover:underline" %></li>
+                    <li class="flex items-center gap-2">
+                      <span class="material-symbols-outlined text-[#bdf4ff] text-sm">link</span>
+                      <%= link_to link, link, :target => '_blank', class: "text-[#bdf4ff] hover:text-[#D7DF21] hover:underline text-sm transition-colors truncate" %>
+                    </li>
           <%
-                end
+                  end
           %>
-                </ul>
+                  </ul>
+                </div>
           <%
               end
             end
           end
           %>
+      </article>
+
+      <!-- Disqus Comments -->
+      <div class="mt-12 bg-[#262a31] rounded-xl p-6 border border-[#484833]/20">
+        <h3 class="text-xs font-['Space_Grotesk'] uppercase tracking-widest text-[#c9c8ad] mb-6">Intelligence Discussion</h3>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          var disqus_shortname = 'ufo-hunters';
+          (function() {
+             var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+             dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+             (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript" class="text-[#bdf4ff]">comments powered by Disqus.</a></noscript>
       </div>
-    </article>
+    </div>
 
-    <div id="disqus_thread" class="ml-2.5 mt-6"></div>
-    <script type="text/javascript">
-      var disqus_shortname = 'ufo-hunters';
+    <!-- Sidebar -->
+    <div class="lg:col-span-4 space-y-6">
+      <% if @ufo_list.coord.present? %>
+        <div class="bg-[#262a31] rounded-xl p-6 border border-[#484833]/20">
+          <h3 class="text-xs font-['Space_Grotesk'] uppercase tracking-widest text-[#c9c8ad] mb-4">Coordinates</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest">Latitude</div>
+              <div class="text-[#D7DF21] font-headline text-lg font-bold"><%= @ufo_list.coord[1]&.round(4) %>&deg;</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest">Longitude</div>
+              <div class="text-[#D7DF21] font-headline text-lg font-bold"><%= @ufo_list.coord[0]&.round(4) %>&deg;</div>
+            </div>
+          </div>
+        </div>
+      <% end %>
 
-      (function() {
-         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-      })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="text-gray-500 text-sm">comments powered by <span class="font-bold">Disqus</span></a>
-  </div>
+      <div class="bg-[#262a31] rounded-xl p-6 border border-[#484833]/20">
+        <h3 class="text-xs font-['Space_Grotesk'] uppercase tracking-widest text-[#c9c8ad] mb-4">Technical Specs</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center py-2 border-b border-[#484833]/20">
+            <span class="text-[#c9c8ad] text-sm">Classification</span>
+            <span class="text-[#D7DF21] font-headline text-sm font-bold uppercase"><%= @ufo_list.shape %></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-[#484833]/20">
+            <span class="text-[#c9c8ad] text-sm">Duration</span>
+            <span class="text-[#dfe2eb] font-headline text-sm font-bold"><%= @ufo_list.duration %></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-[#484833]/20">
+            <span class="text-[#c9c8ad] text-sm">Source</span>
+            <span class="text-[#dfe2eb] font-headline text-sm font-bold"><%= @ufo_list.source %></span>
+          </div>
+          <% if @ufo_list.case_number.present? %>
+            <div class="flex justify-between items-center py-2">
+              <span class="text-[#c9c8ad] text-sm">Case Number</span>
+              <span class="text-[#bdf4ff] font-headline text-sm font-bold">#<%= @ufo_list.case_number %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
 
-  <div class="col-span-12 lg:col-span-4">
-    <%= render partial: 'common/ads/adaptable3' %>
-  </div>
-</div>
+      <%= render partial: 'common/ads/adaptable3' %>
 
-<div class="grid grid-cols-12 gap-4 mt-6">
-  <div class="col-span-12 lg:col-span-8">
-    <%
-      unless @nearest_sightings.blank? || @nearest_sightings.count < 2
-    %>
-      <%= render partial: "common/nearest_sightings", locals: {ufo_id: @ufo_list.id}, object: @nearest_sightings %>
-    <%
-      end
-    %>
+      <%= link_to new_report_path, class: "block w-full bg-[#D7DF21] hover:bg-[#D7DF21] text-[#313300] px-6 py-4 rounded-xl text-center text-xs font-['Space_Grotesk'] font-bold uppercase tracking-widest transition-all no-underline" do %>
+        <span class="material-symbols-outlined text-sm mr-2 align-middle">upload_file</span>
+        Report a Sighting
+      <% end %>
+    </div>
   </div>
-  <div class="col-span-12 lg:col-span-4">
-    <%= render partial: 'common/ads/adaptable' %>
+</section>
+
+<!-- Map Render -->
+<% unless @ufo_list.coord.nil? || @ufo_list.coord == "" %>
+  <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
+<% end %>
+
+<!-- Nearest Sightings -->
+<section class="px-4 md:px-12 pb-16 max-w-[1920px] mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="lg:col-span-8">
+      <% unless @nearest_sightings.blank? || @nearest_sightings.count < 2 %>
+        <%= render partial: "common/nearest_sightings", locals: {ufo_id: @ufo_list.id}, object: @nearest_sightings %>
+      <% end %>
+    </div>
+    <div class="lg:col-span-4">
+      <%= render partial: 'common/ads/adaptable' %>
+    </div>
   </div>
-</div>
+</section>
 
 <%
       end

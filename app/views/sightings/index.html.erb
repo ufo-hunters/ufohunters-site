@@ -1,75 +1,138 @@
-
-<div class="grid grid-cols-12 gap-4">
-  <div class="col-span-12 md:col-span-4">
-    <h1 class="text-xl font-bold text-[#D7DF21]">Recent UFO Activity</h1>
-    <p class="text-gray-300">Latest UFO sightings all over the world</p>
+<!-- Hero Section -->
+<section class="relative h-[600px] md:h-[750px] flex items-center justify-center overflow-hidden bg-[#0a0e14]">
+  <div class="absolute inset-0 z-0 opacity-30">
+    <div id="hero-map" class="w-full h-full"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#10141a]/30 to-[#10141a]"></div>
   </div>
-  <div class="col-span-12 md:col-span-8">
-    <%= render partial: 'common/gcs' %>
+  <div class="relative z-10 text-center max-w-4xl px-6">
+    <div class="inline-flex items-center gap-2 mb-6 px-4 py-1 rounded-full border border-[#D7DF21]/30 bg-[#D7DF21]/5 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase">
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D7DF21] opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#D7DF21]"></span>
+      </span>
+      Live Data Feed Active
+    </div>
+    <h1 class="text-5xl md:text-8xl font-black mb-4 tracking-tighter leading-none text-[#dfe2eb]">
+      <%= number_with_delimiter(num_reports) %> <span class="text-[#D7DF21] drop-shadow-[0_0_15px_rgba(215,223,33,0.3)]">SIGHTINGS</span>
+    </h1>
+    <p class="text-lg md:text-2xl text-[#c9c8ad] font-light mb-12 tracking-wide uppercase font-headline">
+      Reported Datasets &hellip; and growing
+    </p>
+    <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+      <%= link_to sightings_ufosearch_path, class: "inline-flex items-center gap-3 bg-[#D7DF21] text-[#313300] px-8 py-4 rounded-xl font-['Space_Grotesk'] font-bold uppercase tracking-widest text-sm hover:bg-[#D7DF21]/80 transition-all no-underline" do %>
+        <span class="material-symbols-outlined">radar</span>
+        Search the Archive
+      <% end %>
+      <%= link_to new_report_path, class: "inline-flex items-center gap-3 bg-transparent border border-[#D7DF21]/30 text-[#D7DF21] px-8 py-4 rounded-xl font-['Space_Grotesk'] font-bold uppercase tracking-widest text-sm hover:bg-[#D7DF21]/10 transition-all no-underline" do %>
+        <span class="material-symbols-outlined">upload_file</span>
+        Report a Sighting
+      <% end %>
+    </div>
   </div>
-</div>
+  <!-- Side Decorations -->
+  <div class="absolute left-6 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-8 opacity-30">
+    <div class="text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] tracking-widest rotate-90 origin-left">LAT: 51.5074 N</div>
+    <div class="text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] tracking-widest rotate-90 origin-left">LONG: 0.1278 W</div>
+  </div>
+  <!-- Tactical Corners -->
+  <div class="absolute top-24 left-8 w-24 h-24 border-t border-l border-[#D7DF21]/20 hidden lg:block"></div>
+  <div class="absolute bottom-8 right-8 w-24 h-24 border-b border-r border-[#D7DF21]/20 hidden lg:block"></div>
+</section>
 
-<div class="w-full mt-6">
-  <div itemscope itemtype="http://schema.org/ItemList">
-    <meta itemprop="itemListOrder" content="Descending"/>
-
-    <div class="bg-[#1D1D1D] border border-gray-700 rounded-lg p-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <% @ufo_list.each do |ufo| %>
-          <div class="p-2" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-            <div class="w-[85%] ml-auto mb-4">
-              <p itemprop="name" class="overflow-hidden text-ellipsis font-bold text-sm mb-0">
-                <%= ufo.location.size > 40 ? ufo.location.partition("(")[0] : ufo.location %>
-              </p>
-              <p itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="mb-0 text-gray-400"><%= format_date ufo.sighted_at %></p>
-              <meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
-              <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
-              <p class="mb-0"><%= link_to "View sighting", sightings_search_path(id: ufo.id, title: friendly_title(ufo)), class: "text-[#D7DF21] hover:underline" %></p>
-            </div>
-          </div>
-        <% end %>
+<!-- Interactive Map Section -->
+<section class="py-12 md:py-24 px-4 md:px-8 max-w-[1920px] mx-auto">
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
+    <!-- Map -->
+    <div class="lg:col-span-3 h-[500px] md:h-[700px] bg-[#0a0e14] rounded-xl relative overflow-hidden border border-[#484833]/20">
+      <div id="sightings-map" class="w-full h-full"></div>
+      <div class="absolute top-4 left-4 glass-panel p-4 rounded-lg border border-[#484833]/30 z-10">
+        <h3 class="text-[#bdf4ff] font-headline text-sm font-bold tracking-widest uppercase">Global Surveillance</h3>
+        <p class="text-[10px] text-[#c9c8ad]/70 mt-1 font-['Space_Grotesk']">REAL-TIME INTERCEPTS: <%= @ufo_list.size %> DISPLAYED</p>
       </div>
     </div>
 
-    <!-- Pagination -->
-    <nav class="flex justify-center mt-6" aria-label="Pagination">
-      <%== pagy_nav(@pagy) %>
-    </nav>
+    <!-- Recent Intercepts Sidebar -->
+    <div class="flex flex-col gap-4 overflow-y-auto max-h-[700px] pr-2 custom-scrollbar" itemscope itemtype="http://schema.org/ItemList">
+      <meta itemprop="itemListOrder" content="Descending"/>
+      <h2 class="text-xs font-['Space_Grotesk'] uppercase tracking-[0.2em] text-[#c9c8ad] mb-2 px-2">Recent Intercepts</h2>
 
+      <% @ufo_list.each_with_index do |ufo, i| %>
+        <div class="p-4 bg-[#262a31] rounded-xl border-l-4 <%= i == 0 ? 'border-[#D7DF21]' : 'border-[#484833]/50' %> group hover:bg-[#31353c] transition-all cursor-pointer" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+          <%= link_to sightings_search_path(id: ufo.id, title: friendly_title(ufo)), class: "no-underline block" do %>
+            <div class="flex justify-between items-start mb-2">
+              <span class="text-[#bdf4ff] font-headline text-[10px] font-bold tracking-widest"><%= format_date_microdata ufo.sighted_at %></span>
+              <span class="text-[#c9c8ad]/40 text-[10px] font-['Space_Grotesk'] uppercase"><%= ufo.shape %></span>
+            </div>
+            <h4 itemprop="name" class="text-[#dfe2eb] font-headline font-bold text-sm tracking-tight mb-1 group-hover:text-[#D7DF21] transition-colors">
+              <%= ufo.location.size > 35 ? ufo.location.partition("(")[0] : ufo.location %>
+            </h4>
+            <meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
+            <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
+            <p itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="text-xs text-[#c9c8ad]/70 leading-relaxed line-clamp-2 m-0">
+              <%= ufo.description&.truncate(100) %>
+            </p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
 
-<div class="w-full mt-6">
-  <div id="sightings-map" class="w-full h-[600px] rounded-lg"></div>
-</div>
+  <!-- Pagination -->
+  <nav class="flex justify-center mt-8" aria-label="Pagination">
+    <%== pagy_nav(@pagy) %>
+  </nav>
+</section>
 
 <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map'} %>
 
-<div class="my-5">
+<div class="my-5 px-4 md:px-8">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
 
-<div class="w-full">
-  <p class="text-gray-400 text-base my-2.5 pr-2.5">The map above shows the latest <strong class="text-gray-200">UFO sightings all over the world</strong>. Click the icons to get a summary of the sighting and access to the detail view, where you'll find the <strong class="text-gray-200">full report as it was reported by witnesses</strong> and <strong class="text-gray-200">other near sightings</strong>.</p>
-  <p class="text-gray-400 text-base my-2.5 pr-2.5">If you find something interesting <strong class="text-gray-200">feel free to share it with your friends !!!</strong></p>
-</div>
-
-<% cache("index/modules") do %>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-  <div class="text-center mt-4">
-    <%= image_tag image_path('world.png'), class: "mx-auto", loading: "lazy", alt: "UFO sightings world map" %>
-    <h3 class="text-lg font-bold mt-3"><%= link_to "Thousands of sightings", sightings_maps_path, class: "text-[#D7DF21] hover:underline" %></h3>
-    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Find sightings by date, shape, location or near you !! Browse over more than 100.000 sightings.</p>
+<!-- Glassmorphic Info Cards -->
+<section class="py-16 md:py-24 px-4 md:px-8 bg-[#0a0e14]">
+  <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+    <!-- Card 1: Archives -->
+    <div class="glass-panel p-8 rounded-2xl border border-[#484833]/20 relative group hover:border-[#D7DF21]/30 transition-all overflow-hidden">
+      <div class="absolute -right-10 -top-10 opacity-5 group-hover:opacity-10 transition-opacity">
+        <span class="material-symbols-outlined text-[160px]">database</span>
+      </div>
+      <div class="w-12 h-12 rounded-lg bg-[#D7DF21]/10 flex items-center justify-center mb-8 border border-[#D7DF21]/20">
+        <span class="material-symbols-outlined text-[#D7DF21]">query_stats</span>
+      </div>
+      <h3 class="text-2xl font-headline font-bold text-[#dfe2eb] mb-4">THOUSANDS OF ARCHIVES</h3>
+      <p class="text-[#c9c8ad]/80 text-sm leading-relaxed mb-8">Access our encrypted database of historical sightings. Filter by craft type, duration, and atmospheric conditions.</p>
+      <%= link_to sightings_maps_path, class: "flex items-center gap-2 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase hover:gap-4 transition-all no-underline" do %>
+        ENTER VAULT <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      <% end %>
+    </div>
+    <!-- Card 2: Submit -->
+    <div class="glass-panel p-8 rounded-2xl border border-[#484833]/20 relative group hover:border-[#bdf4ff]/30 transition-all overflow-hidden bg-gradient-to-br from-[#262a31] to-[#0a0e14]">
+      <div class="absolute -right-10 -top-10 opacity-5 group-hover:opacity-10 transition-opacity">
+        <span class="material-symbols-outlined text-[160px]">visibility</span>
+      </div>
+      <div class="w-12 h-12 rounded-lg bg-[#bdf4ff]/10 flex items-center justify-center mb-8 border border-[#bdf4ff]/20">
+        <span class="material-symbols-outlined text-[#bdf4ff]">upload_file</span>
+      </div>
+      <h3 class="text-2xl font-headline font-bold text-[#dfe2eb] mb-4">SUBMIT INTEL</h3>
+      <p class="text-[#c9c8ad]/80 text-sm leading-relaxed mb-8">Witnessed something unexplained? Your data is critical. Securely upload photos, videos, and witness testimony.</p>
+      <%= link_to new_report_path, class: "flex items-center gap-2 text-[#bdf4ff] font-['Space_Grotesk'] text-xs tracking-widest uppercase hover:gap-4 transition-all no-underline" do %>
+        FILE REPORT <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      <% end %>
+    </div>
+    <!-- Card 3: Mobile -->
+    <div class="glass-panel p-8 rounded-2xl border border-[#484833]/20 relative group hover:border-[#D7DF21]/30 transition-all overflow-hidden">
+      <div class="absolute -right-10 -top-10 opacity-5 group-hover:opacity-10 transition-opacity">
+        <span class="material-symbols-outlined text-[160px]">smartphone</span>
+      </div>
+      <div class="w-12 h-12 rounded-lg bg-[#D7DF21]/10 flex items-center justify-center mb-8 border border-[#D7DF21]/20">
+        <span class="material-symbols-outlined text-[#D7DF21]">app_shortcut</span>
+      </div>
+      <h3 class="text-2xl font-headline font-bold text-[#dfe2eb] mb-4">MOBILE TERMINAL</h3>
+      <p class="text-[#c9c8ad]/80 text-sm leading-relaxed mb-8">Get real-time push alerts for sightings in your proximity. AR tracking tools and star mapping built into your device.</p>
+      <a href="https://play.google.com/store/apps/details?id=com.ufohunters.sightings" class="flex items-center gap-2 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase hover:gap-4 transition-all no-underline">
+        DOWNLOAD APP <span class="material-symbols-outlined text-sm">arrow_forward</span>
+      </a>
+    </div>
   </div>
-  <div class="text-center mt-4">
-    <%= image_tag image_path('ufo.png'), class: "mx-auto", loading: "lazy", alt: "Report a UFO sighting" %>
-    <h3 class="text-lg font-bold mt-3"><%= link_to "Have you seen a UFO?", new_report_path, class: "text-[#D7DF21] hover:underline" %></h3>
-    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Be quiet, you are not alone. Thousands of people have experienced the same before.</p>
-  </div>
-  <div class="text-center mt-4">
-    <%= image_tag image_path('android.png'), class: "mx-auto", loading: "lazy", alt: "UFO Hunters Android app" %>
-    <h3 class="text-lg font-bold mt-3"><%= link_to "UFO Hunters App", "https://play.google.com/store/apps/details?id=com.ufohunters.sightings", class: "text-[#D7DF21] hover:underline" %></h3>
-    <p class="text-gray-400 text-base my-2.5 pr-2.5 leading-relaxed">Download our App and take a look at the most recent sightings, or those near you.</p>
-  </div>
-</div>
-<% end %>
+</section>

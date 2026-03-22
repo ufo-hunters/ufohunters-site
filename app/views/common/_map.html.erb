@@ -85,19 +85,11 @@
 
       // add markers to map
       geojson.features.forEach(function(marker) {
- 
-        // create a HTML element for each feature
-        var el = document.createElement('div');
-        el.className = 'marker';
 
         // make a marker for each feature and add to the map
-        new maplibregl.Marker(el)
+        new maplibregl.Marker({color: '#D7DF21'})
         .setLngLat(marker.geometry.coordinates)
-        .addTo(map);
-
-        new maplibregl.Marker(el)
-        .setLngLat(marker.geometry.coordinates)
-        .setPopup(new maplibregl.Popup({ offset: 25 }) // add popups
+        .setPopup(new maplibregl.Popup({ offset: 25 })
         .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
         .addTo(map);
         

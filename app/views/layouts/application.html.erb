@@ -1,20 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <script>
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
           colors: {
-            'ufo-green': '#D7DF21',
-            'ufo-green-dark': '#959C16',
-            'ufo-green-hover': '#7D8212',
-            'ufo-dark': '#1D1D1D',
-          }
-        }
-      }
+            "surface-dim": "#10141a",
+            "surface": "#10141a",
+            "surface-container-lowest": "#0a0e14",
+            "surface-container-low": "#181c22",
+            "surface-container": "#1c2026",
+            "surface-container-high": "#262a31",
+            "surface-container-highest": "#31353c",
+            "surface-bright": "#353940",
+            "surface-variant": "#31353c",
+            "background": "#10141a",
+            "primary": "#D7DF21",
+            "primary-container": "#D7DF21",
+            "primary-fixed": "#e3eb31",
+            "secondary": "#bdf4ff",
+            "secondary-container": "#00e3fd",
+            "secondary-fixed": "#9cf0ff",
+            "secondary-fixed-dim": "#00daf3",
+            "tertiary": "#f3fb70",
+            "tertiary-container": "#d6de57",
+            "on-primary": "#313300",
+            "on-secondary": "#00363d",
+            "on-surface": "#dfe2eb",
+            "on-surface-variant": "#c9c8ad",
+            "on-background": "#dfe2eb",
+            "outline": "#929279",
+            "outline-variant": "#484833",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-error": "#690005",
+            "inverse-surface": "#dfe2eb",
+            "inverse-primary": "#5f6300"
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
     }
   </script>
   <%= javascript_importmap_tags %>
@@ -34,7 +70,7 @@
   <meta property="og:description" content="<%= @page_description %>" />
   <meta property="og:url" content="<%= request.original_url.split('?').first %>" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="UFO Hunters" />
+  <meta property="og:site_name" content="UFO Hunters | UFO Hunters" />
   <meta property="og:image" content="<%= @og_image || image_url('ufo-hunters-logo.png') %>" />
   <meta property="twitter:card" content="summary">
   <meta property="twitter:site" content="@UfoHuntersCom">
@@ -42,30 +78,86 @@
   <meta property="twitter:description" content="<%= @page_description %>">
   <meta property="twitter:image" content="<%= @og_image || image_url('ufo-hunters-logo.png') %>">
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
   <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { font-family: 'Inter', sans-serif; }
+    h1, h2, h3, h4, .label-spec { font-family: 'Space Grotesk', sans-serif; }
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(49, 53, 60, 0.6);
+    }
     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
     .marker {
       background-image: url('<%= image_path('platillo_verde.png') %>');
       background-size: cover;
       width: 29px;
       height: 25px;
-      border-radius: 50%;
       cursor: pointer;
     }
     .maplibregl-popup-content {
       text-align: left;
-      font-family: 'Open Sans', sans-serif;
-      padding: 10px;
+      font-family: 'Inter', sans-serif;
+      padding: 12px 16px;
+      background: #1c2026;
+      color: #dfe2eb;
+      border: 1px solid rgba(72, 72, 51, 0.3);
+      border-radius: 4px;
     }
     .maplibregl-popup-content h3 {
-      font-size: 100%;
-      padding-top: 0;
-      margin: 0 10px 5px 0;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #D7DF21;
+      margin: 0 0 4px 0;
+      padding: 0;
+    }
+    .maplibregl-popup-tip {
+      border-top-color: #1c2026;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      animation: marquee 30s linear infinite;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(16, 20, 26, 0.5); }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(244, 252, 66, 0.2); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(244, 252, 66, 0.5); }
+    /* Pagy pagination styling */
+    .pagy.nav { display: flex; gap: 4px; align-items: center; }
+    .pagy.nav a, .pagy.nav span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: all 150ms;
+    }
+    .pagy.nav a {
+      color: #dfe2eb;
+      background: #262a31;
+      border: 1px solid rgba(72, 72, 51, 0.2);
+    }
+    .pagy.nav a:hover {
+      background: #31353c;
+      color: #D7DF21;
+    }
+    .pagy.nav a.current, .pagy.nav span.current {
+      background: #D7DF21;
+      color: #313300;
+      font-weight: 700;
+    }
+    .pagy.nav span.gap {
+      color: #c9c8ad;
     }
   </style>
   <script type="application/ld+json">
@@ -110,166 +202,196 @@
   gtag('js', new Date());
   gtag('config', 'G-4FL7V9G39W');
 </script>
-<body itemscope itemtype="http://schema.org/WebPage" class="bg-white">
+<body itemscope itemtype="http://schema.org/WebPage" class="bg-[#10141a] text-[#dfe2eb] selection:bg-[#D7DF21] selection:text-[#313300]">
 
-  <div class="max-w-7xl mx-auto px-4">
-    <!-- Header -->
-    <header itemscope itemtype="http://schema.org/WPHeader" class="hidden sm:flex items-center justify-between py-4">
-      <div class="flex-shrink-0">
-        <div class="m-0"><a itemprop="url" href="/"><span itemprop="name"><%= image_tag 'ufo-hunters-logo.png', alt: 'UFO Hunters' %></span></a></div>
-      </div>
-      <div>
-        <h2 class="text-lg font-semibold mt-0"><%= num_reports %> sightings reported...<br>and growing</h2>
-      </div>
-      <div>
-        <h5 class="text-[#d7df21] text-sm font-semibold">
-          <%= link_to "Do you want to join our UFO research team?", articles_uforesearchteam_path %>
-        </h5>
-      </div>
-    </header>
+  <!-- Fixed Navbar -->
+  <nav class="fixed top-0 w-full z-50 bg-[#10141a]/60 backdrop-blur-xl shadow-[0_0_20px_rgba(215,223,33,0.06)]" data-controller="navbar" itemscope itemtype="http://schema.org/SiteNavigationElement">
+    <div class="flex justify-between items-center px-4 md:px-8 py-4 w-full max-w-[1920px] mx-auto">
+      <!-- Logo -->
+      <a href="/" itemprop="url" class="text-xl md:text-2xl font-bold tracking-tighter text-[#D7DF21] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)] font-headline no-underline">
+        <span itemprop="name">UFO HUNTERS</span>
+      </a>
 
-    <!-- Navbar -->
-    <nav class="bg-[#D7DF21] rounded-lg mb-4" data-controller="navbar" itemscope itemtype="http://schema.org/SiteNavigationElement">
-      <div class="flex items-center justify-between px-4 py-2 sm:hidden">
-        <a href="/" class="sm:hidden"><%= image_tag 'ufo-hunters-logo.png', alt: 'UFO Hunters', class: 'h-8' %></a>
-        <button data-action="click->navbar#toggle" class="p-2 rounded bg-[#BBC31C] text-white">
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex items-center gap-6 font-['Space_Grotesk'] uppercase tracking-[0.1em] text-sm">
+        <% menu_items = [
+          ["Home", root_path, "index"],
+          ["Articles", articles_path, "articles"],
+          ["Search", sightings_ufosearch_path, "ufosearch"],
+          ["Stats", stats_path, "statistics"],
+          ["Maps", sightings_maps_path, "maps"],
+          ["Report", new_report_path, "report"]
+        ] %>
+        <% menu_items.each do |label, path, key| %>
+          <%= link_to label, path, class: "no-underline transition-colors #{@menu == key ? 'text-[#D7DF21] border-b-2 border-[#D7DF21] pb-1' : 'text-[#dfe2eb]/70 hover:text-[#dfe2eb]'}", itemprop: "url" %>
+        <% end %>
+      </div>
+
+      <!-- Right Actions -->
+      <div class="flex items-center gap-4">
+        <% if logged_in? %>
+          <%= link_to articles_myspace_path, class: "hidden lg:flex items-center gap-1 text-[#dfe2eb]/70 hover:text-[#D7DF21] transition-all p-2 rounded-lg no-underline" do %>
+            <span class="material-symbols-outlined text-sm">account_circle</span>
+            <span class="text-xs font-['Space_Grotesk'] uppercase tracking-wider">My Space</span>
+          <% end %>
+          <%= link_to "Logout", sessions_destroy_path, class: "hidden lg:block text-[#dfe2eb]/50 hover:text-[#dfe2eb] text-xs font-['Space_Grotesk'] uppercase tracking-wider no-underline" %>
+        <% end %>
+
+        <!-- Mobile Toggle -->
+        <button data-action="click->navbar#toggle" class="md:hidden p-2 rounded-lg text-[#dfe2eb]/70 hover:text-[#D7DF21] hover:bg-[#262a31]/50 transition-all">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
       </div>
-      <ul id="menunew" class="hidden sm:flex flex-wrap items-center gap-1 px-4 py-2 font-bold text-sm text-gray-900 list-none m-0" data-navbar-target="menu">
-        <% menu_items = [
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="menunew" class="hidden md:hidden bg-[#1c2026] border-t border-[#484833]/20 px-4 py-4" data-navbar-target="menu">
+      <div class="flex flex-col gap-2">
+        <% [
           ["Home", root_path, "index"],
           ["Articles", articles_path, "articles"],
-          ["UFOs Search", sightings_ufosearch_path, "ufosearch"],
+          ["Search", sightings_ufosearch_path, "ufosearch"],
           ["Statistics", stats_path, "statistics"],
           ["Maps", sightings_maps_path, "maps"],
           ["Report a UFO", new_report_path, "report"],
           ["Videos", sightings_videos_path, "videos"],
           ["Images", sightings_images_path, "images"],
-          ["About us", sightings_about_path, "about"],
-          ["UFO Research Team", articles_uforesearchteam_path, "uforesearchteam"]
-        ] %>
-        <% menu_items.each do |label, path, key| %>
-          <li>
-            <%= link_to label, path, class: "block px-3 py-1 rounded-full no-underline #{@menu == key ? 'bg-white text-gray-900' : 'text-gray-900 hover:bg-[#BBC31C]'}", itemprop: "url" %>
-          </li>
+          ["About", sightings_about_path, "about"]
+        ].each do |label, path, key| %>
+          <%= link_to label, path, class: "block px-4 py-2 rounded font-['Space_Grotesk'] uppercase tracking-widest text-xs no-underline transition-colors #{@menu == key ? 'bg-[#262a31] text-[#D7DF21]' : 'text-[#dfe2eb]/70 hover:bg-[#262a31] hover:text-[#dfe2eb]'}" %>
         <% end %>
         <% if logged_in? %>
-          <li><%= link_to "My space", articles_myspace_path, class: "block px-3 py-1 rounded-full no-underline text-green-700 hover:bg-[#BBC31C]" %></li>
-          <li><%= link_to "Logout", sessions_destroy_path, class: "block px-3 py-1 rounded-full no-underline text-green-700 hover:bg-[#BBC31C]" %></li>
+          <%= link_to "My Space", articles_myspace_path, class: "block px-4 py-2 rounded font-['Space_Grotesk'] uppercase tracking-widest text-xs text-[#bdf4ff] no-underline hover:bg-[#262a31]" %>
+          <%= link_to "Logout", sessions_destroy_path, class: "block px-4 py-2 rounded font-['Space_Grotesk'] uppercase tracking-widest text-xs text-[#dfe2eb]/50 no-underline hover:bg-[#262a31]" %>
         <% end %>
-      </ul>
-    </nav>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Main content -->
-    <main>
-      <%= yield %>
-    </main>
+  <!-- Main Content -->
+  <main class="pt-20">
+    <%= yield %>
+  </main>
 
-    <!-- Video thumbnails carousel -->
-    <% cache("common/video_carousel", expires_in: 12.hours) do %>
-    <div class="bg-[#D7DF21] mt-12 p-4 rounded-lg" itemscope itemtype="http://schema.org/ItemList">
+  <!-- Video Thumbnails Section -->
+  <% cache("common/video_carousel", expires_in: 12.hours) do %>
+  <section class="py-16 bg-[#10141a]">
+    <div class="px-4 md:px-12 mb-8 flex justify-between items-end max-w-[1920px] mx-auto">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-headline font-black text-[#dfe2eb] tracking-tighter">RECENT INTERCEPTS</h2>
+        <p class="text-[#c9c8ad]/50 font-['Space_Grotesk'] text-xs tracking-widest uppercase mt-2">VIDEO EVIDENCE FEED</p>
+      </div>
+      <%= link_to sightings_videos_path, class: "hidden md:block bg-[#31353c] border border-[#484833]/30 px-6 py-2 rounded text-xs font-['Space_Grotesk'] text-[#dfe2eb] hover:bg-[#D7DF21] hover:text-[#313300] transition-all uppercase tracking-widest no-underline" do %>
+        View All Files
+      <% end %>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 px-4 md:px-12 max-w-[1920px] mx-auto" itemscope itemtype="http://schema.org/ItemList">
       <meta itemprop="itemListOrder" content="Descending">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <% video_list.first(8).each do |thumb| %>
-          <% thumb.links&.each do |link| %>
-            <% if youtube_link?(link) %>
-              <% video_id = youtube_video_id(link) %>
-              <% if video_id %>
-                <div class="text-center" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
-                  <h4 itemprop="name" class="text-sm font-semibold truncate" title="<%= thumb.location %>"><%= thumb.location %></h4>
-                  <meta itemprop="description" content="<%= friendly_title(thumb) %>">
-                  <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>" class="text-xs"><%= format_date thumb.sighted_at %></p>
-                  <meta itemprop="uploadDate" content="<%= format_date_microdata thumb.reported_at %>">
-                  <meta itemprop="thumbnailUrl" content="<%= Ufo::THUMBS_URL_BASE + video_id + '/1.jpg' %>">
-                  <figure>
-                    <%= link_to sightings_search_path(id: thumb.id, title: friendly_title(thumb)) do %>
-                      <%= image_tag Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", itemprop: "image", class: "w-full rounded", alt: "UFO Sighting at #{thumb.location}", loading: "lazy" %>
-                    <% end %>
-                  </figure>
+      <% video_list.first(8).each do |thumb| %>
+        <% thumb.links&.each do |link| %>
+          <% if youtube_link?(link) %>
+            <% video_id = youtube_video_id(link) %>
+            <% if video_id %>
+              <div class="group cursor-pointer" itemprop="itemListElement" itemscope itemtype="http://schema.org/VideoObject">
+                <div class="relative aspect-video rounded-lg overflow-hidden mb-3 border border-[#484833]/20">
+                  <%= link_to sightings_search_path(id: thumb.id, title: friendly_title(thumb)) do %>
+                    <%= image_tag Ufo::THUMBS_URL_BASE + video_id + "/1.jpg", itemprop: "image", class: "w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500", alt: "UFO Sighting at #{thumb.location}", loading: "lazy" %>
+                  <% end %>
                 </div>
-              <% end %>
+                <div class="flex items-center gap-2 mb-1">
+                  <h4 itemprop="name" class="text-[#D7DF21] font-headline text-[10px] font-bold truncate uppercase"><%= thumb.location %></h4>
+                  <span class="text-[#c9c8ad]/30 text-[10px]">&bull;</span>
+                  <p itemprop="dateCreated" content="<%= format_date_microdata thumb.sighted_at %>" class="text-[#c9c8ad]/50 text-[10px] font-['Space_Grotesk'] uppercase tracking-wider m-0"><%= format_date thumb.sighted_at %></p>
+                </div>
+                <meta itemprop="description" content="<%= friendly_title(thumb) %>">
+                <meta itemprop="uploadDate" content="<%= format_date_microdata thumb.reported_at %>">
+                <meta itemprop="thumbnailUrl" content="<%= Ufo::THUMBS_URL_BASE + video_id + '/1.jpg' %>">
+              </div>
             <% end %>
           <% end %>
         <% end %>
+      <% end %>
+    </div>
+  </section>
+  <% end %>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-[#484833]/20 bg-[#0a0e14]" itemscope itemtype="http://schema.org/WPFooter">
+    <div class="w-full px-4 md:px-12 py-12 md:py-16 flex flex-col md:flex-row justify-between items-center gap-8 max-w-[1920px] mx-auto">
+      <div class="flex flex-col items-center md:items-start gap-3">
+        <div class="text-lg font-black text-[#dfe2eb] font-headline tracking-tighter">UFO HUNTERS</div>
+        <div class="text-[#dfe2eb]/40 font-['Space_Grotesk'] text-[10px] tracking-widest uppercase">
+          &copy; <%= Date.today.strftime("%Y") %> UFO HUNTERS &mdash; HIGH ALTITUDE INTELLIGENCE DATASET
+        </div>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6 md:gap-8 font-['Space_Grotesk'] text-[10px] tracking-widest uppercase">
+        <button onclick="document.getElementById('disclaimerModal').classList.remove('hidden')" class="text-[#dfe2eb]/40 hover:text-[#00e3fd] transition-colors bg-transparent border-none cursor-pointer">Disclaimer</button>
+        <button onclick="document.getElementById('privacyModal').classList.remove('hidden')" class="text-[#dfe2eb]/40 hover:text-[#00e3fd] transition-colors bg-transparent border-none cursor-pointer">Privacy Policy</button>
+        <a href="mailto:ufohunterscom@gmail.com" class="text-[#dfe2eb]/40 hover:text-[#00e3fd] transition-colors no-underline">Contact</a>
+        <%= link_to "About", sightings_about_path, class: "text-[#dfe2eb]/40 hover:text-[#00e3fd] transition-colors no-underline" %>
+      </div>
+      <div class="flex gap-4">
+        <a href="https://www.facebook.com/UfoHuntersCom" target="_blank" class="w-8 h-8 rounded border border-[#484833]/20 flex items-center justify-center text-[#c9c8ad] hover:text-[#D7DF21] transition-all no-underline">
+          <span class="text-xs font-bold">FB</span>
+        </a>
+        <a href="https://twitter.com/UfoHuntersCom" target="_blank" class="w-8 h-8 rounded border border-[#484833]/20 flex items-center justify-center text-[#c9c8ad] hover:text-[#D7DF21] transition-all no-underline">
+          <span class="text-xs font-bold">X</span>
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.ufohunters" target="_blank" class="w-8 h-8 rounded border border-[#484833]/20 flex items-center justify-center text-[#c9c8ad] hover:text-[#D7DF21] transition-all no-underline">
+          <span class="material-symbols-outlined text-sm">smartphone</span>
+        </a>
       </div>
     </div>
-    <% end %>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="footer mt-8 rounded-lg p-6" itemscope itemtype="http://schema.org/WPFooter">
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div>&copy; <%= Date.today.strftime("%Y") %> ufo-hunters.com</div>
-
-        <div class="flex gap-4">
-          <button onclick="document.getElementById('disclaimerModal').classList.remove('hidden')" class="text-[#D7DF21] underline cursor-pointer bg-transparent border-none">Disclaimer</button>
-          <button onclick="document.getElementById('privacyModal').classList.remove('hidden')" class="text-[#D7DF21] underline cursor-pointer bg-transparent border-none">Privacy Policy</button>
-        </div>
-
-        <div class="flex gap-3">
-          <a href="mailto:ufohunterscom@gmail.com" class="text-[#D7DF21] text-2xl">&#9993;</a>
-          <a href="https://www.facebook.com/UfoHuntersCom" target="_blank" class="text-[#D7DF21] text-xl">FB</a>
-          <a href="https://twitter.com/UfoHuntersCom" target="_blank" class="text-[#D7DF21] text-xl">X</a>
-        </div>
-
-        <div>
-          <a href="https://play.google.com/store/apps/details?id=com.ufohunters" class="text-white font-bold">
-            Android App
-          </a>
-        </div>
+  <!-- Disclaimer Modal -->
+  <div id="disclaimerModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-[#1c2026] border border-[#484833]/30 rounded-xl p-8 max-w-lg mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-headline font-bold text-[#dfe2eb] mt-0 uppercase tracking-wide">Disclaimer</h3>
+        <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="text-[#c9c8ad] hover:text-[#D7DF21] text-2xl bg-transparent border-none cursor-pointer transition-colors">&times;</button>
       </div>
-    </footer>
-
-    <!-- Disclaimer Modal -->
-    <div id="disclaimerModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900 mt-0">Disclaimer</h3>
-          <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-900 text-2xl bg-transparent border-none cursor-pointer">&times;</button>
-        </div>
-        <p class="text-gray-900 text-sm mb-2">The information on this site that is not produced by ufo-hunters.com is covered under the <strong><a href="http://www.copyright.gov/fls/fl102.html" target="_blank">Copyright Disclaimer Under Section 107 of the Copyright Act 1976</a></strong></p>
-        <p class="text-gray-900 text-sm">The views, opinions, and facts expressed on this web site are solely those of the original authors, witnesses and other contributors. These views and opinions do not necessarily represent those of ufo-hunters.com staff, and/or any/all contributors to this site.</p>
-        <div class="mt-4 text-right">
-          <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="btn-primary">Close</button>
-        </div>
+      <p class="text-[#c9c8ad] text-sm mb-3 leading-relaxed">The information on this site that is not produced by ufo-hunters.com is covered under the <strong class="text-[#dfe2eb]"><a href="http://www.copyright.gov/fls/fl102.html" target="_blank" class="text-[#bdf4ff] hover:underline">Copyright Disclaimer Under Section 107 of the Copyright Act 1976</a></strong></p>
+      <p class="text-[#c9c8ad] text-sm leading-relaxed">The views, opinions, and facts expressed on this web site are solely those of the original authors, witnesses and other contributors. These views and opinions do not necessarily represent those of ufo-hunters.com staff, and/or any/all contributors to this site.</p>
+      <div class="mt-6 text-right">
+        <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="bg-[#D7DF21] hover:bg-[#D7DF21] text-[#313300] px-6 py-2 rounded text-xs font-['Space_Grotesk'] font-bold uppercase tracking-widest transition-all cursor-pointer border-none">Close</button>
       </div>
     </div>
-
-    <!-- Privacy Modal -->
-    <div id="privacyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-      <div class="bg-white rounded-lg p-6 max-w-lg mx-4">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-lg font-bold text-gray-900 mt-0">Privacy Policy</h3>
-          <button onclick="document.getElementById('privacyModal').classList.add('hidden')" class="text-gray-500 hover:text-gray-900 text-2xl bg-transparent border-none cursor-pointer">&times;</button>
-        </div>
-        <p class="text-gray-900 text-sm mb-2"><strong>ufo-hunters.com</strong> does not require any personal information from you other than a valid email address, and is not responsible for any personal information you choose to share through reports, articles, comments or any kind of content.</p>
-        <p class="text-gray-900 text-sm"><strong>ufo-hunters.com</strong> does not share your email address with third-parties, and is not responsible for the republishing of your contents (reports, pictures, videos, articles, comments) on other web sites.</p>
-        <div class="mt-4 text-right">
-          <button onclick="document.getElementById('privacyModal').classList.add('hidden')" class="btn-primary">Close</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="h-24"></div>
   </div>
 
-  <!-- Cookie consent -->
+  <!-- Privacy Modal -->
+  <div id="privacyModal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center">
+    <div class="bg-[#1c2026] border border-[#484833]/30 rounded-xl p-8 max-w-lg mx-4">
+      <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-headline font-bold text-[#dfe2eb] mt-0 uppercase tracking-wide">Privacy Policy</h3>
+        <button onclick="document.getElementById('privacyModal').classList.add('hidden')" class="text-[#c9c8ad] hover:text-[#D7DF21] text-2xl bg-transparent border-none cursor-pointer transition-colors">&times;</button>
+      </div>
+      <p class="text-[#c9c8ad] text-sm mb-3 leading-relaxed"><strong class="text-[#dfe2eb]">ufo-hunters.com</strong> does not require any personal information from you other than a valid email address, and is not responsible for any personal information you choose to share through reports, articles, comments or any kind of content.</p>
+      <p class="text-[#c9c8ad] text-sm leading-relaxed"><strong class="text-[#dfe2eb]">ufo-hunters.com</strong> does not share your email address with third-parties, and is not responsible for the republishing of your contents (reports, pictures, videos, articles, comments) on other web sites.</p>
+      <div class="mt-6 text-right">
+        <button onclick="document.getElementById('privacyModal').classList.add('hidden')" class="bg-[#D7DF21] hover:bg-[#D7DF21] text-[#313300] px-6 py-2 rounded text-xs font-['Space_Grotesk'] font-bold uppercase tracking-widest transition-all cursor-pointer border-none">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cookie Consent -->
   <div data-controller="cookie-consent">
-    <div data-cookie-consent-target="banner" class="hidden fixed bottom-0 left-0 right-0 bg-[#959C16] text-white text-sm z-40 px-4 py-3">
+    <div data-cookie-consent-target="banner" class="hidden fixed bottom-0 left-0 right-0 bg-[#1c2026]/95 backdrop-blur-xl text-[#dfe2eb] text-sm z-40 px-4 py-4 border-t border-[#484833]/30">
       <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <p class="m-0">This site uses cookies and third-party cookies. When navigating or using our services, you agree to our use of them.
-          <a href="#" data-action="click->cookie-consent#showPrivacy" class="text-white underline">More information</a>
+        <p class="m-0 text-[#c9c8ad] text-xs font-['Inter']">This site uses cookies and third-party cookies. When navigating or using our services, you agree to our use of them.
+          <a href="#" data-action="click->cookie-consent#showPrivacy" class="text-[#bdf4ff] hover:underline ml-1">More information</a>
         </p>
-        <button data-action="click->cookie-consent#accept" class="ml-4 px-3 py-1 bg-white text-gray-900 rounded text-xs font-bold cursor-pointer border-none">Accept</button>
+        <button data-action="click->cookie-consent#accept" class="ml-4 px-4 py-1.5 bg-[#D7DF21] text-[#313300] rounded text-xs font-['Space_Grotesk'] font-bold cursor-pointer border-none uppercase tracking-wider hover:bg-[#D7DF21] transition-colors">Accept</button>
       </div>
     </div>
-    <div data-cookie-consent-target="privacy" class="hidden fixed bottom-1/4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 bg-[#959C16] text-white text-sm z-50 p-4 rounded-lg">
-      <button data-action="click->cookie-consent#hidePrivacy" class="absolute top-2 right-2 text-white text-lg bg-transparent border-none cursor-pointer">&times;</button>
-      <p class="font-bold mb-2">PRIVACY POLICY:</p>
-      <p class="text-xs">We are committed to protecting your privacy. This webpage displays Google Ads which uses cookies to serve ads based on prior visits. You may opt out via <a href="https://www.google.com/ads/preferences/" target="_blank" class="text-white underline">Ads Settings</a>. Contact: ufohunterscom@gmail.com</p>
+    <div data-cookie-consent-target="privacy" class="hidden fixed bottom-1/4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 glass-panel text-[#dfe2eb] text-sm z-50 p-6 rounded-xl border border-[#484833]/30">
+      <button data-action="click->cookie-consent#hidePrivacy" class="absolute top-3 right-3 text-[#c9c8ad] hover:text-[#D7DF21] text-lg bg-transparent border-none cursor-pointer transition-colors">&times;</button>
+      <p class="font-['Space_Grotesk'] font-bold mb-3 uppercase tracking-widest text-xs text-[#D7DF21]">Privacy Policy</p>
+      <p class="text-xs text-[#c9c8ad] leading-relaxed">We are committed to protecting your privacy. This webpage displays Google Ads which uses cookies to serve ads based on prior visits. You may opt out via <a href="https://www.google.com/ads/preferences/" target="_blank" class="text-[#bdf4ff] hover:underline">Ads Settings</a>. Contact: ufohunterscom@gmail.com</p>
     </div>
   </div>
+
 </body>
 </html>

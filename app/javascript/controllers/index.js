@@ -1,7 +1,10 @@
-import { application } from "./application"
+import { application } from "controllers/application"
 
-import NavbarController from "./navbar_controller"
+import NavbarController from "controllers/navbar_controller"
 application.register("navbar", NavbarController)
 
-import CookieConsentController from "./cookie_consent_controller"
+import CookieConsentController from "controllers/cookie_consent_controller"
 application.register("cookie-consent", CookieConsentController)
+
+import DatatableController from "controllers/datatable_controller"
+application.register("datatable", DatatableController)
