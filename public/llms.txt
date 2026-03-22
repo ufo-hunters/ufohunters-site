@@ -1,0 +1,31 @@
+# UFO Hunters
+
+> A community-driven platform for reporting and browsing UFO sightings worldwide since 2013.
+
+## About
+
+UFO Hunters (ufo-hunters.com) is the largest community-curated database of UFO sighting reports, with over 204,000 entries from witnesses around the world. Each report includes the date, location, shape, duration, and description of the sighting, along with geographic coordinates for mapping.
+
+## Content Types
+
+- **Sighting Reports**: First-person accounts of UFO sightings with location, date, description, and sometimes photos or videos
+- **Interactive Maps**: Global and continent-level maps showing sighting locations with geographic clustering
+- **Articles**: In-depth research articles and analysis by community contributors
+- **Statistics**: Data visualizations and trends across the sighting database
+- **Videos**: Witness-submitted video evidence of UFO sightings
+- **Images**: Photo evidence gallery from sighting reports
+
+## Key Data
+
+- 204,000+ sighting reports
+- Reports from every continent
+- Data spans from historical reports to present day
+- Geographic coordinates for map-based exploration
+- Community-driven submissions with moderation
+
+## Contact
+
+- Email: ufohunterscom@gmail.com
+- Twitter: @UfoHuntersCom
+- Facebook: /UfoHuntersCom
+- Android App: available on Google Play Store
