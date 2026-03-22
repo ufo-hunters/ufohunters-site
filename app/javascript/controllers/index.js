@@ -8,3 +8,6 @@ application.register("cookie-consent", CookieConsentController)
 
 import DatatableController from "controllers/datatable_controller"
 application.register("datatable", DatatableController)
+
+import CarouselController from "controllers/carousel_controller"
+application.register("carousel", CarouselController)

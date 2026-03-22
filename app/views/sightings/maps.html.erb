@@ -13,10 +13,10 @@
 <section class="px-4 md:px-12 max-w-[1920px] mx-auto mb-10">
   <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6">
     <p class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#c9c8ad] mb-4">Continents</p>
-    <div id="thumb_continent" class="relative overflow-hidden">
-      <div class="carousel-inner w-full md:w-4/5 mx-auto">
+    <div class="relative overflow-hidden" data-controller="carousel" data-carousel-interval-value="5000">
+      <div class="w-full md:w-4/5 mx-auto">
 
-        <div class="continent-slide active">
+        <div data-carousel-target="slide">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
             <div class="group text-center bg-[#0a0e14] rounded-xl p-5 border border-[#484833]/20 hover:border-[#D7DF21]/30 transition-all duration-300">
               <%= image_tag image_path('noord-amerika.png'), class: "mx-auto rounded-lg opacity-90 group-hover:opacity-100 transition-opacity", loading: "lazy", alt: "North America UFO sightings" %>
@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <div class="continent-slide hidden">
+        <div data-carousel-target="slide" class="hidden">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
             <div class="group text-center bg-[#0a0e14] rounded-xl p-5 border border-[#484833]/20 hover:border-[#D7DF21]/30 transition-all duration-300">
               <%= image_tag image_path('azie.png'), class: "mx-auto rounded-lg opacity-90 group-hover:opacity-100 transition-opacity", loading: "lazy", alt: "Asia UFO sightings" %>
@@ -51,40 +51,10 @@
         </div>
 
       </div>
-      <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#0a0e14]/80 text-[#D7DF21] px-3 py-2 rounded-r text-2xl hover:bg-[#0a0e14] transition-colors" data-carousel="thumb_continent" data-action="prev" aria-label="Previous">&lsaquo;</button>
-      <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#0a0e14]/80 text-[#D7DF21] px-3 py-2 rounded-l text-2xl hover:bg-[#0a0e14] transition-colors" data-carousel="thumb_continent" data-action="next" aria-label="Next">&rsaquo;</button>
+      <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#0a0e14]/80 text-[#D7DF21] px-3 py-2 rounded-r text-2xl hover:bg-[#0a0e14] transition-colors" data-action="carousel#prev" aria-label="Previous">&lsaquo;</button>
+      <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#0a0e14]/80 text-[#D7DF21] px-3 py-2 rounded-l text-2xl hover:bg-[#0a0e14] transition-colors" data-action="carousel#next" aria-label="Next">&rsaquo;</button>
     </div>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      var container = document.getElementById("thumb_continent");
-      var slides = container.querySelectorAll(".continent-slide");
-      var currentIndex = 0;
-
-      function showSlide(index) {
-        slides.forEach(function(s, i) {
-          s.classList.toggle("hidden", i !== index);
-          s.classList.toggle("active", i === index);
-        });
-      }
-
-      container.querySelector('[data-action="prev"]').addEventListener("click", function() {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        showSlide(currentIndex);
-      });
-
-      container.querySelector('[data-action="next"]').addEventListener("click", function() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-      });
-
-      setInterval(function() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-      }, 5000);
-    });
-  </script>
 </section>
 <% end %>
 
