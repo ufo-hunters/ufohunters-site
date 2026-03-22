@@ -1,86 +1,69 @@
 <% cache("videos/content", expires_in: 12.hours) do %>
 
-	<div class="row">
-		<div class="span12">
-			<h3>Recent UFO Activity</h3>
-			<p>Discover the latest UFO sightings videos all over the world</p>
-		</div>
-	</div>
+<div class="w-full mb-4">
+  <h3 class="text-xl font-bold text-[#D7DF21]">Recent UFO Activity</h3>
+  <p class="text-gray-300">Discover the latest UFO sightings videos all over the world</p>
+</div>
 
-  <div class="row">
-		  <div class="span12">
-		  	<p>Drag the videos so that you can take a look at the UFO Video Gallery</p>
-		  </div>
+<div class="w-full mb-4">
+  <p class="text-gray-300">Drag the videos so that you can take a look at the UFO Video Gallery</p>
+</div>
+
+<div class="my-5">
+  <%= render partial: 'common/ads/adaptable3', locals: {span: 'w-full'} %>
+</div>
+
+<div class="w-full">
+  <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">&lsaquo;</a>
+    <a class="next">&rsaquo;</a>
+    <a class="play-pause"></a>
   </div>
+</div>
 
-	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
-    <%= render partial: 'common/ads/adaptable3', locals: {span: 'span12'} %>
-	</div>
+<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
 
-	<div class="row">
-		    <div class="span12">
-			    <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
-					  <div class="slides"></div>
-					  <h3 class="title"></h3>
-					  <a class="prev">‹</a>
-					  <a class="next">›</a>
-					  <a class="play-pause"></a>
+<script type="text/javascript">
+  blueimp.Gallery([
+  <%
+    video_cont = 0
+    @ufo_list.each do |ufo|
+      video_urls, other_urls = select_youtube_videos(ufo.links)
 
-				</div>
-			</div>
-    </div>
+      unless video_urls.blank?
+        video_urls.each do |vid|
+          video_id = youtube_video_id(vid)
+          url_image_video = Ufo::THUMBS_URL_BASE + video_id.to_s + "/0.jpg"
 
-	<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
+          if video_cont != 0
+  %>
+             ,
+  <%
+          end
+  %>
+          {
+              title: '<%= friendly_title(ufo) %>',
+              href: '<%= vid %>',
+              type: 'text/html',
+              youtube: '<%= video_id %>',
+              poster: '<%= url_image_video %>'
+          }
+  <%
+          video_cont += 1
+        end
+      end
+    end
+  %>
+  ], {
+      container: '#blueimp-gallery-carousel',
+      carousel: true
+  });
+</script>
 
-   <script type="text/javascript">
+<div class="my-5">
+  <%= render partial: 'common/ads/horizontal_ad' %>
+</div>
 
-				blueimp.Gallery([
-				<%
-					video_cont = 0
-		    		@ufo_list.each do |ufo|
-
-		        		video_urls, other_urls = select_youtube_videos(ufo.links)
-
-						unless video_urls.blank?
-
-							video_urls.each do |vid|
-
-								video_id = youtube_video_id(vid)
-
-								url_image_video = Ufo::THUMBS_URL_BASE + video_id.to_s + "/0.jpg"
-
-								if video_cont != 0
-					              	%>
-					                   ,
-					              	<%
-					            end
-
-								%>
-							    {
-							        title: '<%=friendly_title(ufo)%>',
-							        href: '<%=vid%>',
-							        type: 'text/html',
-							        youtube: '<%=video_id%>',
-							        poster: '<%=url_image_video%>'
-							    }
-							    <%
-							    video_cont += 1
-
-							end
-
-						end
-
-					end
-				%>
-				], {
-			        container: '#blueimp-gallery-carousel',
-			        carousel: true
-			    });
-
-
-    </script>
-
-  <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-    <%= render partial: 'common/ads/horizontal_ad' %>
-  </div>
 <% end %>

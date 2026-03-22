@@ -1,9 +1,14 @@
 development:
   clients:
     default:
-      database: sightings
+      database: ufosightings
       hosts:
         - localhost:27017
+      options:
+        server_selection_timeout: 1
+  options:
+    raise_not_found_error: false
+
 test:
   clients:
     default:
@@ -11,11 +16,14 @@ test:
       hosts:
         - localhost:27017
       options:
-        # In the test environment we lower the retries and retry interval to
-        # low amounts for fast failures.
         max_retries: 1
         retry_interval: 0
+  options:
+    raise_not_found_error: false
+
 production:
   clients:
     default:
-        uri: <%= ENV['MONGOHQ_URL'] %>
+      uri: <%= ENV['MONGOHQ_URL'] %>
+  options:
+    raise_not_found_error: false

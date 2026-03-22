@@ -1,51 +1,49 @@
-<div class="ufoform">
+<div class="max-w-3xl mx-auto">
 
-  <div class="row">
-    <div class="span12">
-      <h3>New ufo reported!</h3>
-    </div>
+  <div class="mb-6">
+    <h3 class="text-2xl font-bold text-[#D7DF21] mb-4">New ufo reported!</h3>
   </div>
 
-  <div class="row">
-    <div class="span6">
-      <label for="sighted_at"><strong>Sighted on </strong></label>
-      <p><%= format_date @report['sighted_at']%></p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label for="sighted_at" class="block text-sm font-medium text-gray-400"><strong class="text-white">Sighted on </strong></label>
+      <p class="text-gray-300 mt-1"><%= format_date @report['sighted_at']%></p>
     </div>
-    <div class="span6">
-      <label for="reported_at"><strong>Reported on </strong></label>
-      <p><%= format_date @report['reported_at']%></p>
-     </div>
-  </div>
-  <div class="row">
-    <div class="span6">
-      <label for="report_shape"><strong>Shape </strong></label>
-      <p><%= @report['shape']%></p>
-    </div>
-    <div class="span6">
-      <label for="report_duration"><strong>Duration </strong></label>
-      <p><%= @report['duration']%></p>
+    <div>
+      <label for="reported_at" class="block text-sm font-medium text-gray-400"><strong class="text-white">Reported on </strong></label>
+      <p class="text-gray-300 mt-1"><%= format_date @report['reported_at']%></p>
     </div>
   </div>
-  <div class="row">
-    <div class="span6">
-      <label for="report_location"><strong>Location </strong></label>
-      <p><%= @report['location']%></p>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label for="report_shape" class="block text-sm font-medium text-gray-400"><strong class="text-white">Shape </strong></label>
+      <p class="text-gray-300 mt-1"><%= @report['shape']%></p>
+    </div>
+    <div>
+      <label for="report_duration" class="block text-sm font-medium text-gray-400"><strong class="text-white">Duration </strong></label>
+      <p class="text-gray-300 mt-1"><%= @report['duration']%></p>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div>
+      <label for="report_location" class="block text-sm font-medium text-gray-400"><strong class="text-white">Location </strong></label>
+      <p class="text-gray-300 mt-1"><%= @report['location']%></p>
     </div>
     <% unless @report['links'].blank? || @report['links'].size == 0 || @report['links'][0].blank? %>
-    <div class="span6">
-      <label for="report_links"><strong>Links </strong></label>
-      <p><%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%></p>
+    <div>
+      <label for="report_links" class="block text-sm font-medium text-gray-400"><strong class="text-white">Links </strong></label>
+      <p class="text-gray-300 mt-1"><%= @report['links'].map { |i| "'" + i.to_s + "'" }.join(",")%></p>
     </div>
     <% end %>
   </div>
-  <div class="row">
-    <div class="span12">
-      <label for="report_description"><strong>Description </strong></label>
-      <p><%= @report['description']%> </p>
+  <div class="mb-4">
+    <div class="w-full">
+      <label for="report_description" class="block text-sm font-medium text-gray-400"><strong class="text-white">Description </strong></label>
+      <p class="text-gray-300 mt-1"><%= @report['description']%> </p>
     </div>
   </div>
-  <div class="row">
-    <div class="span12 thankyoureport">
+  <div class="mt-6">
+    <div class="w-full text-center text-[#D7DF21] text-xl font-semibold py-4 bg-gray-800/60 border border-gray-700 rounded-lg">
       Thank you very much for your trust in us
     </div>
   </div>

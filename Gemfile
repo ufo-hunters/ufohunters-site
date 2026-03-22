@@ -1,77 +1,58 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-ruby '2.4.4'
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.8'
-gem 'rake', '10.3.2'
+ruby '3.2.8'
 
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+gem 'rails', '~> 8.0.2'
 
-#gem 'sqlite3'
+# MongoDB
+gem 'mongoid', '~> 9.0'
 
-#gema para conexion a mongodb
-gem 'mongoid', '~> 5.1.6'
+# Web server
+gem 'puma', '~> 6.0'
 
-#gem 'simple_captcha2', require: 'simple_captcha'
-#gem 'simple_captcha2', '~> 0.3.4'
-gem 'recaptcha'
+# Security
+gem 'bcrypt', '~> 3.1'
+gem 'recaptcha', '~> 5.0'
 
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
+# Asset pipeline
+gem 'propshaft'
+gem 'importmap-rails'
+gem 'turbo-rails'
+gem 'stimulus-rails'
 
-#gem "rserve-simpler", "~> 0.0.6"
+# CSS
+gem 'tailwindcss-rails', '~> 3.0'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails', '~> 4.0.0'
+# Image processing
+gem 'carrierwave', '~> 3.0'
+gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
+gem 'cloudinary', '~> 2.0'
+gem 'mini_magick', '~> 4.12'
 
-  gem 'coffee-rails', '~> 4.0.0'
+# Caching
+gem 'redis', '~> 5.0'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer'
+# GeoJSON
+gem 'rgeo-geojson', '~> 2.0'
 
-  gem 'uglifier', '>= 1.3.0'
+# Pagination
+gem 'pagy', '~> 9.0'
 
-end
+# SEO
+gem 'sitemap_generator', '~> 6.0'
 
-gem 'jquery-rails'
-gem 'jquery-datatables-rails', '~> 2.2.3'
-
-# To use ActiveModel has_secure_password
-gem 'bcrypt'
-
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Use unicorn as the web server
-gem 'unicorn'
-gem "rack-timeout"
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
-
-gem 'therubyracer', :platforms => :ruby
-gem "less-rails", "~> 2.8.0"
-gem 'twitter-bootstrap-rails', '2.2.8'
-gem 'execjs'
-
-gem 'ckeditor'
-gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
-gem 'mini_magick'
-gem 'dalli'
-gem 'cloudinary'
-
-# to handle form validation
-gem "jquery-validation-rails"
-
-gem 'redis-rails'
+# Monitoring
 gem 'newrelic_rpm'
 
-gem 'rails_12factor'
+# Boot speed
+gem 'bootsnap', require: false
 
-gem 'rgeo-geojson'
+group :development, :test do
+  gem 'debug'
+end
+
+group :development do
+  gem 'web-console'
+end

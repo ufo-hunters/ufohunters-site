@@ -13,55 +13,55 @@
     </script>
 
 
-	<div class="span8">
+	<div class="w-full lg:w-2/3">
 			<%
 	     	if @ufo_list
 	     	%>
-	     		<div class="" style="margin-top: 20px;margin-bottom: 20px">
+	     		<div class="mt-5 mb-5">
 
-			      			<table id="tabledata" class="table table-responsive table-striped">
-			      				<thead>
+			      			<table id="tabledata" class="w-full text-left text-gray-300 text-sm">
+			      				<thead class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
 										<tr>
-												<th>Location
+												<th class="px-4 py-3">Location
 												</th>
-												<th>Sighted on
+												<th class="px-4 py-3">Sighted on
 												</th>
-												<th>Shape
+												<th class="px-4 py-3">Shape
 												</th>
-												<th class="hidden-phone">Duration
+												<th class="px-4 py-3 hidden sm:table-cell">Duration
 												</th>
 										</tr>
 								</thead>
-								<tfoot>
+								<tfoot class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
 									<tr>
-											<th>Location
+											<th class="px-4 py-3">Location
 											</th>
-											<th>Sighted on
+											<th class="px-4 py-3">Sighted on
 											</th>
-											<th>Shape
+											<th class="px-4 py-3">Shape
 											</th>
-											<th class="hidden-phone">Duration
+											<th class="px-4 py-3 hidden sm:table-cell">Duration
 											</th>
 								  	</tr>
 								</tfoot>
-								<tbody>
+								<tbody class="divide-y divide-gray-700">
 						     	<%
 						      	# In order to avoid the same sighting as nearest sighting
 						      	@ufo_list.each do |ufo|
 									%>
-						    			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+						    			<tr class="hover:bg-gray-800/50 transition" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
 						    					<meta itemprop="datePublished" content="<%= format_date_microdata ufo.reported_at %>"/>
 										      <meta itemprop="headline" content="<%= friendly_title(ufo) %>"/>
-							         		<td itemprop="name">
-							         			<%= link_to ufo.location, :controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo) %>
+							         		<td itemprop="name" class="px-4 py-3">
+							         			<%= link_to ufo.location, {:controller => "sightings", :action => "search", :id => ufo.id, :title => friendly_title(ufo)}, class: "text-[#D7DF21] hover:underline" %>
 							         		</td>
-							         		<td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>">
+							         		<td itemprop="dateCreated" content="<%= format_date_microdata ufo.sighted_at %>" class="px-4 py-3">
 								    			<%= format_date_microdata ufo.sighted_at %>
 								    		</td>
-								    		<td>
+								    		<td class="px-4 py-3">
 								    			<%=ufo.shape%>
 							         		</td>
-							         		<td class="hidden-phone">
+							         		<td class="px-4 py-3 hidden sm:table-cell">
 								    			<%= ufo.duration %>
 							         		</td>
 										</tr>

@@ -1,21 +1,21 @@
 <% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
-<p id="notice"><%= notice %></p>
+<p id="notice" class="text-green-400"><%= notice %></p>
 
-<%= link_to 'Back', articles_path %>
+<%= link_to 'Back', articles_path, class: "text-[#D7DF21] hover:underline" %>
 
-<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+<div class="mt-5 mb-5">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
 
-<div itemscope itemtype="http://schema.org/Article" class="row">
+<div itemscope itemtype="http://schema.org/Article" class="flex flex-col lg:flex-row gap-6">
 
-  <div class="span8">
+  <div class="w-full lg:w-2/3">
     <article>
       <!-- Go to www.addthis.com/dashboard to customize your tools -->
       <div class="addthis_sharing_toolbox"></div>
       <meta itemprop="articleSection" content="UFO Sightings">
       <header>
-        <h2 itemprop="name" class="title"><%= @article.title %></h2>
+        <h2 itemprop="name" class="text-2xl font-bold text-[#D7DF21]"><%= @article.title %></h2>
         <meta itemprop="headline" content="<%= @article.title %>"/>
       </header>
       <%
@@ -25,13 +25,13 @@
       <%
       end
       %>
-      <p class="meta">
+      <p class="text-sm text-gray-400 mt-2">
         <meta itemprop="datePublished" content="<%= format_date_microdata @article.published_date %>"/>
-        <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>"><%= format_date @article.published_date %></strong>
+        <small>Published on <strong itemprop="dateCreated" content="<%= format_date_microdata @article.published_date %>" class="text-gray-300"><%= format_date @article.published_date %></strong>
         <%
           unless @article.user.nil?
         %>
-          , by <strong itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><%= @article.user.username %></span></strong><br/>
+          , by <strong itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name" class="text-gray-300"><%= @article.user.username %></span></strong><br/>
         <%
           end
         %>
@@ -40,28 +40,28 @@
         </span>
        </small>
       </p>
-      <div class="entry">
+      <div class="mt-4 text-gray-300 prose prose-invert max-w-none">
           <p><%=@article.teaser.html_safe%></p>
       </div>
 
       <%
       unless @article.partial_1.blank?
       %>
-      <div>
+      <div class="mt-4">
         <%= render partial: @article.partial_1, locals: {ufo_list: @ufo_list} %>
       </div>
       <%
       end
       %>
 
-      <div class="entry">
+      <div class="mt-4 text-gray-300 prose prose-invert max-w-none">
           <span itemprop="articleBody">
             <%=@article.body.html_safe%>
           </span>
       </div>
     </article>
 
-    <div id="disqus_thread" style="margin-left:10px" class="row"></div>
+    <div id="disqus_thread" class="mt-6 ml-2"></div>
     <script type="text/javascript">
       var disqus_shortname = 'ufo-hunters'; // required: replace example with your forum shortname
 
@@ -72,10 +72,10 @@
       })();
     </script>
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <a href="http://disqus.com" class="dsq-brlink text-gray-500 text-sm">comments powered by <span class="logo-disqus">Disqus</span></a>
 
   </div>
-  <div class="span4" itemscope itemtype="http://schema.org/WPAdBlock">
+  <div class="w-full lg:w-1/3" itemscope itemtype="http://schema.org/WPAdBlock">
           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
           <!-- AnuncioAdaptable3 -->
           <ins class="adsbygoogle"

@@ -1,10 +1,17 @@
-class CustomDate < String
+class CustomDate
   class << self
     def mongoize(object)
       return if object.blank?
-      c = Date.parse(object);
-      d = new Date(c);
-      ::Date.mongoize(d.strftime("%A %d. %B %Y"))
+      date = Date.parse(object.to_s)
+      date.strftime("%A %d. %B %Y")
+    end
+
+    def demongoize(object)
+      object.to_s
+    end
+
+    def evolve(object)
+      mongoize(object)
     end
   end
 end

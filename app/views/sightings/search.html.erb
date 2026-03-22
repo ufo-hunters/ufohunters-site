@@ -1,229 +1,225 @@
-<%  unless @ufo_list.nil?
-
+<% unless @ufo_list.nil?
       cache("sightings/report/#{@ufo_list.id}", skip_digest: true, expires_in: 12.hours) do
-	%>
+%>
 
-	 	<div class="row">
-		    <div class="span12">
-			   	<%
-	      	unless @ufo_list.coord.nil? || @ufo_list.coord == ""
-	      	%>
-	      		<div id="sightings-map" style="width: 100%; height: 450px;"></div>
-				  <%
-					end
-				%>
-		   	</div>
-		</div>
-		<%
-			unless @ufo_list.coord.nil? || @ufo_list.coord == ""
-		%>
-		  <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
-		<%
-		end
-		%>
-    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-      <%= render partial: 'common/ads/horizontal_ad' %>
-    </div>
+<div class="w-full">
+  <%
+    unless @ufo_list.coord.nil? || @ufo_list.coord == ""
+  %>
+    <div id="sightings-map" class="w-full h-[450px] rounded-lg"></div>
+  <%
+    end
+  %>
+</div>
 
-		<div itemscope itemtype="http://schema.org/Article" class="row">
+<%
+  unless @ufo_list.coord.nil? || @ufo_list.coord == ""
+%>
+  <%= render partial: 'common/map', locals: {selected_ufo: @ufo_list, ufo_list: @nearest_sightings, map_id: 'sightings-map'} %>
+<%
+  end
+%>
 
-				<div class="span8">
-					<article>
-						<!-- Go to www.addthis.com/dashboard to customize your tools -->
-						<div class="addthis_sharing_toolbox"></div>
+<div class="my-5">
+  <%= render partial: 'common/ads/horizontal_ad' %>
+</div>
 
-						<meta itemprop="articleSection" content="UFO Sightings">
-						<header>
-							<h2 itemprop="name" class="title">
-									<%
-						      	unless @ufo_list.location.nil? || @ufo_list.location == ""
-						      		%>
-												<%= @ufo_list.location %></h2>
-									<%
-									  end
-									%>
-									<meta itemprop="headline" content="<%= friendly_title(@ufo_list) %>">
-						</header>
-						<p class="meta">
-						<small>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>"><%= format_date @ufo_list.sighted_at %></strong><br/>
-						Reported on <strong itemprop="datePublished" content="<%= format_date_microdata @ufo_list.reported_at %>"><%= format_date @ufo_list.reported_at %></strong><br/>
-						Shape: <strong><%=@ufo_list.shape%></strong> | Duration: <strong><%=@ufo_list.duration%></strong><br/>
-						Source: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name"><%=@ufo_list.source%></strong></span>
-						<span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-							<meta itemprop="name" content="ufo-hunters.com">
-						</span>
-						</small>
-						</p>
-						<div class="entry">
-				   			<p itemprop="articleBody"><%=@ufo_list.description.html_safe%></p>
-				   			<% unless @ufo_list.links.blank? && @ufo_list.image_cloudinary.blank? %>
-				   				<script type="text/javascript">
-			   					      $(document).ready(function() {
-						                  $("#gallery").carousel({
-						                     interval: 5000
-						                  });
-						              });
-			   					      <%# lightbox %>
-			   					      $('.thumbnail').click(function(){
-												  	$('.modal-body').empty();
-												  	var title = $(this).attr("title");
-												  	$('.modal-title').html(title);
-												  	$(this.innerHTML).appendTo('.modal-body');
-												  	$('#myModal').modal({show:true});
-												});
-								</script>
-				   				<%
-				   				image_urls = []
-				   				image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
-				   				image_urls = image_urls + @ufo_list.image_cloudinary unless @ufo_list.image_cloudinary.blank?
+<div itemscope itemtype="http://schema.org/Article" class="grid grid-cols-12 gap-4">
+  <div class="col-span-12 lg:col-span-8">
+    <article>
+      <div class="addthis_sharing_toolbox"></div>
 
-				   				unless image_urls.blank?
-				   				%><h2>Images</h2>
-				   					<div class="well" style="padding: 0">
-                      					<div id="gallery" class="carousel slide" style="margin: 0">
-                      						<div class="carousel-inner" style="width: 90%; margin: auto;" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-				   							    <%
-				   							    img_cont = 0
+      <meta itemprop="articleSection" content="UFO Sightings">
+      <header>
+        <h2 itemprop="name" class="text-2xl font-bold text-[#D7DF21]">
+          <%
+            unless @ufo_list.location.nil? || @ufo_list.location == ""
+          %>
+            <%= @ufo_list.location %></h2>
+          <%
+            end
+          %>
+          <meta itemprop="headline" content="<%= friendly_title(@ufo_list) %>">
+      </header>
 
-				   							    image_urls.each do |img|
+      <div class="text-sm text-gray-400 my-3">
+        <p>Sighted on <strong itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>" class="text-gray-200"><%= format_date @ufo_list.sighted_at %></strong></p>
+        <p>Reported on <strong itemprop="datePublished" content="<%= format_date_microdata @ufo_list.reported_at %>" class="text-gray-200"><%= format_date @ufo_list.reported_at %></strong></p>
+        <p>Shape: <strong class="text-gray-200"><%= @ufo_list.shape %></strong> | Duration: <strong class="text-gray-200"><%= @ufo_list.duration %></strong></p>
+        <p>Source: <span itemprop="author" itemscope itemtype="http://schema.org/Organization"><strong itemprop="name" class="text-gray-200"><%= @ufo_list.source %></strong></span></p>
+        <span itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+          <meta itemprop="name" content="ufo-hunters.com">
+        </span>
+      </div>
 
-				   							    	  if img_cont % 3 == 0
-				   							          %>
-							   								<div class="item <%= "active" if img_cont == 0 %>">
-							   								    <div class="row-fluid">
-						   						      <%
-									              end
+      <div class="prose prose-invert max-w-none mt-4">
+        <p itemprop="articleBody"><%= @ufo_list.description.html_safe %></p>
 
-									              img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
-										            %>
-										              		<div class="span4">
-										              			<a href="<%=img%>" class="thumbnail">
-									   											<figure>
-									   												<%
-									   												if image_hosting_link?(img)
-									   												%>
-									   												<%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
-									   												<%
-									   												else
-									   												%>
-									   												<%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
-									            							<%
-									            							end
-									            							%>
-									            						</figure>
-									        							</a>
-									        						</div>
-				        						      <%
+        <% unless @ufo_list.links.blank? && @ufo_list.image_cloudinary.blank? %>
+          <%
+            image_urls = []
+            image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
+            image_urls = image_urls + @ufo_list.image_cloudinary unless @ufo_list.image_cloudinary.blank?
 
-									               img_cont += 1
+            unless image_urls.blank?
+          %>
+            <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Images</h2>
+            <div class="bg-[#1D1D1D] border border-gray-700 rounded-lg p-0">
+              <div id="gallery" class="relative overflow-hidden">
+                <div class="carousel-inner w-[90%] mx-auto" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+                  <%
+                    img_cont = 0
+                    image_urls.each do |img|
+                      if img_cont % 3 == 0
+                  %>
+                        <div class="gallery-item <%= "active" if img_cont == 0 %> <%= "hidden" unless img_cont == 0 %>">
+                          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 py-4">
+                  <%
+                      end
 
-									               if img_cont % 3 == 0
-							                %>
-							                      </div>
-							                  </div>
-							                <%
-							                  end
+                      img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
+                  %>
+                            <div class="text-center">
+                              <a href="<%= img %>" class="inline-block border border-gray-600 rounded p-1 hover:border-[#D7DF21] transition" target="_blank">
+                                <figure>
+                                  <%
+                                    if image_hosting_link?(img)
+                                  %>
+                                    <%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
+                                  <%
+                                    else
+                                  %>
+                                    <%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
+                                  <%
+                                    end
+                                  %>
+                                </figure>
+                              </a>
+                            </div>
+                  <%
+                      img_cont += 1
+                      if img_cont % 3 == 0
+                  %>
+                          </div>
+                        </div>
+                  <%
+                      end
+                    end
 
-				        					  end
+                    if img_cont % 3 != 0
+                  %>
+                          </div>
+                        </div>
+                  <%
+                    end
+                  %>
+                </div>
+                <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-r text-2xl hover:bg-black/70" data-gallery="gallery" data-action="prev" aria-label="Previous">&lsaquo;</button>
+                <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-l text-2xl hover:bg-black/70" data-gallery="gallery" data-action="next" aria-label="Next">&rsaquo;</button>
+              </div>
+            </div>
 
-				        					  if img_cont % 3 != 0
-							              %>
-							                  </div>
-							                </div>
-							              <%
-							              end
-							              %>
+            <script>
+              document.addEventListener("DOMContentLoaded", function() {
+                var gallery = document.getElementById("gallery");
+                var items = gallery.querySelectorAll(".gallery-item");
+                var currentIndex = 0;
 
-				        					</div>
-				        					<a class="left carousel-control" href="#gallery" data-slide="prev">‹</a>
-                         	<a class="right carousel-control" href="#gallery" data-slide="next">›</a>
-				   						</div>
-				   					</div>
+                function showSlide(index) {
+                  items.forEach(function(item, i) {
+                    item.classList.toggle("hidden", i !== index);
+                    item.classList.toggle("active", i === index);
+                  });
+                }
 
-				   					<%# image lightbox %>
-				   					<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal">×</button>
-													<h3 class="modal-title">Heading</h3>
-											</div>
-											<div class="modal-body">
+                gallery.querySelector('[data-action="prev"]').addEventListener("click", function() {
+                  currentIndex = (currentIndex - 1 + items.length) % items.length;
+                  showSlide(currentIndex);
+                });
 
-											</div>
-											<div class="modal-footer">
-												<button class="btn" data-dismiss="modal">Close</button>
-											</div>
-										</div>
+                gallery.querySelector('[data-action="next"]').addEventListener("click", function() {
+                  currentIndex = (currentIndex + 1) % items.length;
+                  showSlide(currentIndex);
+                });
 
-				   				<%
-				   				end
+                setInterval(function() {
+                  currentIndex = (currentIndex + 1) % items.length;
+                  showSlide(currentIndex);
+                }, 5000);
+              });
+            </script>
 
-				   				unless other_urls.blank?
+          <%
+            end
 
-				   					video_urls, other_urls = select_youtube_videos(other_urls)
+            unless other_urls.blank?
+              video_urls, other_urls = select_youtube_videos(other_urls)
 
-				   					unless video_urls.blank?
-				   						%><h2>Videos</h2><%
+              unless video_urls.blank?
+          %>
+                <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Videos</h2>
+          <%
+                video_urls.each do |vid|
+          %>
+                  <%= youtube_video(vid) %>
+          <%
+                end
+              end
 
-					   					video_urls.each do |vid|
-					   						%><%=youtube_video(vid)%><%
-					   					end
+              unless other_urls.blank?
+          %>
+                <h2 class="text-xl font-bold text-[#D7DF21] mt-6">Related links</h2>
+                <ul class="list-disc list-inside space-y-1">
+          <%
+                other_urls.each do |link|
+          %>
+                  <li><%= link_to link, link, :target => '_blank', class: "text-[#D7DF21] hover:underline" %></li>
+          <%
+                end
+          %>
+                </ul>
+          <%
+              end
+            end
+          end
+          %>
+      </div>
+    </article>
 
-					   				end
+    <div id="disqus_thread" class="ml-2.5 mt-6"></div>
+    <script type="text/javascript">
+      var disqus_shortname = 'ufo-hunters';
 
-				   					unless other_urls.blank?
+      (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="text-gray-500 text-sm">comments powered by <span class="font-bold">Disqus</span></a>
+  </div>
 
-				   					%><h2>Related links</h2>
-				   						<ul>
-				   					<%
-				   						other_urls.each do |link|
-				   					%>
-				   							<li><%= link_to link, link, :target => '_blank' %></li>
-				   					<%
-				   						end
-				   					%>
-				   					  </ul>
-				   				<%
-				   					end
+  <div class="col-span-12 lg:col-span-4">
+    <%= render partial: 'common/ads/adaptable3' %>
+  </div>
+</div>
 
-				   				end
+<div class="grid grid-cols-12 gap-4 mt-6">
+  <div class="col-span-12 lg:col-span-8">
+    <%
+      unless @nearest_sightings.blank? || @nearest_sightings.count < 2
+    %>
+      <%= render partial: "common/nearest_sightings", locals: {ufo_id: @ufo_list.id}, object: @nearest_sightings %>
+    <%
+      end
+    %>
+  </div>
+  <div class="col-span-12 lg:col-span-4">
+    <%= render partial: 'common/ads/adaptable' %>
+  </div>
+</div>
 
-				   			end
-				   			%>
-
-   						</div>
-   					</article>
-
-   					<div id="disqus_thread" style="margin-left:10px" class="row"></div>
-					<script type="text/javascript">
-				      var disqus_shortname = 'ufo-hunters'; // required: replace example with your forum shortname
-
-				      (function() {
-				         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-				         dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-				         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-				      })();
-				   	</script>
-	   				<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-	   				<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-	   			</div>
-          <%= render partial: 'common/ads/adaptable3' %>
-	    </div>
-
-	    <div class="row">
-				<div class="span8">
-
-				  <%
-				  # Less than two because the current sighting is returned
-		      unless @nearest_sightings.blank? || @nearest_sightings.count < 2
-            %><%= render partial: "common/nearest_sightings", locals: {ufo_id: @ufo_list.id}, object: @nearest_sightings %>
-		     	<%
-		      end
-		      %>
-
-			  </div>
-			  <%= render partial: 'common/ads/adaptable' %>
-	  	</div>
 <%
       end
     end

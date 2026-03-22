@@ -13,35 +13,35 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
 
           </script>
 
-                <div  class="" style="margin-top: 20px;margin-bottom: 20px">
-		     		  <h3>Top 100 nearest sightings ordered by sighting date (100 miles radius):</h3>
+                <div class="mt-5 mb-5">
+		     		  <h3 class="text-xl font-semibold text-[#D7DF21] mb-3">Top 100 nearest sightings ordered by sighting date (100 miles radius):</h3>
 
-				      <table id="tabledata" class="table table-responsive table-striped" itemscope itemtype="http://schema.org/ItemList">
-				      		<thead>
+				      <table id="tabledata" class="w-full text-left text-gray-300 text-sm" itemscope itemtype="http://schema.org/ItemList">
+				      		<thead class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
 								<tr>
-										<th>Location
+										<th class="px-4 py-3">Location
 										</th>
-										<th>Sighted on
+										<th class="px-4 py-3">Sighted on
 										</th>
-										<th>Shape
+										<th class="px-4 py-3">Shape
 										</th>
-										<th class="hidden-phone">Duration
+										<th class="px-4 py-3 hidden sm:table-cell">Duration
 										</th>
 							  	</tr>
 							</thead>
-							<tfoot>
+							<tfoot class="bg-gray-800 text-[#D7DF21] uppercase text-xs">
 								<tr>
-										<th>Location
+										<th class="px-4 py-3">Location
 										</th>
-										<th>Sighted on
+										<th class="px-4 py-3">Sighted on
 										</th>
-										<th>Shape
+										<th class="px-4 py-3">Shape
 										</th>
-										<th class="hidden-phone">Duration
+										<th class="px-4 py-3 hidden sm:table-cell">Duration
 										</th>
 							  	</tr>
 							</tfoot>
-							<tbody>
+							<tbody class="divide-y divide-gray-700">
 							   	<%
 							   	# In order to avoid the same sighting as nearest sighting
 							   	@nearest_sightings.each do |sighting|
@@ -49,19 +49,19 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
 							       	next
 							     	end
 									%>
-			  		   			<tr itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-						       		<td>
+			  		   			<tr class="hover:bg-gray-800/50 transition" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
+						       		<td class="px-4 py-3">
 						       			<meta itemprop="datePublished" content="<%= format_date_microdata sighting.reported_at %>"/>
-										  	<meta itemprop="headline" content="<%= friendly_title(sighting) %>"/>
-						       			<span itemprop="name"><%= link_to sighting.location, :controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting) %></span>
+									  	<meta itemprop="headline" content="<%= friendly_title(sighting) %>"/>
+						       			<span itemprop="name"><%= link_to sighting.location, {:controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting)}, class: "text-[#D7DF21] hover:underline" %></span>
 						       		</td>
-						       		<td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>">
+						       		<td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>" class="px-4 py-3">
 							    			<%= format_date_microdata sighting.sighted_at %>
 							    		</td>
-							    		<td>
+							    		<td class="px-4 py-3">
 							    			<%=sighting.shape%>
 						       		</td>
-						       		<td class="hidden-phone">
+						       		<td class="px-4 py-3 hidden sm:table-cell">
 							    			<%= sighting.duration %>
 						       		</td>
 										</tr>

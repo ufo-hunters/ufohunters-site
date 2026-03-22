@@ -1,7 +1,10 @@
 class Ckeditor::Asset
-  include Ckeditor::Orm::Mongoid::AssetBase
+  include Mongoid::Document
+  include Mongoid::Timestamps
 
-  delegate :url, :current_path, :size, :content_type, :filename, :to => :data
+  field :data_file_name, type: String
+  field :data_content_type, type: String
+  field :data_file_size, type: Integer
 
   validates_presence_of :data
 end

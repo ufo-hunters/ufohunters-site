@@ -4,83 +4,71 @@
     rocket_black_brant = Report.new
     rocket_black_brant.coord = [-75.45257, 37.91062]
     rocket_black_brant.location = 'Black Brant 12 (Wallops Island)'
-    rocket_black_brant.description = 'A rocket experiment that may shed light on the highest clouds in the Earth’s atmosphere was conducted from NASA\'s Wallops Flight Facility in Virginia on September 19, 2009. The experiment was launched on a NASA Black Brant XII Sounding Rocket.'
+    rocket_black_brant.description = 'A rocket experiment that may shed light on the highest clouds in the Earth\'s atmosphere was conducted from NASA\'s Wallops Flight Facility in Virginia on September 19, 2009. The experiment was launched on a NASA Black Brant XII Sounding Rocket.'
 
     %><%= render partial: 'common/map', locals: {ufo_list: ufo_list, map_id: 'basicMap', marker: rocket_black_brant, marker_icon: 'blackbrant.png', map_zoom: 4} %>
 
-    <div class="row">
-                <div class="span8">
+    <div class="mt-4">
+                <div class="w-full lg:w-2/3">
                         <div id="basicMap" style="width: 100%; height: 550px;"></div>
                 </div>
     </div>
 
-    <div class="row">
-                <div class="span8">
+    <div class="mt-4">
+                <div class="w-full lg:w-2/3">
 
-                        <p class="meta" style="padding-top: 10px">
+                        <p class="text-gray-300 pt-2">
                             On 19 September 2009 MUFON and NUFORC received lots of sighting reports. The map above shows all of them. The influence area was the East Coast of the United States.
                         </p>
-                        <p class="meta">
-                            In the map we have placed a marker in the location where the rocket was launched and around it, there are lots of sightings that were reported to MUFON and NUFORC (you can click on the icons to see the report). Most of the sightings were reported with the following: <strong>"cone-shaped burst of light"</strong>.
+                        <p class="text-gray-300 mt-2">
+                            In the map we have placed a marker in the location where the rocket was launched and around it, there are lots of sightings that were reported to MUFON and NUFORC (you can click on the icons to see the report). Most of the sightings were reported with the following: <strong class="text-white">"cone-shaped burst of light"</strong>.
                         </p>
-                        <p class="meta">
+                        <p class="text-gray-300 mt-2">
                             This cone-shaped burst of light was an artificial noctilucent cloud formed by the exhaust particles of the rocket's fourth stage at an altitude of about 278 km (173 mi). Here are several sketches which were reported to MUFON:
 
 
-                            <div class="well" style="padding: 0">
-                                <div id="gallery" class="carousel slide" style="margin: 0">
-                                    <div class="carousel-inner" style="width: 90%; margin: auto;">
+                            <div class="bg-gray-800/60 border border-gray-700 rounded-lg overflow-hidden">
+                                <div id="gallery" class="mt-0">
+                                            <div class="flex flex-wrap justify-center gap-4 p-4">
 
-                                          <div class="item active">
-                                            <div class="row-fluid">
-
-                                              <div class="span4" style="text-align:center">
+                                              <div class="text-center">
                                                 <% img = cl_image_path('reported_date_20090920/ufo_sighting_in_barnstable_massachusetts_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
                                                 <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090920/ufo_sighting_in_barnstable_massachusetts_usa_20090919.jpg', :alt => "Sighting sketch", :size => '140x105', :crop => :fit) %></a>
                                               </div>
 
-                                              <div class="span4" style="text-align:center">
+                                              <div class="text-center">
                                                  <% img = cl_image_path('reported_date_20100109/ufo_sighting_in_thetford_mines_quebec_canada_20090919.jpg', :size => '1024x768', :crop => :fit) %>
                                                  <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20100109/ufo_sighting_in_thetford_mines_quebec_canada_20090919.jpg', :alt => "Sighting sketch", :size => '140x105', :crop => :fit) %></a>
                                               </div>
 
-                                              <div class="span4" style="text-align:center">
+                                              <div class="text-center">
                                                  <% img = cl_image_path('reported_date_20090919/ufo_sighting_in_harrisburg_pennsylvania_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
                                                  <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090919/ufo_sighting_in_harrisburg_pennsylvania_usa_20090919.jpg', :alt => "UFO Sighting in Harrington", :size => '140x105', :crop => :fit) %></a>
                                               </div>
 
                                             </div>
-                                          </div>
-
-                                      </div>
                                 </div>
                             </div>
                         </p>
 
-                         <p class="meta">
+                         <p class="text-gray-300 mt-2">
                             Below you can see some photos of this cone-shaped lighting:
 
-                            <div class="well" style="padding: 0">
-                                <div id="gallery" class="carousel slide" style="margin: 0">
-                                            <div class="carousel-inner" style="width: 90%; margin: auto;">
+                            <div class="bg-gray-800/60 border border-gray-700 rounded-lg overflow-hidden">
+                                <div id="gallery" class="mt-0">
+                                            <div class="flex flex-wrap justify-center gap-4 p-4">
 
-                                          <div class="item active">
-                                            <div class="row-fluid">
-
-                                              <div class="span6" style="text-align:center">
+                                              <div class="text-center">
                                                 <% img = cl_image_path('reported_date_20090919/ufo_sighting_in_toronto_ontario_canada_20090919.jpg', :size => '1024x768', :crop => :fit) %>
                                                 <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090919/ufo_sighting_in_toronto_ontario_canada_20090919.jpg', :alt => "UFO Sighting in Toronto", :size => '300x205', :crop => :fit) %></a>
                                               </div>
 
-                                              <div class="span6" style="text-align:center">
+                                              <div class="text-center">
                                                  <% img = cl_image_path('reported_date_20090921/ufo_sighting_in_bernalillo_new_mexico_usa_20090919.jpg', :size => '1024x768', :crop => :fit) %>
                                                  <a href="<%= img %>" target="_blank"><%= cl_image_tag('reported_date_20090921/ufo_sighting_in_bernalillo_new_mexico_usa_20090919.jpg', :alt => "UFO Sighting in Bernalillo", :size => '300x205', :crop => :fit) %></a>
                                               </div>
 
                                             </div>
-                                          </div>
-
-                                      </div>
                                 </div>
                             </div>
 
@@ -88,4 +76,3 @@
 
                 </div>
     </div>
-

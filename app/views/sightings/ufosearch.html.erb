@@ -1,155 +1,108 @@
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.min.js'></script>
 <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v2.3.0/mapbox-gl-geocoder.css' type='text/css' />
-<script>
 
-$(document).ready(function(){
-     $("#new_report").validate({
-    });
-});
+<div class="w-full mb-4">
+  <h3 class="text-xl font-bold text-[#D7DF21]">UFOs Search</h3>
+</div>
 
-</script>
+<div class="w-full mb-6">
+  <p class="text-gray-300 mb-2">
+    First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.
+  </p>
+  <p class="text-gray-300 mb-2">
+    The search will be performed between the dates chosen, around the location (<u>within a radius of 200 miles from the selected location</u>).
+  </p>
+  <p class="text-gray-300 mb-2">
+    In the <strong class="text-gray-100">Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong class="text-gray-100">End Date</strong> field indicates the upper limit for your date range.
+  </p>
+  <p class="text-gray-300 mb-2">
+    Finally, fill in the <strong class="text-gray-100">search</strong> box, inside the map, the sighting location.
+  </p>
+  <p class="text-gray-300 mb-2">
+    Just below the map, type in the captcha field the letters you see in the image, and click on <strong class="text-gray-100">SEARCH UFOS</strong> to get the results.
+  </p>
+</div>
 
-  <div class="row">
-          <div class="span12">
-                <h3>UFOs Search</h3>
-          </div>
+<%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch') do %>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+    <div>
+      <label for="startdate" class="block text-sm font-medium text-gray-300 mb-1">Start Date <span class="text-red-500">*</span></label>
+      <input type="date" id="startdate" name="startdate" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-[#D7DF21]" required>
+    </div>
+    <div>
+      <label for="enddate" class="block text-sm font-medium text-gray-300 mb-1">End Date <span class="text-red-500">*</span></label>
+      <input type="date" id="enddate" name="enddate" class="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-gray-200 focus:outline-none focus:border-[#D7DF21]" required>
+    </div>
+    <div>
+      <div name="coord_div" id="coord_div" class="hidden"></div>
+      <input type="text" value="" name="coord" id="coord" class="hidden" required/>
+    </div>
   </div>
 
-  <div class="row">
-          <div class="span12">
-      <p>
-        First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.
-      </p>
-      <p>
-        The search will be performed between the dates chosen, around the location (<u>within a radius of 200 miles from the selected location</u>).
-      </p>
-      <p>
-        In the <strong>Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong>End Date</strong> field indicates the upper limit for your date range.
-      </p>
-      <p>
-        Finally, fill in the <strong>search</strong> box, inside the map, the sighting location.
-      </p>
-      <p>
-        Just below the map, type in the captcha field the letters you see in the image, and click on <strong>SEARCH UFOS</strong> to get the results.
-      </p>
+  <div class="w-full mb-4">
+    <div id="map-canvas" class="map-canvas w-full h-[400px] rounded-lg"></div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+    <div>
+      <%= recaptcha_tags %>
+      <div class="mt-2"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
     </div>
-   </div>
+    <div class="flex items-center">
+      <input type="submit" class="bg-[#D7DF21] text-[#1D1D1D] font-bold py-3 px-6 rounded hover:bg-[#c5cd1e] cursor-pointer transition m-5" value="SEARCH UFOS" name="commit">
+    </div>
+  </div>
+
+<% end %>
 
 <script>
+  mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
+  var map = new mapboxgl.Map({
+      container: 'map-canvas',
+      style: 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl',
+      center: [-73.98,40.76],
+      zoom: 7
+  });
 
-      $(function() {
-        $( "#startdate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" });
+  var geocoder = new MapboxGeocoder({
+      accessToken: mapboxgl.accessToken
+  });
 
-        $( "#enddate" ).datepicker({dateFormat: "mm/dd/yy", changeYear: true, yearRange: "1900:c" });
+  map.addControl(geocoder);
 
-        $('form').validate({
-               messages: {
-                "coord": {
-                  required: "The location has to be searched on the map!. Enter the location in the box of the map"
-                }
-              }
-        });
-
+  map.on('load', function() {
+      map.addSource('single-point', {
+          "type": "geojson",
+          "data": {
+              "type": "FeatureCollection",
+              "features": []
+          }
       });
 
-</script>
+      map.addLayer({
+          "id": "point",
+          "source": "single-point",
+          "type": "circle",
+          "paint": {
+              "circle-radius": 10,
+              "circle-color": "#ff0000"
+          }
+      });
 
-<%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch')  do %>
-
-  <div class="row">
-    <div class="span4">
-      <label for="startdate">Start Date <span class="divrojo">*</span></label>
-      <input type="text" id="startdate" name="startdate" size="12" class="required date">
-    </div>
-    <div class="span4">
-      <label for="enddate">End Date <span class="divrojo">*</span></label>
-      <input type="text" id="enddate" name="enddate" size="12" class="required date">
-    </div>
-    <div class="span4">
-      <div name="coord_div" id="coord_div" class="required" style="visibility: hidden;"></div>
-      <input type="text" value="" size="30" name="coord" id="coord" class="required" style="visibility: hidden;"/>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span12">
-      <div id="map-canvas" class="map-canvas"></div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span6">
-      <%= recaptcha_tags %>
-      <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
-    </div>
-    <div class="span6">
-      <input type="submit" class="submit-button" value="SEARCH UFOS" name="commit" style="margin: 20px;">
-    </div>
-  </div>
-
-
-  <% end %>
-
-  <script>
-
-	mapboxgl.accessToken = 'pk.eyJ1IjoiZmpmZGVwZWRybyIsImEiOiJjam40bWswc3k1ZmgwM3BueG45YXZoZ3MwIn0.LpHFrAER3JjOAZwnyDnrqw';
-	var map = new mapboxgl.Map({
-	    container: 'map-canvas',
-	    style: 'mapbox://styles/fjfdepedro/cjnc849ms0g6l2rsc5edfb4gl',
-	    center: [-73.98,40.76],
-	    zoom: 7
-	});
-
-	var geocoder = new MapboxGeocoder({
-	    accessToken: mapboxgl.accessToken
-	});
-
-	map.addControl(geocoder);
-
-	// After the map style has loaded on the page, add a source layer and default
-	// styling for a single point.
-	map.on('load', function() {
-	    map.addSource('single-point', {
-	        "type": "geojson",
-	        "data": {
-	            "type": "FeatureCollection",
-	            "features": []
-	        }
-	    });
-
-
-	    map.addLayer({
-	        "id": "point",
-	        "source": "single-point",
-	        "type": "circle",
-	        "paint": {
-	            "circle-radius": 10,
-	            "circle-color": "#ff0000"
-	        }
-	    });
-
-      // Listen for the `geocoder.input` event that is triggered when a user
-    // makes a selection and add a symbol that matches the result.
-    geocoder.on('result', function(ev) {
-        map.getSource('single-point').setData(ev.result.geometry);
-        var styleSpec = ev.result;
-        var styleSpecBox = document.getElementById('coord_div');
-        var styleSpecText = JSON.stringify(styleSpec, null, 2);
-        var syntaxStyleSpecText = syntaxHighlight(styleSpecText);
-        styleSpecBox.innerHTML = syntaxStyleSpecText;
-
-        document.getElementById('coord').value = syntaxStyleSpecText;
-
-    });
-
-      
-	});
+      geocoder.on('result', function(ev) {
+          map.getSource('single-point').setData(ev.result.geometry);
+          var styleSpec = ev.result;
+          var styleSpecBox = document.getElementById('coord_div');
+          var styleSpecText = JSON.stringify(styleSpec, null, 2);
+          var syntaxStyleSpecText = syntaxHighlight(styleSpecText);
+          styleSpecBox.innerHTML = syntaxStyleSpecText;
+          document.getElementById('coord').value = syntaxStyleSpecText;
+      });
+  });
 
   function syntaxHighlight(json) {
-
-    var obj = JSON.parse(json);
-    return obj.center
-}
-  </script>
+      var obj = JSON.parse(json);
+      return obj.center;
+  }
+</script>

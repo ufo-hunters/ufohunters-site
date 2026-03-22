@@ -1,54 +1,50 @@
-<div class="row">
-		<div class="span12">
- 			<h2>UFO Resarch Team</h2>
- 		</div>
+<div>
+  <div class="w-full">
+    <h2 class="text-2xl font-bold text-white">UFO Research Team</h2>
+  </div>
 </div>
 
-
-<div class="row">
-		<div class="span12">
-         <p>Do you want to join our research team?.</p>
-         <p>We have several collaborators that publish their research in the form of articles on our site. In the navigation menu you can see a tab called "Articles".</p>
-         <p>If you want to publish your research and findings and share them with the whole world, create your account on our site, create your articles and show the world what you know.</p>
-		</div>
+<div class="mt-4">
+  <div class="w-full text-gray-300 space-y-3">
+    <p>Do you want to join our research team?.</p>
+    <p>We have several collaborators that publish their research in the form of articles on our site. In the navigation menu you can see a tab called "Articles".</p>
+    <p>If you want to publish your research and findings and share them with the whole world, create your account on our site, create your articles and show the world what you know.</p>
+  </div>
 </div>
 
+<div class="flex flex-col md:flex-row gap-6 mt-8">
 
-<div class="row">
-
-    <div class="span5 well">
-        <h3>Log in</h3>
+    <div class="flex-1 bg-gray-800/60 border border-gray-700 rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-[#D7DF21] mb-4">Log in</h3>
         <%= form_tag sessions_path do %>
-          <div class="field">
-            <%= label_tag :username %>
-            <%= text_field_tag :username, params[:username] %>
+          <div class="mb-4">
+            <%= label_tag :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+            <%= text_field_tag :username, params[:username], class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
           </div>
-          <div class="field">
-            <%= label_tag :password %>
-            <%= password_field_tag :password %>
+          <div class="mb-4">
+            <%= label_tag :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+            <%= password_field_tag :password, nil, class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
           </div>
-          <div class="actions"><%= submit_tag "Log in" %></div>
+          <div><%= submit_tag "Log in", class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
         <% end %>
 
             <% if flash[:form] == 1%>
-                <div class="alert alert-dismissable alert-danger">
-                    <button data-dismiss="alert" class="close" type="button">×</button>
+                <div class="mt-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded relative" role="alert">
                     <strong><%=flash[:error]%></strong>
                 </div>
             <% end %>
 
   </div>
 
-   <div class="span5 well">
-        <h3>Sign up</h3>
+   <div class="flex-1 bg-gray-800/60 border border-gray-700 rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-[#D7DF21] mb-4">Sign up</h3>
 
         <%
         if flash[:form] == 2
           unless flash[:error].blank?
             flash[:error].each do |msg|
         %>
-            <div class="alert alert-dismissable alert-danger">
-              <button data-dismiss="alert" class="close" type="button">×</button>
+            <div class="mb-3 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded relative" role="alert">
               <strong><%= msg %></strong>
             </div>
         <%
@@ -59,47 +55,46 @@
 
         <%= form_for @user do |f| %>
             <% if @user.errors.any? %>
-              <div class="error_messages">
-                <h2>Form is invalid</h2>
-                <ul>
+              <div class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
+                <h2 class="font-semibold mb-2">Form is invalid</h2>
+                <ul class="list-disc list-inside">
                   <% for message in @user.errors.full_messages %>
                     <li><%= message %></li>
                   <% end %>
                 </ul>
               </div>
             <% end %>
-            <div class="field">
-              <%= f.label :username %>
-              <%= f.text_field :username, :class => 'required fieldufo' %>
+            <div class="mb-4">
+              <%= f.label :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.text_field :username, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
             </div>
-            <div class="field">
-              <%= f.label :password %>
-              <%= f.password_field :password, :class => 'required fieldufo' %>
+            <div class="mb-4">
+              <%= f.label :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.password_field :password, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
             </div>
-            <div class="field">
-              <%= f.label :password_confirmation %>
-              <%= f.password_field :password_confirmation, :class => 'required fieldufo' %>
+            <div class="mb-4">
+              <%= f.label :password_confirmation, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.password_field :password_confirmation, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
             </div>
-            <div class="field">
-              <%= f.label :email %>
-              <%= f.text_field :email, :class => 'required fieldufo' %>
+            <div class="mb-4">
+              <%= f.label :email, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.text_field :email, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
             </div>
-            <div class="field">
-              <%= f.label :email_confirmation %>
-              <%= f.text_field :email_confirmation, :class => 'required fieldufo' %>
+            <div class="mb-4">
+              <%= f.label :email_confirmation, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.text_field :email_confirmation, :class => 'w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]' %>
             </div>
-             <div class="field">
+             <div class="mb-4">
                <%= recaptcha_tags %>
-               <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
+               <div class="caja-text"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
             </div>
-            <div class="actions"><%= submit_tag "Sign up" %></div>
+            <div><%= submit_tag "Sign up", class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
         <% end %>
   </div>
 
 </div>
 
 
-
-<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+<div class="mt-5 mb-5">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>

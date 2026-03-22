@@ -1,53 +1,48 @@
 <%= javascript_include_tag "custom-tooltip" %>
 <%= javascript_include_tag "d3.v3.min.js" %>
-<div id="site_content">
-   <div id="content">
-      <div class="content_item">
-          <h2>A glance at our data</h2>
-	  <p>The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dinamically generated to keep it up to date as our database is updated. <strong>More graphs coming soon !!</strong></p>
-       </div>
-       <div class="content_item" >
-          <div class="stats_table"  >
-            <table style="float: left; width: 200px">
-              <caption>UFO Shapes Data</caption>
-              <thead>
-                <tr>
-                   <th class="stats_table_left" style="text-align: left">Shape</th>
-                   <th style="text-align: left">Number of sightings</th>
+
+<div class="max-w-7xl mx-auto">
+  <div class="mb-6">
+    <h2 class="text-2xl font-bold text-[#D7DF21]">A glance at our data</h2>
+    <p class="text-gray-300 mt-2">The following bubble graph represents the wide variety of sightings' shapes. Select a bubble to know the number of sightings and the corresponding shape.<br/>The graph is dynamically generated to keep it up to date as our database is updated. <strong class="text-gray-100">More graphs coming soon !!</strong></p>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-6">
+    <div class="shrink-0">
+      <table class="w-[250px] border-collapse">
+        <caption class="text-left font-bold text-[#D7DF21] mb-2">UFO Shapes Data</caption>
+        <thead>
+          <tr>
+            <th class="text-left px-3 py-2 border-b border-gray-600 text-gray-300">Shape</th>
+            <th class="text-left px-3 py-2 border-b border-gray-600 text-gray-300">Number of sightings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%
+            count = 0
+            (0...30).each do |i|
+              ufo = @listaUFO[i]
+              unless ufo.nil?
+          %>
+                <tr class="<%= count % 2 == 0 ? 'bg-gray-800/50' : '' %>">
+                  <td class="px-3 py-1.5 text-gray-300 text-sm"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
+                  <td class="px-3 py-1.5 text-gray-300 text-sm text-right"><%= ufo['count'] %></td>
                 </tr>
-              </thead>
-              <tbody>
-              <%
-                          count = 0
-                          (0...30).each do |i|
-                          #@listaUFO.each do |ufo|
-                              ufo = @listaUFO[i]
-                                  unless ufo.nil?
-                                        %>
-                                          <tr <%= count % 2 == 0 ? "class='even'" : ""%>>
-                                             <td class="stats_table_left"><%= ufo['_id']['shape'].blank? ? "N/A" : ufo['_id']['shape'][0..15] %></td>
-                                             <td class="stats_table_right"><%= ufo['count'] %></td>
-                                          </tr>
-                                        <%
-                                        count += 1
-                                  end
-                           end 
-              %>
-
-              </tbody>
-            </table>
-
-			     <article style="float: left; max-width: 950px" >
-             <div class="top">
-             </div>
-            </article>
-			     <div style="clear: both"></div>
-          </div>
-
-
-       </div>
+          <%
+                count += 1
+              end
+            end
+          %>
+        </tbody>
+      </table>
     </div>
+
+    <article class="flex-1 max-w-[950px]">
+      <div class="top"></div>
+    </article>
+  </div>
 </div>
-<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+
+<div class="my-5">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>

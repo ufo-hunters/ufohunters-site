@@ -1,10 +1,10 @@
-<h1>Sign Up</h1>
+<h1 class="text-2xl font-bold text-white mb-6">Sign Up</h1>
 
 <%= form_for @user do |f| %>
   <% if @user.errors.any? %>
-    <div class="error_messages">
-      <h2>Form is invalid</h2>
-      <ul>
+    <div class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
+      <h2 class="font-semibold mb-2">Form is invalid</h2>
+      <ul class="list-disc list-inside">
         <% for message in @user.errors.full_messages %>
           <li><%= message %></li>
         <% end %>
@@ -13,30 +13,30 @@
   <% end %>
 
 
-  <% flash.each do |name, msg| %>  
-       <div class="error_messages">
-          <h2>Form is invalid</h2>
-              <ul>
+  <% flash.each do |name, msg| %>
+       <div class="mb-4 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded">
+          <h2 class="font-semibold mb-2">Form is invalid</h2>
+              <ul class="list-disc list-inside">
                    <li> <%= content_tag :div, msg, :id => "flash#{name}" %>  </li>
               </ul>
        </div>
-  <% end %> 
+  <% end %>
 
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
+  <div class="mb-4">
+    <%= f.label :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+    <%= f.text_field :username, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
   </div>
-  <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password %>
+  <div class="mb-4">
+    <%= f.label :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+    <%= f.password_field :password, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
   </div>
-  <div class="field">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation %>
+  <div class="mb-4">
+    <%= f.label :password_confirmation, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+    <%= f.password_field :password_confirmation, class: "w-full max-w-md px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
   </div>
-  <div class="field">
+  <div class="mb-4">
     <%= recaptcha_tags %>
-    <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
+    <div class="caja-text"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
   </div>
-  <div class="actions"><%= f.submit %></div>
+  <div><%= f.submit class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
 <% end %>

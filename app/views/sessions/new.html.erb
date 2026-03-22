@@ -1,77 +1,70 @@
 
-<div class="row">
-    <div class="span12">
-      <h2>UFO Resarch Team</h2>
-    </div>
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white">UFO Research Team</h2>
 </div>
 
-
-<div class="row">
-    <div class="span12">
-         <p>Do you want to join our research team?.</p>
-         <p>We have several collaborators that publish their research in the form of articles on our site. In the navigation menu you can see a tab called "Articles".</p>
-         <p>If you want to publish your research and findings and share them with the whole world, create your account on our site, create your articles and show the world what you know.</p>
-    </div>
+<div class="text-gray-300 space-y-3 mb-8">
+    <p>Do you want to join our research team?.</p>
+    <p>We have several collaborators that publish their research in the form of articles on our site. In the navigation menu you can see a tab called "Articles".</p>
+    <p>If you want to publish your research and findings and share them with the whole world, create your account on our site, create your articles and show the world what you know.</p>
 </div>
 
+<div class="flex flex-col md:flex-row gap-6">
 
-<div class="row">
-
-    <div class="span5 well">
-        <h3>Log in</h3>
+    <div class="flex-1 bg-gray-800/60 border border-gray-700 rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-[#D7DF21] mb-4">Log in</h3>
         <%= form_tag sessions_path do %>
-          <div class="field">
-            <%= label_tag :username %>
-            <%= text_field_tag :username, params[:username] %>
+          <div class="mb-4">
+            <%= label_tag :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+            <%= text_field_tag :username, params[:username], class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
           </div>
-          <div class="field">
-            <%= label_tag :password %>
-            <%= password_field_tag :password %>
+          <div class="mb-4">
+            <%= label_tag :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+            <%= password_field_tag :password, nil, class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
           </div>
-          <div class="actions"><%= submit_tag "Log in" %></div>
+          <div><%= submit_tag "Log in", class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
         <% end %>
 
-           
-           <% flash.each do |name, msg| %>  
-              <%= content_tag :div, msg, :id => "flash#{name}" %>  
-            <% end %> 
-         
+
+           <% flash.each do |name, msg| %>
+              <%= content_tag :div, msg, :id => "flash#{name}", :class => "mt-3 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded" %>
+            <% end %>
+
   </div>
 
-   <div class="span5 well">
-        <h3>Sign up</h3>
-       
+   <div class="flex-1 bg-gray-800/60 border border-gray-700 rounded-lg p-6">
+        <h3 class="text-xl font-semibold text-[#D7DF21] mb-4">Sign up</h3>
+
        <%= form_for @user do |f| %>
-         
-            <div class="field">
-              <%= f.label :username %>
-              <%= f.text_field :username %>
+
+            <div class="mb-4">
+              <%= f.label :username, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.text_field :username, class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
             </div>
-            <div class="field">
-              <%= f.label :password %>
-              <%= f.password_field :password %>
+            <div class="mb-4">
+              <%= f.label :password, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.password_field :password, class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
             </div>
-            <div class="field">
-              <%= f.label :password_confirmation %>
-              <%= f.password_field :password_confirmation %>
+            <div class="mb-4">
+              <%= f.label :password_confirmation, nil, class: "block text-sm font-medium text-gray-300 mb-1" %>
+              <%= f.password_field :password_confirmation, class: "w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-white focus:outline-none focus:border-[#D7DF21]" %>
             </div>
-            <div class="field">
+            <div class="mb-4">
               <%= recaptcha_tags %>
-              <div class="caja-text"><span class="divrojo"><%= flash[:recaptcha_error] %></span></div>
+              <div class="caja-text"><span class="text-red-500"><%= flash[:recaptcha_error] %></span></div>
             </div>
-            <div class="actions"><%= submit_tag "Sign up" %></div>
+            <div><%= submit_tag "Sign up", class: "px-6 py-2 bg-[#D7DF21] text-gray-900 font-semibold rounded hover:bg-[#c5cd1e] transition cursor-pointer" %></div>
 
         <% end %>
 
-         <% flash.each do |name, msg| %>  
-              <%= content_tag :div, msg, :id => "flash#{name}" %>  
-            <% end %> 
+         <% flash.each do |name, msg| %>
+              <%= content_tag :div, msg, :id => "flash#{name}", :class => "mt-3 bg-red-900/50 border border-red-700 text-red-300 px-4 py-3 rounded" %>
+            <% end %>
   </div>
 
 </div>
 
 
-
-<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+<div class="mt-5 mb-5">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>

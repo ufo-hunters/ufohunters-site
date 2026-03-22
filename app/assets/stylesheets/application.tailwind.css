@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-sm font-sans text-gray-900;
+  }
+  h1 {
+    @apply text-3xl font-bold mb-4 text-gray-900;
+  }
+  h2 {
+    @apply text-2xl font-semibold mt-6;
+  }
+  h3 {
+    @apply text-xl font-semibold;
+  }
+  a {
+    @apply text-[#959C16] no-underline;
+  }
+  a:hover {
+    @apply text-[#7D8212] underline;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-block px-4 py-2 bg-[#D7DF21] text-gray-900 font-bold rounded cursor-pointer border border-[#D7DF21] hover:border-gray-400 no-underline;
+  }
+  .map-canvas {
+    @apply h-[400px] w-full m-0 p-0;
+  }
+  .player {
+    @apply relative pb-[56.25%] pt-[30px] h-0 overflow-hidden;
+  }
+  .player iframe,
+  .player object,
+  .player embed {
+    @apply absolute top-0 left-0 w-[92%] h-[92%];
+  }
+  .footer {
+    @apply bg-gray-900 text-[#D7DF21] text-center;
+  }
+  .footer a {
+    @apply text-[#D7DF21];
+  }
+}

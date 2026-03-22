@@ -1,11 +1,11 @@
 <%
-span_class = 'span4'
+tw_class = 'w-full lg:w-1/3'
 
-span_class = span if defined?(span)
+tw_class = span if defined?(span)
 
-cache("common/partials/ads/adaptable3/#{span_class}") do
+cache("common/partials/ads/adaptable3/#{tw_class}") do
 %>
-<div class="<%=span_class%>" itemscope itemtype="http://schema.org/WPAdBlock">
+<div class="<%=tw_class%>" itemscope itemtype="http://schema.org/WPAdBlock">
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
   <%# AnuncioAdaptable3 %>
   <ins class="adsbygoogle"

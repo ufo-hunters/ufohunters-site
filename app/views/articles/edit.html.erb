@@ -1,10 +1,10 @@
-<h1>Editing article</h1>
+<h1 class="text-2xl font-bold text-white mb-4">Editing article</h1>
 
- <div class="row">
-  <div class="span12">
-    <%= render 'form' %>
-  </div>
- </div>
+<div class="w-full">
+  <%= render 'form' %>
+</div>
 
-<%= link_to 'Show', @article %> |
-<%= link_to 'Back', articles_path %>
+<div class="mt-4 flex gap-3">
+  <%= link_to 'Show', @article, class: "text-[#D7DF21] hover:underline" %> |
+  <%= link_to 'Back', articles_path, class: "text-[#D7DF21] hover:underline" %>
+</div>
