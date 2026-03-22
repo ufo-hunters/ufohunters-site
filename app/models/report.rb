@@ -36,8 +36,8 @@ class Report
     self.case_number = last_case_number + 1 if last_case_number
   end
 
-  #db.ufo.ensureIndex({"coord":"2d"}, {"background":true,"safe":true})
-  index({coord:'2d'},{background:true})
+  #db.ufo.ensureIndex({"coord":"2dsphere"}, {"background":true,"safe":true})
+  index({coord:'2dsphere'},{background:true})
 
   #db.ufo.ensureIndex({"status":1,"links":1}, {"background":true,"safe":true})
   index({status:1,links:1},{background:true})

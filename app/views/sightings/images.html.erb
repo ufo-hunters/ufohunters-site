@@ -1,87 +1,80 @@
 <% cache("images/content", expires_in: 12.hours) do %>
-    <div class="row">
-		<div class="span12">
-							<h3>Recent UFO Activity</h3>
-							<p>Discover the latest UFO sightings images all over the world</p>
-		</div>
-	</div>
 
-    <div class="row">
-		  <div class="span12">
-		  	<p>Drag the images so that you can take a look at the UFO Image Gallery</p>
-		  </div>
-    </div>
+<div class="w-full mb-4">
+  <h3 class="text-xl font-bold text-[#D7DF21]">Recent UFO Activity</h3>
+  <p class="text-gray-300">Discover the latest UFO sightings images all over the world</p>
+</div>
 
-	<div class="row" style="margin-top: 20px;margin-bottom: 20px">
-    <%= render partial: 'common/ads/adaptable3', locals: {span: 'span12'} %>
-	</div>
+<div class="w-full mb-4">
+  <p class="text-gray-300">Drag the images so that you can take a look at the UFO Image Gallery</p>
+</div>
 
-	<div class="row">
-		    <div class="span12">
-			   <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
-				    <div class="slides"></div>
-				    <h3 class="title"></h3>
-				    <a class="prev">‹</a>
-				    <a class="next">›</a>
-				    <a class="play-pause"></a>
-				</div>
-			</div>
-    </div>
+<div class="my-5">
+  <%= render partial: 'common/ads/adaptable3', locals: {span: 'w-full'} %>
+</div>
 
-	<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
-
-    <script>
-			blueimp.Gallery([
-			    <%
-			    image_cont = 0
-
-			    unless @ufo_list.blank?
-						@ufo_list.each do |ufo|
-							image_urls = []
-			        image_urls, other_urls = select_url_images(ufo.links) unless ufo.links.blank?
-			        image_urls = image_urls + ufo.image_cloudinary unless ufo.image_cloudinary.blank?
-
-							unless image_urls.blank?
-
-							  image_urls.each do |img|
-
-									if image_cont != 0
-						              	%>
-						                   ,
-						              	<%
-						      end
-
-						      img_thumb = img
-
-						      if image_hosting_link?(img)
-									  img_thumb = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit)
-
-									end
-									%>
-									{
-										title: '<%=friendly_title(ufo)%>',
-								        href: '<%=img_thumb%>',
-								        type: 'image/jpeg',
-								        thumbnail: '<%=img_thumb%>'
-									}
-								    <%
-
-								  image_cont += 1
-
-								end
-
-							end
-
-						end
-					end
-		      %>],
-			    {
-			        container: '#blueimp-gallery-carousel',
-			        carousel: true
-			    }
-			);
-	</script>
-  <div class="row" style="margin-top: 20px;margin-bottom: 20px">
-    <%= render partial: 'common/ads/horizontal_ad' %>
+<div class="w-full">
+  <div id="blueimp-gallery-carousel" class="blueimp-gallery blueimp-gallery-controls blueimp-gallery-carousel blueimp-gallery-display blueimp-gallery-playing">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">&lsaquo;</a>
+    <a class="next">&rsaquo;</a>
+    <a class="play-pause"></a>
   </div>
+</div>
+
+<script src="http://blueimp.github.io/Gallery/js/blueimp-gallery.min.js"></script>
+
+<script>
+  blueimp.Gallery([
+  <%
+    image_cont = 0
+
+    unless @ufo_list.blank?
+      @ufo_list.each do |ufo|
+        image_urls = []
+        image_urls, other_urls = select_url_images(ufo.links) unless ufo.links.blank?
+        image_urls = image_urls + ufo.image_cloudinary unless ufo.image_cloudinary.blank?
+
+        unless image_urls.blank?
+          image_urls.each do |img|
+            if image_cont != 0
+  %>
+               ,
+  <%
+            end
+
+            img_thumb = img
+
+            if image_hosting_link?(img)
+              begin
+                img_thumb = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit)
+              rescue CloudinaryException
+                img_thumb = img
+              end
+            end
+  %>
+            {
+              title: '<%= friendly_title(ufo) %>',
+              href: '<%= img_thumb %>',
+              type: 'image/jpeg',
+              thumbnail: '<%= img_thumb %>'
+            }
+  <%
+            image_cont += 1
+          end
+        end
+      end
+    end
+  %>],
+  {
+      container: '#blueimp-gallery-carousel',
+      carousel: true
+  });
+</script>
+
+<div class="my-5">
+  <%= render partial: 'common/ads/horizontal_ad' %>
+</div>
+
 <% end %>

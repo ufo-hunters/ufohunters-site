@@ -1,121 +1,118 @@
-<%= javascript_include_tag "world/d3.geo.js" %>
-<div class="row">
-  <div class="span12">
-    <h2>Latest sightings</h2>
-    <p><strong><u>Continents</u></strong></p>
-    <p>Investigate the latest sightings in your continent (or region) clicking on the names below</p>
-  </div>
+<%= javascript_include_tag "d3.v3.min" %>
+<%= javascript_include_tag "d3.geo" %>
 
+<div class="w-full mb-4">
+  <h2 class="text-2xl font-bold text-[#D7DF21]">Latest sightings</h2>
+  <p class="mt-2"><strong class="text-gray-200"><u>Continents</u></strong></p>
+  <p class="text-gray-300">Investigate the latest sightings in your continent (or region) clicking on the names below</p>
 </div>
 
+<% cache("maps/content/continents") do %>
+<div class="w-full mb-6">
+  <div class="bg-[#1D1D1D] border border-gray-700 rounded-lg p-4">
+    <div id="thumb_continent" class="relative overflow-hidden">
+      <div class="carousel-inner w-4/5 mx-auto">
 
-<% cache ("maps/content/continents") do %>
-<div class="row">
-  <div class="span12">
-
-    <script type="text/javascript">
-      $(document).ready(function() {
-        $("#thumb_continent").carousel({
-          interval: 5000
-        });
-      });
-    </script>
-    <div class="well">
-      <div id="thumb_continent" class="carousel slide" style="margin-bottom: 0px;">
-        <div class="carousel-inner" style="width:80%;margin:auto;">
-
-          <div class="item active">
-            <div class="row-fluid">
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('noord-amerika.png') %>
-                <h3><%= link_to "North America", :controller => "sightings", :action => "northamerica"%></h3>
-              </div>
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('zuid-amerika.png') %>
-                <h3><%= link_to "South America", :controller => "sightings", :action => "southamerica"%></h3>
-              </div>
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('afrika.png') %>
-                <h3><%= link_to "Africa", :controller => "sightings", :action => "africa"%></h3>
-              </div>
-
+        <div class="continent-slide active">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
+            <div class="text-center">
+              <%= image_tag image_path('noord-amerika.png'), class: "mx-auto", loading: "lazy", alt: "North America UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "North America", sightings_northamerica_path, class: "text-[#D7DF21] hover:underline" %></h3>
+            </div>
+            <div class="text-center">
+              <%= image_tag image_path('zuid-amerika.png'), class: "mx-auto", loading: "lazy", alt: "South America UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "South America", sightings_southamerica_path, class: "text-[#D7DF21] hover:underline" %></h3>
+            </div>
+            <div class="text-center">
+              <%= image_tag image_path('afrika.png'), class: "mx-auto", loading: "lazy", alt: "Africa UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "Africa", sightings_africa_path, class: "text-[#D7DF21] hover:underline" %></h3>
             </div>
           </div>
-
-          <div class="item">
-            <div class="row-fluid">
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('azie.png') %>
-                <h3><%= link_to "Asia", :controller => "sightings", :action => "asia"%></h3>
-              </div>
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('europa.png') %>
-                <h3><%= link_to "Europe", :controller => "sightings", :action => "europe"%></h3>
-              </div>
-
-              <div class="span4" style="text-align:center">
-                <%= image_tag image_path('oceanie.png') %>
-                <h3><%= link_to "Oceania", :controller => "sightings", :action => "oceania"%></h3>
-              </div>
-            </div>
-          </div>
-
         </div>
-        <a class="left carousel-control" href="#thumb_continent" data-slide="prev">‹</a>
-        <a class="right carousel-control" href="#thumb_continent" data-slide="next">›</a>
+
+        <div class="continent-slide hidden">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
+            <div class="text-center">
+              <%= image_tag image_path('azie.png'), class: "mx-auto", loading: "lazy", alt: "Asia UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "Asia", sightings_asia_path, class: "text-[#D7DF21] hover:underline" %></h3>
+            </div>
+            <div class="text-center">
+              <%= image_tag image_path('europa.png'), class: "mx-auto", loading: "lazy", alt: "Europe UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "Europe", sightings_europe_path, class: "text-[#D7DF21] hover:underline" %></h3>
+            </div>
+            <div class="text-center">
+              <%= image_tag image_path('oceanie.png'), class: "mx-auto", loading: "lazy", alt: "Oceania UFO sightings" %>
+              <h3 class="text-lg font-bold mt-2"><%= link_to "Oceania", sightings_oceania_path, class: "text-[#D7DF21] hover:underline" %></h3>
+            </div>
+          </div>
+        </div>
+
       </div>
+      <button type="button" class="absolute left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-r text-2xl hover:bg-black/70" data-carousel="thumb_continent" data-action="prev" aria-label="Previous">&lsaquo;</button>
+      <button type="button" class="absolute right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white px-3 py-2 rounded-l text-2xl hover:bg-black/70" data-carousel="thumb_continent" data-action="next" aria-label="Next">&rsaquo;</button>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var container = document.getElementById("thumb_continent");
+      var slides = container.querySelectorAll(".continent-slide");
+      var currentIndex = 0;
+
+      function showSlide(index) {
+        slides.forEach(function(s, i) {
+          s.classList.toggle("hidden", i !== index);
+          s.classList.toggle("active", i === index);
+        });
+      }
+
+      container.querySelector('[data-action="prev"]').addEventListener("click", function() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        showSlide(currentIndex);
+      });
+
+      container.querySelector('[data-action="next"]').addEventListener("click", function() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+      });
+
+      setInterval(function() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+      }, 5000);
+    });
+  </script>
 </div>
 <% end %>
-<div class="row" style="margin-top: 20px;margin-bottom: 20px">
+
+<div class="my-5">
   <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
 
-<div class="row hidden-phone">
-  <div class="span12">
+<div class="w-full hidden sm:block">
+  <style type="text/css">
+    svg {
+      width: 1280px;
+      height: 800px;
+      pointer-events: all;
+    }
+    circle {
+      fill: #1972E5;
+    }
+    path {
+      fill: #698dc5;
+      stroke: #fff;
+    }
+  </style>
 
-      <style type="text/css">
+  <p class="mt-4"><strong class="text-gray-200"><u>Countries</u></strong></p>
+  <p class="text-gray-300">You can move the world!, drag with the mouse (i.e. clicking plus holding the button down and then moving it) the world map.</p>
+  <p class="text-gray-300">When you hover the mouse over each one of the countries, a tooltip will appear and will show the country's name.</p>
+  <p class="text-gray-300">Discover your country maps by a simple mouse-click on the one which is of interest for you.</p>
 
-      svg {
-        width: 1280px;
-        height: 800px;
-        pointer-events: all;
-      }
+  <div id="bodyworld" class="-ml-[180px]"></div>
 
-      circle {
-        fill: #1972E5;
-      }
-
-      path {
-        fill: #698dc5;
-        stroke: #fff;
-      }
-
-      </style>
-
-
-
-    <p><strong><u>Countries</u></strong></p>
-
-    <p>You can move the world!, drag with the mouse (i.e. clicking plus holding the button down and then moving it) the world map.</p>
-
-    <p>When you hover the mouse over each one of the countries, a tooltip will appear and will show the country's name. </p>
-
-    <p>Discover your country maps by a simple mouse-click on the one which is of interest for you. </p>
-
-
-
-    <div id="bodyworld" style="margin-left:-180px">
-    </div>
-
-    <script type="text/javascript">
-
+  <script type="text/javascript">
     var feature;
 
     var projection = d3.geo.azimuthal()
@@ -127,7 +124,6 @@
     var circle = d3.geo.greatCircle()
         .origin(projection.origin());
 
-    // TODO fix d3.geo.azimuthal to be consistent with scale
     var scale = {
       orthographic: 380,
       stereographic: 380,
@@ -193,81 +189,66 @@
         return path(circle.clip(d));
     }
 
-
     function click(d) {
       window.location.href = '/sightings/country/' + d.id + '/' + d.properties.name;
     }
-
-
-
-    </script>
-
-  </div>
+  </script>
 </div>
 
-
-<div class="row">
-  <div class="span12">
-    <p>If you prefer, you can explore the latest sightings in your country using this list. Click on the names of the countries below</p>
-  </div>
+<div class="w-full mt-6">
+  <p class="text-gray-300">If you prefer, you can explore the latest sightings in your country using this list. Click on the names of the countries below</p>
 </div>
-<% cache ("maps/content/countries/north_america") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>North America</strong></br>
-      <% @listaMapNorthAmerica.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/north_america") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">North America</strong><br/>
+  <% @listaMapNorthAmerica.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
-<% cache ("maps/content/countries/south_america") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>South America</strong></br>
-      <% @listaMapSouthAmerica.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/south_america") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">South America</strong><br/>
+  <% @listaMapSouthAmerica.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
-<% cache ("maps/content/countries/africa") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>Africa</strong></br>
-      <% @listaMapAfrica.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/africa") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">Africa</strong><br/>
+  <% @listaMapAfrica.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
-<% cache ("maps/content/countries/asia") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>Asia</strong></br>
-      <% @listaMapAsia.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/asia") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">Asia</strong><br/>
+  <% @listaMapAsia.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
-<% cache ("maps/content/countries/europe") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>Europe</strong></br>
-      <% @listaMapEurope.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %> |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/europe") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">Europe</strong><br/>
+  <% @listaMapEurope.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
-<% cache ("maps/content/countries/oceania") do %>
-<div class="row">
-  <div class="span12">
-      <p><strong>Oceania</strong></br>
-      <% @listaMapOceania.each do |ovni| %>
-          <%= link_to ovni.name, :controller => "sightings", :action => "country", :id => ovni.cod, :title => ovni.name %>  |
-      <% end %></p>
-  </div>
+
+<% cache("maps/content/countries/oceania") do %>
+<div class="w-full mt-4">
+  <p><strong class="text-[#D7DF21]">Oceania</strong><br/>
+  <% @listaMapOceania.each do |ovni| %>
+    <%= link_to ovni.name, sightings_country_path(id: ovni.cod, title: ovni.name), class: "text-gray-300 hover:text-[#D7DF21]" %> |
+  <% end %></p>
 </div>
 <% end %>
