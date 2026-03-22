@@ -24,6 +24,7 @@ export default class extends Controller {
   }
 
   disconnect() {
+    clearTimeout(this._timeout)
     if (this.map) this.map.remove()
   }
 
@@ -35,7 +36,9 @@ export default class extends Controller {
       return
     }
     this._timeout = setTimeout(() => {
-      fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q) + '&limit=5')
+      fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(q) + '&limit=5', {
+        headers: { 'User-Agent': 'UFOHunters/1.0 (ufo-hunters.com)' }
+      })
         .then(r => r.json())
         .then(results => {
           if (results.length === 0) {
