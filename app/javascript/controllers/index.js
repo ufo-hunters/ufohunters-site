@@ -11,3 +11,6 @@ application.register("datatable", DatatableController)
 
 import CarouselController from "controllers/carousel_controller"
 application.register("carousel", CarouselController)
+
+import GeocoderController from "controllers/geocoder_controller"
+application.register("geocoder", GeocoderController)
