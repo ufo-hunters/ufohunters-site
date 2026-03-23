@@ -66,8 +66,7 @@
   "logo": "https://www.ufo-hunters.com/assets/ufo-hunters-logo.png",
   "sameAs": [
     "https://twitter.com/UfoHuntersCom",
-    "https://www.facebook.com/UfoHuntersCom",
-    "https://play.google.com/store/apps/details?id=com.ufohunters.sightings"
+    "https://www.facebook.com/UfoHuntersCom"
   ]
 }
 ```
