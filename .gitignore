@@ -33,3 +33,4 @@ Rakefile
 *.png
 !app/assets/images/*.png
 .playwright-mcp/
+.claude/
