@@ -44,4 +44,6 @@ Rails.application.routes.draw do
   get 'stats' => 'stats#index'
   get 'map_json' => 'stats#map_json'
   get 'stats/shape' => 'stats#shape'
+
+  get 'up' => 'rails/health#show', as: :rails_health_check
 end

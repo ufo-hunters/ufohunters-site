@@ -1,0 +1,14 @@
+.git
+.github
+.claude
+.rubocop_todo.yml
+coverage
+doc
+log
+tmp
+test
+node_modules
+.env
+.env.*
+*.md
+!README.md
