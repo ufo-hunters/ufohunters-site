@@ -3,9 +3,10 @@
 if Rails.env.production? && ENV['RESEND_API_KEY'].present?
   ActionMailer::Base.smtp_settings = {
     address: 'smtp.resend.com',
-    port: 465,
+    port: 587,
+    domain: ENV.fetch('APP_HOST', 'ufo-hunters.com'),
     user_name: 'resend',
-    password: ENV.fetch('RESEND_API_KEY'),
+    password: ENV.fetch('RESEND_API_KEY', nil),
     authentication: :plain,
     enable_starttls_auto: true
   }

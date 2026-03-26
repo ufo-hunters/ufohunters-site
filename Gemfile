@@ -47,9 +47,6 @@ gem 'sitemap_generator', '~> 6.0'
 # Monitoring
 gem 'newrelic_rpm'
 
-# Email
-gem 'resend', '~> 0.17'
-
 # Rate limiting
 gem 'rack-attack'
 
