@@ -14,13 +14,6 @@ require 'rails/test_help'
 
 module ActiveSupport
   class TestCase
-    # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
-    #
-    # Note: You'll currently still have to declare fixtures explicitly in integration tests
-    # -- they do not yet inherit this setting
-    # fixtures :all
-
-    # Looks like fixtures do not work with mongoid
     def create_dummy_report
       Report.new(sighted_at: '20120101',
                  reported_at: '20120102',
