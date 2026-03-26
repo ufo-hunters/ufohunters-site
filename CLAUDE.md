@@ -99,10 +99,10 @@
 
 ## Linting
 
-- **Linter**: None currently configured
-- Adding RuboCop with `rubocop-rails` and `rubocop-performance` is recommended
-- Suggested installation: add `gem 'rubocop-rails', require: false` and `gem 'rubocop-performance', require: false` to Gemfile (development group)
-- Until RuboCop is configured, enforce consistent style manually during review
+- **Linter**: RuboCop with `rubocop-rails`, `rubocop-minitest`, and `rubocop-performance` plugins
+- **Config**: `.rubocop.yml` (main config) + `.rubocop_todo.yml` (3 legacy offenses)
+- **Run**: `bundle exec rubocop` (must pass with 0 offenses)
+- **CI**: Enforced in GitHub Actions `lint` job on every push/PR to `master`
 
 ---
 
@@ -170,7 +170,9 @@ Only after all four pass should you consider the task done.
 - **Heroku**: `Procfile` present — `web: bundle exec puma -C config/puma.rb`
 - **Assets**: `rails assets:precompile` (Propshaft) + `rails tailwindcss:build`
 - **Environment variables** for production: `MONGOHQ_URL`, `REDIS_URL`, `CLOUDINARY_URL`, `SENDGRID_USERNAME`, `SENDGRID_PASSWORD`, `GOOGLE_MAPS_API_KEY`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `NEW_RELIC_LICENSE_KEY`, `SECRET_KEY_BASE`
-- **CI/CD**: Travis CI config is present but stale (configured for Ruby 2.1.2). Migration to GitHub Actions is recommended.
+- **CI/CD**: GitHub Actions (`.github/workflows/ci.yml`) — two jobs: `test` (Rails test + MongoDB 7) and `lint` (RuboCop). Runs on push/PR to `master`.
+- **Dev setup**: `docker-compose.yml` with MongoDB 7 + Redis 7. Run `docker compose up -d` to start.
+- **Test coverage**: SimpleCov configured, reports generated in `coverage/`. Current: 65.77%.
 
 ---
 
@@ -191,10 +193,12 @@ ufohunters-site/
     mongoid.yml           # MongoDB connection config
     tailwind.config.js    # Tailwind CSS config
   test/
-    models/               # Minitest model tests
-    controllers/          # Minitest controller tests
+    unit/                 # Minitest model tests (Report, User, Article, Countries, CustomDate)
+    functional/           # Minitest controller tests (all controllers)
     integration/          # Integration tests
     test_helper.rb        # Shared test helpers (create_dummy_report, etc.)
+  .github/
+    workflows/ci.yml      # GitHub Actions CI (test + lint)
   doc/                    # Project documentation
   product/                # Product management
   .claude/
