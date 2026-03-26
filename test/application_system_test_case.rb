@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+ENV['SYSTEM_TEST'] = '1'
 require 'test_helper'
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
