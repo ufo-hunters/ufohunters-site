@@ -3,7 +3,7 @@
 module ArticlesHelper
   ALLOWED_TAGS = %w[p br b i em strong a ul ol li h2 h3 h4 h5 blockquote img
                     table tr td th thead tbody div span hr pre code].freeze
-  ALLOWED_ATTRIBUTES = %w[href src alt class target rel width height style id].freeze
+  ALLOWED_ATTRIBUTES = %w[href src alt class rel width height id].freeze
 
   def sanitize_article(html)
     sanitize(html, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES)
