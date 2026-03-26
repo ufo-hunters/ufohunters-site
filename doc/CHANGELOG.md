@@ -47,8 +47,9 @@ Cada version agrupa sus cambios en las siguientes categorias:
 - GitHub Actions CI con Ruby 3.2.8 + MongoDB 7 (jobs: test y lint)
 - RuboCop con rubocop-rails, rubocop-minitest y rubocop-performance
 - `docker-compose.yml` con MongoDB 7 y Redis 7 para desarrollo local
-- SimpleCov para metricas de cobertura de tests (83.23%)
-- 94 tests unitarios y funcionales con Minitest (112 assertions)
+- SimpleCov para metricas de cobertura de tests (84.43%)
+- 105 tests unitarios y funcionales con Minitest (135 assertions)
+- Flujo de password reset con token por email (DT-003): modelo, controller, mailer, vistas
 - Health check endpoint `/up` (Rails built-in)
 - `.dockerignore` para reducir tamaño de imagen Docker
 - Helper `sanitize_article` con allowlist para contenido HTML de artículos
@@ -56,6 +57,8 @@ Cada version agrupa sus cambios en las siguientes categorias:
 - Indices de MongoDB para Article (status + published_date, user_id)
 
 ### Cambiado
+- Refactor `current_user` / `logged_in?` separados en ApplicationController
+- SMTP config solo activo en producción (fix mailer en test)
 - Dockerfile optimizado: multi-stage build, usuario non-root, sin build-essential en producción
 - README reescrito para reflejar stack actual (Rails 8, Ruby 3.2.8, Tailwind, Mongoid 9)
 - Cache de producción simplificado: solo Redis, fail-fast si `REDIS_URL` no está configurado
@@ -79,6 +82,9 @@ Cada version agrupa sus cambios en las siguientes categorias:
 - `html_safe` reemplazado por `sanitize` en todas las vistas de artículos y sightings
 - Atributos `style` y `target` removidos del allowlist de sanitización
 - Validación regex en render dinámico de partials (`partial_1`) para prevenir path traversal
+- Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- Password reset token con expiración de 2 horas e índice sparse
+- Validación de longitud mínima de contraseña (6 caracteres)
 
 ---
 

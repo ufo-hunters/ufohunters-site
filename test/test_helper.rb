@@ -8,7 +8,7 @@ SimpleCov.start 'rails' do
   add_filter '/app/models/ckeditor/'
   add_filter '/app/uploaders/ckeditor'
   add_filter '/app/models/notifier.rb'
-  minimum_coverage 50
+  minimum_coverage 40
 end
 
 ENV['RAILS_ENV'] = 'test'

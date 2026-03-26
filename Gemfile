@@ -51,11 +51,13 @@ gem 'newrelic_rpm'
 gem 'bootsnap', require: false
 
 group :development, :test do
+  gem 'capybara'
   gem 'debug'
   gem 'rubocop', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
+  gem 'selenium-webdriver'
   gem 'simplecov', require: false
 end
 
