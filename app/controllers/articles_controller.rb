@@ -7,8 +7,6 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   # GET /articles.json
-  # Article.all.without(:article_helper_method, :article_type,
-  #   :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = 'articles'
     @num_articles = num_articles
@@ -90,9 +88,6 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_content }
       end
     end
-
-    # Rails.cache.delete_matched /articles\/index/
-    # Rails.cache.delete_matched /articles\/content/
   end
 
   # PUT /articles/1
@@ -109,10 +104,6 @@ class ArticlesController < ApplicationController
         format.json { render json: @article.errors, status: :unprocessable_content }
       end
     end
-
-    # Rails.cache.delete_matched /articles\/index/
-    # Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    # Rails.cache.delete_matched /articles\/content/
   end
 
   # DELETE /articles/1
@@ -125,10 +116,6 @@ class ArticlesController < ApplicationController
       format.html { redirect_to action: 'myspace' }
       format.json { head :no_content }
     end
-
-    # Rails.cache.delete_matched /articles\/index/
-    # Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    # Rails.cache.delete_matched /articles\/content/
   end
 
   # GET /articles/myspace
