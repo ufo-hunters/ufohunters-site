@@ -29,3 +29,8 @@
 /tmp
 /coverage
 Rakefile
+.DS_Store
+*.png
+!app/assets/images/*.png
+.mcp.json
+.playwright-mcp/
