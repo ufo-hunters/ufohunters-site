@@ -56,7 +56,7 @@
         </div>
 
         <div class="mt-6 text-[#dfe2eb] prose prose-invert max-w-none leading-relaxed prose-a:text-[#bdf4ff] prose-a:hover:text-[#D7DF21] prose-strong:text-[#dfe2eb]">
-            <p><%= sanitize @article.teaser %></p>
+            <p><%= sanitize_article @article.teaser %></p>
         </div>
 
         <%
@@ -71,7 +71,7 @@
 
         <div class="mt-6 text-[#dfe2eb] prose prose-invert max-w-none leading-relaxed prose-a:text-[#bdf4ff] prose-a:hover:text-[#D7DF21] prose-strong:text-[#dfe2eb]">
             <span itemprop="articleBody">
-              <%= sanitize @article.body %>
+              <%= sanitize_article @article.body %>
             </span>
         </div>
       </article>

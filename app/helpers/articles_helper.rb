@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module ArticlesHelper
+  ALLOWED_TAGS = %w[p br b i em strong a ul ol li h2 h3 h4 h5 blockquote img
+                    table tr td th thead tbody div span hr pre code].freeze
+  ALLOWED_ATTRIBUTES = %w[href src alt class target rel width height style id].freeze
+
+  def sanitize_article(html)
+    sanitize(html, tags: ALLOWED_TAGS, attributes: ALLOWED_ATTRIBUTES)
+  end
+
   def self.get_articles_by_date(article)
     Rails.cache.fetch("articles/#{article.id}/#{article.date_filter}", expires_in: 1.month) do
       Report.where(sighted_at: article.date_filter).entries
