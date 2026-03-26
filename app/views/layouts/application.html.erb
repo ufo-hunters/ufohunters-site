@@ -3,6 +3,7 @@
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
   <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <%= javascript_importmap_tags %>
@@ -308,7 +309,7 @@
         <h3 class="text-lg font-headline font-bold text-[#dfe2eb] mt-0 uppercase tracking-wide">Disclaimer</h3>
         <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="text-[#c9c8ad] hover:text-[#D7DF21] text-2xl bg-transparent border-none cursor-pointer transition-colors">&times;</button>
       </div>
-      <p class="text-[#c9c8ad] text-sm mb-3 leading-relaxed">The information on this site that is not produced by ufo-hunters.com is covered under the <strong class="text-[#dfe2eb]"><a href="http://www.copyright.gov/fls/fl102.html" target="_blank" class="text-[#bdf4ff] hover:underline">Copyright Disclaimer Under Section 107 of the Copyright Act 1976</a></strong></p>
+      <p class="text-[#c9c8ad] text-sm mb-3 leading-relaxed">The information on this site that is not produced by ufo-hunters.com is covered under the <strong class="text-[#dfe2eb]"><a href="http://www.copyright.gov/fls/fl102.html" target="_blank" class="text-[#bdf4ff]">Copyright Disclaimer Under Section 107 of the Copyright Act 1976</a></strong></p>
       <p class="text-[#c9c8ad] text-sm leading-relaxed">The views, opinions, and facts expressed on this web site are solely those of the original authors, witnesses and other contributors. These views and opinions do not necessarily represent those of ufo-hunters.com staff, and/or any/all contributors to this site.</p>
       <div class="mt-6 text-right">
         <button onclick="document.getElementById('disclaimerModal').classList.add('hidden')" class="bg-[#D7DF21] hover:bg-[#D7DF21] text-[#313300] px-6 py-2 rounded text-xs font-['Space_Grotesk'] font-bold uppercase tracking-widest transition-all cursor-pointer border-none">Close</button>
@@ -336,7 +337,7 @@
     <div data-cookie-consent-target="banner" class="hidden fixed bottom-0 left-0 right-0 bg-[#1c2026]/95 backdrop-blur-xl text-[#dfe2eb] text-sm z-40 px-4 py-3 md:py-4 border-t border-[#484833]/30">
       <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <p class="m-0 text-[#c9c8ad] text-sm md:text-xs font-['Inter'] leading-relaxed">This site uses cookies and third-party cookies. When navigating or using our services, you agree to our use of them.
-          <a href="#" data-action="click->cookie-consent#showPrivacy" class="text-[#bdf4ff] hover:underline ml-1">More information</a>
+          <a href="#" data-action="click->cookie-consent#showPrivacy" class="text-[#bdf4ff] ml-1">More information</a>
         </p>
         <button data-action="click->cookie-consent#accept" class="shrink-0 px-4 py-1.5 bg-[#D7DF21] text-[#313300] rounded text-xs font-['Space_Grotesk'] font-bold cursor-pointer border-none uppercase tracking-wider hover:bg-[#D7DF21] transition-colors">Accept</button>
       </div>
