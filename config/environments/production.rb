@@ -26,13 +26,7 @@ Rails.application.configure do
   end
 
   # Cache store
-  if ENV['REDIS_URL']
-    config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
-  elsif ENV['MEMCACHEDCLOUD_SERVERS']
-    config.cache_store = :mem_cache_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','),
-                         { username: ENV.fetch('MEMCACHEDCLOUD_USERNAME', nil),
-                           password: ENV.fetch('MEMCACHEDCLOUD_PASSWORD', nil) }
-  end
+  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL', 'redis://localhost:6379/0') }
 
   config.i18n.fallbacks = true
 
