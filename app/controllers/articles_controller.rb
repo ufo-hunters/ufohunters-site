@@ -24,7 +24,6 @@ class ArticlesController < ApplicationController
     end
     @articles = Rails.cache.fetch("articles/index/#{@page_number}", expires_in: 1.week) do
       Article.where(status: 1)
-             .includes(:user)
              .without(:article_helper_method, :article_type, :date_filter, :email, :partial_1)
              .desc(:published_date)
              .skip((@page_number - 1) * Ufo::MAX_PAGE_ITEMS)

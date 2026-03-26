@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+unless Rails.env.local?
+  Rails.logger.debug 'Seeds are only for development/test environments'
+  return
+end
+
 Rails.logger.debug 'Seeding database...'
 
 # Create demo user
