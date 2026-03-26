@@ -11,6 +11,7 @@ class User
   field :reset_token, type: String
   field :reset_sent_at, type: Time
   field :confirmation_token, type: String
+  field :confirmation_sent_at, type: Time
   field :confirmed_at, type: Time
   has_secure_password
   has_many :articles, dependent: :destroy
@@ -42,7 +43,12 @@ class User
 
   def generate_confirmation_token!
     self.confirmation_token = SecureRandom.urlsafe_base64(32)
+    self.confirmation_sent_at = Time.current
     save!(validate: false)
+  end
+
+  def confirmation_token_expired?
+    confirmation_sent_at.nil? || confirmation_sent_at < 24.hours.ago
   end
 
   def confirm!

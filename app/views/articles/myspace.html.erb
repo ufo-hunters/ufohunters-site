@@ -4,6 +4,15 @@
     <%= render partial: 'common/ads/horizontal_ad' %>
   </div>
 
+  <% if current_user && !current_user.confirmed? %>
+    <div class="mb-6 bg-yellow-950/40 border border-yellow-700/50 text-yellow-300 px-5 py-4 rounded-xl">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-yellow-400">mail</span>
+        <p class="text-sm">Please check your email and confirm your address to complete your registration.</p>
+      </div>
+    </div>
+  <% end %>
+
   <!-- Header -->
   <div class="mb-8">
     <div class="flex items-center gap-3 mb-2">
