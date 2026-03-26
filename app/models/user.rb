@@ -9,7 +9,7 @@ class User
   field :password_digest, type: String
   field :email, type: String
   has_secure_password
-  has_many :articles
+  has_many :articles, dependent: :destroy
 
   validates :username, uniqueness: { message: 'already exists. Username must be unique' }
   validates :password, confirmation: { message: 'should match password' }

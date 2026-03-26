@@ -9,20 +9,20 @@ xml.rss(:version => '2.0', 'xmlns:georss' => 'http://www.georss.org/georss',
     xml.description("Latest UFO sightings of #{@nameCountry}")
     xml.updated(Time.zone.today)
     xml.language('en-us')
-    @reports.each do |numUFO|
+    @reports.each do |ufo_report|
       xml.item do
-        xml.title(friendly_title(numUFO))
-        xml.link("http://www.ufo-hunters.com/sightings/search/#{numUFO.id}/#{friendly_title(numUFO)}",
-                 'href' => "http://www.ufo-hunters.com/sightings/search/#{numUFO.id}/#{friendly_title(numUFO)}")
+        xml.title(friendly_title(ufo_report))
+        xml.link("http://www.ufo-hunters.com/sightings/search/#{ufo_report.id}/#{friendly_title(ufo_report)}",
+                 'href' => "http://www.ufo-hunters.com/sightings/search/#{ufo_report.id}/#{friendly_title(ufo_report)}")
         numDescription = 300
-        numDescription = numUFO.description.length if numUFO.description.length < 300
-        xml.description("#{numUFO.description.slice(0, numDescription)}...")
+        numDescription = ufo_report.description.length if ufo_report.description.length < 300
+        xml.description("#{ufo_report.description.slice(0, numDescription)}...")
         xml.author('ufo-hunters.com')
-        xml.pubDate("#{format_date_rss numUFO.sighted_at.to_s} GMT")
+        xml.pubDate("#{format_date_rss ufo_report.sighted_at.to_s} GMT")
 
-        unless numUFO.coord.nil?
+        unless ufo_report.coord.nil?
           xml.georss :point do
-            xml.text! "#{numUFO.coord[1]} #{numUFO.coord[0]}"
+            xml.text! "#{ufo_report.coord[1]} #{ufo_report.coord[0]}"
           end
         end
       end

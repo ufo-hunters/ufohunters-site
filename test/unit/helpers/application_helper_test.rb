@@ -92,7 +92,8 @@ class ApplicationHelperTest < ActionView::TestCase
                           'UFO Sighting in Unites States-Canada Border on Wednesday 06 November 2013',
                           'UFO Sighting in Mt Vernon on Sunday 21 July 2013',
                           'UFO Sighting in Chicago- on Monday 09 December 2013',
-                          'UFO Sighting in This a location- withlots ofchars to--remove--replace on Friday 29 March 2013']
+                          'UFO Sighting in This a location- withlots ofchars ' \
+                          'to--remove--replace on Friday 29 March 2013']
 
     actual_responses = @reports.map do |report|
       friendly_title(report)

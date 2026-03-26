@@ -141,7 +141,8 @@ class SightingsController < ApplicationController
                          [-42.18, 47.28],
                          [-94.57, 72.18],
                          [-169.45,
-                          71.41]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          71.41]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'northamerica'
@@ -168,7 +169,8 @@ class SightingsController < ApplicationController
                          [130.69336, -2.46018],
                          [129.19922, -0.35156],
                          [133.33008,
-                          4.21494]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          4.21494]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'maps'
@@ -199,7 +201,8 @@ class SightingsController < ApplicationController
                          [-73.12, -20.79],
                          [-84.19, -5.09],
                          [-77.87,
-                          11.00]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          11.00]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'maps'
@@ -228,7 +231,8 @@ class SightingsController < ApplicationController
                          [5.09, 38.41],
                          [23.40, 37.44],
                          [5.09,
-                          38.41]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          38.41]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'maps'
@@ -261,7 +265,8 @@ class SightingsController < ApplicationController
                          [-17.05, 67.74],
                          [-30.23, 66.01],
                          [-10.41,
-                          36.73]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          36.73]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'maps'
@@ -286,7 +291,8 @@ class SightingsController < ApplicationController
                          [178.60, 65.51],
                          [91.75, 79.43],
                          [30.93,
-                          74.68]] } }).and(status: 1).without(:email, :description).order_by(sighted_at: :desc).limit(100).entries
+                          74.68]] } }).and(status: 1).without(:email, :description)
+            .order_by(sighted_at: :desc).limit(100).entries
     end
 
     @menu = 'maps'
@@ -335,11 +341,14 @@ class SightingsController < ApplicationController
                               .and(status: 1).without(:email).order_by(sighted_at: :desc).limit(100).entries
                       end
                     else
-                      @ufo_list + Rails.cache.fetch("sightings/country/#{country_code}/polygon/#{index}",
-                                                    expires_in: 1.day) do
+                      cached = Rails.cache.fetch(
+                        "sightings/country/#{country_code}/polygon/#{index}",
+                        expires_in: 1.day
+                      ) do
                         Report.where(coord: { '$geoWithin' => { '$polygon' => data[0] } })
                               .and(status: 1).without(:email).order_by(sighted_at: :desc).limit(100).entries
                       end
+                      @ufo_list + cached
                     end
       end
     end

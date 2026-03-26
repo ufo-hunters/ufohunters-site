@@ -58,13 +58,13 @@ class ReportTest < ActiveSupport::TestCase
   end
 
   test 'should_set_case_number' do
-    CASE_NUMBER = 1022
-    @report.case_number = CASE_NUMBER
+    case_number = 1022
+    @report.case_number = case_number
     @report.save
     @report = create_dummy_report
     @report.case_number = nil
 
-    assert @report.save && @report.case_number == CASE_NUMBER + 1,
+    assert @report.save && @report.case_number == case_number + 1,
            'Did not save the report without case number, or the case number is not correct'
   end
 end

@@ -7,7 +7,8 @@ class ArticlesController < ApplicationController
 
   # GET /articles
   # GET /articles.json
-  # Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+  # Article.all.without(:article_helper_method, :article_type,
+  #   :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
     @menu = 'articles'
     @num_articles = num_articles
@@ -24,11 +25,16 @@ class ArticlesController < ApplicationController
       logger.error 'Page number not valid!'
     end
     @articles = Rails.cache.fetch("articles/index/#{@page_number}", expires_in: 1.week) do
-      Article.where(status: 1).without(:article_helper_method, :article_type, :date_filter, :email,
-                                       :partial_1).desc(:published_date).skip((@page_number - 1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
+      Article.where(status: 1)
+             .without(:article_helper_method, :article_type, :date_filter, :email, :partial_1)
+             .desc(:published_date)
+             .skip((@page_number - 1) * Ufo::MAX_PAGE_ITEMS)
+             .limit(Ufo::MAX_PAGE_ITEMS)
+             .entries
     end
     @page_title = 'Articles'
-    @page_description = 'Read the latest UFO research articles, analysis, and investigations from the UFO Hunters community worldwide'
+    @page_description = 'Read the latest UFO research articles, analysis, ' \
+                        'and investigations from the UFO Hunters community worldwide'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -144,7 +150,8 @@ class ArticlesController < ApplicationController
     @user = User.new
 
     @page_title = 'UFO Research Team - Articles'
-    @page_description = 'Join the UFO Hunters research team — contribute articles, investigate sightings, and collaborate with UFO researchers worldwide'
+    @page_description = 'Join the UFO Hunters research team — contribute articles, ' \
+                        'investigate sightings, and collaborate with UFO researchers worldwide'
 
     respond_to do |format|
       format.html # index.html.erb

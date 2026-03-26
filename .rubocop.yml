@@ -21,3 +21,45 @@ Rails:
 # Mongoid documents don't use ApplicationRecord
 Rails/ApplicationRecord:
   Enabled: false
+
+# Not useful for a small team — adds noise without value
+Style/Documentation:
+  Enabled: false
+
+# Legacy code has long methods — refactor progressively
+Metrics/MethodLength:
+  Max: 50
+  Exclude:
+    - 'test/test_helper.rb'
+
+Metrics/AbcSize:
+  Max: 50
+
+Metrics/ClassLength:
+  Max: 350
+
+Metrics/CyclomaticComplexity:
+  Max: 12
+
+Metrics/PerceivedComplexity:
+  Max: 14
+
+Metrics/BlockLength:
+  Max: 30
+  Exclude:
+    - 'config/routes.rb'
+    - 'config/environments/*.rb'
+
+# I18n is not a priority for this project yet
+Rails/I18nLocaleTexts:
+  Enabled: false
+
+# Legacy code uses camelCase in some places — fix progressively
+Naming/VariableName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Naming/BlockParameterName:
+  MinNameLength: 1

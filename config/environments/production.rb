@@ -30,7 +30,8 @@ Rails.application.configure do
     config.cache_store = :redis_cache_store, { url: ENV['REDIS_URL'] }
   elsif ENV['MEMCACHEDCLOUD_SERVERS']
     config.cache_store = :mem_cache_store, ENV['MEMCACHEDCLOUD_SERVERS'].split(','),
-                         { username: ENV.fetch('MEMCACHEDCLOUD_USERNAME', nil), password: ENV.fetch('MEMCACHEDCLOUD_PASSWORD', nil) }
+                         { username: ENV.fetch('MEMCACHEDCLOUD_USERNAME', nil),
+                           password: ENV.fetch('MEMCACHEDCLOUD_PASSWORD', nil) }
   end
 
   config.i18n.fallbacks = true
