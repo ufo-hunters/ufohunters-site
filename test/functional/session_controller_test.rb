@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
-class SessionControllerTest < ActionController::TestCase
-  #test "should get new" do
-    #get :new
-    #assert_response :success
-  #end
-
+class SessionControllerTest < ActionDispatch::IntegrationTest
+  # test "should get new" do
+  # get :new
+  # assert_response :success
+  # end
 end

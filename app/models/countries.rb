@@ -1,9 +1,10 @@
-class Countries
+# frozen_string_literal: true
 
+class Countries
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
 
-  store_in collection: "countries"
+  store_in collection: 'countries'
 
   field :id, type: String
   field :cod, type: String
@@ -15,10 +16,9 @@ class Countries
   field :continent, type: String
   field :center, type: Array
 
-  #db.countries.ensureIndex({"cod":1}, {"background":true,"safe":true})
-  index({cod:1},{background:true})
+  # db.countries.ensureIndex({"cod":1}, {"background":true,"safe":true})
+  index({ cod: 1 }, { background: true })
 
-  #db.countries.ensureIndex({"continent":1}, {"background":true,"safe":true})
-  index({continent:1},{background:true})
-
+  # db.countries.ensureIndex({"continent":1}, {"background":true,"safe":true})
+  index({ continent: 1 }, { background: true })
 end

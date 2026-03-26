@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pagy::Backend
 
@@ -9,9 +11,9 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   def check_user
-    unless logged_in?
-    	redirect_to root_url
-    end
+    return if logged_in?
+
+    redirect_to root_url
   end
 
   def logged_in?
@@ -23,15 +25,15 @@ class ApplicationController < ActionController::Base
   end
 
   def video_list
-    Rails.cache.fetch("common/video_list", :expires_in => 12.hours) do
-      Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil).desc(:sighted_at).limit(20).entries
+    Rails.cache.fetch('common/video_list', expires_in: 12.hours) do
+      Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/],
+                   :coord.ne => nil).desc(:sighted_at).limit(20).entries
     end
   end
 
   def num_reports
-    Rails.cache.fetch("common/num_reports", :expires_in => 8.hours) do
-      Report.where(:status => 1).count()
+    Rails.cache.fetch('common/num_reports', expires_in: 8.hours) do
+      Report.where(status: 1).count
     end
   end
-
 end

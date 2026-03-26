@@ -1,24 +1,19 @@
-module SightingsHelper
+# frozen_string_literal: true
 
+module SightingsHelper
   include ApplicationHelper
 
-  def select_url_images (urls)
-    
-    url_images = urls.select do |url|
-      url =~ /(.jpg|.jpeg|.bmp|.gif|.png)$/i
-    end
+  def select_url_images(urls)
+    url_images = urls.grep(/(.jpg|.jpeg|.bmp|.gif|.png)$/i)
 
-    return url_images, urls - url_images
+    [url_images, urls - url_images]
   end
 
-  def select_youtube_videos (urls)
- 
+  def select_youtube_videos(urls)
     url_videos = urls.select do |url|
       youtube_link? url
     end
 
-    return url_videos, urls - url_videos
-
+    [url_videos, urls - url_videos]
   end
-
 end

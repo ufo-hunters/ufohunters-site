@@ -1,10 +1,11 @@
-class ReportsController < ApplicationController
+# frozen_string_literal: true
 
+class ReportsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:create]
 
   # GET /reports.json
   def index
-    @reports = Rails.cache.fetch("reports/latest", expires_in: 8.hours) do
+    @reports = Rails.cache.fetch('reports/latest', expires_in: 8.hours) do
       Report.where(status: 1).without(:email, :description, :links, :status).desc(:sighted_at).limit(100).entries
     end
 
@@ -31,8 +32,9 @@ class ReportsController < ApplicationController
     distance = 100 # km
 
     if @coordenadas
-      @nearest = Rails.cache.fetch("reports/near/#{params[:longitud].to_i},#{params[:latitud].to_i}", expires_in: 8.hours) do
-        Report.where(coord: { "$nearSphere" => @coordenadas, "$maxDistance" => (distance.fdiv(6371)) })
+      @nearest = Rails.cache.fetch("reports/near/#{params[:longitud].to_i},#{params[:latitud].to_i}",
+                                   expires_in: 8.hours) do
+        Report.where(coord: { '$nearSphere' => @coordenadas, '$maxDistance' => distance.fdiv(6371) })
               .and(status: 1)
               .without(:email, :description, :links, :source, :status, :reported_at, :shape, :duration)
               .limit(50).entries
@@ -48,9 +50,9 @@ class ReportsController < ApplicationController
   # GET /reports/new
   def new
     @report = Report.new
-    @menu = "report"
-    @page_title = "Report a UFO"
-    @page_description = "Have you seen a UFO? Report your experience filling in the report form"
+    @menu = 'report'
+    @page_title = 'Report a UFO'
+    @page_description = 'Have you seen a UFO? Report your experience filling in the report form'
     @notice = 'Introduce the text of the image'
 
     respond_to do |format|
@@ -61,29 +63,27 @@ class ReportsController < ApplicationController
 
   # POST /reports
   def create
-    @menu = "report"
-    @page_title = "Report a UFO"
-    @page_description = "Have you seen a UFO? Report your experience filling in the report form"
+    @menu = 'report'
+    @page_title = 'Report a UFO'
+    @page_description = 'Have you seen a UFO? Report your experience filling in the report form'
 
     @tmp = report_params.to_h
-    @tmp["links"] = params[:report][:links] unless params[:report][:links].blank?
-    @tmp["image_cloudinary"] = params[:report][:image_cloudinary]
+    @tmp['links'] = params[:report][:links] if params[:report][:links].present?
+    @tmp['image_cloudinary'] = params[:report][:image_cloudinary]
 
-    unless @tmp["image_cloudinary"].blank?
-      @tmp["image_cloudinary"] = @tmp["image_cloudinary"].values
-    end
-    @tmp["status"] = 0
+    @tmp['image_cloudinary'] = @tmp['image_cloudinary'].values if @tmp['image_cloudinary'].present?
+    @tmp['status'] = 0
     @tmp.delete(:image_id)
 
-    if @tmp["coord"].blank?
-      @tmp["coord"] = [0, 0]
-    else
-      @tmp["coord"] = @tmp["coord"].split(",").map { |s| s.to_f }
-    end
+    @tmp['coord'] = if @tmp['coord'].blank?
+                      [0, 0]
+                    else
+                      @tmp['coord'].split(',').map(&:to_f)
+                    end
 
-    @tmp["source"] = "ufo-hunters.com"
-    @tmp["sighted_at"] = Date.strptime(@tmp["sighted_at"], '%m/%d/%Y').strftime('%Y%m%d')
-    @tmp["reported_at"] = Date.strptime(@tmp["reported_at"], '%m/%d/%Y').strftime('%Y%m%d')
+    @tmp['source'] = 'ufo-hunters.com'
+    @tmp['sighted_at'] = Date.strptime(@tmp['sighted_at'], '%m/%d/%Y').strftime('%Y%m%d')
+    @tmp['reported_at'] = Date.strptime(@tmp['reported_at'], '%m/%d/%Y').strftime('%Y%m%d')
 
     @report = Report.new(@tmp)
 
@@ -93,26 +93,26 @@ class ReportsController < ApplicationController
           format.html { redirect_to @report, notice: 'Ufo model was successfully created.' }
           format.json { render json: @report, status: :created, location: @report }
         else
-          format.html { render action: "new" }
-          format.json { render json: @report.errors, status: :unprocessable_entity }
+          format.html { render action: 'new' }
+          format.json { render json: @report.errors, status: :unprocessable_content }
         end
       end
     else
-      @report["sighted_at"] = ""
-      @report["reported_at"] = ""
-      @report["links"] = []
+      @report['sighted_at'] = ''
+      @report['reported_at'] = ''
+      @report['links'] = []
       respond_to do |format|
         @notice = 'You must enter the text of the image'
-        format.html { render action: "new", notice: 'You must enter the text of the image' }
-        format.json { render json: @report.errors, status: :unprocessable_entity }
+        format.html { render action: 'new', notice: 'You must enter the text of the image' }
+        format.json { render json: @report.errors, status: :unprocessable_content }
       end
     end
 
-    expire_fragment "common/header"
+    expire_fragment 'common/header'
   end
 
   def sightings
-    @reports = Report.where(status: 1, source: "ufo-hunters.com", coord: { "$exists" => 1 })
+    @reports = Report.where(status: 1, source: 'ufo-hunters.com', coord: { '$exists' => 1 })
                      .without(:email, :links, :source, :status, :shape, :duration)
                      .desc(:sighted_at).limit(100)
 
@@ -123,7 +123,7 @@ class ReportsController < ApplicationController
 
   def country
     codeCountry = params[:id]
-    listaPais = Countries.where("cod" => codeCountry).limit(1)
+    listaPais = Countries.where('cod' => codeCountry).limit(1)
 
     listaPais.each do |country|
       @nameCountry = country.name
@@ -132,10 +132,10 @@ class ReportsController < ApplicationController
       @pais = country.geometry
     end
 
-    type = ""
-    coordinates = ""
+    type = ''
+    coordinates = ''
     @pais.each_with_index do |datos, index|
-      if index == 0
+      if index.zero?
         type = datos[1]
       else
         coordinates = datos[1]
@@ -143,17 +143,17 @@ class ReportsController < ApplicationController
     end
 
     if type == 'Polygon'
-      @reports = Report.where(coord: { "$geoWithin" => { "$polygon" => coordinates[0] } })
+      @reports = Report.where(coord: { '$geoWithin' => { '$polygon' => coordinates[0] } })
                        .and(status: 1).order_by(sighted_at: :desc).limit(100)
     else
       coordinates.each_with_index do |coordinatesdatos, index|
-        if index == 0
-          @reports = Report.where(coord: { "$geoWithin" => { "$polygon" => coordinatesdatos[0] } })
-                          .and(status: 1).order_by(sighted_at: :desc).limit(100)
-        else
-          @reports = @reports + Report.where(coord: { "$geoWithin" => { "$polygon" => coordinatesdatos[0] } })
-                                     .and(status: 1).order_by(sighted_at: :desc).limit(100)
-        end
+        @reports = if index.zero?
+                     Report.where(coord: { '$geoWithin' => { '$polygon' => coordinatesdatos[0] } })
+                           .and(status: 1).order_by(sighted_at: :desc).limit(100)
+                   else
+                     @reports + Report.where(coord: { '$geoWithin' => { '$polygon' => coordinatesdatos[0] } })
+                                      .and(status: 1).order_by(sighted_at: :desc).limit(100)
+                   end
       end
     end
 
@@ -165,6 +165,7 @@ class ReportsController < ApplicationController
   private
 
   def report_params
-    params.require(:report).permit(:location, :shape, :duration, :description, :coord, :status, :email, :links, :image_cloudinary, :reported_at, :sighted_at, :source)
+    params.expect(report: %i[location shape duration description coord status email links
+                             image_cloudinary reported_at sighted_at source])
   end
 end

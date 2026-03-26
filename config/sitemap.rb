@@ -1,4 +1,6 @@
-SitemapGenerator::Sitemap.default_host = "https://www.ufo-hunters.com"
+# frozen_string_literal: true
+
+SitemapGenerator::Sitemap.default_host = 'https://www.ufo-hunters.com'
 
 SitemapGenerator::Sitemap.create do
   # Static pages
@@ -12,7 +14,7 @@ SitemapGenerator::Sitemap.create do
   add stats_path, changefreq: 'weekly', priority: 0.6
 
   # Articles
-  Article.where(status: 1).each do |article|
+  Article.where(status: 1).find_each do |article|
     add article_path(article), lastmod: article.updated_at, changefreq: 'monthly', priority: 0.7
   end
 

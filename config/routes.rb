@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  get "/404", to: "errors#not_found"
-  get "/422", to: "errors#unacceptable"
-  get "/500", to: "errors#internal_error"
+  get '/404', to: 'errors#not_found'
+  get '/422', to: 'errors#unacceptable'
+  get '/500', to: 'errors#internal_error'
 
   resources :users
 
@@ -17,7 +19,8 @@ Rails.application.routes.draw do
 
   get 'reports/sightings', to: 'reports#sightings'
   get 'reports/:id/country(.:format)' => 'reports#country'
-  get 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof', constraints: { longitud: /[^\/]+/, latitud: /[^\/]+/ }
+  get 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof',
+      constraints: { longitud: %r{[^/]+}, latitud: %r{[^/]+} }
   resources :reports
 
   get 'sightings/country/:id(/:title)' => 'sightings#country', as: :sightings_country

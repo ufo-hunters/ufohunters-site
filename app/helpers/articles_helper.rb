@@ -1,28 +1,28 @@
-module ArticlesHelper
+# frozen_string_literal: true
 
+module ArticlesHelper
   def self.get_articles_by_date(article)
-    Rails.cache.fetch("articles/#{article.id}/#{article.date_filter}", :expires_in => 1.month) do
-      Report.where(:sighted_at => article.date_filter).entries
+    Rails.cache.fetch("articles/#{article.id}/#{article.date_filter}", expires_in: 1.month) do
+      Report.where(sighted_at: article.date_filter).entries
     end
   end
 
   def self.friendly_title(article)
-    unless article.blank?
-      title = article.title
-      title += "-" + self.format_date(article.published_date) unless article.published_date.blank?
-      title.gsub("'","").gsub("/","-").gsub("&", "-").gsub("?","-").gsub(".","")
-    end
+    return if article.blank?
+
+    title = article.title
+    title += "-#{format_date(article.published_date)}" if article.published_date.present?
+    title.delete("'").tr('/', '-').tr('&', '-').tr('?', '-').delete('.')
   end
 
-  def self.format_date date
-    unless date.blank?
-      begin
-        date.to_date.strftime("%Y-%m-%d")
-      rescue => ex
-        logger.info "Invalid date - #{ex.class}: #{ex.message}"
-        return ""
-      end
+  def self.format_date(date)
+    return if date.blank?
+
+    begin
+      date.to_date.strftime('%Y-%m-%d')
+    rescue StandardError => e
+      logger.info "Invalid date - #{e.class}: #{e.message}"
+      ''
     end
   end
-
 end

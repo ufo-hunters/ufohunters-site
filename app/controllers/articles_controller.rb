@@ -1,32 +1,34 @@
-class ArticlesController < ApplicationController
+# frozen_string_literal: true
 
-  before_action :check_user, only: [:edit, :update, :create, :destroy, :myspace]
+class ArticlesController < ApplicationController
+  before_action :check_user, only: %i[edit update create destroy myspace]
 
   include ArticlesHelper
 
   # GET /articles
   # GET /articles.json
-  #Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
+  # Article.all.without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).entries
   def index
-    @menu = "articles"
+    @menu = 'articles'
     @num_articles = num_articles
     @page_number = 1
     begin
-      @page_number = params[:page].to_i unless params[:page].blank?
+      @page_number = params[:page].to_i if params[:page].present?
       last_page = (@num_articles / Ufo::MAX_PAGE_ITEMS) + 1
       if @page_number <= 0
         @page_number = 1
       elsif @page_number > last_page
         @page_number = last_page
       end
-    rescue
-      logger.error "Page number not valid!"
+    rescue StandardError
+      logger.error 'Page number not valid!'
     end
-    @articles = Rails.cache.fetch("articles/index/#{@page_number}", :expires_in => 1.week) do
-      Article.where(:status => 1).without(:article_helper_method, :article_type, :date_filter, :email, :partial_1).desc(:published_date).skip((@page_number-1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
+    @articles = Rails.cache.fetch("articles/index/#{@page_number}", expires_in: 1.week) do
+      Article.where(status: 1).without(:article_helper_method, :article_type, :date_filter, :email,
+                                       :partial_1).desc(:published_date).skip((@page_number - 1) * Ufo::MAX_PAGE_ITEMS).limit(Ufo::MAX_PAGE_ITEMS).entries
     end
-    @page_title = "Articles"
-    @page_description = "Read the latest UFO research articles, analysis, and investigations from the UFO Hunters community worldwide"
+    @page_title = 'Articles'
+    @page_description = 'Read the latest UFO research articles, analysis, and investigations from the UFO Hunters community worldwide'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -37,24 +39,21 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
-    @menu = "articles"
-    @article = Rails.cache.fetch("articles/#{params[:id]}", :expires_in => 1.month) do
+    @menu = 'articles'
+    @article = Rails.cache.fetch("articles/#{params[:id]}", expires_in: 1.month) do
       Article.without(:email).find(params[:id])
     end
     @page_title = ArticlesHelper.friendly_title(@article)
-    @page_description = @article.teaser[0..200] + "..."
+    @page_description = "#{@article.teaser[0..200]}..."
 
-    unless @article.article_helper_method.blank?
-      if ArticlesHelper.respond_to? @article.article_helper_method.to_sym
-        @ufo_list = ArticlesHelper.send @article.article_helper_method.to_sym, @article
-      end
+    if @article.article_helper_method.present? && ArticlesHelper.respond_to?(@article.article_helper_method.to_sym)
+      @ufo_list = ArticlesHelper.send @article.article_helper_method.to_sym, @article
     end
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @article }
     end
-
   end
 
   # GET /articles/new
@@ -81,14 +80,13 @@ class ArticlesController < ApplicationController
         format.html { redirect_to action: 'myspace', notice: 'Article was successfully created.' }
         format.json { render json: @article, status: :created, location: @article }
       else
-        format.html { render action: "new" }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.html { render action: 'new' }
+        format.json { render json: @article.errors, status: :unprocessable_content }
       end
     end
 
-    #Rails.cache.delete_matched /articles\/index/
-    #Rails.cache.delete_matched /articles\/content/
-
+    # Rails.cache.delete_matched /articles\/index/
+    # Rails.cache.delete_matched /articles\/content/
   end
 
   # PUT /articles/1
@@ -101,15 +99,14 @@ class ArticlesController < ApplicationController
         format.html { redirect_to action: 'myspace', notice: 'Article was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
+        format.html { render action: 'edit' }
+        format.json { render json: @article.errors, status: :unprocessable_content }
       end
     end
 
-    #Rails.cache.delete_matched /articles\/index/
-    #Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    #Rails.cache.delete_matched /articles\/content/
-
+    # Rails.cache.delete_matched /articles\/index/
+    # Rails.cache.delete_matched Regexp.new("#{@article.id}")
+    # Rails.cache.delete_matched /articles\/content/
   end
 
   # DELETE /articles/1
@@ -123,19 +120,18 @@ class ArticlesController < ApplicationController
       format.json { head :no_content }
     end
 
-    #Rails.cache.delete_matched /articles\/index/
-    #Rails.cache.delete_matched Regexp.new("#{@article.id}")
-    #Rails.cache.delete_matched /articles\/content/
-
+    # Rails.cache.delete_matched /articles\/index/
+    # Rails.cache.delete_matched Regexp.new("#{@article.id}")
+    # Rails.cache.delete_matched /articles\/content/
   end
 
   # GET /articles/myspace
   def myspace
-    @menu = "myspace"
-    @articles = Article.where(:user => session[:user_id]).desc(:published_date)
+    @menu = 'myspace'
+    @articles = Article.where(user: session[:user_id]).desc(:published_date)
 
-    @page_title = "Articles"
-    @page_description = "Manage and view your published UFO research articles on UFO Hunters"
+    @page_title = 'Articles'
+    @page_description = 'Manage and view your published UFO research articles on UFO Hunters'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -144,11 +140,11 @@ class ArticlesController < ApplicationController
 
   # GET /articles/myspace
   def uforesearchteam
-    @menu = "uforesearchteam"
+    @menu = 'uforesearchteam'
     @user = User.new
 
-    @page_title = "UFO Research Team - Articles"
-    @page_description = "Join the UFO Hunters research team — contribute articles, investigate sightings, and collaborate with UFO researchers worldwide"
+    @page_title = 'UFO Research Team - Articles'
+    @page_description = 'Join the UFO Hunters research team — contribute articles, investigate sightings, and collaborate with UFO researchers worldwide'
 
     respond_to do |format|
       format.html # index.html.erb
@@ -156,15 +152,14 @@ class ArticlesController < ApplicationController
   end
 
   def num_articles
-    Rails.cache.fetch("articles/num_articles", :expires_in => 8.hours) do
-      Article.where(:status => 1).count()
+    Rails.cache.fetch('articles/num_articles', expires_in: 8.hours) do
+      Article.where(status: 1).count
     end
   end
 
   private
 
-    def article_params
-      params.require(:article).permit(:title, :status, :teaser, :body, :published_date, :user_id)
-    end
-
+  def article_params
+    params.expect(article: %i[title status teaser body published_date user_id])
+  end
 end

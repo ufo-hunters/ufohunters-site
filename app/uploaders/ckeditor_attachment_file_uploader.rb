@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CkeditorAttachmentFileUploader < CarrierWave::Uploader::Base
   storage :file
 

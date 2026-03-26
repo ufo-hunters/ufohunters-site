@@ -1,8 +1,9 @@
-class Report
+# frozen_string_literal: true
 
+class Report
   include Mongoid::Document
 
-  store_in collection: "ufo"
+  store_in collection: 'ufo'
 
   field :id, type: String
   field :sighted_at, type: String
@@ -19,39 +20,39 @@ class Report
   field :status, type: Integer
   field :case_number, type: Integer
 
-  validates_presence_of :sighted_at, :message => "Sighted date is mandatory"
-  validates_presence_of :reported_at, :message => "Reported date is mandatory"
-  validates_presence_of :location, :message => "Location is mandatory"
-  validates_presence_of :duration, :message => "Duration is mandatory"
-  validates_presence_of :shape, :message => "Shape is mandatory"
-  validates_presence_of :description, :message => "Description is mandatory"
-  validates_confirmation_of :email, :message => "Should match contact email confirmation"
-  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :allow_blank => true
+  validates :sighted_at, presence: { message: 'Sighted date is mandatory' }
+  validates :reported_at, presence: { message: 'Reported date is mandatory' }
+  validates :location, presence: { message: 'Location is mandatory' }
+  validates :duration, presence: { message: 'Duration is mandatory' }
+  validates :shape, presence: { message: 'Shape is mandatory' }
+  validates :description, presence: { message: 'Description is mandatory' }
+  validates :email, confirmation: { message: 'Should match contact email confirmation' }
+  validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: true }
 
   before_create :set_case_number
 
   private
+
   def set_case_number
     last_case_number = Report.where(source: 'ufo-hunters.com').max(:case_number)
     self.case_number = last_case_number + 1 if last_case_number
   end
 
-  #db.ufo.ensureIndex({"coord":"2dsphere"}, {"background":true,"safe":true})
-  index({coord:'2dsphere'},{background:true})
+  # db.ufo.ensureIndex({"coord":"2dsphere"}, {"background":true,"safe":true})
+  index({ coord: '2dsphere' }, { background: true })
 
-  #db.ufo.ensureIndex({"status":1,"links":1}, {"background":true,"safe":true})
-  index({status:1,links:1},{background:true})
+  # db.ufo.ensureIndex({"status":1,"links":1}, {"background":true,"safe":true})
+  index({ status: 1, links: 1 }, { background: true })
 
-  #db.ufo.ensureIndex({"status":1,"location":1}, {"background":true,"safe":true})
-  index({status:1,location:1},{background:true})
+  # db.ufo.ensureIndex({"status":1,"location":1}, {"background":true,"safe":true})
+  index({ status: 1, location: 1 }, { background: true })
 
-  #db.ufo.ensureIndex({"status":1,"sighted_at":-1}, {"background":true,"safe":true})
-  index({status:1,sighted_at:-1},{background:true})
+  # db.ufo.ensureIndex({"status":1,"sighted_at":-1}, {"background":true,"safe":true})
+  index({ status: 1, sighted_at: -1 }, { background: true })
 
-  #db.ufo.ensureIndex({"location":1}, {"background":true,"safe":true})
-  index({location:1},{background:true})
+  # db.ufo.ensureIndex({"location":1}, {"background":true,"safe":true})
+  index({ location: 1 }, { background: true })
 
-  #db.ufo.ensureIndex({"sighted_at":-1}, {"background":true,"safe":true})
-  index({sighted_at:-1},{background:true})
-
+  # db.ufo.ensureIndex({"sighted_at":-1}, {"background":true,"safe":true})
+  index({ sighted_at: -1 }, { background: true })
 end

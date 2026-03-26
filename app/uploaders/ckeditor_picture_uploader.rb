@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CkeditorPictureUploader < CarrierWave::Uploader::Base
   include Cloudinary::CarrierWave
   include CarrierWave::MiniMagick

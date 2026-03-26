@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Article
   include Mongoid::Document
 
@@ -13,10 +15,9 @@ class Article
   field :partial_1, type: String
   field :status, type: Integer, default: 0
 
-
   belongs_to :user
 
-  validates_presence_of :title, :message => "Title is mandatory"
-  validates_presence_of :teaser, :message => "Teaser is mandatory"
-  validates_presence_of :body, :message => "Body is mandatory"
+  validates :title, presence: { message: 'Title is mandatory' }
+  validates :teaser, presence: { message: 'Teaser is mandatory' }
+  validates :body, presence: { message: 'Body is mandatory' }
 end
