@@ -20,4 +20,7 @@ class Article
   validates :title, presence: { message: 'Title is mandatory' }
   validates :teaser, presence: { message: 'Teaser is mandatory' }
   validates :body, presence: { message: 'Body is mandatory' }
+
+  index({ status: 1, published_date: -1 }, { background: true })
+  index({ user_id: 1 }, { background: true })
 end
