@@ -205,20 +205,24 @@ ufohunters-site/
 
 ---
 
-## Sin Linter Configurado
+## Linter: RuboCop
 
-Actualmente el proyecto **no tiene RuboCop configurado**. Se recomienda agregar RuboCop con el preset de StandardRB o el perfil Rails oficial:
+El proyecto tiene **RuboCop configurado** con los plugins `rubocop-rails`, `rubocop-minitest` y `rubocop-performance`. La configuracion principal esta en `.rubocop.yml` y los offenses pendientes de refactoring historico en `.rubocop_todo.yml`.
 
-```ruby
-# Gemfile (grupo development)
-group :development, :test do
-  gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-minitest', require: false
-end
+```bash
+# Verificar el codigo
+bundle exec rubocop
+
+# Corregir offenses autocorregibles
+bundle exec rubocop -a
+
+# Ver solo offenses nuevos (excluye los del todo)
+bundle exec rubocop --ignore-parent-exclusion
 ```
 
-Hasta que se configure el linter, aplicar manualmente las convenciones de esta guia en los code reviews.
+RuboCop se ejecuta automaticamente en el job `lint` del pipeline de GitHub Actions en cada push y PR. Un PR no puede mergearse si RuboCop reporta offenses fuera del `.rubocop_todo.yml`.
+
+Al resolver deuda tecnica existente, eliminar la entrada correspondiente de `.rubocop_todo.yml` y corregir los offenses en el codigo.
 
 ---
 

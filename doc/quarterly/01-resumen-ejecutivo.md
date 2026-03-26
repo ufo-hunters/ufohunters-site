@@ -20,7 +20,7 @@ ufo-hunters.com es una aplicacion web publica de comunidad para el registro y ex
 | Desarrollo | [En tiempo / Con retraso / Adelantado] | [Mejorando / Estable / Declinando] |
 | Calidad | [Buena / Aceptable / Requiere atencion] | [Mejorando / Estable / Declinando] |
 | Infraestructura | [Estable / Requiere atencion] | [Mejorando / Estable / Declinando] |
-| CI/CD | [Travis CI obsoleto — migracion pendiente a GitHub Actions] | [Declinando hasta migration] |
+| CI/CD | GitHub Actions activo (test + lint en cada PR) | Estable |
 | Equipo | [Completo / Necesita contratacion] | [Mejorando / Estable / Declinando] |
 
 ---
@@ -66,8 +66,9 @@ ufo-hunters.com es una aplicacion web publica de comunidad para el registro y ex
 | Metrica | Valor Anterior | Valor Actual | Objetivo | Estado |
 |---------|---------------|--------------|----------|--------|
 | Cobertura de tests (Minitest) | [X%] | [Y%] | > 70% | [Cumple / No cumple] |
-| Tests totales | [X] | [Y] | — | — |
-| Tests fallidos en CI | [X] | [Y] | 0 | [Cumple / No cumple] |
+| Tests totales | [X] | 80 | — | — |
+| Assertions totales | [X] | 96 | — | — |
+| Tests fallidos en CI | [X] | 0 | 0 | Cumple |
 | Deuda tecnica (items) | [X] | [Y] | Decreciente | [Cumple / No cumple] |
 
 ### Metricas de Infraestructura
@@ -96,8 +97,7 @@ ufo-hunters.com es una aplicacion web publica de comunidad para el registro y ex
 
 | # | Riesgo | Probabilidad | Impacto | Mitigacion | Responsable |
 |---|--------|--------------|---------|------------|-------------|
-| 1 | CI/CD obsoleto (Travis CI con Ruby 2.1.2): PRs pueden mergearse sin tests automaticos | Alta | Alto | Migrar a GitHub Actions (DT-001) | [Nombre] |
-| 2 | [Descripcion del riesgo] | [Alta / Media / Baja] | [Alto / Medio / Bajo] | [Plan de mitigacion] | [Nombre] |
+| 1 | [Descripcion del riesgo] | [Alta / Media / Baja] | [Alto / Medio / Bajo] | [Plan de mitigacion] | [Nombre] |
 
 ### Bloqueantes Actuales
 
@@ -107,8 +107,10 @@ ufo-hunters.com es una aplicacion web publica de comunidad para el registro y ex
 
 ### Riesgos Mitigados Este Trimestre
 
-- [Riesgo 1: Como se resolvio]
-- [Riesgo 2: Como se resolvio]
+- DT-001: CI/CD obsoleto — Resuelto con GitHub Actions (Ruby 3.2.8 + MongoDB 7, jobs test + lint).
+- DT-002: Sin linter — Resuelto con RuboCop + rubocop-rails + rubocop-minitest + rubocop-performance.
+- DT-004: Sin docker-compose — Resuelto con docker-compose.yml (MongoDB 7 + Redis 7 Alpine).
+- DT-008: Memcached como fallback de Redis — Resuelto, produccion usa solo Redis.
 
 ---
 
@@ -118,15 +120,13 @@ ufo-hunters.com es una aplicacion web publica de comunidad para el registro y ex
 
 | # | Objetivo | Prioridad | Esfuerzo Estimado |
 |---|----------|-----------|-------------------|
-| 1 | Migrar CI/CD de Travis CI a GitHub Actions | P0 | S |
-| 2 | Configurar RuboCop con perfil Rails | P1 | S |
-| 3 | [Descripcion del objetivo de negocio] | [P0 / P1 / P2] | [T-shirt size] |
+| 1 | [Descripcion del objetivo de negocio] | [P0 / P1 / P2] | [T-shirt size] |
+| 2 | [Descripcion del objetivo de negocio] | [P0 / P1 / P2] | [T-shirt size] |
 
 ### Mejoras Tecnicas Planificadas
 
-- Migrar CI/CD a GitHub Actions (ver DT-001 en [deuda-tecnica.md](../deuda-tecnica.md))
-- Agregar RuboCop para enforcement automatico de estilos (ver DT-002)
-- Crear `docker-compose.yml` para simplificar el setup de desarrollo local (ver DT-004)
+- Configurar system tests con Capybara para cobertura end-to-end (ver DT-012)
+- Mejorar cobertura de tests en areas legacy (ver DT-006)
 
 ### Dependencias Externas
 

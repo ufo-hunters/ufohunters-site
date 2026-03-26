@@ -14,7 +14,7 @@ Antes de comenzar, asegurate de tener instalado:
 | Bundler | 2.x (ultima estable) | Gestor de gemas |
 | MongoDB | 6.x o 7.x | Base de datos principal |
 | Git | 2.30+ | Control de versiones |
-| Docker | 20.10+ (opcional) | Alternativa para ejecutar MongoDB |
+| Docker | 20.10+ (opcional) | Alternativa para ejecutar MongoDB y Redis via docker-compose |
 | Node.js | 18+ (opcional) | Solo si se necesita compilar assets Tailwind manualmente |
 
 ### Instalacion de Ruby con RVM
@@ -36,20 +36,40 @@ ruby --version
 # => ruby 3.2.8 (...)
 ```
 
-### MongoDB
+### MongoDB y Redis
 
-Puedes ejecutar MongoDB de forma nativa o con Docker:
+**Opcion recomendada: docker-compose**
+
+El proyecto incluye `docker-compose.yml` con MongoDB 7 y Redis 7 Alpine listos para desarrollo:
 
 ```bash
-# Opcion 1: Docker (recomendado para desarrollo)
+# Levantar MongoDB y Redis en segundo plano
+docker-compose up -d
+
+# Verificar que estan corriendo
+docker-compose ps
+
+# Detener los servicios
+docker-compose down
+```
+
+Los datos persisten en volumenes Docker entre reinicios.
+
+**Opcion alternativa: Docker manual**
+
+```bash
+# Solo MongoDB
 docker run --name ufohunters-mongo \
   -p 27017:27017 \
   -d mongo:7
 
 # Verificar que esta corriendo
 docker ps | grep ufohunters-mongo
+```
 
-# Opcion 2: Instalacion nativa (Ubuntu/Debian)
+**Opcion alternativa: Instalacion nativa**
+
+```bash
 # Seguir la guia oficial: https://www.mongodb.com/docs/manual/installation/
 
 # Verificar version
@@ -89,11 +109,10 @@ Si la instalacion falla, verificar:
 El proyecto usa variables de entorno para configuracion sensible. Copia el archivo de ejemplo y ajusta los valores:
 
 ```bash
-# Si existe un .env.example, copiarlo
+# Copiar el archivo de ejemplo
 cp .env.example .env
 
-# Si no existe, crear .env con las variables necesarias (ver tabla abajo)
-touch .env
+# Editar .env con los valores de tu entorno
 ```
 
 ### Variables Requeridas para Desarrollo
@@ -127,7 +146,6 @@ touch .env
 | Variable | Descripcion |
 |----------|-------------|
 | `REDIS_URL` | URL de conexion a Redis |
-| `MEMCACHEDCLOUD_SERVERS` | Servidores Memcached (fallback de Redis) |
 
 **IMPORTANTE**: Nunca subir el archivo `.env` al repositorio. Esta en `.gitignore`.
 
@@ -228,13 +246,24 @@ rails test -v
 
 La base de datos de test es `sightings_test` (configurada en `config/mongoid.yml`).
 
+## Ejecutar el Linter
+
+```bash
+# Verificar el codigo con RuboCop
+bundle exec rubocop
+
+# Corregir offenses autocorregibles
+bundle exec rubocop -a
+```
+
 ### Antes de Hacer Push
 
 Antes de subir cambios, asegurate de que:
 
 1. Todos los tests pasan: `rails test`
-2. La aplicacion arranca correctamente: `rails server`
-3. Los assets compilan: `rails assets:precompile`
+2. RuboCop no reporta offenses nuevos: `bundle exec rubocop`
+3. La aplicacion arranca correctamente: `rails server`
+4. Los assets compilan: `rails assets:precompile`
 
 ---
 
@@ -249,7 +278,11 @@ Mongoid::Errors::NoClientConfig or connection refused on 127.0.0.1:27017
 **Solucion**: Verificar que MongoDB esta corriendo:
 
 ```bash
-# Si usas Docker
+# Si usas docker-compose (recomendado)
+docker-compose up -d
+docker-compose ps
+
+# Si usas Docker manual
 docker ps | grep ufohunters-mongo
 docker start ufohunters-mongo
 

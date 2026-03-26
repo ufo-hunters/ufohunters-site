@@ -91,14 +91,15 @@ Usuario sube imagen
 | CSS | Tailwind CSS 3.x via tailwindcss-rails | Estilos |
 | Editor rich text | CKEditor | Edicion de articulos |
 | Testing | Minitest (ActiveSupport::TestCase) | Framework de pruebas |
-| Cache | Redis 5.x (produccion), Memcached (fallback) | Cache de aplicacion |
+| Cache | Redis (produccion) | Cache de aplicacion |
 | Imagenes | Cloudinary + CarrierWave + MiniMagick | Almacenamiento y procesamiento |
 | Email | ActionMailer + SendGrid SMTP | Notificaciones por correo |
 | Monitoring | New Relic | APM y alertas |
 | Seguridad | bcrypt, reCAPTCHA 5.x | Autenticacion y proteccion contra bots |
 | Geoespacial | rgeo-geojson 2.x, MongoDB 2dsphere, Google Maps API v3 | Mapas y datos geograficos |
-| CI/CD | Travis CI (configuracion obsoleta — migracion a GitHub Actions recomendada) | Integracion continua |
-| Despliegue | Heroku (Procfile) + Docker (Dockerfile) | Plataformas de despliegue |
+| CI/CD | GitHub Actions (`.github/workflows/ci.yml`) | Integracion continua |
+| Linter | RuboCop + rubocop-rails + rubocop-minitest + rubocop-performance | Enforcement de estilos |
+| Despliegue | Heroku (Procfile) + Docker (Dockerfile + docker-compose.yml) | Plataformas de despliegue |
 | Gestor de paquetes | Bundler | Gestion de gemas Ruby |
 
 ---
@@ -126,7 +127,11 @@ ufohunters-site/
 │   ├── unit/                 # Tests unitarios de modelos
 │   ├── functional/           # Tests de controladores
 │   └── integration/          # Tests de integracion
+├── .github/
+│   └── workflows/
+│       └── ci.yml            # Pipeline GitHub Actions (test + lint)
 ├── doc/                      # Documentacion tecnica (este directorio)
+├── docker-compose.yml        # MongoDB 7 + Redis 7 para desarrollo local
 ├── Dockerfile                # Imagen Docker basada en ruby:3.2.8-slim
 ├── Procfile                  # Configuracion de procesos para Heroku
 └── Gemfile                   # Dependencias Ruby
@@ -216,11 +221,11 @@ La autenticacion del proyecto precede a la adopcion generalizada de Devise y ha 
 
 El sistema opera en tres entornos:
 
-- **Desarrollo**: Local con MongoDB local y variables de entorno en `.env`.
+- **Desarrollo**: Local con MongoDB local y variables de entorno en `.env`. Se puede usar `docker-compose up` para levantar MongoDB 7 y Redis 7 sin instalacion nativa.
 - **Staging**: (si aplica) Replica de produccion para pruebas.
 - **Produccion**: Heroku (Procfile + Puma) o Docker. Base de datos MongoDB Atlas via `MONGOHQ_URL`. Cache Redis via `REDIS_URL`. Imagenes en Cloudinary.
 
-El CI/CD esta actualmente gestionado por Travis CI con una configuracion obsoleta (Ruby 2.1.2). Se recomienda migrar a GitHub Actions.
+El CI/CD esta gestionado con **GitHub Actions** (`.github/workflows/ci.yml`). El pipeline ejecuta dos jobs en cada push y PR a `master`: `test` (`rails test` con MongoDB 7 como servicio) y `lint` (`rubocop`).
 
 ---
 

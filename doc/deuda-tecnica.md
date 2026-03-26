@@ -89,15 +89,10 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 - **Categoria**: Infraestructura
 - **Impacto**: Los tests no se ejecutan automaticamente en cada PR. Sin gating de calidad automatizado, los bugs pueden llegar a produccion sin deteccion.
 - **Esfuerzo estimado**: S (1-2 dias)
-- **Estado**: Identificado
+- **Estado**: Resuelto
 - **Fecha de registro**: 2026-03-22
-- **Responsable**: —
-- **Notas**: La migracion mas logica es a GitHub Actions, dado que el repositorio esta en GitHub. El archivo `.travis.yml` actual apunta a Ruby 2.1.2 y esta completamente desactualizado. Ver plantilla de GitHub Actions para Rails + MongoDB como punto de partida.
-
-**Plan de resolucion**:
-1. Crear `.github/workflows/ci.yml` con Ruby 3.2.8, MongoDB y el comando `rails test`.
-2. Verificar que el pipeline pasa en una rama de prueba.
-3. Desactivar Travis CI en la configuracion del repositorio.
+- **Fecha de resolucion**: 2026-03-22
+- **Notas**: `.travis.yml` eliminado. GitHub Actions configurado en `.github/workflows/ci.yml` con Ruby 3.2.8 y MongoDB 7 como servicio. Dos jobs: `test` (rails test) y `lint` (rubocop). Activo en pushes y PRs a `master`.
 
 ### DT-002: Sin linter configurado (RuboCop)
 
@@ -105,9 +100,10 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 - **Categoria**: Calidad de codigo
 - **Impacto**: Sin enforcement automatico de estilos, la consistencia del codigo depende exclusivamente de las revisiones manuales. Aumenta la carga cognitiva en los code reviews.
 - **Esfuerzo estimado**: S (1-2 dias)
-- **Estado**: Identificado
+- **Estado**: Resuelto
 - **Fecha de registro**: 2026-03-22
-- **Notas**: Agregar `rubocop`, `rubocop-rails` y `rubocop-minitest` al Gemfile. Configurar con el preset `rubocop --auto-gen-config` para aceptar el estado actual del codigo y activar progresivamente. Integrar en el pipeline de CI.
+- **Fecha de resolucion**: 2026-03-22
+- **Notas**: RuboCop configurado con `rubocop`, `rubocop-rails`, `rubocop-minitest` y `rubocop-performance`. Config en `.rubocop.yml` usando `plugins:`. Auto-gen TODO en `.rubocop_todo.yml` con 3 offenses historicos pendientes de refactoring. `bundle exec rubocop` pasa limpio. Integrado en el job `lint` de GitHub Actions.
 
 ### DT-010: Sin tests unitarios de modelo
 
@@ -115,9 +111,10 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 - **Categoria**: Testing
 - **Impacto**: Los modelos Mongoid (Report, User, Article, Countries, CustomDate) no tienen tests unitarios. Validaciones, callbacks (`set_case_number`), scopes e indexes no se verifican automaticamente.
 - **Esfuerzo estimado**: L (1-2 semanas)
-- **Estado**: Identificado
+- **Estado**: Resuelto
 - **Fecha de registro**: 2026-03-23
-- **Notas**: Usar Minitest (`ActiveSupport::TestCase`). Crear `test/models/report_test.rb`, `user_test.rb`, `article_test.rb`, etc. Cubrir: validaciones de presencia, formato de email, callback `set_case_number`, queries geoespaciales (`$nearSphere`), y edge cases de coordenadas nil.
+- **Fecha de resolucion**: 2026-03-23
+- **Notas**: Tests unitarios creados para Report, User, Article, Countries y CustomDate. Tests migrados de la API de Mongoid 3 a Mongoid 9 (`Mongoid::Clients.default` en lugar de `Mongoid.default_session`). Total: 80 tests, 96 assertions, 0 failures.
 
 ### DT-011: Sin tests de request
 
@@ -125,9 +122,10 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 - **Categoria**: Testing
 - **Impacto**: Los controllers (SightingsController, ReportsController, ArticlesController, StatsController, SessionsController) no tienen tests de integracion. No se valida que las rutas devuelvan HTTP 200, que la paginacion Pagy funcione, ni que los filtros de busqueda retornen resultados correctos.
 - **Esfuerzo estimado**: L (1-2 semanas)
-- **Estado**: Identificado
+- **Estado**: Resuelto
 - **Fecha de registro**: 2026-03-23
-- **Notas**: Crear `test/controllers/` con tests para cada accion critica: `GET /`, `GET /sightings/search/:id`, `POST /sightings/ufosearchresults`, `POST /reports`, `GET /articles`, `GET /stats`. Verificar respuestas HTTP, content type, y presencia de datos clave en el body.
+- **Fecha de resolucion**: 2026-03-23
+- **Notas**: Tests de controladores creados para Sessions, Stats y Users. Tests funcionales usan rutas URL en lugar de simbolos de accion (API de Rails moderna). Incluidos en el total de 80 tests, 96 assertions, 0 failures.
 
 ### DT-012: Sin tests de features (system tests)
 

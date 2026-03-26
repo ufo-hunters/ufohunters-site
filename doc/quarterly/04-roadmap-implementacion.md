@@ -51,7 +51,12 @@
 
 | # | ID Deuda | Descripcion | Severidad | Esfuerzo Real |
 |---|----------|-------------|-----------|---------------|
-| 1 | [DT-XXX] | [Que se resolvio] | [Severidad] | [T-shirt size] |
+| 1 | DT-001 | CI/CD migrado de Travis CI a GitHub Actions (Ruby 3.2.8 + MongoDB 7, jobs test + lint) | Alta | S |
+| 2 | DT-002 | RuboCop configurado con rubocop-rails, rubocop-minitest, rubocop-performance | Alta | S |
+| 3 | DT-004 | docker-compose.yml creado con MongoDB 7 + Redis 7 Alpine | Media | XS |
+| 4 | DT-008 | Memcached eliminado; produccion usa solo Redis | Baja | XS |
+| 5 | DT-010 | Tests unitarios creados para todos los modelos Mongoid | Media | L |
+| 6 | DT-011 | Tests de controladores creados (Sessions, Stats, Users) | Media | L |
 
 ---
 
@@ -67,7 +72,7 @@
 
 | # | Mejora | Descripcion | Progreso | ETA |
 |---|--------|-------------|----------|-----|
-| 1 | Migracion CI/CD | Configurar GitHub Actions con Ruby 3.2.8 + MongoDB | [X%] | [Fecha] |
+| 1 | [Mejora en curso] | [Descripcion] | [X%] | [Fecha] |
 
 ---
 
@@ -77,10 +82,9 @@
 
 | # | ID | Mejora | Descripcion | Beneficio Esperado | Esfuerzo |
 |---|----|--------|-------------|-------------------|----------|
-| 1 | DT-001 | Migrar CI/CD a GitHub Actions | Reemplazar `.travis.yml` obsoleto | Tests automaticos en cada PR | S |
-| 2 | DT-002 | Configurar RuboCop | Agregar `rubocop` + `rubocop-rails` + `rubocop-minitest` | Enforcement automatico de estilos | S |
-| 3 | DT-004 | Crear `docker-compose.yml` | Simplificar setup de MongoDB local para desarrollo | Onboarding mas rapido | XS |
-| 4 | DT-007 | Documentar `.env.example` | Crear archivo de referencia de variables de entorno | Claridad para nuevos desarrolladores | XS |
+| 1 | DT-012 | Configurar system tests | Agregar Capybara con driver headless para tests end-to-end | Cobertura de flujos criticos de usuario | XL |
+| 2 | DT-006 | Mejorar cobertura de tests legacy | Identificar areas sin tests y agregar cobertura | Confianza al modificar areas legacy | L |
+| 3 | DT-003 | Recuperacion de contrasena | Implementar reset de contrasena via email | Usuarios bloqueados pueden recuperar acceso | M |
 
 ### Features Planificadas
 
@@ -105,20 +109,20 @@
 
 | Item Planificado | Depende De | Estado |
 |-----------------|------------|--------|
-| CI/CD en GitHub Actions | Repositorio migrado/disponible en GitHub | Resuelto (ya en GitHub) |
+| CI/CD en GitHub Actions | Repositorio disponible en GitHub | Resuelto (activo) |
 | Cualquier feature de mapa | Google Maps API key activa | Resuelto |
 | Subida de imagenes | Cloudinary account activa | Resuelto |
 
 ### Ruta Critica Tecnica
 
 ```
-[DT-001: GitHub Actions CI] ──► [DT-002: RuboCop en CI]
-                                        │
-                                        ▼
-                              [Calidad de codigo automatizada]
-                                        │
-                                        ▼
-                              [Features con confianza en tests]
+[DT-012: System tests con Capybara]
+        │
+        ▼
+[Cobertura end-to-end de flujos criticos]
+        │
+        ▼
+[Confianza para refactorings mayores]
 ```
 
 ---
@@ -128,12 +132,14 @@
 ```
 Sprint 1         Sprint 2         Sprint 3         Sprint 4
 |----------------|----------------|----------------|----------------|
-| DT-001 CI/CD   |
+| DT-012 setup   |
+| Capybara       |
 |----------------|
-                 | DT-002 RuboCop |
+                 | DT-012 tests   |
+                 | flujos criticos|
                  |----------------|
-| DT-004/007     |
-|----------------|
+| DT-006 cobertura legacy                                          |
+|------------------------------------------------------------------|
                                   |  Feature A     |
                                   |----------------|
                                                    |  Feature B     |
@@ -164,18 +170,19 @@ Sprint 1         Sprint 2         Sprint 3         Sprint 4
 
 ### Que Funciono Bien
 
-- [Practica 1 que ayudo]
-- [Practica 2 que ayudo]
+- Resolver deuda tecnica de infraestructura (CI/CD, RuboCop, docker-compose) como bloque coordinado permitio desbloquear el resto del trabajo de calidad.
+- Migrar tests de la API de Mongoid 3 a Mongoid 9 en el mismo ciclo que agregar nuevos tests evito deuda futura.
+- [Practica adicional que ayudo]
 
 ### Que Podemos Mejorar
 
-- La falta de CI/CD funcional hace dificil validar que los cambios no rompen tests antes del merge.
+- [Area de mejora 1]
 - [Area de mejora 2]
 
 ### Ajustes al Proceso
 
-- Priorizar la habilitacion del CI/CD (DT-001) como prerequisito para cualquier otro proceso de calidad.
-- [Cambio de proceso 2]
+- Con CI/CD funcional, los PRs ahora tienen gating automatico de tests y linter antes del merge.
+- [Cambio de proceso adicional]
 
 ---
 

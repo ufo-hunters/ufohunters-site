@@ -22,6 +22,7 @@ El proyecto usa **Minitest** con `ActiveSupport::TestCase` (el framework de test
 - **No hay fixtures de Rails** — son incompatibles con Mongoid. En su lugar se usan helper methods para crear datos de prueba.
 - La base de datos de test es `sightings_test` (definida en `config/mongoid.yml`).
 - `test/test_helper.rb` define helpers compartidos como `create_dummy_report`, `create_dummy_user`, etc.
+- La gema `minitest` esta fijada a `~> 5.25` en el Gemfile para compatibilidad con Rails 8.
 
 ---
 
@@ -78,20 +79,20 @@ require 'test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
   test "GET index retorna 200" do
-    get :index
+    get reports_path
     assert_response :success
   end
 
   test "POST create con datos validos redirige al informe" do
     login_as(create_dummy_user)
     assert_difference('Report.count') do
-      post :create, params: { report: valid_report_params }
+      post reports_path, params: { report: valid_report_params }
     end
     assert_redirected_to report_path(assigns(:report))
   end
 
   test "POST create sin autenticacion redirige a login" do
-    post :create, params: { report: valid_report_params }
+    post reports_path, params: { report: valid_report_params }
     assert_redirected_to login_path
   end
 end
@@ -225,24 +226,27 @@ MINITEST_REPORTER=ProgressReporter rails test
 
 ## Integracion con CI
 
-Los tests se ejecutan automaticamente en el pipeline de CI con cada push y pull request.
+Los tests se ejecutan automaticamente en **GitHub Actions** con cada push y pull request a `master`.
 
-**Estado actual del CI**: La configuracion de Travis CI (`.travis.yml`) esta obsoleta (apunta a Ruby 2.1.2). Es necesario actualizarla a Ruby 3.2.8 o migrar a GitHub Actions.
-
-**Pipeline objetivo**:
+**Pipeline activo** (`.github/workflows/ci.yml`):
 
 ```
-Push / PR
-  └► Bundle install
-      └► MongoDB (test instance)
-          └► rails db:mongoid:create_indexes
-              └► rails test
-                  └► Reporte de resultados
+Push / PR a master
+  └── Job: test
+      ├── Ruby 3.2.8
+      ├── MongoDB 7 (service container en puerto 27017)
+      ├── bundle install
+      └── rails test
+  └── Job: lint
+      └── bundle exec rubocop
 ```
+
+**Estado actual del CI**: GitHub Actions configurado y activo. 80 tests, 96 assertions, 0 failures.
 
 ### Reglas de CI
 
 - Un PR no puede mergearse si algun test falla.
+- Un PR no puede mergearse si RuboCop reporta offenses fuera del `.rubocop_todo.yml`.
 - Los tests flaky deben corregirse inmediatamente (o desactivarse temporalmente con un issue abierto).
 
 ---

@@ -46,7 +46,8 @@
 
 | Componente | Razon de Eliminacion | Reemplazo | Fecha |
 |------------|---------------------|-----------|-------|
-| [Nombre] | [Por que se elimino] | [Que lo reemplaza] | [Fecha] |
+| Travis CI (`.travis.yml`) | Configuracion obsoleta con Ruby 2.1.2; no ejecutaba tests | GitHub Actions (`.github/workflows/ci.yml`) | 2026-03-22 |
+| Memcached (MEMCACHEDCLOUD) | Cache redundante; Redis es suficiente en produccion | Redis (`REDIS_URL`) | 2026-03-22 |
 
 ---
 
@@ -62,8 +63,7 @@
 
 | Tema | Contexto | Opciones | Fecha Estimada |
 |------|----------|----------|----------------|
-| Migracion CI/CD a GitHub Actions | Travis CI obsoleto con Ruby 2.1.2 | GitHub Actions / CircleCI / GitLab CI | [Fecha] |
-| Adopcion de RuboCop | Sin linter configurado actualmente | RuboCop + rubocop-rails / StandardRB | [Fecha] |
+| [Tema pendiente] | [Contexto] | [Opciones] | [Fecha] |
 
 ---
 
@@ -119,11 +119,11 @@
 
 | Severidad | Inicio de Trimestre | Items Resueltos | Items Nuevos | Fin de Trimestre |
 |-----------|--------------------|-----------------|--------------|--------------------|
-| Critica | 0 | [Y] | [Z] | [Total] |
-| Alta | 3 (DT-001, DT-002, DT-003) | [Y] | [Z] | [Total] |
-| Media | 4 (DT-004 a DT-007) | [Y] | [Z] | [Total] |
-| Baja | 2 (DT-008, DT-009) | [Y] | [Z] | [Total] |
-| **Total** | **9** | **[Y]** | **[Z]** | **[Total]** |
+| Critica | 0 | 0 | 0 | 0 |
+| Alta | 3 (DT-001, DT-002, DT-003) | 2 (DT-001, DT-002) | 0 | 1 (DT-003) |
+| Media | 7 (DT-004 a DT-007, DT-010 a DT-012) | 4 (DT-004, DT-005, DT-010, DT-011) | 0 | 3 (DT-006, DT-007 resuelto, DT-012) |
+| Baja | 2 (DT-008, DT-009) | 1 (DT-008) | 0 | 1 (DT-009) |
+| **Total** | **12** | **7** | **0** | **5** |
 
 Para el detalle completo, ver [deuda-tecnica.md](../deuda-tecnica.md).
 
@@ -153,6 +153,14 @@ Heroku Dynos (Puma 6.x + Rails 8.0.2)
 
 Frontend:
    Propshaft + Import Maps + Turbo + Stimulus + Tailwind CSS 3.x + Google Maps API v3
+
+CI/CD:
+   GitHub Actions (.github/workflows/ci.yml)
+   └── job test: Ruby 3.2.8 + MongoDB 7 service → rails test
+   └── job lint: rubocop
+
+Desarrollo local:
+   docker-compose.yml → MongoDB 7 (27017) + Redis 7 Alpine (6379)
 ```
 
 Ver diagrama completo en [arquitectura.md](../arquitectura.md).
@@ -163,7 +171,7 @@ Ver diagrama completo en [arquitectura.md](../arquitectura.md).
 
 ### Cambios de Arquitectura Planificados
 
-1. Migrar CI/CD de Travis CI (`.travis.yml` obsoleto) a GitHub Actions (`.github/workflows/ci.yml`).
+1. [Cambio planificado 1: Descripcion y justificacion]
 2. [Cambio planificado 2: Descripcion y justificacion]
 
 ### Mejoras de Rendimiento Planificadas
@@ -180,9 +188,8 @@ Ver diagrama completo en [arquitectura.md](../arquitectura.md).
 
 Items priorizados para el proximo trimestre (ver [deuda-tecnica.md](../deuda-tecnica.md)):
 
-1. DT-001: Migrar CI/CD a GitHub Actions
-2. DT-002: Configurar RuboCop
-3. DT-004: Crear `docker-compose.yml`
+1. DT-012: Configurar system tests con Capybara
+2. DT-006: Mejorar cobertura en areas legacy
 
 ---
 

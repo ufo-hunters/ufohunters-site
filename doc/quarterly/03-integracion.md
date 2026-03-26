@@ -20,8 +20,7 @@
 | 5 | reCAPTCHA | Proteccion contra bots (entrante) | HTTPS REST API | Activo | Alta |
 | 6 | Redis | Cache en produccion | Redis protocol | Activo | Media |
 | 7 | New Relic | APM y monitoring (saliente) | HTTPS Agent | Activo | Media |
-| 8 | Memcached (MEMCACHEDCLOUD) | Cache fallback | Memcached protocol | Activo (fallback) | Baja |
-| 9 | Travis CI | CI/CD | GitHub webhooks | Obsoleto | — |
+| 8 | GitHub Actions | CI/CD | GitHub webhooks | Activo | Media |
 
 ---
 
@@ -109,7 +108,8 @@ ufo-hunters.com no tiene una API REST formal. El unico endpoint JSON es:
 
 | Integracion | Fecha | Razon | Reemplazo |
 |-------------|-------|-------|-----------|
-| Travis CI | [Fecha pendiente] | Configuracion obsoleta con Ruby 2.1.2 | GitHub Actions (pendiente de migracion) |
+| Travis CI | 2026-03-22 | Configuracion obsoleta con Ruby 2.1.2; no ejecutaba tests | GitHub Actions (activo) |
+| Memcached (MEMCACHEDCLOUD) | 2026-03-22 | Cache redundante; Redis es suficiente | Redis (`REDIS_URL`) |
 
 ---
 
@@ -152,13 +152,13 @@ ufo-hunters.com no tiene una API REST formal. El unico endpoint JSON es:
 |-------------|-----------------|--------|
 | MongoDB (Mongoid models) | Tests unitarios y funcionales contra DB de test | Suficiente para cobertura basica |
 | Cloudinary | Mockeado en tests con stubs de CarrierWave | Suficiente |
-| Google Maps / GeoJSON | Test del endpoint `/map_json` | [Existente / Pendiente] |
+| Google Maps / GeoJSON | Test del endpoint `/map_json` | Existente |
 | SendGrid / ActionMailer | `delivery_method = :test` en entorno test | Suficiente |
 | reCAPTCHA | Bypaseado en entorno test | Suficiente |
 
 ### Entorno de Testing
 
-- **MongoDB**: Base de datos `sightings_test` (instancia local en CI).
+- **MongoDB**: Base de datos `sightings_test` (instancia local en CI). En GitHub Actions, MongoDB 7 corre como servicio.
 - **Cloudinary**: Mockeado via stubs de CarrierWave en todos los tests.
 - **Google Maps**: No se testea directamente (API del navegador).
 - **SendGrid**: `ActionMailer::Base.deliveries` acumula emails en tests para assertions.
@@ -168,12 +168,18 @@ ufo-hunters.com no tiene una API REST formal. El unico endpoint JSON es:
 
 ## Notas de Migracion
 
+### Migraciones Completadas
+
+| Migracion | Descripcion | Fecha | Impacto |
+|-----------|-------------|-------|---------|
+| Travis CI → GitHub Actions | CI/CD migrado a GitHub Actions con Ruby 3.2.8 + MongoDB 7 | 2026-03-22 | Ninguno para usuarios finales |
+| Memcached → solo Redis | Eliminado fallback a Memcached; produccion usa solo Redis via `REDIS_URL` | 2026-03-22 | Simplificacion de configuracion |
+
 ### Migraciones Planificadas
 
 | Migracion | Descripcion | Fecha Estimada | Impacto | Responsable |
 |-----------|-------------|----------------|---------|-------------|
-| Travis CI → GitHub Actions | Reemplazar CI/CD obsoleto | [Fecha] | Ninguno para usuarios finales | [Nombre] |
-| [Otra migracion] | [Que se migrara] | [Fecha] | [Impacto esperado] | [Nombre] |
+| [Migracion] | [Que se migrara] | [Fecha] | [Impacto esperado] | [Nombre] |
 
 ---
 
@@ -210,6 +216,9 @@ Desde el navegador del usuario:
 
 Monitoring:
   └── New Relic APM (todos los requests Rails)
+
+CI/CD:
+  └── GitHub Actions (test + lint en cada push/PR a master)
 ```
 
 ---
@@ -218,13 +227,13 @@ Monitoring:
 
 ### Nuevas Integraciones Planificadas
 
-1. GitHub Actions como nuevo CI/CD (reemplazar Travis CI).
+1. [Integracion 1: Descripcion, proposito y timeline]
 2. [Integracion 2: Descripcion, proposito y timeline]
 
 ### Mejoras a Integraciones Existentes
 
 1. Revisar y actualizar la configuracion de Cloudinary para usar la ultima version de la gema.
-2. Migrar de Memcached a solo Redis como cache store en produccion.
+2. [Mejora adicional]
 
 ---
 

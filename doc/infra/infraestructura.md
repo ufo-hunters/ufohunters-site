@@ -25,10 +25,11 @@ Para minimizar problemas de "funciona en mi maquina", los entornos mantienen par
 
 | Aspecto | Desarrollo | Produccion |
 |---------|-----------|------------|
-| MongoDB | Local (127.0.0.1:27017) o Docker | MongoDB Atlas via `MONGOHQ_URL` |
+| MongoDB | Local via `docker-compose up` (MongoDB 7) o instalacion nativa | MongoDB Atlas via `MONGOHQ_URL` |
+| Redis | Local via `docker-compose up` (Redis 7 Alpine) | Redis via `REDIS_URL` |
 | Base de datos | `ufosightings` (development) | `ufosightings` (production via MONGOHQ) |
 | Base de datos test | `sightings_test` | — |
-| Cache | Deshabilitado o en memoria | Redis via `REDIS_URL` (fallback: Memcached) |
+| Cache | Deshabilitado o en memoria | Redis via `REDIS_URL` |
 | Email | `:test` delivery (no envia reales) | SendGrid SMTP |
 | Imagenes | Cloudinary (si configurado) o local | Cloudinary |
 | Logs | Consola, nivel debug | Heroku Logs / New Relic |
@@ -52,7 +53,6 @@ web: bundle exec puma -C config/puma.rb
 |--------|-----------|---------------------|
 | MongoHQ / MongoDB Atlas | Base de datos principal | `MONGOHQ_URL` |
 | Redis To Go / Heroku Redis | Cache en produccion | `REDIS_URL` |
-| Memcached Cloud | Cache fallback | `MEMCACHEDCLOUD_SERVERS` |
 | New Relic APM | Monitoring y alertas | `NEW_RELIC_LICENSE_KEY` |
 | SendGrid | Email transaccional | `SENDGRID_USERNAME`, `SENDGRID_PASSWORD` |
 
@@ -66,9 +66,15 @@ FROM ruby:3.2.8-slim
 # ejecuta bundle install y arranca Puma
 ```
 
+Para desarrollo local, el proyecto incluye `docker-compose.yml` con MongoDB 7 (puerto 27017) y Redis 7 Alpine (puerto 6379), ambos con volumenes persistentes:
+
+```bash
+# Levantar MongoDB y Redis para desarrollo
+docker-compose up -d
+```
+
 **Notas importantes**:
 - El `Dockerfile` no incluye MongoDB — MongoDB debe correr como servicio separado.
-- No hay `docker-compose.yml` actualmente (pendiente de crear — ver DT-004 en [deuda-tecnica.md](../deuda-tecnica.md)).
 - En produccion con Docker, las variables de entorno se inyectan externamente.
 
 ---
@@ -119,32 +125,32 @@ Los indices se definen en los modelos y se crean con `rails db:mongoid:create_in
 
 ## Pipeline de CI/CD
 
-### Estado Actual: Travis CI (OBSOLETO)
+### Estado Actual: GitHub Actions (Activo)
 
-El archivo `.travis.yml` existe pero esta configurado para Ruby 2.1.2, lo cual es incompatible con el stack actual (Ruby 3.2.8). **Los tests automaticos NO se ejecutan en CI actualmente.**
+El CI/CD esta gestionado con **GitHub Actions** (`.github/workflows/ci.yml`). El pipeline se activa en cada push y pull request a `master`.
 
-**Prioridad**: Migrar a GitHub Actions (ver DT-001 en [deuda-tecnica.md](../deuda-tecnica.md)).
-
-### Pipeline Objetivo: GitHub Actions
-
-El pipeline objetivo tras la migracion:
+**Jobs del pipeline**:
 
 ```
-Push / PR
-  └── Instalar Ruby 3.2.8
-  └── bundle install
-  └── Iniciar MongoDB (service container)
-  └── rails db:mongoid:create_indexes
-  └── rails test
-  └── [Si rama main] → Deploy a Heroku
+Push / PR a master
+  └── Job: test
+      ├── Ruby 3.2.8
+      ├── MongoDB 7 (service container en puerto 27017)
+      ├── bundle install (cache habilitado)
+      └── bundle exec rails test
+  └── Job: lint
+      └── bundle exec rubocop
 ```
 
-**Archivo objetivo**: `.github/workflows/ci.yml`
+**Archivo activo**: `.github/workflows/ci.yml`
 
 ```yaml
-# Esquema del workflow objetivo
 name: CI
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -158,8 +164,16 @@ jobs:
         with:
           ruby-version: '3.2.8'
           bundler-cache: true
-      - run: bundle exec rails db:mongoid:create_indexes
       - run: bundle exec rails test
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2.8'
+          bundler-cache: true
+      - run: bundle exec rubocop
 ```
 
 ---
