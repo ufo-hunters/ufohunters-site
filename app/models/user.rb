@@ -17,6 +17,9 @@ class User
   validates :password, confirmation: { message: 'should match password' }
   validates :email, confirmation: { message: 'should match email' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: false }
+  validates :password, length: { minimum: 6, message: 'must be at least 6 characters' }, if: :password_digest_changed?
+
+  index({ reset_token: 1 }, { unique: true, sparse: true })
 
   def generate_reset_token!
     self.reset_token = SecureRandom.urlsafe_base64(32)
