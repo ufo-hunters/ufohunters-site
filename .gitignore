@@ -12,6 +12,7 @@
 *.tar
 *.wmv
 *.yml
+!docker-compose.yml
 # Ignore bundler config
 /.bundle
 

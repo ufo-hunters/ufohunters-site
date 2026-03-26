@@ -1,78 +1,61 @@
-[![Build Status](https://travis-ci.org/ufo-hunters/ufohunters-site.svg?branch=master)](https://travis-ci.org/ufo-hunters/ufohunters-site)
-
-ufo-hunters.com
-===============
+# ufo-hunters.com
 
 A site that collects a huge data set of UFO sightings all over the world. Our main purpose is to collaborate spreading objective UFO data.
 
+## Stack
 
-Overview
-------------
+- **Ruby** 3.2.8 / **Rails** 8.0.2
+- **MongoDB** via Mongoid 9 (document store with 2dsphere geospatial indexes)
+- **Redis** for caching
+- **Propshaft** + **Import Maps** + **Hotwire** (Turbo + Stimulus) + **Tailwind CSS 3**
+- **CarrierWave** + **Cloudinary** for image uploads
+- **Puma** web server
 
-This site is built with an incredibly powerful web framework called Ruby on Rails, that uses the most eloquent and elegant programming language we've ever used.
+## Prerequisites
 
-UFO-hunters.com was realized from scratch with Ruby 1.9 and Rails 3.3.2 and it has been recently upgraded to Ruby 2.1.2 and Rails 4.1.2 .
+- Ruby 3.2.8 (via RVM, rbenv, or asdf)
+- Docker and Docker Compose (for MongoDB and Redis)
 
-All the UFO data we collect is regularly imported into a NoSQL database called MongoDB, with geospatial "2dsphere" indexes that considerably ease all the stuff with coordinates and geolocation. 
+## Setup
 
-The site allows access to a private area where the users can create their own articles. 
+```bash
+# Start MongoDB and Redis
+docker compose up -d
 
-Video and Image Galleries are Blueimp Gallery implementations.
+# Install dependencies
+bundle install
 
-The current responsive version of the site has been developed using Twitter BootStrap.
+# Copy environment variables and fill in your values
+cp .env.example .env
 
-All maps are implemented with Google Maps API V3.
+# Create database indexes
+rails db:mongoid:create_indexes
 
-[Pledgie]: http://www.pledgie.com/campaigns/21122
+# Compile Tailwind CSS
+rails tailwindcss:build
 
-[![You can support the development of Ufo-Hunters via Pledgie - thanks for your help](https://pledgie.com/campaigns/21122.png?skin_name=chrome)][Pledgie]
+# Start the server
+rails server
+```
 
-Dependencies
-------------
+The app will be available at `http://localhost:3000`.
 
-ufo-hunters.com uses MongoDB as document database and Cloudinary as cloud-based image store. To install all the dependencies run
+## Running Tests
 
-    gem install bundler
-    bundle install
+```bash
+bundle exec rails test
+```
 
-Built With
-------------
+## How to Contribute
 
-•	Ruby on Rails — Our site is a Rails app.
+Want to help improve [ufo-hunters.com](https://ufo-hunters.com)?
 
-•	Bootstrap - Built our responsive site with Bootstrap.
-
-•	MongoDB — Our main data store.
-
-•	Redis — We use Redis as a cache and for transient data.
-
-•	Cloudinary - Image management and manipulation in the cloud.
-
-•	CloudFlare - It is a very popular and free CDN.
-
-•	Unicorn - This web server enables the concurrent processing of requests.
-
-
-    
-
-How to contribute
------------------
-
-Want to help improve [ufo-hunters.com][ufo-hunters]?
-
-There are many ways to contribute to ufo-hunters.com and the UFO community. You may collect UFO reports, join a UFO organization such as MUFON or NUFORC, or ellaborate an article to share your story if you witnessed a UFO or had an encounter.
+There are many ways to contribute to ufo-hunters.com and the UFO community. You may collect UFO reports, join a UFO organization such as MUFON or NUFORC, or elaborate an article to share your story if you witnessed a UFO or had an encounter.
 
 If you are a UFO investigator and want to share your work, just send us a doc or link so that we can publish it.
 
-If you saw something wrong please do report it in the [issue
-tracker][issues].
+If you saw something wrong please do report it in the [issue tracker](https://github.com/ufo-hunters/ufohunters-site/issues).
 
-Once you have [forked the project][forking], feel free to send us a [pull
-request][pull-requests].
+Once you have [forked the project](http://help.github.com/forking/), feel free to send us a [pull request](http://help.github.com/pull-requests/).
 
-If there's some other way you'd like to contribute, feel free to contact us! Thanks for your interest!
-
-[ufo-hunters]: http://github.com/ufo-hunters/ufohunters-site
-[issues]: https://github.com/ufo-hunters/ufohunters-site/issues
-[forking]: http://help.github.com/forking/
-[pull-requests]: http://help.github.com/pull-requests/
+If there's some other way you'd like to contribute, feel free to contact us!

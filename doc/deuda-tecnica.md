@@ -64,10 +64,13 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 
 | ID | Descripcion | Impacto | Esfuerzo | Estado | Fecha |
 |----|-------------|---------|----------|--------|-------|
-| DT-004 | Sin docker-compose.yml para desarrollo local | Los desarrolladores deben ejecutar MongoDB manualmente o con comandos Docker sueltos; mayor friccion de onboarding | XS | Identificado | 2026-03-22 |
-| DT-005 | README principal refleja informacion de la era Rails 3-4 | Documentacion de setup contradice el stack actual; confunde a nuevos contribuidores | XS | Identificado | 2026-03-22 |
+| DT-004 | Sin docker-compose.yml para desarrollo local | Los desarrolladores deben ejecutar MongoDB manualmente o con comandos Docker sueltos; mayor friccion de onboarding | XS | Resuelto | 2026-03-22 |
+| DT-005 | README principal refleja informacion de la era Rails 3-4 | Documentacion de setup contradice el stack actual; confunde a nuevos contribuidores | XS | Resuelto | 2026-03-22 |
 | DT-006 | Cobertura de tests desconocida / probablemente baja en areas legacy | Sin metricas de cobertura; areas del codigo modificadas frecuentemente pueden carecer de tests de regresion | L | Identificado | 2026-03-22 |
-| DT-007 | Sin `.env.example` documentado | Los desarrolladores no saben que variables de entorno son necesarias sin leer el codigo | XS | Identificado | 2026-03-22 |
+| DT-007 | Sin `.env.example` documentado | Los desarrolladores no saben que variables de entorno son necesarias sin leer el codigo | XS | Resuelto | 2026-03-22 |
+| DT-010 | Sin tests unitarios de modelo | Los modelos Report, User, Article, Countries, CustomDate no tienen tests unitarios; cambios en validaciones, callbacks o queries pueden introducir regresiones sin deteccion | L | Identificado | 2026-03-23 |
+| DT-011 | Sin tests de request (integration tests) | Los controllers no tienen tests de request; no se valida que las rutas devuelvan 200, que los filtros funcionen, ni que las respuestas JSON sean correctas | L | Identificado | 2026-03-23 |
+| DT-012 | Sin tests de features (system tests) | No hay tests end-to-end que verifiquen flujos completos de usuario: buscar sightings, enviar report, login/signup, navegacion por mapas. Los formularios migrados a Stimulus no tienen cobertura automatizada | XL | Identificado | 2026-03-23 |
 
 ### Baja
 
@@ -105,6 +108,36 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 - **Estado**: Identificado
 - **Fecha de registro**: 2026-03-22
 - **Notas**: Agregar `rubocop`, `rubocop-rails` y `rubocop-minitest` al Gemfile. Configurar con el preset `rubocop --auto-gen-config` para aceptar el estado actual del codigo y activar progresivamente. Integrar en el pipeline de CI.
+
+### DT-010: Sin tests unitarios de modelo
+
+- **Severidad**: Media
+- **Categoria**: Testing
+- **Impacto**: Los modelos Mongoid (Report, User, Article, Countries, CustomDate) no tienen tests unitarios. Validaciones, callbacks (`set_case_number`), scopes e indexes no se verifican automaticamente.
+- **Esfuerzo estimado**: L (1-2 semanas)
+- **Estado**: Identificado
+- **Fecha de registro**: 2026-03-23
+- **Notas**: Usar Minitest (`ActiveSupport::TestCase`). Crear `test/models/report_test.rb`, `user_test.rb`, `article_test.rb`, etc. Cubrir: validaciones de presencia, formato de email, callback `set_case_number`, queries geoespaciales (`$nearSphere`), y edge cases de coordenadas nil.
+
+### DT-011: Sin tests de request
+
+- **Severidad**: Media
+- **Categoria**: Testing
+- **Impacto**: Los controllers (SightingsController, ReportsController, ArticlesController, StatsController, SessionsController) no tienen tests de integracion. No se valida que las rutas devuelvan HTTP 200, que la paginacion Pagy funcione, ni que los filtros de busqueda retornen resultados correctos.
+- **Esfuerzo estimado**: L (1-2 semanas)
+- **Estado**: Identificado
+- **Fecha de registro**: 2026-03-23
+- **Notas**: Crear `test/controllers/` con tests para cada accion critica: `GET /`, `GET /sightings/search/:id`, `POST /sightings/ufosearchresults`, `POST /reports`, `GET /articles`, `GET /stats`. Verificar respuestas HTTP, content type, y presencia de datos clave en el body.
+
+### DT-012: Sin tests de features (system tests)
+
+- **Severidad**: Media
+- **Categoria**: Testing
+- **Impacto**: No hay tests end-to-end que verifiquen flujos completos: buscar sightings por ubicacion, enviar un report con geocoder, login/signup, navegacion por mapas de continentes. Los formularios migrados de jQuery a Stimulus carecen de cobertura automatizada.
+- **Esfuerzo estimado**: XL (mas de 2 semanas)
+- **Estado**: Identificado
+- **Fecha de registro**: 2026-03-23
+- **Notas**: Requiere configurar Capybara con un driver headless (Selenium o Cuprite) y MongoDB de test. Flujos prioritarios: (1) Home → click sighting → ver detalle, (2) Search → seleccionar ubicacion en mapa → ver resultados, (3) Report → rellenar form → submit, (4) Login → acceder a myspace.
 
 ---
 
