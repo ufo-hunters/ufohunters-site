@@ -40,10 +40,11 @@ class PasswordResetsController < ApplicationController
 
     @user.password = params[:password]
     @user.password_confirmation = params[:password_confirmation]
-    @user.reset_token = nil
-    @user.reset_sent_at = nil
 
-    if @user.save
+    if @user.valid?
+      @user.reset_token = nil
+      @user.reset_sent_at = nil
+      @user.save!
       flash[:notice] = 'Password has been reset. You can now log in.'
       redirect_to new_session_path
     else
