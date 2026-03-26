@@ -7,8 +7,8 @@ Rails.application.configure do
     policy.img_src     :self, :data, 'https:', 'https://res.cloudinary.com'
     policy.object_src  :none
     policy.script_src  :self, :unsafe_inline, 'https://www.google.com', 'https://www.gstatic.com',
-                       'https://unpkg.com'
-    policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com'
+                       'https://unpkg.com', 'https://cdn.tailwindcss.com'
+    policy.style_src   :self, :unsafe_inline, 'https://fonts.googleapis.com', 'https://cdn.tailwindcss.com'
     policy.frame_src   'https://www.google.com', 'https://www.youtube.com'
     policy.connect_src :self, 'https://tiles.openfreemap.org', 'https://unpkg.com'
   end
