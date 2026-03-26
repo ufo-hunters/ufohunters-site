@@ -47,16 +47,24 @@ Cada version agrupa sus cambios en las siguientes categorias:
 - GitHub Actions CI con Ruby 3.2.8 + MongoDB 7 (jobs: test y lint)
 - RuboCop con rubocop-rails, rubocop-minitest y rubocop-performance
 - `docker-compose.yml` con MongoDB 7 y Redis 7 para desarrollo local
-- SimpleCov para metricas de cobertura de tests (84.43%)
-- 105 tests unitarios y funcionales con Minitest (135 assertions)
-- Flujo de password reset con token por email (DT-003): modelo, controller, mailer, vistas
+- SimpleCov para metricas de cobertura de tests (85.03%)
+- 130 tests (110 unit/functional + 20 system) con Minitest y Capybara
+- Flujo de password reset con token por email, expiracion de 2 horas
+- Confirmacion de email al registrarse con token de 24 horas y banner en myspace
 - Health check endpoint `/up` (Rails built-in)
 - `.dockerignore` para reducir tamaño de imagen Docker
 - Helper `sanitize_article` con allowlist para contenido HTML de artículos
 - Helper `login_as` para tests de autenticación
 - Indices de MongoDB para Article (status + published_date, user_id)
+- Rack::Attack rate limiting (login, signup, reports, password reset)
+- Content Security Policy (CSP) con nonce para scripts
+- Seed data para desarrollo (5 sightings, 1 user, 1 article, 1 country)
+- reCAPTCHA initializer con skip en dev/test sin keys
+- Bundle audit en CI (security job)
+- Puma workers con WEB_CONCURRENCY para produccion
 
 ### Cambiado
+- Rails actualizado a 8.0.5
 - Refactor `current_user` / `logged_in?` separados en ApplicationController
 - SMTP config solo activo en producción (fix mailer en test)
 - Dockerfile optimizado: multi-stage build, usuario non-root, sin build-essential en producción
@@ -85,6 +93,10 @@ Cada version agrupa sus cambios en las siguientes categorias:
 - Security headers: X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy
 - Password reset token con expiración de 2 horas e índice sparse
 - Validación de longitud mínima de contraseña (6 caracteres)
+- Content Security Policy con SecureRandom nonce
+- Rack::Attack para prevenir brute force en login, signup y forms
+- Confirmacion de email con token expirado a 24 horas
+- `robots.txt` actualizado con rutas privadas
 
 ---
 

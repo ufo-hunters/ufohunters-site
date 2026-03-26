@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ReportsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:create]
-
   # GET /reports.json
   def index
     @reports = Rails.cache.fetch('reports/latest', expires_in: 8.hours) do

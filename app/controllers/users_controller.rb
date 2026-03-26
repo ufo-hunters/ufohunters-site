@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  # include SimpleCaptcha::ControllerHelpers
-
-  protect_from_forgery except: :create
-
   def create
     if verify_recaptcha
 
