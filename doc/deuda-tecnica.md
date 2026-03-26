@@ -78,7 +78,7 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 |----|-------------|---------|----------|--------|-------|
 | DT-008 | Configuracion de Memcached como fallback de Redis | Dos sistemas de cache con configuracion adicional; Redis deberia ser suficiente | XS | Resuelto | 2026-03-22 |
 | DT-009 | CKEditor integrado en modelos y uploaders (area legacy) | CKEditor 4.x eliminado; modelos, uploaders y cktext_area reemplazados | M | Resuelto | 2026-03-22 |
-| DT-013 | Layout usa Tailwind CDN en vez de build local | Dependencia de CDN externo en runtime; impacto en performance y disponibilidad en produccion | M | Identificado | 2026-03-26 |
+| DT-013 | Layout usa Tailwind CDN en vez de build local | Dependencia de CDN externo en runtime; impacto en performance y disponibilidad en produccion | M | Resuelto | 2026-03-26 |
 
 ---
 

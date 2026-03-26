@@ -2,57 +2,9 @@
 <html class="dark" lang="en">
 <head>
   <title><%= @page_title %> - UFO Hunters</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "surface-dim": "#10141a",
-            "surface": "#10141a",
-            "surface-container-lowest": "#0a0e14",
-            "surface-container-low": "#181c22",
-            "surface-container": "#1c2026",
-            "surface-container-high": "#262a31",
-            "surface-container-highest": "#31353c",
-            "surface-bright": "#353940",
-            "surface-variant": "#31353c",
-            "background": "#10141a",
-            "primary": "#D7DF21",
-            "primary-container": "#D7DF21",
-            "primary-fixed": "#e3eb31",
-            "secondary": "#bdf4ff",
-            "secondary-container": "#00e3fd",
-            "secondary-fixed": "#9cf0ff",
-            "secondary-fixed-dim": "#00daf3",
-            "tertiary": "#f3fb70",
-            "tertiary-container": "#d6de57",
-            "on-primary": "#313300",
-            "on-secondary": "#00363d",
-            "on-surface": "#dfe2eb",
-            "on-surface-variant": "#c9c8ad",
-            "on-background": "#dfe2eb",
-            "outline": "#929279",
-            "outline-variant": "#484833",
-            "error": "#ffb4ab",
-            "error-container": "#93000a",
-            "on-error": "#690005",
-            "inverse-surface": "#dfe2eb",
-            "inverse-primary": "#5f6300"
-          },
-          fontFamily: {
-            "headline": ["Space Grotesk"],
-            "body": ["Inter"],
-            "label": ["Space Grotesk"]
-          },
-          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
-        },
-      },
-    }
-  </script>
   <%= javascript_importmap_tags %>
   <%= csrf_meta_tags %>
   <meta charset="utf-8">
@@ -207,7 +159,7 @@
   <nav class="fixed top-0 w-full z-50 bg-[#10141a]/60 backdrop-blur-xl shadow-[0_0_20px_rgba(215,223,33,0.06)]" data-controller="navbar" itemscope itemtype="http://schema.org/SiteNavigationElement">
     <div class="flex justify-between items-center px-4 md:px-8 py-4 w-full max-w-[1920px] mx-auto">
       <!-- Logo -->
-      <a href="/" itemprop="url" class="text-xl md:text-2xl font-bold tracking-tighter text-[#D7DF21] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)] font-headline no-underline">
+      <a href="/" itemprop="url" class="text-2xl md:text-3xl font-bold tracking-tighter text-[#D7DF21] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)] font-headline no-underline">
         <span itemprop="name">UFO HUNTERS</span>
       </a>
 
@@ -381,12 +333,12 @@
 
   <!-- Cookie Consent -->
   <div data-controller="cookie-consent">
-    <div data-cookie-consent-target="banner" class="hidden fixed bottom-0 left-0 right-0 bg-[#1c2026]/95 backdrop-blur-xl text-[#dfe2eb] text-sm z-40 px-4 py-4 border-t border-[#484833]/30">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <p class="m-0 text-[#c9c8ad] text-xs font-['Inter']">This site uses cookies and third-party cookies. When navigating or using our services, you agree to our use of them.
+    <div data-cookie-consent-target="banner" class="hidden fixed bottom-0 left-0 right-0 bg-[#1c2026]/95 backdrop-blur-xl text-[#dfe2eb] text-sm z-40 px-4 py-3 md:py-4 border-t border-[#484833]/30">
+      <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+        <p class="m-0 text-[#c9c8ad] text-sm md:text-xs font-['Inter'] leading-relaxed">This site uses cookies and third-party cookies. When navigating or using our services, you agree to our use of them.
           <a href="#" data-action="click->cookie-consent#showPrivacy" class="text-[#bdf4ff] hover:underline ml-1">More information</a>
         </p>
-        <button data-action="click->cookie-consent#accept" class="ml-4 px-4 py-1.5 bg-[#D7DF21] text-[#313300] rounded text-xs font-['Space_Grotesk'] font-bold cursor-pointer border-none uppercase tracking-wider hover:bg-[#D7DF21] transition-colors">Accept</button>
+        <button data-action="click->cookie-consent#accept" class="shrink-0 px-4 py-1.5 bg-[#D7DF21] text-[#313300] rounded text-xs font-['Space_Grotesk'] font-bold cursor-pointer border-none uppercase tracking-wider hover:bg-[#D7DF21] transition-colors">Accept</button>
       </div>
     </div>
     <div data-cookie-consent-target="privacy" class="hidden fixed bottom-1/4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 glass-panel text-[#dfe2eb] text-sm z-50 p-6 rounded-xl border border-[#484833]/30">
