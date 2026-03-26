@@ -76,7 +76,7 @@
 
 ### Email
 
-- ActionMailer with SendGrid SMTP in production (`SENDGRID_USERNAME`, `SENDGRID_PASSWORD` env vars)
+- ActionMailer with Resend SMTP in production (`RESEND_API_KEY` env var)
 - Notifier mailer in `app/models/notifier.rb` (legacy — treat as a mailer)
 
 ---
@@ -169,7 +169,7 @@ Only after all four pass should you consider the task done.
 - **Docker**: `Dockerfile` present (ruby:3.2.8-slim base, Puma entrypoint)
 - **Heroku**: `Procfile` present — `web: bundle exec puma -C config/puma.rb`
 - **Assets**: `rails assets:precompile` (Propshaft) + `rails tailwindcss:build`
-- **Environment variables** for production: `MONGOHQ_URL`, `REDIS_URL`, `CLOUDINARY_URL`, `SENDGRID_USERNAME`, `SENDGRID_PASSWORD`, `GOOGLE_MAPS_API_KEY`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `NEW_RELIC_LICENSE_KEY`, `SECRET_KEY_BASE`
+- **Environment variables** for production: `MONGOHQ_URL`, `REDIS_URL`, `CLOUDINARY_URL`, `RESEND_API_KEY`, `MAILER_FROM`, `APP_HOST`, `GOOGLE_MAPS_API_KEY`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `NEW_RELIC_LICENSE_KEY`, `SECRET_KEY_BASE`
 - **CI/CD**: GitHub Actions (`.github/workflows/ci.yml`) — two jobs: `test` (Rails test + MongoDB 7) and `lint` (RuboCop). Runs on push/PR to `master`.
 - **Dev setup**: `docker-compose.yml` with MongoDB 7 + Redis 7. Run `docker compose up -d` to start.
 - **Test coverage**: SimpleCov configured, reports generated in `coverage/`. Current: 65.77%.
