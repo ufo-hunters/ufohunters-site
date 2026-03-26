@@ -5,7 +5,10 @@ SimpleCov.start 'rails' do
   add_filter '/test/'
   add_filter '/config/'
   add_filter '/vendor/'
-  minimum_coverage 30
+  add_filter '/app/models/ckeditor/'
+  add_filter '/app/uploaders/ckeditor'
+  add_filter '/app/models/notifier.rb'
+  minimum_coverage 50
 end
 
 ENV['RAILS_ENV'] = 'test'
