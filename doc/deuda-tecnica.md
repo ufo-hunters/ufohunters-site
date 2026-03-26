@@ -70,7 +70,7 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 | DT-007 | Sin `.env.example` documentado | Los desarrolladores no saben que variables de entorno son necesarias sin leer el codigo | XS | Resuelto | 2026-03-22 |
 | DT-010 | Sin tests unitarios de modelo | Los modelos Report, User, Article, Countries, CustomDate no tienen tests unitarios; cambios en validaciones, callbacks o queries pueden introducir regresiones sin deteccion | L | Resuelto | 2026-03-23 |
 | DT-011 | Sin tests de request (integration tests) | Los controllers no tienen tests de request; no se valida que las rutas devuelvan 200, que los filtros funcionen, ni que las respuestas JSON sean correctas | L | Resuelto | 2026-03-23 |
-| DT-012 | Sin tests de features (system tests) | System tests basicos con Capybara + Chrome headless implementados; flujos avanzados (submit report, full search) pendientes | XL | En Progreso | 2026-03-23 |
+| DT-012 | Sin tests de features (system tests) | 20 system tests con Capybara + Chrome headless cubriendo navegacion, auth, sightings, articles y error pages | XL | Resuelto | 2026-03-23 |
 
 ### Baja
 
