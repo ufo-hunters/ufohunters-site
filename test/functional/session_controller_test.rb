@@ -9,7 +9,7 @@ class SessionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should login with valid credentials' do
-    post sessions_path, params: { username: 'user1', password: 'secret' }
+    login_as(@user)
 
     assert_redirected_to articles_myspace_path
   end
@@ -27,7 +27,7 @@ class SessionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should logout' do
-    post sessions_path, params: { username: 'user1', password: 'secret' }
+    login_as(@user)
     get sessions_destroy_path
 
     assert_response :redirect

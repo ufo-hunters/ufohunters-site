@@ -111,7 +111,10 @@ module ActiveSupport
                   article_helper_method: 'none')
     end
 
-    # Add more helper methods to be used by all tests here...
+    def login_as(user)
+      post sessions_path, params: { username: user.username, password: 'secret' }
+    end
+
     teardown :clean_mongodb
 
     def clean_mongodb

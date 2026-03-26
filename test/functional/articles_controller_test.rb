@@ -42,14 +42,14 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get myspace when logged in' do
-    post sessions_path, params: { username: 'user1', password: 'secret' }
+    login_as(@user)
     get articles_myspace_path
 
     assert_response :success
   end
 
   test 'should create article when logged in' do
-    post sessions_path, params: { username: 'user1', password: 'secret' }
+    login_as(@user)
     assert_difference('Article.count') do
       post articles_path, params: {
         article: { title: 'New Article', teaser: 'Teaser', body: 'Body',
