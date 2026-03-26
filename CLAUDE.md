@@ -66,7 +66,7 @@
 - **Tailwind** — utility classes in ERB. Compile with `rails tailwindcss:build` (or `--watch` for dev).
 - **JavaScript** — Import Maps only, no Webpack/esbuild. Add packages via `bin/importmap pin <package>`.
 - **Hotwire** — Use Turbo Frames/Streams for dynamic updates; Stimulus controllers in `app/javascript/controllers/`.
-- **CKEditor** — Rich text for articles, models in `app/models/ckeditor/`, uploaders in `app/uploaders/`.
+- **Articles** — Rich text rendered via `sanitize_article` helper (allowlisted HTML tags). No WYSIWYG editor currently installed.
 
 ### Image Uploads
 
@@ -183,7 +183,6 @@ ufohunters-site/
   app/
     controllers/          # sightings, reports, articles, users, sessions, stats, errors
     models/               # Report, User, Article, Countries, CustomDate (Mongoid documents)
-    models/ckeditor/      # CKEditor attachment models
     uploaders/            # CarrierWave uploaders (Cloudinary)
     views/                # ERB templates
     javascript/
