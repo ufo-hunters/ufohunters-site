@@ -1,127 +1,131 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
+class SightingsControllerTest < ActionDispatch::IntegrationTest
+  test 'should get index' do
+    get root_path
 
-class SightingsControllerTest < ActionController::TestCase
-
-  setup do
-    Mongoid.default_session['ufo'].indexes.create_one(coord:'2d')
-    Mongoid.default_session['ufo'].indexes.create_one(status:1,links:1)
-    Mongoid.default_session['ufo'].indexes.create_one(status:1,location:1)
-    Mongoid.default_session['ufo'].indexes.create_one(status:1,sighted_at:-1)
-    Mongoid.default_session['ufo'].indexes.create_one(location:1)
-    Mongoid.default_session['ufo'].indexes.create_one(sighted_at:-1)
-  end
-
-
-  test "should get index" do
-    get :index
     assert_response :success
   end
 
-  test "should get search" do
-    @ufo_list = create_dummy_report
-    @ufo_list.save
-    get :search, id: Report.first.id
+  test 'should get search' do
+    Report.collection.indexes.create_one({ coord: '2dsphere' })
+    report = create_dummy_report
+    report.save!
+    get sightings_search_path(id: report.id)
+
     assert_response :success
   end
 
-  #test "should get statistics" do
-    #get :statistics
-    #assert_response :success
-  #end
+  test 'should maps statistics' do
+    get sightings_maps_path
 
-  test "should maps statistics" do
-    get :maps
     assert_response :success
   end
 
-  test "should maps countrieslist" do
-    get :countrieslist, {:format => :json}
+  test 'should maps countrieslist' do
+    get sightings_countrieslist_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps northamerica" do
-    get :northamerica
+  test 'should maps northamerica' do
+    get sightings_northamerica_path
+
     assert_response :success
   end
 
-  test "should maps northamerica json" do
-    get :northamerica, {:format => :json}
+  test 'should maps northamerica json' do
+    get sightings_northamerica_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps oceania" do
-    get :oceania
+  test 'should maps oceania' do
+    get sightings_oceania_path
+
     assert_response :success
   end
 
-  test "should maps oceania json" do
-    get :oceania, {:format => :json}
+  test 'should maps oceania json' do
+    get sightings_oceania_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps southamerica" do
-    get :southamerica
+  test 'should maps southamerica' do
+    get sightings_southamerica_path
+
     assert_response :success
   end
 
-  test "should maps southamerica json" do
-    get :southamerica, {:format => :json}
+  test 'should maps southamerica json' do
+    get sightings_southamerica_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps africa" do
-    get :africa
+  test 'should maps africa' do
+    get sightings_africa_path
+
     assert_response :success
   end
 
-  test "should maps africa json" do
-    get :africa, {:format => :json}
+  test 'should maps africa json' do
+    get sightings_africa_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps europe" do
-    get :europe
+  test 'should maps europe' do
+    get sightings_europe_path
+
     assert_response :success
   end
 
-  test "should maps europe json" do
-    get :europe, {:format => :json}
+  test 'should maps europe json' do
+    get sightings_europe_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps asia" do
-    get :asia
+  test 'should maps asia' do
+    get sightings_asia_path
+
     assert_response :success
   end
 
-  test "should maps asia json" do
-    get :asia, {:format => :json}
+  test 'should maps asia json' do
+    get sightings_asia_path(format: :json)
+
     assert_response :success
   end
 
-  test "should maps videos" do
-    get :videos
+  test 'should maps videos' do
+    get sightings_videos_path
+
     assert_response :success
   end
 
-  test "should maps images" do
-    get :images
+  test 'should maps images' do
+    get sightings_images_path
+
     assert_response :success
   end
 
-  test "should maps about" do
-    get :about
+  test 'should maps about' do
+    get sightings_about_path
+
     assert_response :success
   end
 
-  test "should maps country" do
+  test 'should maps country' do
     country = create_country
-    country.save
+    country.save!
 
-    get :country, id: 'ESP'
+    get sightings_country_path(id: 'ESP')
+
     assert_response :success
   end
-
 end
-

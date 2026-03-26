@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 
 ruby '3.2.8'
 
+gem 'minitest', '~> 5.25'
 gem 'rails', '~> 8.0.2'
 
 # MongoDB
@@ -17,10 +18,10 @@ gem 'bcrypt', '~> 3.1'
 gem 'recaptcha', '~> 5.0'
 
 # Asset pipeline
-gem 'propshaft'
 gem 'importmap-rails'
-gem 'turbo-rails'
+gem 'propshaft'
 gem 'stimulus-rails'
+gem 'turbo-rails'
 
 # CSS
 gem 'tailwindcss-rails', '~> 3.0'
@@ -52,9 +53,9 @@ gem 'bootsnap', require: false
 group :development, :test do
   gem 'debug'
   gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
   gem 'rubocop-minitest', require: false
   gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
 end
 
 group :development do
