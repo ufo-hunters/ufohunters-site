@@ -1,0 +1,11 @@
+<h2>Welcome to UFO Hunters!</h2>
+
+<p>Hi <%= @user.username %>,</p>
+
+<p>Thank you for joining UFO Hunters. Please confirm your email address by clicking the link below:</p>
+
+<p><%= link_to "Confirm Email", @confirmation_url %></p>
+
+<p>If you did not create this account, please ignore this email.</p>
+
+<p>— UFO Hunters Team</p>

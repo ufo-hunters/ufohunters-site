@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'sessions/destroy' => 'sessions#destroy'
   resources :sessions
   resources :password_resets, only: %i[new create edit update]
+  get 'confirm_email', to: 'email_confirmations#show'
 
   get 'articles/myspace' => 'articles#myspace'
   get 'articles/uforesearchteam' => 'articles#uforesearchteam'

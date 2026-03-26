@@ -10,6 +10,8 @@ class User
   field :email, type: String
   field :reset_token, type: String
   field :reset_sent_at, type: Time
+  field :confirmation_token, type: String
+  field :confirmed_at, type: Time
   has_secure_password
   has_many :articles, dependent: :destroy
 
@@ -20,6 +22,7 @@ class User
   validates :password, length: { minimum: 6, message: 'must be at least 6 characters' }, if: :password_digest_changed?
 
   index({ reset_token: 1 }, { unique: true, sparse: true })
+  index({ confirmation_token: 1 }, { unique: true, sparse: true })
 
   def generate_reset_token!
     self.reset_token = SecureRandom.urlsafe_base64(32)
@@ -35,5 +38,20 @@ class User
     self.reset_token = nil
     self.reset_sent_at = nil
     save!(validate: false)
+  end
+
+  def generate_confirmation_token!
+    self.confirmation_token = SecureRandom.urlsafe_base64(32)
+    save!(validate: false)
+  end
+
+  def confirm!
+    self.confirmed_at = Time.current
+    self.confirmation_token = nil
+    save!(validate: false)
+  end
+
+  def confirmed?
+    confirmed_at.present?
   end
 end

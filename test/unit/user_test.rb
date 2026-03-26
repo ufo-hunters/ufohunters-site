@@ -78,4 +78,27 @@ class UserTest < ActiveSupport::TestCase
     assert_nil @user.reset_token
     assert_nil @user.reset_sent_at
   end
+
+  test 'should generate confirmation token' do
+    @user.save!
+    @user.generate_confirmation_token!
+
+    assert_not_nil @user.confirmation_token
+  end
+
+  test 'should confirm email' do
+    @user.save!
+    @user.generate_confirmation_token!
+    @user.confirm!
+
+    assert_predicate @user, :confirmed?
+    assert_nil @user.confirmation_token
+    assert_not_nil @user.confirmed_at
+  end
+
+  test 'should not be confirmed by default' do
+    @user.save!
+
+    assert_not_predicate @user, :confirmed?
+  end
 end
