@@ -1,0 +1,21 @@
+<div class="px-4 md:px-12 max-w-[600px] mx-auto py-16">
+  <h1 class="text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#dfe2eb] mb-8 text-center">Set New Password</h1>
+
+  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-8">
+    <%= form_with url: password_reset_path(params[:id]), method: :patch, local: true do |f| %>
+      <div class="mb-6">
+        <%= f.label :password, "New Password", class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
+        <%= f.password_field :password, required: true, minlength: 6, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :password_confirmation, "Confirm Password", class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
+        <%= f.password_field :password_confirmation, required: true, minlength: 6, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
+      </div>
+
+      <div>
+        <%= f.submit "Reset Password", class: "w-full bg-[#D7DF21] text-[#313300] hover:bg-[#e8ef32] font-['Space_Grotesk'] uppercase tracking-widest font-bold py-3 px-8 rounded-lg cursor-pointer transition-colors duration-200" %>
+      </div>
+    <% end %>
+  </div>
+</div>

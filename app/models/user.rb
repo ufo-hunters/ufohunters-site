@@ -8,6 +8,8 @@ class User
   field :_id, type: String, default: -> { username }
   field :password_digest, type: String
   field :email, type: String
+  field :reset_token, type: String
+  field :reset_sent_at, type: Time
   has_secure_password
   has_many :articles, dependent: :destroy
 
@@ -15,4 +17,20 @@ class User
   validates :password, confirmation: { message: 'should match password' }
   validates :email, confirmation: { message: 'should match email' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: false }
+
+  def generate_reset_token!
+    self.reset_token = SecureRandom.urlsafe_base64(32)
+    self.reset_sent_at = Time.current
+    save!(validate: false)
+  end
+
+  def reset_token_expired?
+    reset_sent_at.nil? || reset_sent_at < 2.hours.ago
+  end
+
+  def clear_reset_token!
+    self.reset_token = nil
+    self.reset_sent_at = nil
+    save!(validate: false)
+  end
 end

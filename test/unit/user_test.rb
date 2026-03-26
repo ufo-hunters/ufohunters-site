@@ -50,4 +50,32 @@ class UserTest < ActiveSupport::TestCase
 
     assert_includes @user.articles, article
   end
+
+  test 'should generate reset token' do
+    @user.save!
+    @user.generate_reset_token!
+
+    assert_not_nil @user.reset_token
+    assert_not_nil @user.reset_sent_at
+  end
+
+  test 'should detect expired reset token' do
+    @user.save!
+    @user.generate_reset_token!
+
+    assert_not @user.reset_token_expired?
+
+    @user.set(reset_sent_at: 3.hours.ago)
+
+    assert_predicate @user, :reset_token_expired?
+  end
+
+  test 'should clear reset token' do
+    @user.save!
+    @user.generate_reset_token!
+    @user.clear_reset_token!
+
+    assert_nil @user.reset_token
+    assert_nil @user.reset_sent_at
+  end
 end

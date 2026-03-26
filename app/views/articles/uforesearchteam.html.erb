@@ -37,6 +37,9 @@
         </div>
         <div><%= submit_tag "Log in", class: "bg-[#D7DF21] text-[#313300] hover:bg-[#D7DF21] font-['Space_Grotesk'] uppercase tracking-widest font-bold py-3 px-8 rounded-lg cursor-pointer transition-colors duration-200" %></div>
       <% end %>
+      <p class="mt-4 text-right">
+        <%= link_to "Forgot password?", new_password_reset_path, class: "text-[#bdf4ff] hover:underline text-xs" %>
+      </p>
 
       <% if flash[:form] == 1%>
         <div class="mt-4 bg-red-950/40 border border-red-700/50 text-red-300 px-4 py-3 rounded-lg text-sm" role="alert">

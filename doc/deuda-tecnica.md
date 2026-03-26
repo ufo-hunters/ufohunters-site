@@ -58,7 +58,7 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 |----|-------------|---------|----------|--------|-------|
 | DT-001 | CI/CD con Travis CI obsoleto (Ruby 2.1.2) | Los tests automaticos no se ejecutan en cada PR; sin integracion continua funcional | S | Resuelto | 2026-03-22 |
 | DT-002 | Sin linter configurado (RuboCop) | Sin enforcement automatico de estilos; la calidad del codigo depende solo de las revisiones manuales | S | Resuelto | 2026-03-22 |
-| DT-003 | Autenticacion custom sin funcionalidades completas | No hay recuperacion de contrasena automatica, confirmacion de email ni autenticacion OAuth; usuarios que olvidan su contrasena quedan bloqueados | M | Identificado | 2026-03-22 |
+| DT-003 | Autenticacion custom sin funcionalidades completas | Recuperacion de contrasena implementada; confirmacion de email y OAuth pendientes | M | En Progreso | 2026-03-22 |
 
 ### Media
 
