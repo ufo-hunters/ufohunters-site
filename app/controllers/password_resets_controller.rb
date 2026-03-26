@@ -26,7 +26,7 @@ class PasswordResetsController < ApplicationController
     end
 
     flash[:notice] = 'If an account with that email exists, a reset link has been sent.'
-    redirect_to new_session_path
+    redirect_to articles_uforesearchteam_path
   end
 
   def update
@@ -46,7 +46,7 @@ class PasswordResetsController < ApplicationController
       @user.reset_sent_at = nil
       @user.save!
       flash[:notice] = 'Password has been reset. You can now log in.'
-      redirect_to new_session_path
+      redirect_to articles_uforesearchteam_path
     else
       flash[:error] = @user.errors.full_messages.join(', ')
       render :edit, status: :unprocessable_content

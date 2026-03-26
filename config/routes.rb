@@ -5,10 +5,10 @@ Rails.application.routes.draw do
   get '/422', to: 'errors#unacceptable'
   get '/500', to: 'errors#internal_error'
 
-  resources :users
+  resources :users, only: [:create]
 
   get 'sessions/destroy' => 'sessions#destroy'
-  resources :sessions
+  resources :sessions, only: [:create]
   resources :password_resets, only: %i[new create edit update]
   get 'confirm_email', to: 'email_confirmations#show'
 
@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   get 'reports/:id/country(.:format)' => 'reports#country'
   get 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof',
       constraints: { longitud: %r{[^/]+}, latitud: %r{[^/]+} }
-  resources :reports
+  resources :reports, only: %i[index show new create]
 
   get 'sightings/country/:id(/:title)' => 'sightings#country', as: :sightings_country
   get 'sightings/search/:id(/:title)' => 'sightings#search', as: :sightings_search

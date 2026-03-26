@@ -17,7 +17,7 @@ class PasswordResetsControllerTest < ActionDispatch::IntegrationTest
   test 'should create password reset for valid email' do
     post password_resets_path, params: { email: @user.email }
 
-    assert_redirected_to new_session_path
+    assert_redirected_to articles_uforesearchteam_path
     @user.reload
 
     assert_not_nil @user.reset_token
@@ -27,7 +27,7 @@ class PasswordResetsControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect for nonexistent email without revealing info' do
     post password_resets_path, params: { email: 'nobody@example.com' }
 
-    assert_redirected_to new_session_path
+    assert_redirected_to articles_uforesearchteam_path
   end
 
   test 'should get edit with valid token' do
@@ -60,7 +60,7 @@ class PasswordResetsControllerTest < ActionDispatch::IntegrationTest
       password_confirmation: 'newsecret'
     }
 
-    assert_redirected_to new_session_path
+    assert_redirected_to articles_uforesearchteam_path
     @user.reload
 
     assert_nil @user.reset_token
