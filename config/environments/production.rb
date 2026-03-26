@@ -30,7 +30,7 @@ Rails.application.configure do
 
   config.i18n.fallbacks = true
 
-  config.action_mailer.default_url_options = { host: 'smtp.sendgrid.net' }
+  config.action_mailer.default_url_options = { host: ENV.fetch('APP_HOST', 'www.ufo-hunters.com') }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.raise_delivery_errors = true
 end

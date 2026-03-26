@@ -1,5 +1,5 @@
   <%
-  cache("common/partials/maps/v2/#{@ufo_list.hash}", expires_in: 12.hours) do
+  cache("common/partials/maps/v4/#{@ufo_list.hash}", expires_in: 12.hours) do
 
   zoom = 2
   center = [-40.57035354999999, 34.16473667601063]
@@ -51,57 +51,27 @@
   the_map_id = defined?(map_id) ? map_id : 'sightings-map'
   %>
 
-  <script type="application/json" id="<%= the_map_id %>-data">
-    <%= raw({ geojson: JSON.parse(geojson_data), center: center, zoom: zoom }.to_json) %>
-  </script>
+  <%= content_tag(:script, nil,
+    type: 'application/json',
+    id: "#{the_map_id}-init",
+    data: {
+      target_id: the_map_id,
+      geojson: geojson_data,
+      center: center.to_json,
+      zoom: zoom
+    }) %>
+
   <script>
     (function() {
-      function initMap() {
-        var container = document.getElementById('<%= the_map_id %>');
-        if (!container || container.dataset.mapLoaded) return;
-        container.dataset.mapLoaded = 'true';
+      var initEl = document.getElementById('<%= the_map_id %>-init');
+      if (!initEl) return;
+      var container = document.getElementById(initEl.dataset.targetId);
+      if (!container) return;
 
-        var dataEl = document.getElementById('<%= the_map_id %>-data');
-        if (!dataEl) return;
-        var config = JSON.parse(dataEl.textContent);
-
-        var map = new maplibregl.Map({
-          container: '<%= the_map_id %>',
-          style: 'https://tiles.openfreemap.org/styles/dark',
-          center: config.center,
-          zoom: config.zoom
-        });
-        map.addControl(new maplibregl.NavigationControl());
-
-        config.geojson.features.forEach(function(feature) {
-          new maplibregl.Marker({color: '#D7DF21'})
-            .setLngLat(feature.geometry.coordinates)
-            .setPopup(new maplibregl.Popup({ offset: 25 })
-              .setHTML('<h3>' + feature.properties.title + '</h3><p>' + feature.properties.description + '</p>'))
-            .addTo(map);
-        });
-
-        // Store reference for cleanup
-        container._mapInstance = map;
-      }
-
-      // Run on both initial load and Turbo navigation
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMap);
-      } else {
-        initMap();
-      }
-      document.addEventListener('turbo:load', initMap);
-
-      // Cleanup on Turbo before-render
-      document.addEventListener('turbo:before-render', function() {
-        var container = document.getElementById('<%= the_map_id %>');
-        if (container && container._mapInstance) {
-          container._mapInstance.remove();
-          container._mapInstance = null;
-          container.dataset.mapLoaded = '';
-        }
-      });
+      container.setAttribute('data-controller', 'sightings-map');
+      container.setAttribute('data-sightings-map-geojson-value', initEl.dataset.geojson);
+      container.setAttribute('data-sightings-map-center-value', initEl.dataset.center);
+      container.setAttribute('data-sightings-map-zoom-value', initEl.dataset.zoom);
     })();
   </script>
 

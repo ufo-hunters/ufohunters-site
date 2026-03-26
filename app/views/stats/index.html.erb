@@ -24,14 +24,29 @@
         <div id="map-canvas" class="w-full" style="height: 800px;"></div>
       </div>
         <script>
+          var styles = {
+            dark: 'https://tiles.openfreemap.org/styles/dark',
+            light: 'https://tiles.openfreemap.org/styles/positron'
+          };
+          var currentStyle = localStorage.getItem('mapStyle') || 'dark';
+
           var map = new maplibregl.Map({
               container: 'map-canvas',
-              style: 'https://tiles.openfreemap.org/styles/dark',
+              style: styles[currentStyle],
               center: [5, 30],
               zoom: 2
           });
 
-          map.on('load', function() {
+          // Style toggle button
+          var mapContainer = document.getElementById('map-canvas');
+          var btn = document.createElement('button');
+          btn.textContent = currentStyle === 'dark' ? '☀' : '☾';
+          btn.title = 'Toggle map style';
+          btn.style.cssText = 'position:absolute;top:10px;right:50px;z-index:1;background:#1a1a2e;color:#D7DF21;border:1px solid #D7DF21;border-radius:4px;width:30px;height:30px;cursor:pointer;font-size:16px;line-height:1;';
+          mapContainer.style.position = 'relative';
+          mapContainer.appendChild(btn);
+
+          function addHeatmapLayers() {
               // Add a geojson point source.
               // Heatmap layers also work with a vector tile source.
               map.addSource('earthquakes', {
@@ -145,6 +160,20 @@
                       ]
                   }
               });
+          }
+
+          map.on('load', addHeatmapLayers);
+
+          btn.addEventListener('click', function() {
+            currentStyle = currentStyle === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('mapStyle', currentStyle);
+            btn.textContent = currentStyle === 'dark' ? '☀' : '☾';
+            map.setStyle(styles[currentStyle]);
+          });
+
+          map.on('style.load', function() {
+            if (map.getSource('earthquakes')) return;
+            addHeatmapLayers();
           });
         </script>
     </div>
@@ -278,7 +307,6 @@
     </div>
 
     <div class="mt-5 mb-5">
-      <%= render partial: 'common/ads/horizontal_ad' %>
     </div>
 
   </div>

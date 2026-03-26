@@ -50,7 +50,6 @@ module ApplicationHelper
 
   def youtube_video_id(url)
     uri = URI.parse(url)
-    nil
     if uri.query.blank?
       # when the host is youtu.be the video id is the path without the starting slash
       video_id = uri.path
@@ -86,13 +85,5 @@ module ApplicationHelper
     title += " in #{ufo_report.location}" if ufo_report.location.present?
     title += " on #{format_date(ufo_report.sighted_at)}" if ufo_report.sighted_at.present?
     title.delete("'").tr('/', '-').tr('&', '-').tr('?', '-').delete('.')
-  end
-
-  def randow_image
-    images = Dir.glob('public/5*/*.jpg')
-    images_url = images.map do |s|
-      s.delete_prefix('public')
-    end
-    CGI.escape(images_url.sample)
   end
 end

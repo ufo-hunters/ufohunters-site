@@ -11,19 +11,28 @@
   </div>
 
   <!-- Instructions card -->
-  <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-8">
-    <div class="flex items-center gap-2 mb-4">
+  <details class="bg-[#262a31] border border-[#484833]/20 rounded-xl mb-8 group" open>
+    <summary class="flex items-center gap-2 p-6 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
       <span class="material-symbols-outlined text-[#bdf4ff] text-xl">info</span>
       <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">How to search</span>
-    </div>
-    <div class="space-y-2 text-[#dfe2eb] text-sm leading-relaxed">
+      <span class="material-symbols-outlined text-[#c9c8ad] text-sm ml-auto transition-transform duration-200 group-open:rotate-180">expand_more</span>
+    </summary>
+    <div class="space-y-2 text-[#dfe2eb] text-sm leading-relaxed px-6 pb-6">
       <p>First of all, thank you very much for using our UFO search engine. Here you can search our huge database, choosing a location and a date range.</p>
       <p>The search will be performed between the dates chosen, around the location (<span class="text-[#bdf4ff] underline">within a radius of 200 miles from the selected location</span>).</p>
       <p>In the <strong class="text-[#D7DF21]">Start Date</strong> field, please select the starting date from which you want to perform your query. The <strong class="text-[#D7DF21]">End Date</strong> field indicates the upper limit for your date range.</p>
       <p>Finally, fill in the <strong class="text-[#D7DF21]">search</strong> box, inside the map, the sighting location.</p>
       <p>Just below the map, type in the captcha field the letters you see in the image, and click on <strong class="text-[#D7DF21]">SEARCH UFOS</strong> to get the results.</p>
     </div>
-  </div>
+  </details>
+  <script>
+    (function() {
+      var details = document.querySelector('details.group');
+      if (details && window.innerWidth < 768) {
+        details.removeAttribute('open');
+      }
+    })();
+  </script>
 
   <%= form_tag('/sightings/ufosearchresults', :id => 'ufosearch', :name => 'ufosearch') do %>
 

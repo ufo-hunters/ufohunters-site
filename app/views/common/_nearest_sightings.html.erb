@@ -26,14 +26,14 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
     </div>
 
     <!-- Table -->
-    <div class="bg-[#1c2026] rounded-xl border border-[#484833]/20 overflow-hidden">
-      <table class="w-full text-left text-[#dfe2eb] text-sm" itemscope itemtype="http://schema.org/ItemList">
-        <thead class="bg-[#0a0e14] font-['Space_Grotesk'] text-[#D7DF21] uppercase text-xs tracking-widest">
+    <div class="bg-[#1c2026] rounded-xl border border-[#484833]/20 overflow-x-auto">
+      <table class="w-full text-left text-[#dfe2eb] text-xs sm:text-sm" itemscope itemtype="http://schema.org/ItemList">
+        <thead class="bg-[#0a0e14] font-['Space_Grotesk'] text-[#D7DF21] uppercase text-[10px] sm:text-xs tracking-widest">
           <tr>
-            <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="0" data-action="click->datatable#sortBy">Location</th>
-            <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="1" data-action="click->datatable#sortBy">Sighted on</th>
-            <th class="px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="2" data-action="click->datatable#sortBy">Shape</th>
-            <th class="px-4 py-3 hidden sm:table-cell cursor-pointer select-none hover:text-[#dfe2eb] transition-colors" data-col="3" data-action="click->datatable#sortBy">Duration</th>
+            <th class="px-2 sm:px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors whitespace-nowrap" data-col="0" data-action="click->datatable#sortBy">Location</th>
+            <th class="px-2 sm:px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors whitespace-nowrap" data-col="1" data-action="click->datatable#sortBy">Sighted on</th>
+            <th class="px-2 sm:px-4 py-3 cursor-pointer select-none hover:text-[#dfe2eb] transition-colors whitespace-nowrap" data-col="2" data-action="click->datatable#sortBy">Shape</th>
+            <th class="px-2 sm:px-4 py-3 hidden sm:table-cell cursor-pointer select-none hover:text-[#dfe2eb] transition-colors whitespace-nowrap" data-col="3" data-action="click->datatable#sortBy">Duration</th>
           </tr>
         </thead>
         <tbody data-datatable-target="body">
@@ -41,16 +41,16 @@ cache_unless(@nearest_sightings.blank?, "common/partials/nearest_sightings/#{@ne
               next if ufo_id == sighting.id
           %>
             <tr class="hover:bg-[#31353c] transition border-b border-[#484833]/15" itemprop="itemListElement" itemscope itemtype="http://schema.org/Article">
-              <td class="px-4 py-3">
+              <td class="px-2 sm:px-4 py-3">
                 <meta itemprop="datePublished" content="<%= format_date_microdata sighting.reported_at %>"/>
                 <meta itemprop="headline" content="<%= friendly_title(sighting) %>"/>
                 <span itemprop="name"><%= link_to sighting.location, {:controller => "sightings", :action => "search", :id => sighting.id, :title => friendly_title(sighting)}, class: "text-[#bdf4ff] hover:text-[#D7DF21] transition-colors" %></span>
               </td>
-              <td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>" class="px-4 py-3 text-[#c9c8ad]">
+              <td itemprop="dateCreated" content="<%= format_date_microdata sighting.sighted_at %>" class="px-2 sm:px-4 py-3 text-[#c9c8ad] whitespace-nowrap">
                 <%= format_date_microdata sighting.sighted_at %>
               </td>
-              <td class="px-4 py-3"><%= sighting.shape %></td>
-              <td class="px-4 py-3 hidden sm:table-cell text-[#c9c8ad]"><%= sighting.duration %></td>
+              <td class="px-2 sm:px-4 py-3"><%= sighting.shape %></td>
+              <td class="px-2 sm:px-4 py-3 hidden sm:table-cell text-[#c9c8ad]"><%= sighting.duration %></td>
             </tr>
           <% end %>
         </tbody>

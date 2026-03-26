@@ -15,26 +15,26 @@
       <article>
         <meta itemprop="articleSection" content="UFO Sightings">
         <header class="mb-8">
-          <h1 itemprop="name" class="text-3xl md:text-5xl font-headline font-black text-[#dfe2eb] tracking-tighter mb-4">
+          <h1 itemprop="name" class="text-xl sm:text-3xl md:text-5xl font-headline font-black text-[#dfe2eb] tracking-tighter mb-4 break-words">
             SIGHTING: <%= @ufo_list.location&.upcase %>
           </h1>
           <meta itemprop="headline" content="<%= friendly_title(@ufo_list) %>">
 
           <!-- Technical Specs Grid -->
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-            <div class="bg-[#262a31] p-4 rounded-lg">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6">
+            <div class="bg-[#262a31] p-3 md:p-4 rounded-lg">
               <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Sighted On</div>
               <div itemprop="dateCreated" content="<%= format_date_microdata @ufo_list.sighted_at %>" class="text-[#bdf4ff] font-headline text-sm font-bold"><%= format_date @ufo_list.sighted_at %></div>
             </div>
-            <div class="bg-[#262a31] p-4 rounded-lg">
+            <div class="bg-[#262a31] p-3 md:p-4 rounded-lg">
               <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Reported On</div>
               <div itemprop="datePublished" content="<%= format_date_microdata @ufo_list.reported_at %>" class="text-[#dfe2eb] font-headline text-sm font-bold"><%= format_date @ufo_list.reported_at %></div>
             </div>
-            <div class="bg-[#262a31] p-4 rounded-lg">
+            <div class="bg-[#262a31] p-3 md:p-4 rounded-lg">
               <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Classification</div>
               <div class="text-[#D7DF21] font-headline text-sm font-bold uppercase"><%= @ufo_list.shape %></div>
             </div>
-            <div class="bg-[#262a31] p-4 rounded-lg">
+            <div class="bg-[#262a31] p-3 md:p-4 rounded-lg">
               <div class="text-[10px] text-[#c9c8ad] font-['Space_Grotesk'] uppercase tracking-widest mb-1">Duration</div>
               <div class="text-[#dfe2eb] font-headline text-sm font-bold"><%= @ufo_list.duration %></div>
             </div>
@@ -191,6 +191,7 @@
                   <ul class="space-y-2">
           <%
                   other_urls.each do |link|
+                    next if link.blank?
           %>
                     <li class="flex items-center gap-2">
                       <span class="material-symbols-outlined text-[#bdf4ff] text-sm">link</span>
@@ -266,7 +267,6 @@
         </div>
       </div>
 
-      <%= render partial: 'common/ads/adaptable3' %>
 
       <%= link_to new_report_path, class: "block w-full bg-[#D7DF21] hover:bg-[#D7DF21] text-[#313300] px-6 py-4 rounded-xl text-center text-xs font-['Space_Grotesk'] font-bold uppercase tracking-widest transition-all no-underline" do %>
         <span class="material-symbols-outlined text-sm mr-2 align-middle">upload_file</span>
@@ -290,7 +290,6 @@
       <% end %>
     </div>
     <div class="lg:col-span-4">
-      <%= render partial: 'common/ads/adaptable' %>
     </div>
   </div>
 </section>

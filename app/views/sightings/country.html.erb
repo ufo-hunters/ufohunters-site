@@ -15,7 +15,6 @@
 <%= render partial: 'common/map', locals: {ufo_list: @ufo_list, map_id: 'sightings-map', map_zoom: (@zoom.to_i-1), map_center: [ @country_coord[0],@country_coord[1]]} %>
 
 <div class="px-4 md:px-12 max-w-[1920px] mx-auto my-5">
-  <%= render partial: 'common/ads/horizontal_ad' %>
 </div>
 
 <% if @ufo_list.empty? %>
@@ -40,7 +39,6 @@
         <%= render partial: 'common/latest_sightings' %>
       </div>
       <div class="col-span-12 lg:col-span-4">
-        <%= render partial: 'common/ads/adaptable3' %>
       </div>
     </div>
   </section>
