@@ -105,6 +105,53 @@ curl http://localhost:3000/map_json | jq '.features | length'
 
 ---
 
+## GET /stats/shape
+
+**Descripcion**: Retorna la distribucion de avistamientos agrupados por forma (shape) del objeto avistado.
+
+**Autenticacion**: No requerida.
+
+**Respuesta**: `200 OK` — `application/json`
+
+```json
+[
+  { "_id": { "shape": "Triangle" }, "count": 1234 },
+  { "_id": { "shape": "Circle" }, "count": 890 }
+]
+```
+
+---
+
+## GET /reports.json
+
+**Descripcion**: Retorna los 100 ultimos avistamientos confirmados en formato JSON.
+
+**Autenticacion**: No requerida.
+
+**Respuesta**: `200 OK` — `application/json` — Array de Reports sin campos sensibles (email, description).
+
+---
+
+## GET /reports/:id.json
+
+**Descripcion**: Retorna un avistamiento individual por su ID.
+
+**Autenticacion**: No requerida.
+
+**Respuesta**: `200 OK` — `application/json` — Objeto Report sin campo email.
+
+---
+
+## GET /sightings/countrieslist.json
+
+**Descripcion**: Retorna la lista de paises disponibles para filtrar avistamientos en el mapa.
+
+**Autenticacion**: No requerida.
+
+**Respuesta**: `200 OK` — `application/json` — Array de Countries.
+
+---
+
 ## Convencion para Futuros Endpoints JSON
 
 Si se agregan endpoints JSON adicionales al proyecto, deben documentarse siguiendo esta plantilla:
