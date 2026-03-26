@@ -44,13 +44,41 @@ Cada version agrupa sus cambios en las siguientes categorias:
 ## [Sin Publicar]
 
 ### Agregado
-- (Cambios nuevos que aun no se han publicado en una version)
+- GitHub Actions CI con Ruby 3.2.8 + MongoDB 7 (jobs: test y lint)
+- RuboCop con rubocop-rails, rubocop-minitest y rubocop-performance
+- `docker-compose.yml` con MongoDB 7 y Redis 7 para desarrollo local
+- SimpleCov para metricas de cobertura de tests (83.23%)
+- 94 tests unitarios y funcionales con Minitest (112 assertions)
+- Health check endpoint `/up` (Rails built-in)
+- `.dockerignore` para reducir tamaño de imagen Docker
+- Helper `sanitize_article` con allowlist para contenido HTML de artículos
+- Helper `login_as` para tests de autenticación
+- Indices de MongoDB para Article (status + published_date, user_id)
 
 ### Cambiado
--
+- Dockerfile optimizado: multi-stage build, usuario non-root, sin build-essential en producción
+- README reescrito para reflejar stack actual (Rails 8, Ruby 3.2.8, Tailwind, Mongoid 9)
+- Cache de producción simplificado: solo Redis, fail-fast si `REDIS_URL` no está configurado
+- Tests legacy migrados de Mongoid 3 API a Mongoid 9 (`Mongoid::Clients.default`)
+- Tests funcionales migrados de action symbols a URL paths (API Rails 8)
+
+### Eliminado
+- Travis CI (`.travis.yml`) — reemplazado por GitHub Actions
+- Memcached como fallback de cache en producción
+- CKEditor: modelos, uploaders y `cktext_area` en formularios
+- Fixtures de Rails (incompatibles con Mongoid)
+- Test de performance obsoleto (`rails/performance_test_help`)
+- Dead code: cache invalidation comments, SendGrid dead code en Notifier
 
 ### Corregido
--
+- URL hardcodeada de ufo-hunters.com en helper `random_image`
+- Minitest fijado a ~> 5.25 por incompatibilidad con 6.x en Rails 8
+- `config/cable.yml` añadido para ActionCable en test
+
+### Seguridad
+- `html_safe` reemplazado por `sanitize` en todas las vistas de artículos y sightings
+- Atributos `style` y `target` removidos del allowlist de sanitización
+- Validación regex en render dinámico de partials (`partial_1`) para prevenir path traversal
 
 ---
 
