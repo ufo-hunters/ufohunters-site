@@ -105,8 +105,6 @@ class ReportsController < ApplicationController
         format.json { render json: @report.errors, status: :unprocessable_content }
       end
     end
-
-    expire_fragment 'common/header'
   end
 
   def sightings
