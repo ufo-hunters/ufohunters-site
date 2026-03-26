@@ -51,3 +51,18 @@ jobs:
 
       - name: Run RuboCop
         run: bundle exec rubocop
+
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.8
+          bundler-cache: true
+
+      - name: Bundle audit
+        run: gem install bundler-audit && bundle audit check --update

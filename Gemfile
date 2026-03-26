@@ -47,6 +47,9 @@ gem 'sitemap_generator', '~> 6.0'
 # Monitoring
 gem 'newrelic_rpm'
 
+# Rate limiting
+gem 'rack-attack'
+
 # Boot speed
 gem 'bootsnap', require: false
 

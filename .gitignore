@@ -16,6 +16,7 @@
 !.github/workflows/*.yml
 !.rubocop.yml
 !.rubocop_todo.yml
+!.bundler-audit.yml
 !config/cable.yml
 # Ignore bundler config
 /.bundle

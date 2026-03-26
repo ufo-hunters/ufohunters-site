@@ -2,5 +2,9 @@ User-Agent: *
 Disallow: /articles/myspace
 Disallow: /sessions/*
 Disallow: /users/*
+Disallow: /password_resets/*
+Disallow: /404
+Disallow: /422
+Disallow: /500
 
 Sitemap: https://www.ufo-hunters.com/sitemap.xml

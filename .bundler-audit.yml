@@ -1,0 +1,3 @@
+---
+ignore:
+  - GHSA-p9fm-f462-ggrg  # ActiveStorage DoS — not used (CarrierWave + Cloudinary)

@@ -12,4 +12,8 @@ environment ENV.fetch('RAILS_ENV', 'development')
 
 pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
 
+workers ENV.fetch('WEB_CONCURRENCY', 2) if ENV.fetch('RAILS_ENV', 'development') == 'production'
+
+preload_app! if ENV.fetch('RAILS_ENV', 'development') == 'production'
+
 plugin :tmp_restart
