@@ -77,7 +77,7 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 | ID | Descripcion | Impacto | Esfuerzo | Estado | Fecha |
 |----|-------------|---------|----------|--------|-------|
 | DT-008 | Configuracion de Memcached como fallback de Redis | Dos sistemas de cache con configuracion adicional; Redis deberia ser suficiente | XS | Resuelto | 2026-03-22 |
-| DT-009 | CKEditor integrado en modelos y uploaders (area legacy) | CKEditor 4.x tiene soporte limitado; migracion a editor alternativo podria ser necesaria | M | Identificado | 2026-03-22 |
+| DT-009 | CKEditor integrado en modelos y uploaders (area legacy) | CKEditor 4.x tiene soporte limitado; migracion a editor alternativo podria ser necesaria | M | Resuelto | 2026-03-22 |
 
 ---
 

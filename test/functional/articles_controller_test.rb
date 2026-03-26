@@ -48,6 +48,13 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should get new when logged in' do
+    login_as(@user)
+    get new_article_path
+
+    assert_response :success
+  end
+
   test 'should create article when logged in' do
     login_as(@user)
     assert_difference('Article.count') do

@@ -32,7 +32,7 @@
       <div class="flex flex-col lg:flex-row gap-6 mb-6">
         <div class="flex-1">
           <%= f.label :teaser, nil, class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
-          <%= f.cktext_area :teaser, :ckeditor => {:uiColor => '#D7DF21', :toolbar => 'mini'}, required: '' %>
+          <%= f.text_area :teaser, required: '', rows: 5, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
         </div>
         <div class="w-full lg:w-5/12">
           <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6">
@@ -58,7 +58,7 @@
       <div class="mb-6">
         <div class="w-full">
           <%= f.label :body, nil, class: "font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block" %>
-          <%= f.cktext_area :body, :ckeditor => {:uiColor => '#D7DF21', :toolbar => 'mini'}, required: '' %>
+          <%= f.text_area :body, required: '', rows: 15, class: "w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none" %>
         </div>
       </div>
 
