@@ -51,6 +51,10 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   gem 'debug'
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-minitest', require: false
+  gem 'rubocop-performance', require: false
 end
 
 group :development do

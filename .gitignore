@@ -13,6 +13,9 @@
 *.wmv
 *.yml
 !docker-compose.yml
+!.github/workflows/*.yml
+!.rubocop.yml
+!.rubocop_todo.yml
 # Ignore bundler config
 /.bundle
 
