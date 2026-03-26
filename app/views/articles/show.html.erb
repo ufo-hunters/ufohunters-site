@@ -59,15 +59,11 @@
             <p><%= sanitize_article @article.teaser %></p>
         </div>
 
-        <%
-        unless @article.partial_1.blank?
-        %>
+        <% if @article.partial_1.present? && @article.partial_1.match?(/\A[a-z0-9_\/]+\z/) %>
         <div class="mt-6">
           <%= render partial: @article.partial_1, locals: {ufo_list: @ufo_list} %>
         </div>
-        <%
-        end
-        %>
+        <% end %>
 
         <div class="mt-6 text-[#dfe2eb] prose prose-invert max-w-none leading-relaxed prose-a:text-[#bdf4ff] prose-a:hover:text-[#D7DF21] prose-strong:text-[#dfe2eb]">
             <span itemprop="articleBody">
