@@ -1,7 +1,7 @@
 FROM ruby:3.2.8-slim AS dependencies
 
 RUN apt-get update -qq && \
-    apt-get install -y --no-install-recommends build-essential libmagickwand-dev && \
+    apt-get install -y --no-install-recommends build-essential libmagickwand-dev libyaml-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
