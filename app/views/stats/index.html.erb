@@ -169,11 +169,11 @@
             localStorage.setItem('mapStyle', currentStyle);
             btn.textContent = currentStyle === 'dark' ? '☀' : '☾';
             map.setStyle(styles[currentStyle]);
-          });
-
-          map.on('style.load', function() {
-            if (map.getSource('earthquakes')) return;
-            addHeatmapLayers();
+            map.once('styledata', function() {
+              if (!map.getSource('earthquakes')) {
+                addHeatmapLayers();
+              }
+            });
           });
         </script>
     </div>
