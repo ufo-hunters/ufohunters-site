@@ -25,7 +25,8 @@ COPY . .
 
 RUN RAILS_ENV=production SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile
 
-RUN chown -R app:app /app
+RUN mkdir -p tmp/pids tmp/cache log && \
+    chown -R app:app /app
 USER app
 
 EXPOSE 3000
