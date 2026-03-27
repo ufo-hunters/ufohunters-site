@@ -87,7 +87,7 @@
                         end
 
                         full_url = img
-                        thumb_url = img
+                        thumb_url = img.include?('ik.imagekit.io') ? "#{img}?tr=w-280" : img
                     %>
                               <div class="text-center">
                                 <a href="<%= full_url %>" class="block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
