@@ -69,10 +69,10 @@ module ApplicationHelper
     url.to_s.include?('ik.imagekit.io')
   end
 
-  def imagekit_thumb(url, width: 140, height: 105)
+  def imagekit_thumb(url, width: 280)
     return url unless imagekit_url?(url)
 
-    "#{url}?tr=w-#{width},h-#{height},c-at_max"
+    "#{url}?tr=w-#{width}"
   end
 
   def friendly_title(ufo_report)

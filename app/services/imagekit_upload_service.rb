@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ImagekitUploadService
-  MAX_DIMENSION = 1920
+  MAX_WIDTH = 600
   JPEG_QUALITY = 75
 
   def upload(uploaded_file)
@@ -27,7 +27,7 @@ class ImagekitUploadService
 
   def resize_image(path)
     image = MiniMagick::Image.open(path)
-    image.resize "#{MAX_DIMENSION}x#{MAX_DIMENSION}>"
+    image.resize "#{MAX_WIDTH}>"
     image.quality JPEG_QUALITY.to_s
 
     tempfile = Tempfile.new(['ik_upload', '.jpg'])

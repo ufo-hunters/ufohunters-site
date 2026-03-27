@@ -26,7 +26,7 @@
 
           unless image_urls.blank?
             image_urls.each do |img|
-              img_thumb = img.include?('ik.imagekit.io') ? "#{img}?tr=w-400,h-300,c-at_max" : img
+              img_thumb = img.include?('ik.imagekit.io') ? "#{img}?tr=w-400" : img
     %>
               <%= link_to sightings_search_path(id: ufo.id, title: friendly_title(ufo)), class: "group block relative aspect-video rounded-xl overflow-hidden border border-[#484833]/20 hover:border-[#D7DF21]/40 transition-all no-underline" do %>
                 <img src="<%= img_thumb %>" alt="<%= ufo.location %>" loading="lazy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" />

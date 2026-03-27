@@ -77,9 +77,9 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test 'should generate ImageKit thumbnail URL' do
     url = @imagekit_urls.first
-    thumb = imagekit_thumb(url, width: 200, height: 150)
+    thumb = imagekit_thumb(url, width: 200)
 
-    assert_equal "#{url}?tr=w-200,h-150,c-at_max", thumb
+    assert_equal "#{url}?tr=w-200", thumb
   end
 
   test 'should return original URL for non-ImageKit thumbnail' do
