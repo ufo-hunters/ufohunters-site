@@ -39,11 +39,23 @@ class SightingsController < ApplicationController
 
   def ufosearchresults
     if verify_recaptcha
-      @startdateview = params['startdate']
-      startdate = Date.strptime(params['startdate'], '%Y-%m-%d').strftime('%Y%m%d').to_s
+      if params['startdate'].blank? || params['enddate'].blank? || params['coord'].blank?
+        flash[:error] = 'Please fill in all required fields: start date, end date, and location.'
+        redirect_to sightings_ufosearch_path
+        return
+      end
 
-      @enddateview = params['enddate']
-      enddate = Date.strptime(params['enddate'], '%Y-%m-%d').strftime('%Y%m%d').to_s
+      begin
+        @startdateview = params['startdate']
+        startdate = Date.strptime(params['startdate'], '%Y-%m-%d').strftime('%Y%m%d').to_s
+
+        @enddateview = params['enddate']
+        enddate = Date.strptime(params['enddate'], '%Y-%m-%d').strftime('%Y%m%d').to_s
+      rescue Date::Error
+        flash[:error] = 'Invalid date format.'
+        redirect_to sightings_ufosearch_path
+        return
+      end
 
       @coords = params['coord'].split(',').map(&:to_f)
 
