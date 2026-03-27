@@ -80,12 +80,12 @@ class ReportsController < ApplicationController
                     end
 
     @tmp['source'] = 'ufo-hunters.com'
-    begin
-      @tmp['sighted_at'] = Date.strptime(@tmp['sighted_at'], '%Y-%m-%d').strftime('%Y%m%d') if @tmp['sighted_at'].present?
-      @tmp['reported_at'] = Date.strptime(@tmp['reported_at'], '%Y-%m-%d').strftime('%Y%m%d') if @tmp['reported_at'].present?
+    %w[sighted_at reported_at].each do |field|
+      next if @tmp[field].blank?
+
+      @tmp[field] = Date.strptime(@tmp[field], '%Y-%m-%d').strftime('%Y%m%d')
     rescue Date::Error
-      @tmp['sighted_at'] = nil
-      @tmp['reported_at'] = nil
+      @tmp[field] = nil
     end
 
     @report = Report.new(@tmp)
