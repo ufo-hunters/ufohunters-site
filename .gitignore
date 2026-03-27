@@ -34,6 +34,7 @@ Rakefile
 !app/assets/images/*.png
 .playwright-mcp/
 .claude/
+CLAUDE.md
 
 # Environment files with secrets
 .env
