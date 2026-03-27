@@ -26,7 +26,12 @@ Rails.application.configure do
   end
 
   # Cache store
-  config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_URL') }
+  redis_url = ENV['REDIS_URL'] || ENV['REDISCLOUD_URL']
+  if redis_url.present?
+    config.cache_store = :redis_cache_store, { url: redis_url }
+  else
+    config.cache_store = :null_store
+  end
 
   config.i18n.fallbacks = true
 
