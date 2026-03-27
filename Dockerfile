@@ -16,7 +16,7 @@ RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends libmagickwand-dev curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --system app && useradd --system --gid app app
+RUN groupadd --system app && useradd --system --gid app --home /app app
 
 WORKDIR /app
 
