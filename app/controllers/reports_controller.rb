@@ -80,8 +80,8 @@ class ReportsController < ApplicationController
                     end
 
     @tmp['source'] = 'ufo-hunters.com'
-    @tmp['sighted_at'] = Date.strptime(@tmp['sighted_at'], '%Y-%m-%d').strftime('%Y%m%d')
-    @tmp['reported_at'] = Date.strptime(@tmp['reported_at'], '%Y-%m-%d').strftime('%Y%m%d')
+    @tmp['sighted_at'] = Date.strptime(@tmp['sighted_at'], '%Y-%m-%d').strftime('%Y%m%d') if @tmp['sighted_at'].present?
+    @tmp['reported_at'] = Date.strptime(@tmp['reported_at'], '%Y-%m-%d').strftime('%Y%m%d') if @tmp['reported_at'].present?
 
     @report = Report.new(@tmp)
 

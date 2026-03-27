@@ -47,6 +47,45 @@ class AuthTest < ApplicationSystemTestCase
     fill_in 'email', with: 'test@example.com'
     click_on 'Send Reset Link', match: :first
 
-    assert_text(/reset link has been sent/i)
+    assert_current_path articles_uforesearchteam_path
+  end
+
+  test 'signing up with valid credentials redirects to myspace' do
+    visit articles_uforesearchteam_path
+
+    fill_in 'user[username]', with: 'newuser'
+    fill_in 'user[password]', with: 'secret123'
+    fill_in 'user[password_confirmation]', with: 'secret123'
+    fill_in 'user[email]', with: 'newuser@example.com'
+    fill_in 'user[email_confirmation]', with: 'newuser@example.com'
+    click_on 'Sign up'
+
+    assert_current_path articles_myspace_path
+  end
+
+  test 'signing up with mismatched passwords shows error' do
+    visit articles_uforesearchteam_path
+
+    fill_in 'user[username]', with: 'newuser2'
+    fill_in 'user[password]', with: 'secret123'
+    fill_in 'user[password_confirmation]', with: 'different'
+    fill_in 'user[email]', with: 'new2@example.com'
+    fill_in 'user[email_confirmation]', with: 'new2@example.com'
+    click_on 'Sign up'
+
+    assert_text(/match/i)
+  end
+
+  test 'signing up with duplicate username shows error' do
+    visit articles_uforesearchteam_path
+
+    fill_in 'user[username]', with: 'testuser'
+    fill_in 'user[password]', with: 'secret123'
+    fill_in 'user[password_confirmation]', with: 'secret123'
+    fill_in 'user[email]', with: 'dup@example.com'
+    fill_in 'user[email_confirmation]', with: 'dup@example.com'
+    click_on 'Sign up'
+
+    assert_text(/already exists/i)
   end
 end

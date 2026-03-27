@@ -38,4 +38,30 @@ class SightingsTest < ApplicationSystemTestCase
     assert_selector 'input[name="report[location]"]'
     assert_selector 'textarea[name="report[description]"]'
   end
+
+  test 'searching UFOs with valid dates and location returns results' do
+    visit sightings_ufosearch_path
+
+    page.execute_script("document.getElementById('startdate').value = '2012-01-01'")
+    page.execute_script("document.getElementById('enddate').value = '2012-01-31'")
+    page.execute_script("document.getElementById('coord').value = '-3.7,40.4'")
+
+    click_on 'SEARCH UFOS'
+
+    assert_text(/search results/i)
+    assert_text 'Test Location'
+  end
+
+  test 'searching UFOs with dates outside range returns no matching results' do
+    visit sightings_ufosearch_path
+
+    page.execute_script("document.getElementById('startdate').value = '2020-01-01'")
+    page.execute_script("document.getElementById('enddate').value = '2020-12-31'")
+    page.execute_script("document.getElementById('coord').value = '-3.7,40.4'")
+
+    click_on 'SEARCH UFOS'
+
+    assert_text(/search results/i)
+    assert_no_text 'Test Location'
+  end
 end
