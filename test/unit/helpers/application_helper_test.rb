@@ -19,8 +19,8 @@ class ApplicationHelperTest < ActionView::TestCase
     ]
     @image_urls = ['http://www.mufoncms.com/files/15313_submitter_file1__strangecloudinthesky2.jpg',
                    'http://www.mufoncms.com/files/15313_submitter_file3__strangeeyeintheclouds.jpg']
-    @external_image_urls = ['http://a1.res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140716/sun3_qpslqn.jpg',
-                            'http://a2.res.cloudinary.com/dr3vzmqaf/image/upload/v1/reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg']
+    @imagekit_urls = ['https://ik.imagekit.io/myid/sightings/202403/ufo_madrid.jpg',
+                       'https://ik.imagekit.io/myid/sightings/202403/ufo_london.jpg']
   end
 
   test 'should format string date' do
@@ -63,27 +63,28 @@ class ApplicationHelperTest < ActionView::TestCase
     assert_equal actual_responses, expected_responses, 'Looks like the ids has not been correctly extracted'
   end
 
-  test 'should detect external hosted images' do
-    @external_image_urls.each do |link|
-      assert image_hosting_link?(link), 'Should detect external image links'
+  test 'should detect ImageKit URLs' do
+    @imagekit_urls.each do |link|
+      assert imagekit_url?(link), 'Should detect ImageKit URLs'
     end
   end
 
-  test 'should not detect all images as external' do
+  test 'should not detect non-ImageKit URLs as ImageKit' do
     @image_urls.each do |link|
-      assert_not image_hosting_link?(link), 'Should detect only our external image links'
+      assert_not imagekit_url?(link), 'Should not detect regular image URLs as ImageKit'
     end
   end
 
-  test 'should extract image id' do
-    expected_responses = ['reported_date_20140716/sun3_qpslqn.jpg',
-                          'reported_date_20140718/Long_White_UFO_July_17_2014_11_33_am_020_oyzavc.jpg']
+  test 'should generate ImageKit thumbnail URL' do
+    url = @imagekit_urls.first
+    thumb = imagekit_thumb(url, width: 200, height: 150)
 
-    actual_responses = @external_image_urls.map do |link|
-      image_id(link)
-    end
+    assert_equal "#{url}?tr=w-200,h-150,c-at_max", thumb
+  end
 
-    assert_equal actual_responses, expected_responses, 'Looks like the ids has not been correctly extracted'
+  test 'should return original URL for non-ImageKit thumbnail' do
+    url = @image_urls.first
+    assert_equal url, imagekit_thumb(url)
   end
 
   test 'shoud generate a friendly title' do

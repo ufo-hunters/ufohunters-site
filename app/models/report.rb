@@ -17,6 +17,7 @@ class Report
   field :source, type: String
   field :email, type: String
   field :image_cloudinary, type: Array
+  field :image_imagekit, type: Array
   field :status, type: Integer
   field :case_number, type: Integer
 

@@ -11,7 +11,7 @@
     <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
   </div>
 
-  <%= form_for(@report, html: { data: { turbo: false } }) do |f| %>
+  <%= form_for(@report, html: { data: { turbo: false }, multipart: true }) do |f| %>
 
     <!-- Error display -->
     <div>
@@ -101,6 +101,24 @@
             <span class="material-symbols-outlined text-sm">add_circle</span> Add more links
           </a>
         </div>
+      </div>
+    </div>
+
+    <!-- Row 2.5: Photo Evidence -->
+    <div class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 mb-6">
+      <div class="flex items-center gap-2 mb-4">
+        <span class="material-symbols-outlined text-[#bdf4ff] text-lg">add_a_photo</span>
+        <span class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad]">Photo Evidence</span>
+      </div>
+      <div>
+        <label for="report_images" class="font-['Space_Grotesk'] text-xs uppercase tracking-widest text-[#c9c8ad] mb-2 block">
+          Upload images <span class="text-[#484833] text-[10px] normal-case">(JPG, PNG — max 10MB each)</span>
+        </label>
+        <input type="file" name="report[images][]" id="report_images"
+               accept="image/jpeg,image/png,image/gif,image/webp"
+               multiple
+               class="w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#D7DF21]/10 file:text-[#D7DF21] file:font-['Space_Grotesk'] file:text-xs file:uppercase file:tracking-widest file:cursor-pointer">
+        <p class="text-[#484833] text-[10px] mt-2">Images will be resized and compressed automatically</p>
       </div>
     </div>
 

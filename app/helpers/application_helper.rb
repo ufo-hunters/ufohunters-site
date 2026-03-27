@@ -65,17 +65,14 @@ module ApplicationHelper
     nil
   end
 
-  def image_hosting_link?(link)
-    link =~ /cloudinary.com/
+  def imagekit_url?(url)
+    url.to_s.include?('ik.imagekit.io')
   end
 
-  def image_id(url)
-    uri = URI.parse(url)
-    path = uri.path.split('/')
-    path[-2] << '/' << path[-1]
-  rescue StandardError => e
-    Rails.logger.info "Invalid uri - #{e.class}: #{e.message}"
-    nil
+  def imagekit_thumb(url, width: 140, height: 105)
+    return url unless imagekit_url?(url)
+
+    "#{url}?tr=w-#{width},h-#{height},c-at_max"
   end
 
   def friendly_title(ufo_report)

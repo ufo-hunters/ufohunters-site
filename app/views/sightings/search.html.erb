@@ -65,14 +65,12 @@
         </div>
 
         <!-- Images -->
-        <% unless @ufo_list.links.blank? && @ufo_list.image_cloudinary.blank? %>
-          <%
-            image_urls = []
-            image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
-            image_urls = image_urls + @ufo_list.image_cloudinary unless @ufo_list.image_cloudinary.blank?
-
-            unless image_urls.blank?
-          %>
+        <%
+          image_urls = []
+          image_urls, other_urls = select_url_images(@ufo_list.links) unless @ufo_list.links.blank?
+          image_urls = image_urls + @ufo_list.image_imagekit unless @ufo_list.image_imagekit.blank?
+        %>
+        <% unless image_urls.blank? %>
             <div class="mb-8">
               <h2 class="text-lg font-headline font-bold text-[#dfe2eb] mb-4 uppercase tracking-wider">Intercept Evidence</h2>
               <div class="bg-[#0a0e14] rounded-xl p-4 border border-[#484833]/20">
@@ -88,22 +86,13 @@
                     <%
                         end
 
-                        img = cl_image_path(image_id(img), :size => '1024x768', :crop => :fit) if image_hosting_link?(img)
+                        full_url = img.include?('ik.imagekit.io') ? "#{img}?tr=w-1024,h-768,c-at_max" : img
+                        thumb_url = img.include?('ik.imagekit.io') ? "#{img}?tr=w-140,h-105,c-at_max" : img
                     %>
                               <div class="text-center">
-                                <a href="<%= img %>" class="inline-block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
+                                <a href="<%= full_url %>" class="inline-block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
                                   <figure>
-                                    <%
-                                      if image_hosting_link?(img)
-                                    %>
-                                      <%= cl_image_tag(image_id(img), :itemprop => 'contentUrl', :alt => @ufo_list.location, :size => '140x105', :crop => :fit, :title => @ufo_list.location) %>
-                                    <%
-                                      else
-                                    %>
-                                      <%= image_tag img, :itemprop => 'contentUrl', :alt => @ufo_list.location, :width => 140, :title => @ufo_list.location %>
-                                    <%
-                                      end
-                                    %>
+                                    <img src="<%= thumb_url %>" itemprop="contentUrl" alt="<%= @ufo_list.location %>" width="140" title="<%= @ufo_list.location %>" loading="lazy" />
                                   </figure>
                                 </a>
                               </div>
@@ -205,7 +194,6 @@
           <%
               end
             end
-          end
           %>
       </article>
 

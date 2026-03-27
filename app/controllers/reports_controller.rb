@@ -67,11 +67,13 @@ class ReportsController < ApplicationController
 
     @tmp = report_params.to_h
     @tmp['links'] = params[:report][:links] if params[:report][:links].present?
-    @tmp['image_cloudinary'] = params[:report][:image_cloudinary]
-
-    @tmp['image_cloudinary'] = @tmp['image_cloudinary'].values if @tmp['image_cloudinary'].present?
     @tmp['status'] = 0
-    @tmp.delete(:image_id)
+
+    if params[:report][:images].present?
+      service = ImagekitUploadService.new
+      imagekit_urls = params[:report][:images].filter_map { |img| service.upload(img) }
+      @tmp['image_imagekit'] = imagekit_urls if imagekit_urls.any?
+    end
 
     @tmp['coord'] = if @tmp['coord'].blank?
                       [0, 0]
@@ -167,6 +169,6 @@ class ReportsController < ApplicationController
 
   def report_params
     params.expect(report: %i[location shape duration description coord status email links
-                             image_cloudinary reported_at sighted_at source])
+                             reported_at sighted_at source])
   end
 end

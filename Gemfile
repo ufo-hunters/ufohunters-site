@@ -27,9 +27,7 @@ gem 'turbo-rails'
 gem 'tailwindcss-rails', '~> 3.0'
 
 # Image processing
-gem 'carrierwave', '~> 3.0'
-gem 'carrierwave-mongoid', require: 'carrierwave/mongoid'
-gem 'cloudinary', '~> 2.0'
+gem 'imagekitio', '~> 3.0'
 gem 'mini_magick', '~> 4.12'
 
 # Caching
