@@ -26,6 +26,9 @@ gem 'turbo-rails'
 # CSS
 gem 'tailwindcss-rails', '~> 3.0'
 
+# Email
+gem 'resend', '~> 0.17'
+
 # Image processing
 gem 'imagekitio', '~> 3.0'
 gem 'mini_magick', '~> 4.12'
