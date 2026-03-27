@@ -4,7 +4,7 @@ Rails.application.configure do
   config.content_security_policy do |policy|
     policy.default_src :self
     policy.font_src    :self, 'https://fonts.gstatic.com', 'https://fonts.googleapis.com'
-    policy.img_src     :self, :data, 'https:', 'https://img.youtube.com'
+    policy.img_src     :self, :data, 'https:', 'https://img.youtube.com', 'https://ik.imagekit.io'
     policy.object_src  :none
     policy.script_src  :self, :unsafe_inline,
                        'https://www.google.com', 'https://www.gstatic.com',
@@ -16,6 +16,7 @@ Rails.application.configure do
     policy.frame_src   'https://www.google.com', 'https://www.youtube.com'
     policy.connect_src :self,
                        'https://tiles.openfreemap.org',
+                       'https://nominatim.openstreetmap.org',
                        'https://unpkg.com',
                        'https://*.nr-data.net',
                        'https://*.analytics.google.com',
