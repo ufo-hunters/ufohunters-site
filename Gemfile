@@ -27,7 +27,7 @@ gem 'turbo-rails'
 gem 'tailwindcss-rails', '~> 3.0'
 
 # Email
-gem 'resend', '~> 0.17'
+gem 'resend', '~> 0.27'
 
 # Image processing
 gem 'imagekitio', '~> 3.0'

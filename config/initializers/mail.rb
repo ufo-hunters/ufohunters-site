@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-if ENV['RESEND_API_KEY'].present?
+if Rails.env.production? && ENV['RESEND_API_KEY'].present?
   Resend.api_key = ENV.fetch('RESEND_API_KEY')
 
   ActionMailer::Base.delivery_method = :resend
