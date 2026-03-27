@@ -35,6 +35,7 @@ Rakefile
 .playwright-mcp/
 .claude/
 CLAUDE.md
+doc/
 
 # Environment files with secrets
 .env
