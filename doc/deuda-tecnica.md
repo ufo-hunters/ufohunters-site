@@ -85,7 +85,7 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 | ID | Descripcion | Impacto | Esfuerzo | Estado | Fecha |
 |----|-------------|---------|----------|--------|-------|
 | DT-014 | Bug en stats: boton de modo claro oculta las estadisticas | Al pulsar el boton de sol/luna en /stats el heatmap desaparecia porque las capas no se re-añadian tras el cambio de estilo | S | Resuelto | 2026-03-27 |
-| DT-015 | Probar todos los formularios end-to-end con Playwright | Verificar flujo completo de: buscar sightings (ufosearch), enviar report, login/signup, y password reset. Usar Playwright MCP para rellenar y enviar cada form | M | Identificado | 2026-03-26 |
+| DT-015 | Probar todos los formularios end-to-end | 11 system tests con Capybara + Chrome headless cubriendo search, report, signup, login y password reset. Tambien verificado manualmente con Playwright | M | Resuelto | 2026-03-27 |
 | DT-016 | Configurar reCAPTCHA en produccion | Dar de alta en Google reCAPTCHA, obtener site_key y secret_key, configurar env vars en Heroku. Verificar que los formularios protegidos funcionan con captcha real | S | Identificado | 2026-03-26 |
 | DT-017 | Configurar Resend SMTP en produccion | Dar de alta en resend.com, verificar dominio ufo-hunters.com (DNS), obtener API key, configurar RESEND_API_KEY y MAILER_FROM en Heroku | S | Identificado | 2026-03-26 |
 | DT-018 | Investigar hosting gratuito alternativo a Heroku | Evaluar plataformas gratuitas compatibles con Ruby 3.2.8, Rails 8, MongoDB y Redis. Candidatos: Render, Fly.io, Railway, Coolify | M | Identificado | 2026-03-26 |
