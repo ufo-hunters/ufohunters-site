@@ -1,9 +1,7 @@
 development:
   clients:
     default:
-      database: ufosightings
-      hosts:
-        - localhost:27017
+      uri: <%= ENV.fetch('MONGOHQ_URL', 'mongodb://localhost:27017/ufosightings') %>
       options:
         server_selection_timeout: 1
   options:

@@ -13,6 +13,26 @@ services:
     volumes:
       - redis_data:/data
 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle_data:/usr/local/bundle
+    depends_on:
+      - mongodb
+      - redis
+    environment:
+      - RAILS_ENV=development
+      - MONGOHQ_URL=mongodb://mongodb:27017/ufosightings
+      - REDIS_URL=redis://redis:6379
+    stdin_open: true
+    tty: true
+
 volumes:
   mongodb_data:
   redis_data:
+  bundle_data:
