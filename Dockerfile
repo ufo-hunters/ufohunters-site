@@ -23,7 +23,7 @@ WORKDIR /app
 COPY --from=dependencies /usr/local/bundle /usr/local/bundle
 COPY . .
 
-RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile
+RUN RAILS_ENV=production SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile
 
 RUN chown -R app:app /app
 USER app
