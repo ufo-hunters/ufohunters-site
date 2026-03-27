@@ -89,6 +89,17 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 | DT-016 | Configurar reCAPTCHA en produccion | Ya configurado en Heroku con keys existentes. Verificar que funciona en el nuevo hosting cuando se migre | S | Identificado | 2026-03-26 |
 | DT-017 | Configurar Resend en produccion | Dominio ufo-hunters.com verificado en Resend+Cloudflare DNS. API key configurada. Migrado de SMTP a HTTP API (gem resend) para compatibilidad con Render | S | Resuelto | 2026-03-27 |
 | DT-018 | Investigar hosting gratuito alternativo a Heroku | Investigado: Render (recomendado) y Koyeb (alternativa). Fly.io y Railway descartados (no gratis). ImageKit elegido para imagenes (reemplaza Cloudinary) | M | Resuelto | 2026-03-27 |
+| DT-019 | SEO: MapLibre se carga en todas las paginas | MapLibre GL JS (~200KB) se carga en el head de todas las paginas aunque solo se usa en home, stats, search y maps. Bloquea el renderizado y penaliza LCP | S | Identificado | 2026-03-27 |
+| DT-020 | SEO: Falta H1 en 4 paginas | Stats, search, report form y articles usan H2/H3 en vez de H1. Cada pagina necesita exactamente un H1 | XS | Identificado | 2026-03-27 |
+| DT-021 | SEO: Sitemaps estaticos desactualizados (2020) | Los XML en public/ tienen lastmod de 2020. Falta generacion dinamica con sitemap_generator (gem ya instalada) | S | Identificado | 2026-03-27 |
+| DT-022 | SEO: Falta structured data (BreadcrumbList, VideoObject) | VideoObject falta contentUrl (requerido). No hay BreadcrumbList. Article schema falta mainEntityOfPage | M | Identificado | 2026-03-27 |
+| DT-023 | SEO: Busqueda usa POST en vez de GET | La ruta ufosearchresults usa POST, los resultados no son indexables ni compartibles. Deberia ser GET con query params | S | Identificado | 2026-03-27 |
+| DT-024 | Seguridad: Faltan headers HTTP (HSTS, nosniff, Referrer-Policy) | No se configuran Strict-Transport-Security, X-Content-Type-Options ni Referrer-Policy en produccion | S | Identificado | 2026-03-27 |
+| DT-025 | Seguridad: Links externos sin rel="noopener noreferrer" | Links con target="_blank" en footer, about y vistas no tienen rel="noopener noreferrer" | XS | Identificado | 2026-03-27 |
+| DT-026 | Accesibilidad: Faltan ARIA labels y ALT text | Navegacion, modales y botones sin aria-label. Imagenes del about sin alt text descriptivo | S | Identificado | 2026-03-27 |
+| DT-027 | SEO: og:site_name duplicado y twitter card suboptimo | og:site_name es "UFO Hunters \| UFO Hunters". Twitter card usa summary en vez de summary_large_image en paginas con imagenes | XS | Identificado | 2026-03-27 |
+| DT-028 | SEO: Ruta duplicada /stats y /sightings/statistics | Dos rutas sirven el mismo contenido. Falta redirect 301 o canonical | XS | Identificado | 2026-03-27 |
+| DT-029 | Rendimiento: Stats carga 2500 reports sin paginacion | El endpoint map_json devuelve todo el GeoJSON de golpe. Impacto en memoria y tiempo de carga | M | Identificado | 2026-03-27 |
 
 ---
 
