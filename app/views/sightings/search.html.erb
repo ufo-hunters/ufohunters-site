@@ -1,5 +1,19 @@
-<% unless @ufo_list.nil?
-      cache("sightings/report/#{@ufo_list.id}", skip_digest: true, expires_in: 12.hours) do
+<%= render 'common/maplibre_head' %>
+<% unless @ufo_list.nil? %>
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ufo-hunters.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Sightings", "item": "https://www.ufo-hunters.com/sightings/maps" },
+      { "@type": "ListItem", "position": 3, "name": "<%= j(@ufo_list.location.to_s) %>" }
+    ]
+  }
+  </script>
+<% end %>
+<%    cache("sightings/report/#{@ufo_list.id}", skip_digest: true, expires_in: 12.hours) do
 %>
 
 <!-- Sighting Detail Header -->

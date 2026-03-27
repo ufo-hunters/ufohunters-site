@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   get 'sightings/country/:id(/:title)' => 'sightings#country', as: :sightings_country
   get 'sightings/search/:id(/:title)' => 'sightings#search', as: :sightings_search
-  post 'sightings/ufosearchresults' => 'sightings#ufosearchresults'
+  get 'sightings/ufosearchresults' => 'sightings#ufosearchresults'
 
   get 'sightings/maps' => 'sightings#maps'
   get 'sightings/northamerica' => 'sightings#northamerica'
@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get 'sightings/images' => 'sightings#images'
   get 'sightings/about' => 'sightings#about'
   get 'sightings/ufosearch' => 'sightings#ufosearch'
-  get 'sightings/statistics' => 'sightings#statistics'
+  get 'sightings/statistics', to: redirect('/stats', status: 301)
   get 'sightings/countrieslist' => 'sightings#countrieslist'
 
   get 'stats' => 'stats#index'

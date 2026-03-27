@@ -1,3 +1,35 @@
+<% content_for :structured_data do %>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ufo-hunters.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Articles", "item": "https://www.ufo-hunters.com/articles" },
+      { "@type": "ListItem", "position": 3, "name": "<%= j @article.title %>" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "<%= j @article.title %>",
+    "mainEntityOfPage": { "@type": "WebPage", "@id": "<%= article_url(@article) %>" },
+    <% if @article.image_thumbnail.present? %>"image": "<%= @article.image_thumbnail %>",<% end %>
+    "datePublished": "<%= @article.published_date&.iso8601 %>",
+    "dateModified": "<%= @article.updated_at&.iso8601 %>",
+    <% if @article.user %>"author": { "@type": "Person", "name": "<%= j @article.user.username %>" },<% end %>
+    "publisher": {
+      "@type": "Organization",
+      "name": "UFO Hunters",
+      "logo": { "@type": "ImageObject", "url": "https://www.ufo-hunters.com/assets/ufo-hunters-logo.png" }
+    },
+    "articleSection": "UFO Sightings"
+  }
+  </script>
+<% end %>
+
 <% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
 <p id="notice" class="text-[#bdf4ff]"><%= notice %></p>
 

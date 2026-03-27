@@ -23,16 +23,15 @@
   <meta property="og:description" content="<%= @page_description %>" />
   <meta property="og:url" content="<%= request.original_url.split('?').first %>" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="UFO Hunters | UFO Hunters" />
+  <meta property="og:site_name" content="UFO Hunters" />
   <meta property="og:image" content="<%= @og_image || image_url('ufo-hunters-logo.png') %>" />
-  <meta property="twitter:card" content="summary">
+  <meta property="twitter:card" content="<%= @twitter_card || 'summary_large_image' %>">
   <meta property="twitter:site" content="@UfoHuntersCom">
   <meta property="twitter:title" content="<%= @page_title %> - UFO Hunters">
   <meta property="twitter:description" content="<%= @page_description %>">
   <meta property="twitter:image" content="<%= @og_image || image_url('ufo-hunters-logo.png') %>">
   <link href="<%= image_path('platillo_verde.ico') %>" rel="shortcut icon">
-  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-  <link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+  <%= yield :head %>
   <style>
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -145,6 +144,7 @@
     ]
   }
   </script>
+  <%= yield :structured_data %>
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4FL7V9G39W"></script>
@@ -266,6 +266,7 @@
                 </div>
                 <meta itemprop="description" content="<%= friendly_title(thumb) %>">
                 <meta itemprop="uploadDate" content="<%= format_date_microdata thumb.reported_at %>">
+                <meta itemprop="contentUrl" content="https://www.youtube.com/watch?v=<%= video_id %>">
                 <meta itemprop="thumbnailUrl" content="<%= Ufo::THUMBS_URL_BASE + video_id + '/1.jpg' %>">
               </div>
             <% end %>
