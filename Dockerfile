@@ -6,7 +6,9 @@ RUN apt-get update -qq && \
 
 WORKDIR /app
 COPY Gemfile Gemfile.lock ./
-RUN gem install bundler && bundle install --without development test
+RUN gem install bundler && \
+    bundle config set without 'development test' && \
+    bundle install
 
 FROM ruby:3.2.8-slim AS production
 
