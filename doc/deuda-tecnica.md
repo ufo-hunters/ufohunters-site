@@ -86,9 +86,9 @@ Problemas cosmeticos o de mejora que no afectan la funcionalidad ni la productiv
 |----|-------------|---------|----------|--------|-------|
 | DT-014 | Bug en stats: boton de modo claro oculta las estadisticas | Al pulsar el boton de sol/luna en /stats el heatmap desaparecia porque las capas no se re-añadian tras el cambio de estilo | S | Resuelto | 2026-03-27 |
 | DT-015 | Probar todos los formularios end-to-end | 11 system tests con Capybara + Chrome headless cubriendo search, report, signup, login y password reset. Tambien verificado manualmente con Playwright | M | Resuelto | 2026-03-27 |
-| DT-016 | Configurar reCAPTCHA en produccion | Dar de alta en Google reCAPTCHA, obtener site_key y secret_key, configurar env vars en Heroku. Verificar que los formularios protegidos funcionan con captcha real | S | Identificado | 2026-03-26 |
-| DT-017 | Configurar Resend SMTP en produccion | Dar de alta en resend.com, verificar dominio ufo-hunters.com (DNS), obtener API key, configurar RESEND_API_KEY y MAILER_FROM en Heroku | S | Identificado | 2026-03-26 |
-| DT-018 | Investigar hosting gratuito alternativo a Heroku | Evaluar plataformas gratuitas compatibles con Ruby 3.2.8, Rails 8, MongoDB y Redis. Candidatos: Render, Fly.io, Railway, Coolify | M | Identificado | 2026-03-26 |
+| DT-016 | Configurar reCAPTCHA en produccion | Ya configurado en Heroku con keys existentes. Verificar que funciona en el nuevo hosting cuando se migre | S | Identificado | 2026-03-26 |
+| DT-017 | Configurar Resend en produccion | Dominio ufo-hunters.com verificado en Resend+Cloudflare DNS. API key configurada. Migrado de SMTP a HTTP API (gem resend) para compatibilidad con Render | S | Resuelto | 2026-03-27 |
+| DT-018 | Investigar hosting gratuito alternativo a Heroku | Investigado: Render (recomendado) y Koyeb (alternativa). Fly.io y Railway descartados (no gratis). ImageKit elegido para imagenes (reemplaza Cloudinary) | M | Resuelto | 2026-03-27 |
 
 ---
 
