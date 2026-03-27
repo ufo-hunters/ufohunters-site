@@ -5,7 +5,8 @@ class SightingsController < ApplicationController
 
   def index
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
-    @pagy, @ufo_list = pagy(collection, limit: 20, count: collection.count)
+    total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
+    @pagy, @ufo_list = pagy(collection, limit: 20, count: total_count)
     @menu = 'index'
     @page_title = 'Recent UFO Activity'
     @page_description = 'Latest UFO Sightings all over the world'
