@@ -11,7 +11,7 @@
     <div class="h-px bg-gradient-to-r from-[#D7DF21]/40 via-[#484833]/30 to-transparent mt-4"></div>
   </div>
 
-  <%= form_for(@report) do |f| %>
+  <%= form_for(@report, html: { data: { turbo: false } }) do |f| %>
 
     <!-- Error display -->
     <div>
@@ -64,7 +64,7 @@
           <%= f.date_field :sighted_at, :class => 'w-full bg-[#0a0e14] border border-[#484833]/30 text-[#dfe2eb] focus:ring-1 focus:ring-[#D7DF21] rounded-lg px-4 py-3 focus:outline-none', :value => sighted_at_value, :style => 'color-scheme: dark' %>
         </div>
         <%
-           reported_at_value = Time.new.strftime('%m/%d/%Y').to_s
+           reported_at_value = Date.today.iso8601
            %>
         <%= f.hidden_field :reported_at, :value => reported_at_value %>
         <div>

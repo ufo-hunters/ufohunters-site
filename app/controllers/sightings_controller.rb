@@ -40,10 +40,10 @@ class SightingsController < ApplicationController
   def ufosearchresults
     if verify_recaptcha
       @startdateview = params['startdate']
-      startdate = Date.strptime(params['startdate'], '%m/%d/%Y').strftime('%Y%m%d').to_s
+      startdate = Date.parse(params['startdate']).strftime('%Y%m%d').to_s
 
       @enddateview = params['enddate']
-      enddate = Date.strptime(params['enddate'], '%m/%d/%Y').strftime('%Y%m%d').to_s
+      enddate = Date.parse(params['enddate']).strftime('%Y%m%d').to_s
 
       @coords = params['coord'].split(',').map(&:to_f)
 
