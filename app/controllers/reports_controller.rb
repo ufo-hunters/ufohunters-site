@@ -80,8 +80,8 @@ class ReportsController < ApplicationController
                     end
 
     @tmp['source'] = 'ufo-hunters.com'
-    @tmp['sighted_at'] = Date.parse(@tmp['sighted_at']).strftime('%Y%m%d')
-    @tmp['reported_at'] = Date.parse(@tmp['reported_at']).strftime('%Y%m%d')
+    @tmp['sighted_at'] = Date.strptime(@tmp['sighted_at'], '%Y-%m-%d').strftime('%Y%m%d')
+    @tmp['reported_at'] = Date.strptime(@tmp['reported_at'], '%Y-%m-%d').strftime('%Y%m%d')
 
     @report = Report.new(@tmp)
 

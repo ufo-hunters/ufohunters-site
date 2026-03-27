@@ -5,8 +5,8 @@ require 'test_helper'
 class ReportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @report = create_dummy_report
-    @report.sighted_at = '01/01/2012'
-    @report.reported_at = '02/01/2012'
+    @report.sighted_at = '2012-01-01'
+    @report.reported_at = '2012-01-02'
     @report.coord = [4.0314, 36.5411]
     @report.links = ['http://www.youtube.com', 'http://www.google.com']
   end
