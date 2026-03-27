@@ -87,12 +87,12 @@
                         end
 
                         full_url = img
-                        thumb_url = img.include?('ik.imagekit.io') ? "#{img}?tr=w-280" : img
+                        thumb_url = img
                     %>
                               <div class="text-center">
-                                <a href="<%= full_url %>" class="inline-block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
+                                <a href="<%= full_url %>" class="block rounded-lg overflow-hidden border border-[#484833]/30 hover:border-[#D7DF21]/50 transition" target="_blank">
                                   <figure>
-                                    <img src="<%= thumb_url %>" itemprop="contentUrl" alt="<%= @ufo_list.location %>" width="280" title="<%= @ufo_list.location %>" loading="lazy" />
+                                    <img src="<%= thumb_url %>" itemprop="contentUrl" alt="<%= @ufo_list.location %>" title="<%= @ufo_list.location %>" loading="lazy" class="w-full h-auto object-cover" />
                                   </figure>
                                 </a>
                               </div>
