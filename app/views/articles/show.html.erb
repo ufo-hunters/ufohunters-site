@@ -17,8 +17,7 @@
     "headline": "<%= j @article.title %>",
     "mainEntityOfPage": { "@type": "WebPage", "@id": "<%= article_url(@article) %>" },
     <% if @article.image_thumbnail.present? %>"image": "<%= @article.image_thumbnail %>",<% end %>
-    "datePublished": "<%= @article.published_date&.iso8601 %>",
-    "dateModified": "<%= @article.updated_at&.iso8601 %>",
+    "datePublished": "<%= format_date_microdata(@article.published_date) %>",
     <% if @article.user %>"author": { "@type": "Person", "name": "<%= j @article.user.username %>" },<% end %>
     "publisher": {
       "@type": "Organization",

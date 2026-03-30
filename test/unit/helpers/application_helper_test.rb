@@ -20,7 +20,7 @@ class ApplicationHelperTest < ActionView::TestCase
     @image_urls = ['http://www.mufoncms.com/files/15313_submitter_file1__strangecloudinthesky2.jpg',
                    'http://www.mufoncms.com/files/15313_submitter_file3__strangeeyeintheclouds.jpg']
     @imagekit_urls = ['https://ik.imagekit.io/myid/sightings/202403/ufo_madrid.jpg',
-                       'https://ik.imagekit.io/myid/sightings/202403/ufo_london.jpg']
+                      'https://ik.imagekit.io/myid/sightings/202403/ufo_london.jpg']
   end
 
   test 'should format string date' do
@@ -84,6 +84,7 @@ class ApplicationHelperTest < ActionView::TestCase
 
   test 'should return original URL for non-ImageKit thumbnail' do
     url = @image_urls.first
+
     assert_equal url, imagekit_thumb(url)
   end
 

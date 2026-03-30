@@ -12,7 +12,7 @@ class ImagekitUploadService
     response = IMAGEKIT_CLIENT.upload_file(
       file: File.open(resized_path, 'rb'),
       file_name: sanitize_filename(uploaded_file.original_filename),
-      folder: "sightings/#{Date.today.strftime('%Y%m')}"
+      folder: "sightings/#{Time.zone.today.strftime('%Y%m')}"
     )
 
     response[:response]['url']
