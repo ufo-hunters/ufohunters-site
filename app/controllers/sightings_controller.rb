@@ -3,10 +3,20 @@
 class SightingsController < ApplicationController
   include ApplicationHelper
 
+  after_action :set_short_cache, only: %i[index]
+  after_action :set_long_cache, only: %i[search maps northamerica southamerica europe asia africa oceania
+                                         videos images about ufosearch]
+
   def index
+    page = params[:page]&.to_i || 1
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
     total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
-    @pagy, @ufo_list = pagy(collection, limit: 20, count: total_count)
+
+    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.day) do
+      collection.offset((page - 1) * 20).limit(20).entries
+    end
+
+    @pagy = Pagy.new(count: total_count, page: page, limit: 20)
     @menu = 'index'
     @page_title = 'Recent UFO Activity'
     @page_description = 'Latest UFO Sightings all over the world'
@@ -14,14 +24,14 @@ class SightingsController < ApplicationController
 
   def search
     id_ufo = params[:id]
-    @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", expires_in: 1.year) do
       Report.find id_ufo
     end
     @coords = @ufo_list.coord
     distance = 100 # km
 
     if @ufo_list.coord
-      @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", expires_in: 12.hours) do
+      @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", expires_in: 1.year) do
         Report.where(coord: { '$nearSphere' => @coords, '$maxDistance' => distance.fdiv(6371) })
               .and(status: 1).desc(:sighted_at).limit(100).entries
       end
@@ -136,7 +146,9 @@ class SightingsController < ApplicationController
   end
 
   def countrieslist
-    @countries_list = Countries.all.order_by(name: :asc)
+    @countries_list = Rails.cache.fetch('sightings/countrieslist', expires_in: 1.month) do
+      Countries.all.order_by(name: :asc).entries
+    end
 
     respond_to do |format|
       format.json { render json: @countries_list }
@@ -144,7 +156,7 @@ class SightingsController < ApplicationController
   end
 
   def northamerica
-    @ufo_list = Rails.cache.fetch('sightings/maps/northamerica', expires_in: 6.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/northamerica', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-169.45, 71.41],
                          [-177.54, 51.40],
@@ -169,7 +181,7 @@ class SightingsController < ApplicationController
   end
 
   def oceania
-    @ufo_list = Rails.cache.fetch('sightings/maps/oceania', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/oceania', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[138.69141, 1.40611],
                          [175.42969, -14.09396],
@@ -197,7 +209,7 @@ class SightingsController < ApplicationController
   end
 
   def southamerica
-    @ufo_list = Rails.cache.fetch('sightings/maps/southamerica', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/southamerica', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-77.87, 11.00],
                          [-68.20, 14.26],
@@ -229,7 +241,7 @@ class SightingsController < ApplicationController
   end
 
   def africa
-    @ufo_list = Rails.cache.fetch('sightings/maps/africa', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/africa', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[5.09, 38.41],
                          [-8.08, 35.17],
@@ -259,7 +271,7 @@ class SightingsController < ApplicationController
   end
 
   def europe
-    @ufo_list = Rails.cache.fetch('sightings/maps/europe', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/europe', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-10.41, 36.73],
                          [-6.37, 35.99],
@@ -293,7 +305,7 @@ class SightingsController < ApplicationController
   end
 
   def asia
-    @ufo_list = Rails.cache.fetch('sightings/maps/asia', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/asia', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[30.93, 74.68],
                          [32.34, 30.14],
@@ -372,7 +384,7 @@ class SightingsController < ApplicationController
   end
 
   def videos
-    @ufo_list = Rails.cache.fetch('sightings/video_gallery', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/video_gallery', expires_in: 1.day) do
       Report.where(status: 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil)
             .desc(:sighted_at).limit(100).entries
     end
@@ -383,7 +395,7 @@ class SightingsController < ApplicationController
   end
 
   def images
-    @ufo_list = Rails.cache.fetch('sightings/image_gallery', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/image_gallery', expires_in: 1.day) do
       Report.where(status: 1, :$and => [{ links: /^(?!.*mufon).*(.jpg|.jpeg|.bmp|.gif|.png)$/i }], :coord.ne => nil)
             .desc(:sighted_at).limit(100).entries
     end
@@ -397,5 +409,15 @@ class SightingsController < ApplicationController
     @menu = 'about'
     @page_title = 'About'
     @page_description = 'About ufo-hunters.com and who is behind this site'
+  end
+
+  private
+
+  def set_short_cache
+    expires_in 5.minutes, public: true
+  end
+
+  def set_long_cache
+    expires_in 1.day, public: true
   end
 end

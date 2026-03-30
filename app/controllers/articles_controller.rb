@@ -2,6 +2,7 @@
 
 class ArticlesController < ApplicationController
   before_action :check_user, only: %i[edit update create destroy myspace]
+  after_action :set_public_cache, only: %i[index show uforesearchteam]
 
   include ArticlesHelper
 
@@ -146,12 +147,16 @@ class ArticlesController < ApplicationController
   end
 
   def num_articles
-    Rails.cache.fetch('articles/num_articles', expires_in: 8.hours) do
+    Rails.cache.fetch('articles/num_articles', expires_in: 1.day) do
       Article.where(status: 1).count
     end
   end
 
   private
+
+  def set_public_cache
+    expires_in 1.day, public: true
+  end
 
   def article_params
     params.expect(article: %i[title status teaser body published_date user_id])
