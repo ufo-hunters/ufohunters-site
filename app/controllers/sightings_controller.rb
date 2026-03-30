@@ -12,12 +12,11 @@ class SightingsController < ApplicationController
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
     total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
 
-    cached_entries = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.hour) do
+    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.hour) do
       collection.offset((page - 1) * 20).limit(20).entries
     end
 
-    @pagy, @ufo_list = pagy(collection, limit: 20, count: total_count, page: page)
-    @ufo_list = cached_entries
+    @pagy = Pagy.new(count: total_count, page: page, limit: 20)
     @menu = 'index'
     @page_title = 'Recent UFO Activity'
     @page_description = 'Latest UFO Sightings all over the world'
