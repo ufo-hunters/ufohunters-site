@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   get 'sightings/country/:id(/:title)' => 'sightings#country', as: :sightings_country
   get 'sightings/search/:id(/:title)' => 'sightings#search', as: :sightings_search
-  get 'sightings/ufosearchresults' => 'sightings#ufosearchresults'
+  post 'sightings/ufosearchresults' => 'sightings#ufosearchresults'
 
   get 'sightings/maps' => 'sightings#maps'
   get 'sightings/northamerica' => 'sightings#northamerica'
