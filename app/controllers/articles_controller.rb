@@ -147,7 +147,7 @@ class ArticlesController < ApplicationController
   end
 
   def num_articles
-    Rails.cache.fetch('articles/num_articles', expires_in: 8.hours) do
+    Rails.cache.fetch('articles/num_articles', expires_in: 1.day) do
       Article.where(status: 1).count
     end
   end

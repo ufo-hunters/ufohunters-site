@@ -39,14 +39,14 @@ class ApplicationController < ActionController::Base
   end
 
   def video_list
-    Rails.cache.fetch('common/video_list', expires_in: 12.hours) do
+    Rails.cache.fetch('common/video_list', expires_in: 1.day) do
       Report.where(:status => 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/],
                    :coord.ne => nil).desc(:sighted_at).limit(20).entries
     end
   end
 
   def num_reports
-    Rails.cache.fetch('common/num_reports', expires_in: 8.hours) do
+    Rails.cache.fetch('common/num_reports', expires_in: 1.day) do
       Report.where(status: 1).count
     end
   end

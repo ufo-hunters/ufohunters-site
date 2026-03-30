@@ -12,7 +12,7 @@ class SightingsController < ApplicationController
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
     total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
 
-    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 6.hours) do
+    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.day) do
       collection.offset((page - 1) * 20).limit(20).entries
     end
 
@@ -146,7 +146,9 @@ class SightingsController < ApplicationController
   end
 
   def countrieslist
-    @countries_list = Countries.all.order_by(name: :asc)
+    @countries_list = Rails.cache.fetch('sightings/countrieslist', expires_in: 1.month) do
+      Countries.all.order_by(name: :asc).entries
+    end
 
     respond_to do |format|
       format.json { render json: @countries_list }
@@ -154,7 +156,7 @@ class SightingsController < ApplicationController
   end
 
   def northamerica
-    @ufo_list = Rails.cache.fetch('sightings/maps/northamerica', expires_in: 6.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/northamerica', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-169.45, 71.41],
                          [-177.54, 51.40],
@@ -179,7 +181,7 @@ class SightingsController < ApplicationController
   end
 
   def oceania
-    @ufo_list = Rails.cache.fetch('sightings/maps/oceania', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/oceania', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[138.69141, 1.40611],
                          [175.42969, -14.09396],
@@ -207,7 +209,7 @@ class SightingsController < ApplicationController
   end
 
   def southamerica
-    @ufo_list = Rails.cache.fetch('sightings/maps/southamerica', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/southamerica', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-77.87, 11.00],
                          [-68.20, 14.26],
@@ -239,7 +241,7 @@ class SightingsController < ApplicationController
   end
 
   def africa
-    @ufo_list = Rails.cache.fetch('sightings/maps/africa', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/africa', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[5.09, 38.41],
                          [-8.08, 35.17],
@@ -269,7 +271,7 @@ class SightingsController < ApplicationController
   end
 
   def europe
-    @ufo_list = Rails.cache.fetch('sightings/maps/europe', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/europe', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[-10.41, 36.73],
                          [-6.37, 35.99],
@@ -303,7 +305,7 @@ class SightingsController < ApplicationController
   end
 
   def asia
-    @ufo_list = Rails.cache.fetch('sightings/maps/asia', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/maps/asia', expires_in: 1.day) do
       Report.where(coord: { '$geoWithin' =>
         { '$polygon' => [[30.93, 74.68],
                          [32.34, 30.14],
@@ -382,7 +384,7 @@ class SightingsController < ApplicationController
   end
 
   def videos
-    @ufo_list = Rails.cache.fetch('sightings/video_gallery', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/video_gallery', expires_in: 1.day) do
       Report.where(status: 1, :links.in => [/.*youtube.com.*/, /.*youtu.be.*/], :coord.ne => nil)
             .desc(:sighted_at).limit(100).entries
     end
@@ -393,7 +395,7 @@ class SightingsController < ApplicationController
   end
 
   def images
-    @ufo_list = Rails.cache.fetch('sightings/image_gallery', expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch('sightings/image_gallery', expires_in: 1.day) do
       Report.where(status: 1, :$and => [{ links: /^(?!.*mufon).*(.jpg|.jpeg|.bmp|.gif|.png)$/i }], :coord.ne => nil)
             .desc(:sighted_at).limit(100).entries
     end
