@@ -3,10 +3,21 @@
 class SightingsController < ApplicationController
   include ApplicationHelper
 
+  after_action :set_short_cache, only: %i[index]
+  after_action :set_long_cache, only: %i[search maps northamerica southamerica europe asia africa oceania
+                                         videos images about ufosearch]
+
   def index
+    page = params[:page]&.to_i || 1
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
     total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
-    @pagy, @ufo_list = pagy(collection, limit: 20, count: total_count)
+
+    cached_entries = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.hour) do
+      collection.offset((page - 1) * 20).limit(20).entries
+    end
+
+    @pagy, @ufo_list = pagy(collection, limit: 20, count: total_count, page: page)
+    @ufo_list = cached_entries
     @menu = 'index'
     @page_title = 'Recent UFO Activity'
     @page_description = 'Latest UFO Sightings all over the world'
@@ -14,14 +25,14 @@ class SightingsController < ApplicationController
 
   def search
     id_ufo = params[:id]
-    @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", expires_in: 12.hours) do
+    @ufo_list = Rails.cache.fetch("sightings/#{id_ufo}", expires_in: 1.year) do
       Report.find id_ufo
     end
     @coords = @ufo_list.coord
     distance = 100 # km
 
     if @ufo_list.coord
-      @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", expires_in: 12.hours) do
+      @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", expires_in: 1.year) do
         Report.where(coord: { '$nearSphere' => @coords, '$maxDistance' => distance.fdiv(6371) })
               .and(status: 1).desc(:sighted_at).limit(100).entries
       end
@@ -397,5 +408,15 @@ class SightingsController < ApplicationController
     @menu = 'about'
     @page_title = 'About'
     @page_description = 'About ufo-hunters.com and who is behind this site'
+  end
+
+  private
+
+  def set_short_cache
+    expires_in 5.minutes, public: true
+  end
+
+  def set_long_cache
+    expires_in 1.day, public: true
   end
 end

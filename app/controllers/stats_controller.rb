@@ -3,6 +3,8 @@
 require 'rgeo/geo_json'
 
 class StatsController < ApplicationController
+  after_action :set_public_cache, only: %i[index map_json shape]
+
   def index
     @ufo_list = Rails.cache.fetch('stats/latest', expires_in: 1.day) do
       Report.where(status: 1, :coord.ne => nil).desc(:sighted_at).limit(2500).entries
@@ -49,6 +51,10 @@ class StatsController < ApplicationController
   end
 
   private
+
+  def set_public_cache
+    expires_in 1.day, public: true
+  end
 
   def reports_by_year
     Report.collection.aggregate([

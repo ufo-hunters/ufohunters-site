@@ -2,6 +2,7 @@
 
 class ArticlesController < ApplicationController
   before_action :check_user, only: %i[edit update create destroy myspace]
+  after_action :set_public_cache, only: %i[index show uforesearchteam]
 
   include ArticlesHelper
 
@@ -152,6 +153,10 @@ class ArticlesController < ApplicationController
   end
 
   private
+
+  def set_public_cache
+    expires_in 1.day, public: true
+  end
 
   def article_params
     params.expect(article: %i[title status teaser body published_date user_id])
