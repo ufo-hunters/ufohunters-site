@@ -63,3 +63,8 @@ Naming/VariableNumber:
 
 Naming/BlockParameterName:
   MinNameLength: 1
+
+# System tests are E2E — they naturally need more assertions per test
+Minitest/MultipleAssertions:
+  Exclude:
+    - 'test/system/**/*'

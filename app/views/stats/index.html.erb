@@ -1,3 +1,4 @@
+<%= render 'common/maplibre_head' %>
 <% cache("stats/content", expires_in: 1.day) do %>
 
   <div class="px-4 md:px-12 max-w-[1920px] mx-auto">
@@ -7,7 +8,7 @@
       <span class="uppercase tracking-widest text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] mb-2 block">
         <span class="material-symbols-outlined text-[14px] align-middle mr-1">analytics</span>DATASET ANALYTICS
       </span>
-      <h2 class="text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#dfe2eb] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)]">A glance at our data</h2>
+      <h1 class="text-3xl font-bold font-['Space_Grotesk'] uppercase tracking-widest text-[#dfe2eb] drop-shadow-[0_0_8px_rgba(215,223,33,0.5)]">A glance at our data</h1>
       <p class="text-[#c9c8ad] mt-3 leading-relaxed">The following map and graphs show the recent UFO activity all over the world.</p>
       <p class="text-[#c9c8ad]">The graphs are dinamically generated to keep them up to date as our database is updated. <strong class="text-[#D7DF21]">More graphs coming soon !!</strong></p>
     </div>

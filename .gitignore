@@ -37,6 +37,10 @@ Rakefile
 CLAUDE.md
 doc/
 
+# Generated sitemaps (regenerated via rake sitemap:refresh)
+public/sitemap*.xml.gz
+public/sitemap*.xml
+
 # Environment files with secrets
 .env
 .env.*

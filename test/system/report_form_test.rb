@@ -47,6 +47,7 @@ class ReportFormTest < ApplicationSystemTestCase
     assert_text 'New ufo reported!'
 
     report = Report.where(location: 'London, UK').first
+
     assert_not_nil report
     assert_equal 'Disc', report.shape
     assert_equal '20240615', report.sighted_at

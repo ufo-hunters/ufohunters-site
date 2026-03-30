@@ -21,9 +21,39 @@ A site that collects a huge data set of UFO sightings all over the world. Our ma
 
 ## Setup
 
+### Option A: Full Docker (recommended)
+
+Everything runs in containers — no local Ruby needed.
+
+```bash
+# Copy environment variables and fill in your values
+cp .env.example .env
+
+# Start MongoDB, Redis, and Rails together
+docker compose up -d
+
+# Create database indexes (first time only)
+docker compose exec web bundle exec rails db:mongoid:create_indexes
+```
+
+The app will be available at `http://localhost:3000`.
+
+Useful commands:
+
+```bash
+docker compose logs -f web              # Rails logs
+docker compose exec web rails console   # Rails console
+docker compose exec web bundle exec rails test  # Run tests
+docker compose down                     # Stop everything
+```
+
+### Option B: Local Ruby + Docker services
+
+Run MongoDB and Redis in Docker, Rails natively.
+
 ```bash
 # Start MongoDB and Redis
-docker compose up -d
+docker compose up -d mongodb redis
 
 # Install dependencies
 bundle install

@@ -392,7 +392,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   recaptcha (~> 5.0)
   redis (~> 5.0)
-  resend (~> 0.17)
+  resend (~> 0.27)
   rgeo-geojson (~> 2.0)
   rubocop
   rubocop-minitest

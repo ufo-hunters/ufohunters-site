@@ -65,32 +65,7 @@ class ReportsController < ApplicationController
     @page_title = 'Report a UFO'
     @page_description = 'Have you seen a UFO? Report your experience filling in the report form'
 
-    @tmp = report_params.to_h
-    @tmp['links'] = params[:report][:links] if params[:report][:links].present?
-    @tmp['status'] = 0
-
-    if params[:report][:images].present?
-      service = ImagekitUploadService.new
-      imagekit_urls = params[:report][:images].filter_map { |img| service.upload(img) }
-      @tmp['image_imagekit'] = imagekit_urls if imagekit_urls.any?
-    end
-
-    @tmp['coord'] = if @tmp['coord'].blank?
-                      [0, 0]
-                    else
-                      @tmp['coord'].split(',').map(&:to_f)
-                    end
-
-    @tmp['source'] = 'ufo-hunters.com'
-    %w[sighted_at reported_at].each do |field|
-      next if @tmp[field].blank?
-
-      @tmp[field] = Date.strptime(@tmp[field], '%Y-%m-%d').strftime('%Y%m%d')
-    rescue Date::Error
-      @tmp[field] = nil
-    end
-
-    @report = Report.new(@tmp)
+    @report = Report.new(build_report_attributes)
 
     if verify_recaptcha(model: @report)
       respond_to do |format|
@@ -166,6 +141,31 @@ class ReportsController < ApplicationController
   end
 
   private
+
+  def build_report_attributes
+    attrs = report_params.to_h
+    attrs['links'] = params[:report][:links] if params[:report][:links].present?
+    attrs['status'] = 0
+
+    if params[:report][:images].present?
+      service = ImagekitUploadService.new
+      imagekit_urls = params[:report][:images].filter_map { |img| service.upload(img) }
+      attrs['image_imagekit'] = imagekit_urls if imagekit_urls.any?
+    end
+
+    attrs['coord'] = attrs['coord'].blank? ? [0, 0] : attrs['coord'].split(',').map(&:to_f)
+    attrs['source'] = 'ufo-hunters.com'
+
+    %w[sighted_at reported_at].each do |field|
+      next if attrs[field].blank?
+
+      attrs[field] = Date.strptime(attrs[field], '%Y-%m-%d').strftime('%Y%m%d')
+    rescue Date::Error
+      attrs[field] = nil
+    end
+
+    attrs
+  end
 
   def report_params
     params.expect(report: %i[location shape duration description coord status email links
