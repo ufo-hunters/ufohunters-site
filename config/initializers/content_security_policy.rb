@@ -8,12 +8,13 @@ Rails.application.configure do
     policy.object_src  :none
     policy.script_src  :self, :unsafe_inline,
                        'https://www.google.com', 'https://www.gstatic.com',
+                       'https://www.recaptcha.net',
                        'https://www.googletagmanager.com',
                        'https://unpkg.com'
     policy.style_src   :self, :unsafe_inline,
                        'https://fonts.googleapis.com',
                        'https://unpkg.com'
-    policy.frame_src   'https://www.google.com', 'https://www.youtube.com'
+    policy.frame_src   'https://www.google.com', 'https://www.recaptcha.net', 'https://www.youtube.com'
     policy.connect_src :self,
                        'https://tiles.openfreemap.org',
                        'https://nominatim.openstreetmap.org',
