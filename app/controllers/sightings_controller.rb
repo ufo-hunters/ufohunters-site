@@ -12,7 +12,7 @@ class SightingsController < ApplicationController
     collection = Report.where(status: 1, :coord.ne => nil).desc(:sighted_at)
     total_count = Rails.cache.fetch('sightings/index/count', expires_in: 8.hours) { collection.count }
 
-    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 1.hour) do
+    @ufo_list = Rails.cache.fetch("sightings/index/page/#{page}", expires_in: 6.hours) do
       collection.offset((page - 1) * 20).limit(20).entries
     end
 
