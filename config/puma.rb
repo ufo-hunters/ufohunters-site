@@ -12,8 +12,11 @@ environment ENV.fetch('RAILS_ENV', 'development')
 
 pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
 
-workers ENV.fetch('WEB_CONCURRENCY', 1) if ENV.fetch('RAILS_ENV', 'development') == 'production'
-
-preload_app! if ENV.fetch('RAILS_ENV', 'development') == 'production'
+if ENV.fetch('RAILS_ENV', 'development') == 'production'
+  workers ENV.fetch('WEB_CONCURRENCY', 1)
+  # Single worker is intentional on this 984MB box; suppress Puma's nag.
+  silence_single_worker_warning
+  preload_app!
+end
 
 plugin :tmp_restart
