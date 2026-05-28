@@ -45,9 +45,6 @@ gem 'pagy', '~> 9.0'
 # SEO
 gem 'sitemap_generator', '~> 6.0'
 
-# Monitoring
-gem 'newrelic_rpm'
-
 # Rate limiting
 gem 'rack-attack'
 
