@@ -24,7 +24,6 @@ Rails.application.configure do
                        'https://tiles.openfreemap.org',
                        'https://nominatim.openstreetmap.org',
                        'https://unpkg.com',
-                       'https://*.nr-data.net',
                        'https://*.analytics.google.com',
                        'https://*.google-analytics.com',
                        'https://*.disqus.com',
