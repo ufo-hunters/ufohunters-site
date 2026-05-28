@@ -51,6 +51,9 @@ gem 'newrelic_rpm'
 # Rate limiting
 gem 'rack-attack'
 
+# Social media
+gem 'x', '~> 0.14'
+
 # Boot speed
 gem 'bootsnap', require: false
 
