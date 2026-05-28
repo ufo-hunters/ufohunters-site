@@ -49,6 +49,7 @@ Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
     - 'config/environments/*.rb'
+    - 'config/initializers/*.rb'
 
 # I18n is not a priority for this project yet
 Rails/I18nLocaleTexts:

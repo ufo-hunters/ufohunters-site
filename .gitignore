@@ -36,6 +36,7 @@ Rakefile
 .claude/
 CLAUDE.md
 doc/
+scripts/
 
 # Generated sitemaps (regenerated via rake sitemap:refresh)
 public/sitemap*.xml.gz
