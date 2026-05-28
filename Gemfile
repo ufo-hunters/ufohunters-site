@@ -54,6 +54,10 @@ gem 'rack-attack'
 # Social media
 gem 'x', '~> 0.14'
 
+# Force source compilation: the precompiled linux nokogiri (>= 1.19.3) requires
+# GLIBC 2.28+, but the production server (Ubuntu 18.04) ships GLIBC 2.27.
+gem 'nokogiri', '~> 1.19', force_ruby_platform: true
+
 # Boot speed
 gem 'bootsnap', require: false
 

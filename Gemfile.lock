@@ -152,6 +152,7 @@ GEM
     mime-types-data (3.2026.0317)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
+    mini_portile2 (2.8.9)
     minitest (5.27.0)
     mongo (2.23.0)
       base64
@@ -178,21 +179,8 @@ GEM
     newrelic_rpm (10.2.0)
       logger
     nio4r (2.7.5)
-    nokogiri (1.19.3-aarch64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.19.3-aarch64-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.19.3-arm-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.19.3-arm-linux-musl)
-      racc (~> 1.4)
-    nokogiri (1.19.3-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.19.3-x86_64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.19.3-x86_64-linux-gnu)
-      racc (~> 1.4)
-    nokogiri (1.19.3-x86_64-linux-musl)
+    nokogiri (1.19.3)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     pagy (9.4.0)
     parallel (1.27.0)
@@ -387,6 +375,7 @@ DEPENDENCIES
   minitest (~> 5.25)
   mongoid (~> 9.0)
   newrelic_rpm
+  nokogiri (~> 1.19)
   pagy (~> 9.0)
   propshaft
   puma (~> 6.0)
@@ -464,6 +453,7 @@ CHECKSUMS
   mime-types-data (3.2026.0317) sha256=77f078a4d8631d52b842ba77099734b06eddb7ad339d792e746d2272b67e511b
   mini_magick (4.13.2) sha256=71d6258e0e8a3d04a9a0a09784d5d857b403a198a51dd4f882510435eb95ddd9
   mini_mime (1.1.5) sha256=8681b7e2e4215f2a159f9400b5816d85e9d8c6c6b491e96a12797e798f8bccef
+  mini_portile2 (2.8.9) sha256=0cd7c7f824e010c072e33f68bc02d85a00aeb6fce05bb4819c03dfd3c140c289
   minitest (5.27.0) sha256=2d3b17f8a36fe7801c1adcffdbc38233b938eb0b4966e97a6739055a45fa77d5
   mongo (2.23.0) sha256=be2fe4cc6f7119fa6b79e82a1963b2406856b4dc92d0ccfb74db543897be3109
   mongoid (9.0.10) sha256=351192e70027276748f3c946b8926fad9254356e36021dacb5cec08d0740f21d
@@ -478,14 +468,7 @@ CHECKSUMS
   netrc (0.11.0) sha256=de1ce33da8c99ab1d97871726cba75151113f117146becbe45aa85cb3dabee3f
   newrelic_rpm (10.2.0) sha256=5a648409df7c8d44d7dd9307edafac6bd726ea43144a2de80162f1145209bbfe
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
-  nokogiri (1.19.3-aarch64-linux-gnu) sha256=46b89e5d7b9e844c2ee360794240c6ea2a4e6fa0c5892a4ed487db621224b639
-  nokogiri (1.19.3-aarch64-linux-musl) sha256=8392dfdcd21be7a94dbbe9ccc138dea01b97b24cb2dc02a114ca98bfb1d9a0b7
-  nokogiri (1.19.3-arm-linux-gnu) sha256=3919d5ffc334ad778a4a9eb88fda7dcb8b1fb58c8a52ac640c6dcd2f038e774f
-  nokogiri (1.19.3-arm-linux-musl) sha256=9ce1cb6346bb9c67b1550eb537aa183ead91e4b6eadb2f36ade02d8dd2a79fb6
-  nokogiri (1.19.3-arm64-darwin) sha256=71b9bd424b1b7abc18b05052a1a3cfd3627abdca62be280854cc411791357e42
-  nokogiri (1.19.3-x86_64-darwin) sha256=77f3fba57d46c53ab31e62fc6c28f705109d1bf6264356c76f132b2be5728d4d
-  nokogiri (1.19.3-x86_64-linux-gnu) sha256=2f5078620fe12e83669b5b17311b32532a8153d02eee7ad06948b926d6080976
-  nokogiri (1.19.3-x86_64-linux-musl) sha256=248c906d2166eca5efb56d52fdee5f9a1f51d69a72e2b64fdac647b4ce39ea3f
+  nokogiri (1.19.3) sha256=78312cbac32a40c812780d9678221b79d51288eec00054c1a8d15f7ce05960e8
   pagy (9.4.0) sha256=db3f2e043f684155f18f78be62a81e8d033e39b9f97b1e1a8d12ad38d7bce738
   parallel (1.27.0) sha256=4ac151e1806b755fb4e2dc2332cbf0e54f2e24ba821ff2d3dcf86bf6dc4ae130
   parser (3.3.11.0) sha256=fe28ccb92d9221283ce143cb3c2e4c916e0f589ee0cc2a64867d7716354f19b1
