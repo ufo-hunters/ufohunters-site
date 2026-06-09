@@ -11,7 +11,7 @@ gem 'rails', '~> 8.0.2'
 gem 'mongoid', '~> 9.0'
 
 # Web server
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 7.2'
 
 # Security
 gem 'bcrypt', '~> 3.1'
