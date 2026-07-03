@@ -19,21 +19,35 @@ module SocialPoster
         return nil
       end
 
-      session = create_session
-      rkey = post_record(session, report)
+      # Claim before posting: the unique (platform, report_id) index prevents a
+      # persistence failure or concurrent run from posting the same report twice.
+      social_post = claim(report)
+      return nil unless social_post
 
-      SocialPost.create!(
-        platform: 'bluesky',
-        report_id: report.id.to_s,
-        external_id: rkey,
-        posted_at: Time.current
-      )
+      begin
+        session = create_session
+        rkey = post_record(session, report)
+      rescue StandardError => e
+        # Keep the claim (duplicate-averse) and re-raise. external_id stays nil
+        # as the reconciliation marker: SocialPost.where(external_id: nil).
+        Rails.logger.error "[SocialPoster::Bluesky] Post failed for report #{report.id} " \
+                           "(claim kept for reconciliation): #{e.class}: #{e.message}"
+        raise
+      end
 
+      social_post.update!(external_id: rkey)
       Rails.logger.info "[SocialPoster::Bluesky] Posted record #{rkey} for report #{report.id}"
       rkey
     end
 
     private
+
+    def claim(report)
+      SocialPost.create!(platform: 'bluesky', report_id: report.id.to_s, posted_at: Time.current)
+    rescue Mongoid::Errors::Validations, Mongo::Error::OperationFailure => e
+      Rails.logger.warn "[SocialPoster::Bluesky] Report #{report.id} already claimed: #{e.message}"
+      nil
+    end
 
     def create_session
       response = pds_post(
@@ -64,7 +78,10 @@ module SocialPoster
       )
       raise "Bluesky createRecord failed: #{response['error']}" if response['error']
 
-      response['uri']&.split('/')&.last
+      rkey = response['uri']&.split('/')&.last
+      raise "Bluesky createRecord returned no uri (response: #{response.inspect})" if rkey.blank?
+
+      rkey
     end
 
     def build_post_text(report)
@@ -112,8 +129,23 @@ module SocialPoster
       req['Authorization'] = "Bearer #{bearer_token}" if bearer_token
       req.body = body.to_json
 
-      response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }
-      JSON.parse(response.body)
+      response = Net::HTTP.start(uri.hostname, uri.port,
+                                 use_ssl: true, open_timeout: 10, read_timeout: 15) do |http|
+        http.request(req)
+      end
+
+      parsed = begin
+        JSON.parse(response.body.to_s)
+      rescue JSON::ParserError
+        {}
+      end
+
+      unless response.is_a?(Net::HTTPSuccess)
+        raise "Bluesky request to #{path} failed: HTTP #{response.code} " \
+              "#{parsed['error'] || response.message}"
+      end
+
+      parsed
     end
   end
 end

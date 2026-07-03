@@ -27,22 +27,38 @@ module SocialPoster
         return nil
       end
 
-      tweet_text = build_tweet(report)
-      response = @client.post('tweets', JSON.generate({ text: tweet_text }))
-      tweet_id = response.dig('data', 'id')
+      # Claim the report BEFORE posting. The unique (platform, report_id) index
+      # means a persistence failure or a concurrent run can no longer let the
+      # same report be tweeted twice: the claim exists before the tweet does.
+      social_post = claim(report)
+      return nil unless social_post
 
-      SocialPost.create!(
-        platform: 'twitter',
-        report_id: report.id.to_s,
-        external_id: tweet_id,
-        posted_at: Time.current
-      )
+      begin
+        response = @client.post('tweets', JSON.generate({ text: build_tweet(report) }))
+        tweet_id = response.dig('data', 'id')
+        raise "Twitter post returned no tweet id (response: #{response.inspect})" if tweet_id.blank?
+      rescue StandardError => e
+        # Keep the claim (duplicate-averse: a missed daily post beats a spam
+        # duplicate) and re-raise so the failure is loud. external_id stays nil,
+        # which is the reconciliation marker: SocialPost.where(external_id: nil).
+        Rails.logger.error "[SocialPoster::Twitter] Post failed for report #{report.id} " \
+                           "(claim kept for reconciliation): #{e.class}: #{e.message}"
+        raise
+      end
 
+      social_post.update!(external_id: tweet_id)
       Rails.logger.info "[SocialPoster::Twitter] Posted tweet #{tweet_id} for report #{report.id}"
       tweet_id
     end
 
     private
+
+    def claim(report)
+      SocialPost.create!(platform: 'twitter', report_id: report.id.to_s, posted_at: Time.current)
+    rescue Mongoid::Errors::Validations, Mongo::Error::OperationFailure => e
+      Rails.logger.warn "[SocialPoster::Twitter] Report #{report.id} already claimed: #{e.message}"
+      nil
+    end
 
     def build_tweet(report)
       link = report_url(report)

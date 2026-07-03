@@ -80,5 +80,47 @@ module SocialPoster
 
       assert_equal 'invalid', poster.send(:format_date, 'invalid')
     end
+
+    test 'post_random_sighting records the external id on success' do
+      report = published_candidate
+      poster = SocialPoster::Twitter.new
+      client = Object.new
+      def client.post(_path, _body) = { 'data' => { 'id' => '12345' } }
+      poster.instance_variable_set(:@client, client)
+
+      result = poster.post_random_sighting
+
+      assert_equal '12345', result
+      social_post = SocialPost.where(platform: 'twitter', report_id: report.id.to_s).first
+
+      assert_equal '12345', social_post.external_id
+    end
+
+    # Regression: a failed post must keep the claim (so the report is not tweeted
+    # again on a later run) and re-raise, leaving external_id nil for reconciliation.
+    test 'post_random_sighting keeps the claim and raises when posting fails' do
+      report = published_candidate
+      poster = SocialPoster::Twitter.new
+      failing_client = Object.new
+      def failing_client.post(*) = raise 'twitter api down'
+      poster.instance_variable_set(:@client, failing_client)
+
+      assert_raises(RuntimeError) { poster.post_random_sighting }
+
+      social_post = SocialPost.where(platform: 'twitter', report_id: report.id.to_s).first
+
+      assert_not_nil social_post, 'claim should be kept for reconciliation'
+      assert_nil social_post.external_id
+    end
+
+    private
+
+    def published_candidate
+      report = create_dummy_report
+      report.status = 1
+      report.reported_at = Time.current.strftime('%Y%m%d')
+      report.save!
+      report
+    end
   end
 end
