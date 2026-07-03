@@ -72,4 +72,22 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  # Regression: an unknown id used to cache nil for a week and then 500 in the
+  # view; it must now return 404.
+  test 'should return 404 for a non-existent report' do
+    get report_path(id: 'does-not-exist')
+
+    assert_response :not_found
+  end
+
+  # Regression: malformed coordinate input must not 500; it falls back to [0,0].
+  test 'should not error on malformed coordinate input' do
+    assert_difference('Report.count') do
+      post reports_path, params: { report: @report.attributes.merge('coord' => '91,not,coords') }
+    end
+
+    assert_response :redirect
+    assert_equal [0, 0], Report.where(location: @report.location).first.coord
+  end
 end

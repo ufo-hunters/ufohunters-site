@@ -6,7 +6,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @user = User.where(reset_token: params[:id]).first
+    @user = User.where(reset_token: params[:id].to_s).first
 
     if @user.nil? || @user.reset_token_expired?
       flash[:error] = 'Password reset link is invalid or has expired.'
@@ -18,7 +18,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    user = User.where(email: params[:email]).first
+    user = User.where(email: params[:email].to_s).first
 
     if user
       user.generate_reset_token!
@@ -30,7 +30,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def update
-    @user = User.where(reset_token: params[:id]).first
+    @user = User.where(reset_token: params[:id].to_s).first
 
     if @user.nil? || @user.reset_token_expired?
       flash[:error] = 'Password reset link is invalid or has expired.'

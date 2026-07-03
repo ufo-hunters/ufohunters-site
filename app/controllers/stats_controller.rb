@@ -23,8 +23,11 @@ class StatsController < ApplicationController
     end
     features = []
     @ufo_list.each do |ufo|
-      point = "{\"type\":\"Point\",\"coordinates\": #{ufo.coord}}"
-      geom = RGeo::GeoJSON.decode(point)
+      next unless ufo.coord.is_a?(Array) && ufo.coord.size == 2
+
+      geom = RGeo::GeoJSON.decode({ 'type' => 'Point', 'coordinates' => ufo.coord })
+      next if geom.nil?
+
       factory = RGeo::GeoJSON::EntityFactory.instance
       feature = factory.feature(geom, nil, { id: ufo.id.to_s })
       features << feature
