@@ -128,4 +128,23 @@ class SightingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  # Regression (finding #14): the country page parsed geometry by key position,
+  # so a document whose geometry stored 'coordinates' before 'type' silently
+  # swapped them. Explicit key access must render regardless of key order.
+  test 'should render country page when geometry keys are in reverse order' do
+    country = create_country
+    country.geometry = { 'coordinates' => country.geometry[:coordinates], 'type' => 'Polygon' }
+    country.save!
+
+    get sightings_country_path(id: 'ESP')
+
+    assert_response :success
+  end
+
+  test 'should return 404 for an unknown country code' do
+    get sightings_country_path(id: 'ZZZ')
+
+    assert_response :not_found
+  end
 end

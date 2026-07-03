@@ -343,15 +343,16 @@ class SightingsController < ApplicationController
       @the_country = country.geometry
     end
 
-    type = ''
-    coordinates = ''
-    @the_country.each_with_index do |data, index|
-      if index.zero?
-        type = data[1]
-      else
-        coordinates = data[1]
-      end
+    # Access the GeoJSON keys explicitly (see reports#country): positional
+    # iteration silently swapped type/coordinates when key order differed.
+    if @the_country.blank?
+      @page_title = 'Not Found'
+      render 'errors/not_found', status: :not_found
+      return
     end
+
+    type = @the_country['type']
+    coordinates = @the_country['coordinates']
 
     if type == 'Polygon'
       @ufo_list = Rails.cache.fetch("sightings/country/#{country_code}/polygon", expires_in: 1.day) do

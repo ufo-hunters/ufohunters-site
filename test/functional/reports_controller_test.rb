@@ -90,4 +90,19 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_equal [0, 0], Report.where(location: @report.location).first.coord
   end
+
+  # Regression: links must be captured through permitted params (array of
+  # strings), not a raw params bypass that could store arbitrary structures.
+  test 'should store links submitted as an array' do
+    post reports_path, params: { report: @report.attributes.merge('links' => ['http://example.com/a']) }
+
+    assert_response :redirect
+    assert_equal ['http://example.com/a'], Report.where(location: @report.location).first.links
+  end
+
+  test 'should return 404 for an unknown country code' do
+    get '/reports/ZZZ/country', params: { format: :xml }
+
+    assert_response :not_found
+  end
 end

@@ -120,15 +120,16 @@ class ReportsController < ApplicationController
       @pais = country.geometry
     end
 
-    type = ''
-    coordinates = ''
-    @pais.each_with_index do |datos, index|
-      if index.zero?
-        type = datos[1]
-      else
-        coordinates = datos[1]
-      end
+    # Access the GeoJSON keys explicitly. The previous positional each_with_index
+    # assumed 'type' was the first key and 'coordinates' the second; any document
+    # with a different key order silently swapped them and returned no sightings.
+    if @pais.blank?
+      head :not_found
+      return
     end
+
+    type = @pais['type']
+    coordinates = @pais['coordinates']
 
     if type == 'Polygon'
       @reports = Report.where(coord: { '$geoWithin' => { '$polygon' => coordinates[0] } })
@@ -154,7 +155,6 @@ class ReportsController < ApplicationController
 
   def build_report_attributes
     attrs = report_params.to_h
-    attrs['links'] = params[:report][:links] if params[:report][:links].present?
     attrs['status'] = 0
 
     if params[:report][:images].present?
@@ -178,8 +178,8 @@ class ReportsController < ApplicationController
   end
 
   def report_params
-    params.expect(report: %i[location shape duration description coord status email links
-                             reported_at sighted_at source])
+    params.expect(report: [:location, :shape, :duration, :description, :coord, :status, :email,
+                           :reported_at, :sighted_at, :source, { links: [] }])
   end
 
   # Parses the "lng,lat" form field into a numeric pair. Anything malformed

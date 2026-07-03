@@ -42,6 +42,18 @@ class CountriesTest < ActiveSupport::TestCase
     assert_kind_of Array, @country.geometry[:coordinates]
   end
 
+  test 'should not save country without a code' do
+    @country.cod = nil
+
+    assert_not @country.save, 'Saved a country without a code'
+  end
+
+  test 'should not save country without geometry' do
+    @country.geometry = nil
+
+    assert_not @country.save, 'Saved a country without geometry'
+  end
+
   test 'should find country by code' do
     @country.save!
     found = Countries.where(cod: 'ESP').first

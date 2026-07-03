@@ -23,6 +23,12 @@ class UserTest < ActiveSupport::TestCase
     assert @user.save, 'Did not save user with valid email'
   end
 
+  test 'should not save user without a username' do
+    @user.username = nil
+
+    assert_not @user.save, 'Saved a user without a username'
+  end
+
   test 'should not save duplicate username' do
     @user.save!
     duplicate = User.new(username: 'user1', password: 'secret2', email: 'other@example.com')
