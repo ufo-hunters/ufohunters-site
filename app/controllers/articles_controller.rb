@@ -2,6 +2,7 @@
 
 class ArticlesController < ApplicationController
   before_action :check_user, only: %i[edit update create destroy myspace]
+  before_action :set_owned_article, only: %i[edit update destroy]
   after_action :set_public_cache, only: %i[index show uforesearchteam]
 
   include ArticlesHelper
@@ -71,14 +72,13 @@ class ArticlesController < ApplicationController
   end
 
   # GET /articles/1/edit
-  def edit
-    @article = Article.find(params[:id])
-  end
+  # @article is loaded and ownership-checked by the set_owned_article before_action.
+  def edit; end
 
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.new(article_params)
 
     respond_to do |format|
       if @article.save
@@ -94,8 +94,6 @@ class ArticlesController < ApplicationController
   # PUT /articles/1
   # PUT /articles/1.json
   def update
-    @article = Article.find(params[:id])
-
     respond_to do |format|
       if @article.update(article_params)
         format.html { redirect_to action: 'myspace', notice: 'Article was successfully updated.' }
@@ -110,7 +108,6 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1
   # DELETE /articles/1.json
   def destroy
-    @article = Article.find(params[:id])
     @article.destroy
 
     respond_to do |format|
@@ -154,11 +151,26 @@ class ArticlesController < ApplicationController
 
   private
 
+  # Loads the article scoped to the current user so a logged-in user can only
+  # edit/update/destroy their own articles (prevents IDOR). A non-owner (or
+  # missing id) is redirected instead of touching another author's content.
+  def set_owned_article
+    # where(...).first (not find): mongoid.yml sets raise_not_found_error: false,
+    # so find would return nil rather than raise. A nil result means the article
+    # does not exist OR belongs to another user -- both must be refused.
+    @article = current_user.articles.where(_id: params[:id]).first
+    return if @article
+
+    redirect_to articles_myspace_path, alert: 'Article not found or you do not have permission to modify it.'
+  end
+
   def set_public_cache
     expires_in 1.day, public: true
   end
 
+  # user_id is intentionally NOT permitted: the owner is bound server-side via
+  # current_user.articles.new, so authorship cannot be forged via mass assignment.
   def article_params
-    params.expect(article: %i[title status teaser body published_date user_id])
+    params.expect(article: %i[title status teaser body published_date])
   end
 end

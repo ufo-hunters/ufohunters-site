@@ -16,6 +16,9 @@ class Countries
   field :continent, type: String
   field :center, type: Array
 
+  validates :cod, presence: true
+  validates :geometry, presence: true
+
   index({ cod: 1 }, { background: true })
   index({ continent: 1 }, { background: true })
 end

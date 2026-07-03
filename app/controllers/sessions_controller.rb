@@ -2,7 +2,7 @@
 
 class SessionsController < ApplicationController
   def create
-    user = User.where(username: params[:username]).first
+    user = User.where(username: params[:username].to_s).first
     if user&.authenticate(params[:password])
       session[:user_id] = user.id
       redirect_to controller: 'articles', action: 'myspace'

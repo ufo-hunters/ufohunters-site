@@ -32,4 +32,13 @@ class SessionControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :redirect
   end
+
+  # Regression: a Mongo operator hash in the username must not be interpreted as
+  # a query operator. With the correct password of an existing user, injecting
+  # {$ne: ...} would otherwise match and log in without knowing the username.
+  test 'should not authenticate via nosql operator injection on username' do
+    post sessions_path, params: { username: { '$ne' => 'nobody' }, password: 'secret' }
+
+    assert_redirected_to articles_uforesearchteam_path
+  end
 end

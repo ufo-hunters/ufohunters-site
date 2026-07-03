@@ -57,6 +57,37 @@ class ReportTest < ActiveSupport::TestCase
     assert_not @report.save, 'Saved the report with not matching emails'
   end
 
+  test 'should not save report with a single-element coord' do
+    @report.coord = [12.3]
+
+    assert_not @report.save, 'Saved a report with a malformed coord pair'
+  end
+
+  test 'should not save report with a non-numeric coord' do
+    @report.coord = %w[abc def]
+
+    assert_not @report.save, 'Saved a report with a non-numeric coord'
+  end
+
+  test 'should not save report with an out-of-range coord' do
+    @report.coord = [200, 95]
+
+    assert_not @report.save, 'Saved a report with out-of-range coordinates'
+  end
+
+  test 'should save report with the [0,0] no-coordinates sentinel' do
+    @report.coord = [0, 0]
+
+    assert @report.save, 'Did not save a report with the [0,0] sentinel'
+  end
+
+  test 'should set case number to 1 on an empty collection' do
+    @report.case_number = nil
+
+    assert @report.save
+    assert_equal 1, @report.case_number
+  end
+
   test 'should_set_case_number' do
     case_number = 1022
     @report.case_number = case_number

@@ -16,7 +16,8 @@ class User
   has_secure_password
   has_many :articles, dependent: :destroy
 
-  validates :username, uniqueness: { message: 'already exists. Username must be unique' }
+  validates :username, presence: { message: 'is mandatory' },
+                       uniqueness: { message: 'already exists. Username must be unique' }
   validates :password, confirmation: { message: 'should match password' }
   validates :email, confirmation: { message: 'should match email' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: false }

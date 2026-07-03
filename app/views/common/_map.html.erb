@@ -24,7 +24,7 @@
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [selected_ufo.coord[0], selected_ufo.coord[1]] },
       properties: {
-        title: "<strong>#{selected_ufo.location.gsub("'", "\\\\'").gsub('"', '&quot;')}</strong>",
+        title: "<strong>#{CGI.escapeHTML(selected_ufo.location.to_s)}</strong>",
         description: "#{format_date selected_ufo.sighted_at}<br/><strong><a href=\"#{sightings_search_path(id: selected_ufo.id, title: friendly_title(selected_ufo))}\">View sighting</a></strong>"
       }
     }
@@ -37,7 +37,7 @@
         type: 'Feature',
         geometry: { type: 'Point', coordinates: [ufo.coord[0], ufo.coord[1]] },
         properties: {
-          title: "<strong>#{ufo.location.gsub("'", "\\\\'").gsub('"', '&quot;')}</strong>",
+          title: "<strong>#{CGI.escapeHTML(ufo.location.to_s)}</strong>",
           description: "#{format_date ufo.sighted_at}<br/><strong><a href=\"#{sightings_search_path(id: ufo.id, title: friendly_title(ufo))}\">View sighting</a></strong>"
         }
       }

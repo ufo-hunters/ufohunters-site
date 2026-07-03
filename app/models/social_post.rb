@@ -12,7 +12,7 @@ class SocialPost
   field :posted_at,   type: Time
 
   validates :platform,  presence: true, inclusion: { in: PLATFORMS }
-  validates :report_id, presence: true
+  validates :report_id, presence: true, uniqueness: { scope: :platform }
   validates :posted_at, presence: true
 
   index({ platform: 1, report_id: 1 }, { unique: true, background: true })

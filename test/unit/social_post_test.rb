@@ -47,4 +47,20 @@ class SocialPostTest < ActiveSupport::TestCase
 
     assert_predicate post, :valid?
   end
+
+  # Regression: the claim-before-post flow relies on report_id being unique per
+  # platform so a report cannot be recorded (and therefore posted) twice.
+  test 'invalid with a duplicate report_id on the same platform' do
+    SocialPost.create!(platform: 'twitter', report_id: 'dup', posted_at: Time.current)
+    duplicate = SocialPost.new(platform: 'twitter', report_id: 'dup', posted_at: Time.current)
+
+    assert_not duplicate.valid?
+  end
+
+  test 'allows the same report_id on different platforms' do
+    SocialPost.create!(platform: 'twitter', report_id: 'shared', posted_at: Time.current)
+    other = SocialPost.new(platform: 'bluesky', report_id: 'shared', posted_at: Time.current)
+
+    assert_predicate other, :valid?
+  end
 end

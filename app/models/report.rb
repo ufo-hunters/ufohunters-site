@@ -29,14 +29,34 @@ class Report
   validates :description, presence: { message: 'Description is mandatory' }
   validates :email, confirmation: { message: 'Should match contact email confirmation' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: true }
+  validate :coord_must_be_valid_pair
 
   before_create :set_case_number
 
   private
 
+  # coord feeds a 2dsphere index; a malformed value makes MongoDB reject the
+  # write with an unrescued OperationFailure (500 + lost report). Reject it at
+  # the model layer so the user gets a form error instead. [0, 0] is the app's
+  # "no coordinates" sentinel and is allowed.
+  def coord_must_be_valid_pair
+    return if coord.blank?
+
+    unless coord.is_a?(Array) && coord.size == 2 && coord.all?(Numeric)
+      errors.add(:coord, 'must be a [longitude, latitude] pair')
+      return
+    end
+
+    lng, lat = coord
+    errors.add(:coord, 'longitude must be between -180 and 180') unless lng.between?(-180, 180)
+    errors.add(:coord, 'latitude must be between -90 and 90') unless lat.between?(-90, 90)
+  end
+
   def set_case_number
+    return if case_number.present?
+
     last_case_number = Report.where(source: 'ufo-hunters.com').max(:case_number)
-    self.case_number = last_case_number + 1 if last_case_number
+    self.case_number = (last_case_number || 0) + 1
   end
 
   index({ coord: '2dsphere' }, { background: true })

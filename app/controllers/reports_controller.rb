@@ -14,8 +14,16 @@ class ReportsController < ApplicationController
 
   # GET /reports/1
   def show
-    @report = Rails.cache.fetch("reports/#{params[:id]}", expires_in: 1.week) do
-      Report.without(:email).find(params[:id])
+    # mongoid.yml sets raise_not_found_error: false, so an unknown id returns
+    # nil. skip_nil prevents caching that miss for a week (bots probing random
+    # ids would otherwise fill Redis and get repeated 500s); a nil report is a 404.
+    @report = Rails.cache.fetch("reports/#{params[:id]}", expires_in: 1.week, skip_nil: true) do
+      Report.without(:email).where(_id: params[:id]).first
+    end
+
+    if @report.nil?
+      @page_title = 'Not Found'
+      return render 'errors/not_found', status: :not_found
     end
 
     respond_to do |format|
@@ -26,11 +34,13 @@ class ReportsController < ApplicationController
 
   # GET /reports/nearof/1234/5678
   def nearof
-    @coordenadas = [params[:longitud].to_i, params[:latitud].to_i]
+    # to_f, not to_i: coordinates carry decimals; truncating to integers moves
+    # the search origin by up to ~111 km before a 100 km radius query.
+    @coordenadas = [params[:longitud].to_f, params[:latitud].to_f]
     distance = 100 # km
 
-    if @coordenadas
-      @nearest = Rails.cache.fetch("reports/near/#{params[:longitud].to_i},#{params[:latitud].to_i}",
+    if @coordenadas.any?(&:nonzero?)
+      @nearest = Rails.cache.fetch("reports/near/#{@coordenadas.join(',')}",
                                    expires_in: 8.hours) do
         Report.where(coord: { '$nearSphere' => @coordenadas, '$maxDistance' => distance.fdiv(6371) })
               .and(status: 1)
@@ -110,15 +120,16 @@ class ReportsController < ApplicationController
       @pais = country.geometry
     end
 
-    type = ''
-    coordinates = ''
-    @pais.each_with_index do |datos, index|
-      if index.zero?
-        type = datos[1]
-      else
-        coordinates = datos[1]
-      end
+    # Access the GeoJSON keys explicitly. The previous positional each_with_index
+    # assumed 'type' was the first key and 'coordinates' the second; any document
+    # with a different key order silently swapped them and returned no sightings.
+    if @pais.blank?
+      head :not_found
+      return
     end
+
+    type = @pais['type']
+    coordinates = @pais['coordinates']
 
     if type == 'Polygon'
       @reports = Report.where(coord: { '$geoWithin' => { '$polygon' => coordinates[0] } })
@@ -144,7 +155,6 @@ class ReportsController < ApplicationController
 
   def build_report_attributes
     attrs = report_params.to_h
-    attrs['links'] = params[:report][:links] if params[:report][:links].present?
     attrs['status'] = 0
 
     if params[:report][:images].present?
@@ -153,7 +163,7 @@ class ReportsController < ApplicationController
       attrs['image_imagekit'] = imagekit_urls if imagekit_urls.any?
     end
 
-    attrs['coord'] = attrs['coord'].blank? ? [0, 0] : attrs['coord'].split(',').map(&:to_f)
+    attrs['coord'] = parse_coord(attrs['coord'])
     attrs['source'] = 'ufo-hunters.com'
 
     %w[sighted_at reported_at].each do |field|
@@ -168,7 +178,22 @@ class ReportsController < ApplicationController
   end
 
   def report_params
-    params.expect(report: %i[location shape duration description coord status email links
-                             reported_at sighted_at source])
+    params.expect(report: [:location, :shape, :duration, :description, :coord, :status, :email,
+                           :reported_at, :sighted_at, :source, { links: [] }])
+  end
+
+  # Parses the "lng,lat" form field into a numeric pair. Anything malformed
+  # (non-numeric, wrong arity) becomes the [0, 0] "no coordinates" sentinel,
+  # which keeps the report unpublished rather than storing a bad geo point.
+  def parse_coord(raw)
+    return [0, 0] if raw.blank?
+
+    parts = raw.to_s.split(',').map do |value|
+      Float(value.strip)
+    rescue ArgumentError, TypeError
+      nil
+    end
+
+    parts.size == 2 && parts.none?(&:nil?) ? parts : [0, 0]
   end
 end
