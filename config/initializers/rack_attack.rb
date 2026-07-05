@@ -17,6 +17,11 @@ module Rack
       req.ip if req.path == '/reports' && req.post?
     end
 
+    # Throttle mobile-app report submissions by IP
+    throttle('api_reports/ip', limit: 5, period: 60.seconds) do |req|
+      req.ip if req.path == '/api/reports' && req.post?
+    end
+
     # Throttle user registration by IP
     throttle('signups/ip', limit: 3, period: 60.seconds) do |req|
       req.ip if req.path == '/users' && req.post?
