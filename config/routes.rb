@@ -19,6 +19,10 @@ Rails.application.routes.draw do
 
   root to: 'sightings#index'
 
+  namespace :api, defaults: { format: :json } do
+    resources :reports, only: [:create]
+  end
+
   get 'reports/sightings', to: 'reports#sightings'
   get 'reports/:id/country(.:format)' => 'reports#country'
   get 'reports/nearof/:longitud/:latitud/nearest(.:format)' => 'reports#nearof',
