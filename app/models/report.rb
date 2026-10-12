@@ -30,6 +30,7 @@ class Report
   validates :email, confirmation: { message: 'Should match contact email confirmation' }
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, allow_blank: true }
   validate :coord_must_be_valid_pair
+  validate :sighted_at_must_be_plausible, if: :sighted_at_changed?
 
   before_create :set_case_number
 
@@ -50,6 +51,22 @@ class Report
     lng, lat = coord
     errors.add(:coord, 'longitude must be between -180 and 180') unless lng.between?(-180, 180)
     errors.add(:coord, 'latitude must be between -90 and 90') unless lat.between?(-90, 90)
+  end
+
+  # sighted_at is stored as a "YYYYMMDD" string. Date.strptime happily accepts
+  # five-digit years ("52026-06-21" -> "520260621"), which no date helper can
+  # read back. Only checked when the field changes so legacy documents with
+  # odd dates can still be edited. One day of slack covers reporters whose
+  # local date is already ahead of the server's.
+  def sighted_at_must_be_plausible
+    return if sighted_at.blank?
+
+    date = Date.strptime(sighted_at, '%Y%m%d') if sighted_at.match?(/\A\d{8}\z/)
+    return if date&.between?(Date.new(1900, 1, 1), Time.zone.today + 1)
+
+    errors.add(:sighted_at, 'Sighted date must be between 1900 and today')
+  rescue Date::Error
+    errors.add(:sighted_at, 'Sighted date must be between 1900 and today')
   end
 
   def set_case_number

@@ -81,6 +81,40 @@ class ReportTest < ActiveSupport::TestCase
     assert @report.save, 'Did not save a report with the [0,0] sentinel'
   end
 
+  # Regression: the web form accepted "52026-06-21" and stored "520260621",
+  # which no date helper can parse, leaving titles like "... on ".
+  test 'should not save report with a five-digit sighted year' do
+    @report.sighted_at = '520260621'
+
+    assert_not @report.save, 'Saved a report with a five-digit sighted year'
+  end
+
+  test 'should not save report sighted before 1900' do
+    @report.sighted_at = '18991231'
+
+    assert_not @report.save, 'Saved a report sighted before 1900'
+  end
+
+  test 'should not save report sighted in the future' do
+    @report.sighted_at = (Time.zone.today + 2).strftime('%Y%m%d')
+
+    assert_not @report.save, 'Saved a report sighted in the future'
+  end
+
+  test 'should save report sighted today' do
+    @report.sighted_at = Time.zone.today.strftime('%Y%m%d')
+
+    assert @report.save, 'Did not save a report sighted today'
+  end
+
+  test 'should still update a legacy report whose sighted date is not touched' do
+    @report.save!
+    @report.set(sighted_at: '520260621')
+    @report.reload.location = 'New location'
+
+    assert @report.save, 'Blocked an update that did not touch the legacy sighted date'
+  end
+
   test 'should set case number to 1 on an empty collection' do
     @report.case_number = nil
 
