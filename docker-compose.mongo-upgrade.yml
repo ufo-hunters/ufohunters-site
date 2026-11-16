@@ -1,0 +1,45 @@
+# Production mirror for the MongoDB 3.6 -> 4.4+ upgrade rehearsal.
+# Runs as a separate compose project, so it never touches the everyday
+# development containers or their mongodb_data volume.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.mongo-upgrade.yml up -d
+#   MONGO_IMAGE=mongo:4.0 docker compose -f docker-compose.yml -f docker-compose.mongo-upgrade.yml up -d mongodb
+#
+# Host ports: app 3002, MongoDB 27018, Redis 6380 (the everyday stack keeps 3000/27017/6379).
+# The production dump is mounted read-only from ../mongo-upgrade-backups (outside the repo:
+# it holds personal data and must never be committed).
+name: ufo-mongo-upgrade
+
+services:
+  mongodb:
+    image: ${MONGO_IMAGE:-mongo:3.6.20}  # exact production version
+    # Same WiredTiger cache as production (/etc/mongod.conf).
+    command: ["--wiredTigerCacheSizeGB", "0.125"]
+    mem_limit: 512m
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_UPGRADE_PASSWORD:-local-rehearsal-only}
+    ports: !override
+      - "27018:27017"
+    volumes: !override
+      - mongodb_upgrade_data:/data/db
+      - ../mongo-upgrade-backups:/backups:ro
+
+  redis:
+    ports: !override
+      - "6380:6379"
+
+  web:
+    ports: !override
+      - "3002:3000"
+    environment: !override
+      RAILS_ENV: development
+      MONGOHQ_URL: mongodb://root:${MONGO_UPGRADE_PASSWORD:-local-rehearsal-only}@mongodb:27017/ufosightings?authSource=admin
+      REDIS_URL: redis://redis:6379
+    command: >
+      bash -c "bundle check || bundle install;
+      rm -f tmp/pids/server.pid;
+      bundle exec rails server -b 0.0.0.0"
+
+volumes:
+  mongodb_upgrade_data:
