@@ -9,8 +9,8 @@ gem 'rails', '~> 8.0.2'
 
 # MongoDB
 gem 'mongoid', '~> 9.0.13'
-# Production runs MongoDB 3.6 (wire version 6). mongo >= 2.24 refuses it.
-# Lift this pin only after upgrading the server to MongoDB 4.2+.
+# Production runs MongoDB 3.6 (wire version 6). mongo 2.26 needs wire 9 (MongoDB 4.4+).
+# Lift this pin only after upgrading the server to MongoDB 4.4+ (4.2 is wire 8: not enough).
 gem 'mongo', '~> 2.23.0'
 
 # Web server
