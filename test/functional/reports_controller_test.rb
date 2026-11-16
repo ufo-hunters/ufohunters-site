@@ -5,7 +5,7 @@ require 'test_helper'
 class ReportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @report = create_dummy_report
-    @report.sighted_at = '2012-01-01'
+    @report.sighted_at = '20120101'
     @report.reported_at = '2012-01-02'
     @report.coord = [4.0314, 36.5411]
     @report.links = ['http://www.youtube.com', 'http://www.google.com']
@@ -25,7 +25,7 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create report' do
     assert_difference('Report.count') do
-      post reports_path, params: { report: @report.attributes }
+      post reports_path, params: { report: form_params }
     end
 
     assert_response :redirect
@@ -84,7 +84,7 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
   # Regression: malformed coordinate input must not 500; it falls back to [0,0].
   test 'should not error on malformed coordinate input' do
     assert_difference('Report.count') do
-      post reports_path, params: { report: @report.attributes.merge('coord' => '91,not,coords') }
+      post reports_path, params: { report: form_params('coord' => '91,not,coords') }
     end
 
     assert_response :redirect
@@ -94,7 +94,7 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
   # Regression: links must be captured through permitted params (array of
   # strings), not a raw params bypass that could store arbitrary structures.
   test 'should store links submitted as an array' do
-    post reports_path, params: { report: @report.attributes.merge('links' => ['http://example.com/a']) }
+    post reports_path, params: { report: form_params('links' => ['http://example.com/a']) }
 
     assert_response :redirect
     assert_equal ['http://example.com/a'], Report.where(location: @report.location).first.links
@@ -104,5 +104,12 @@ class ReportsControllerTest < ActionDispatch::IntegrationTest
     get '/reports/ZZZ/country', params: { format: :xml }
 
     assert_response :not_found
+  end
+
+  private
+
+  # The form posts ISO dates ("YYYY-MM-DD"); the controller stores "YYYYMMDD".
+  def form_params(overrides = {})
+    @report.attributes.merge('sighted_at' => '2012-01-01').merge(overrides)
   end
 end
