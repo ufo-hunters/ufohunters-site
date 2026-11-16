@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# Phase checks for the MongoDB upgrade rehearsal (docker-compose.mongo-upgrade.yml).
+# Run from the repo root after each version or FCV change:
+#
+#   bin/mongo-upgrade-check
+#
+# Prints PASS/FAIL per check and exits non-zero if any check fails.
+set -uo pipefail
+
+COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.mongo-upgrade.yml)
+APP=${APP_URL:-http://localhost:3002}
+PASSWORD=${MONGO_UPGRADE_PASSWORD:-local-rehearsal-only}
+MONGO_CONTAINER=ufo-mongo-upgrade-mongodb-1
+failures=0
+
+pass() { printf 'PASS  %s\n' "$1"; }
+fail() { printf 'FAIL  %s\n' "$1"; failures=$((failures + 1)); }
+
+# Runs a JS snippet with the legacy shell (<= 5.0) or mongosh (>= 6.0).
+mongo_eval() {
+  local shell=mongo
+  docker exec "$MONGO_CONTAINER" which mongo >/dev/null 2>&1 || shell=mongosh
+  docker exec "$MONGO_CONTAINER" "$shell" --quiet -u root -p "$PASSWORD" \
+    --authenticationDatabase admin ufosightings --eval "$1"
+}
+
+rails_runner() {
+  "${COMPOSE[@]}" exec -T web bin/rails runner "$1" 2>/dev/null | tail -n 1
+}
+
+echo "== Server"
+mongo_eval 'print("version " + db.version() + ", FCV " +
+  db.adminCommand({getParameter: 1, featureCompatibilityVersion: 1}).featureCompatibilityVersion.version)'
+
+echo "== Data (expected from the 2026-11-16 production dump)"
+declare -A expected=([ufo]=205101 [users]=1292 [countries]=177 [articles]=113 [ckeditor_assets]=4)
+for collection in "${!expected[@]}"; do
+  count=$(mongo_eval "print(db.$collection.count())" | tail -n 1)
+  [[ "$count" -ge "${expected[$collection]}" ]] \
+    && pass "$collection: $count documents" \
+    || fail "$collection: $count documents, expected ${expected[$collection]}"
+done
+indexes=$(mongo_eval 'print(db.ufo.getIndexes().length)' | tail -n 1)
+[[ "$indexes" == 8 ]] && pass "ufo: 8 indexes" || fail "ufo: $indexes indexes, expected 8"
+mongo_eval 'print(JSON.stringify(db.ufo.getIndexes().map(function (i) { return i.key; })))' \
+  | grep -q '"2dsphere"' && pass "ufo: 2dsphere index on coord" || fail "ufo: 2dsphere index missing"
+
+echo "== Pages"
+report_id=$(mongo_eval 'print(db.ufo.findOne({status: 1, coord: {$exists: true}})._id.str)' | tail -n 1)
+country_code=$(mongo_eval 'print(db.countries.findOne({cod: "ESP"}).cod)' | tail -n 1)
+article_id=$(mongo_eval 'print(db.articles.findOne()._id.str)' | tail -n 1)
+for path in / /stats /map_json.json /stats/shape /sightings/maps "/sightings/search/$report_id/x" \
+            "/sightings/country/$country_code/x" "/articles/$article_id/x" /articles/uforesearchteam \
+            "/reports/$report_id.json"; do
+  result=$(curl -s -o /dev/null -m 60 -w '%{http_code} %{time_total}s' "$APP$path")
+  [[ "$result" == 200* ]] && pass "GET $path -> $result" || fail "GET $path -> $result"
+done
+
+echo "== Writes"
+write=$(rails_runner '
+  r = Report.new(sighted_at: "20120101", reported_at: "20120102", location: "Upgrade check",
+                 shape: "Light", duration: "1 min.", description: "mongo-upgrade-check",
+                 coord: [-0.29393, 40.87880], source: "ufo-hunters.com", email: "check@example.com")
+  ok = r.save && Report.where(coord: { "$near" => { "$geometry" => { type: "Point", coordinates: [-0.29393, 40.87880] },
+                                                   "$maxDistance" => 10 } }, description: "mongo-upgrade-check").exists?
+  r.destroy if r.persisted?
+  puts(ok ? "ok" : "failed: #{r.errors.full_messages.join(", ")}")')
+[[ "$write" == ok ]] && pass "create + 2dsphere query + delete a report" || fail "report write: $write"
+
+echo "== Login"
+rails_runner 'User.where(username: "upgradecheck").delete; User.create!(username: "upgradecheck", email: "upgradecheck@example.com", password: "upgrade-check-pw", password_confirmation: "upgrade-check-pw"); puts "ok"' >/dev/null
+jar=$(mktemp)
+token=$(curl -s -c "$jar" "$APP/articles/uforesearchteam" | grep -oE 'name="authenticity_token" value="[^"]+"' | head -n 1 | sed -E 's/.*value="([^"]+)"/\1/')
+location=$(curl -s -b "$jar" -c "$jar" -o /dev/null -w '%{redirect_url}' \
+  --data-urlencode "authenticity_token=$token" --data-urlencode username=upgradecheck \
+  --data-urlencode password=upgrade-check-pw "$APP/sessions")
+[[ "$location" == *myspace* ]] && pass "login redirects to myspace" || fail "login redirected to '$location'"
+rm -f "$jar"
+rails_runner 'User.where(username: "upgradecheck").delete; puts "ok"' >/dev/null
+
+echo "== Memory"
+docker stats --no-stream --format '{{.Name}} {{.MemUsage}}' | grep ufo-mongo-upgrade
+
+echo
+if [[ "$failures" -eq 0 ]]; then echo "ALL CHECKS PASSED"; else echo "$failures CHECK(S) FAILED"; exit 1; fi

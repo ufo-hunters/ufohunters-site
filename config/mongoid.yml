@@ -10,9 +10,9 @@ development:
 test:
   clients:
     default:
-      database: sightings_test
-      hosts:
-        - localhost:27017
+      # MONGO_TEST_URL lets the suite run against another server, e.g. the
+      # MongoDB upgrade mirror (docker-compose.mongo-upgrade.yml).
+      uri: <%= ENV.fetch('MONGO_TEST_URL', 'mongodb://localhost:27017/sightings_test') %>
       options:
         max_retries: 1
         retry_interval: 0
