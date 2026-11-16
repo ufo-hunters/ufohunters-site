@@ -1,3 +1,4 @@
 ---
 ignore:
   - GHSA-p9fm-f462-ggrg  # ActiveStorage DoS — not used (CarrierWave + Cloudinary)
+  - GHSA-4ww7-gqv6-mffc  # mongo driver GridFS query injection — GridFS not used; driver pinned for MongoDB 3.6
