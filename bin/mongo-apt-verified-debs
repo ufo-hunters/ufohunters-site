@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Downloads the mongodb-org .deb packages of one MongoDB version and verifies the
+# whole chain of trust, for repos whose signing key has already expired
+# (MongoDB 3.6 and 4.0 keys expired in 2023, so `apt-get update` rejects them):
+#
+#   1. Release.gpg is checked against MongoDB's key at a date when the key was valid
+#   2. the Packages index must match the SHA256 listed in the signed Release file
+#   3. every .deb must match the SHA256 listed in that Packages index
+#
+# Usage: bin/mongo-apt-verified-debs <series> <version> <distro> <outdir>
+#   bin/mongo-apt-verified-debs 4.0 4.0.28 bionic /root/mongo-debs/4.0
+# Then install with: apt-get install -y <outdir>/*.deb
+set -euo pipefail
+
+series=$1 version=$2 distro=$3 outdir=$4
+base="https://repo.mongodb.org/apt/ubuntu"
+dist="$base/dists/$distro/mongodb-org/$series"
+index="multiverse/binary-amd64/Packages"
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+mkdir -p "$outdir"
+
+curl -fsSL "https://www.mongodb.org/static/pgp/server-$series.asc" -o "$work/key.asc"
+curl -fsSL "$dist/Release" -o "$work/Release"
+curl -fsSL "$dist/Release.gpg" -o "$work/Release.gpg"
+curl -fsSL "$dist/$index" -o "$work/Packages"
+
+# 1. Signature, checked at the Release file's own date (the key was valid then).
+export GNUPGHOME="$work/gnupg"
+mkdir -m 700 "$GNUPGHOME"
+gpg --quiet --import "$work/key.asc" 2>/dev/null
+release_date=$(date -u -d "$(sed -n 's/^Date: //p' "$work/Release")" +%Y%m%dT%H%M%S)
+gpg --faked-system-time "$release_date" --status-fd 1 --verify "$work/Release.gpg" "$work/Release" 2>/dev/null \
+  | grep -q '^\[GNUPG:\] VALIDSIG' || { echo "Release signature INVALID" >&2; exit 1; }
+echo "OK  Release signature valid (checked at $release_date)"
+
+# 2. Packages index against the signed Release.
+expected=$(awk -v f="$index" '/^SHA256:/{s=1;next} /^[A-Za-z]/{s=0} s && $3==f {print $1}' "$work/Release")
+actual=$(sha256sum "$work/Packages" | cut -d' ' -f1)
+[[ -n "$expected" && "$expected" == "$actual" ]] || { echo "Packages SHA256 mismatch" >&2; exit 1; }
+echo "OK  Packages index matches Release"
+
+# 3. Each mongodb-org* package of this version.
+awk -v v="$version" '
+  /^Package: /  { pkg = $2 }
+  /^Version: /  { ver = $2 }
+  /^Filename: / { file = $2 }
+  /^SHA256: /   { sha = $2 }
+  /^$/ { if (pkg ~ /^mongodb-org/ && ver == v) print pkg, file, sha; pkg = ver = file = sha = "" }
+  END  { if (pkg ~ /^mongodb-org/ && ver == v) print pkg, file, sha }
+' "$work/Packages" | sort -u -k1,1 > "$work/wanted"
+[[ -s "$work/wanted" ]] || { echo "No mongodb-org packages for $version" >&2; exit 1; }
+# From 4.4 on, mongodb-org-tools depends on mongodb-database-tools, versioned separately: take the newest.
+tools=$(awk '
+  /^Package: /  { pkg = $2 }
+  /^Version: /  { ver = $2 }
+  /^Filename: / { file = $2 }
+  /^SHA256: /   { sha = $2 }
+  /^$/ { if (pkg == "mongodb-database-tools") print ver, pkg, file, sha; pkg = ver = file = sha = "" }
+  END  { if (pkg == "mongodb-database-tools") print ver, pkg, file, sha }
+' "$work/Packages" | sort -V | tail -n 1 | cut -d' ' -f2-)
+[[ -n "$tools" ]] && echo "$tools" >> "$work/wanted"
+
+while read -r pkg file sha; do
+  curl -fsSL "$base/$file" -o "$outdir/$(basename "$file")"
+  echo "$sha  $outdir/$(basename "$file")" | sha256sum --check --quiet \
+    || { echo "SHA256 mismatch for $pkg" >&2; exit 1; }
+  echo "OK  $pkg $(basename "$file")"
+done < "$work/wanted"

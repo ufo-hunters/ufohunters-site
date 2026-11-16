@@ -1,0 +1,183 @@
+#!/usr/bin/env bash
+# MongoDB 3.6 -> 4.4 upgrade runbook, one step per invocation. The same commands run in the
+# rehearsal container (MODE=fork) and on the production server (MODE=systemd).
+# Priority: NO DATA LOSS. Every step after `baseline` re-checks per-collection content hashes
+# (dbHash), document counts and index definitions against the baseline, and stops on any mismatch.
+#
+#   MONGO_URI   connection string with a root-capable user (production: MONGOHQ_URL from .env)
+#   MODE        systemd (production, default) | fork (rehearsal container without systemd)
+#   STATE_DIR   where the baseline, dump and logs go (default /root/mongo-upgrade)
+#
+# Steps, in order (the app must be stopped before `baseline` so nothing writes meanwhile):
+#   bin/mongo-upgrade-runbook preflight
+#   bin/mongo-upgrade-runbook baseline        # hashes, counts, indexes -> STATE_DIR/baseline.json
+#   bin/mongo-upgrade-runbook backup          # mongodump + cold copy of dbPath, then verify
+#   bin/mongo-upgrade-runbook install 4.0.28  # verified .debs, restart mongod, verify
+#   bin/mongo-upgrade-runbook fcv 4.0         # setFeatureCompatibilityVersion, verify
+#   ... install 4.2.25 / fcv 4.2 / install 4.4.32 / fcv 4.4
+#   bin/mongo-upgrade-runbook verify          # can be run at any time
+#   bin/mongo-upgrade-runbook rollback <copy> # back to 3.6.20 from the cold copy (keeps current files aside)
+set -euo pipefail
+
+MODE=${MODE:-systemd}
+STATE_DIR=${STATE_DIR:-/root/mongo-upgrade}
+MONGO_URI=${MONGO_URI:?set MONGO_URI to a root-capable connection string}
+CONF=/etc/mongod.conf
+DB=ufosightings
+HERE=$(cd "$(dirname "$0")" && pwd)
+mkdir -p "$STATE_DIR"
+chmod 700 "$STATE_DIR"
+
+log() { printf '[%s] %s\n' "$(date -u +%H:%M:%S)" "$*" | tee -a "$STATE_DIR/runbook.log"; }
+die() { log "STOP: $*"; exit 1; }
+js()  { mongo --quiet --norc "$MONGO_URI" --eval "$1"; }
+
+db_path() { awk '/dbPath:/ {print $2}' "$CONF"; }
+
+mongod_stop() {
+  pgrep -x mongod >/dev/null || return 0
+  if [[ "$MODE" == systemd ]]; then systemctl stop mongod; else mongod --config "$CONF" --shutdown >/dev/null; fi
+  for _ in $(seq 1 60); do pgrep -x mongod >/dev/null || return 0; sleep 1; done
+  die "mongod did not stop within 60 s"
+}
+
+mongod_start() {
+  if [[ "$MODE" == systemd ]]; then systemctl start mongod; else mongod --config "$CONF" --fork >/dev/null; fi
+  for _ in $(seq 1 120); do
+    js 'db.adminCommand({ping: 1}).ok' 2>/dev/null | grep -q '^1$' && return 0
+    sleep 1
+  done
+  die "mongod did not accept connections within 120 s (see $(awk '/path:/ {print $2}' "$CONF"))"
+}
+
+# Snapshot of everything that must survive: dbHash per collection, counts, index definitions.
+snapshot() {
+  js "
+    var d = db.getSiblingDB('$DB');
+    var h = d.runCommand({dbHash: 1});
+    if (!h.ok) { throw new Error('dbHash failed: ' + tojson(h)); }
+    var out = {collections: {}};
+    d.getCollectionNames().sort().forEach(function (c) {
+      if (c.indexOf('system.') === 0) { return; }
+      out.collections[c] = {
+        hash: h.collections[c],
+        count: d[c].count(),
+        indexes: d[c].getIndexes().map(function (i) { delete i.ns; return i; })
+      };
+    });
+    print(JSON.stringify(out));"
+}
+
+verify() {
+  [[ -f "$STATE_DIR/baseline.json" ]] || die "no baseline: run the baseline step first"
+  snapshot > "$STATE_DIR/current.json"
+  if ! python3 - "$STATE_DIR/baseline.json" "$STATE_DIR/current.json" <<'PY' | tee -a "$STATE_DIR/runbook.log"
+import json, sys
+from collections import OrderedDict
+load = lambda p: json.load(open(p), object_pairs_hook=OrderedDict)["collections"]
+base, cur = load(sys.argv[1]), load(sys.argv[2])
+def idx(c):
+    return {i["name"]: (list(i["key"].items()), sorted((k, json.dumps(v)) for k, v in i.items() if k != "key"))
+            for i in c["indexes"]}
+bad = 0
+for name in sorted(set(base) | set(cur)):
+    if name not in cur:
+        print("FAIL %s: collection missing" % name); bad += 1; continue
+    if name not in base:
+        print("FAIL %s: unexpected new collection" % name); bad += 1; continue
+    b, c = base[name], cur[name]
+    problems = []
+    if b["count"] != c["count"]: problems.append("count %s -> %s" % (b["count"], c["count"]))
+    if b["hash"] != c["hash"]:   problems.append("content hash changed")
+    if idx(b) != idx(c):         problems.append("indexes changed")
+    if problems:
+        print("FAIL %s: %s" % (name, "; ".join(problems))); bad += 1
+    else:
+        print("OK   %s: %d docs, hash %s, %d indexes" % (name, c["count"], c["hash"], len(c["indexes"])))
+sys.exit(1 if bad else 0)
+PY
+  then
+    die "data verification FAILED, do not continue (rollback: see plan F6)"
+  fi
+  log "verify: all collections identical to baseline"
+}
+
+state() { js 2>/dev/null 'var v = db.version(); var f = db.adminCommand({getParameter: 1, featureCompatibilityVersion: 1}).featureCompatibilityVersion; print("mongod " + v + ", FCV " + (f.version || tojson(f)))' || echo "mongod not running"; }
+
+step=${1:-}
+started=$(date +%s)
+case "$step" in
+  preflight)
+    log "preflight: $(state)"
+    log "dbPath $(db_path): $(du -sh "$(db_path)" | cut -f1) used, $(df -h --output=avail "$(db_path)" | tail -n 1 | tr -d ' ') free"
+    log "memory: $(free -m | awk '/Mem:/ {print $7 " MB available of " $2}')"
+    grep -vE '^\s*(#|$)' "$CONF" | tee -a "$STATE_DIR/runbook.log"
+    ;;
+  baseline)
+    [[ -f "$STATE_DIR/baseline.json" && -z "${FORCE:-}" ]] && die "baseline already exists (FORCE=1 to replace)"
+    snapshot > "$STATE_DIR/baseline.json"
+    log "baseline: $(state); $(python3 -c 'import json,sys; c=json.load(open(sys.argv[1]))["collections"]; print(", ".join("%s=%d" % (k, v["count"]) for k, v in c.items()))' "$STATE_DIR/baseline.json")"
+    ;;
+  backup)
+    dump="$STATE_DIR/dump-$(date -u +%Y%m%d-%H%M%S).archive.gz"
+    mongodump --quiet --uri "$MONGO_URI" --gzip --archive="$dump"
+    log "backup: dump $dump ($(du -h "$dump" | cut -f1))"
+    copy="$(db_path)-copy-$(date -u +%Y%m%d-%H%M%S)"
+    mongod_stop
+    cp -a "$(db_path)" "$copy"
+    log "backup: cold copy of $(db_path) at $copy ($(du -sh "$copy" | cut -f1))"
+    mongod_start
+    verify
+    ;;
+  install)
+    version=${2:?version, e.g. 4.0.28}
+    series=${version%.*}
+    debs="$STATE_DIR/debs-$version"
+    "$HERE/mongo-apt-verified-debs" "$series" "$version" bionic "$debs" | tee -a "$STATE_DIR/runbook.log"
+    log "install $version: $(state) before"
+    mongod_stop
+    # The tools package changed layout in 4.4 (mongodb-org-database-tools-extra now owns
+    # /usr/bin/install_compass), so installing over the old tools fails. Removing the meta
+    # package and the old tools first does not touch mongod, its config or the data files.
+    dpkg --remove --force-depends mongodb-org mongodb-org-tools >> "$STATE_DIR/runbook.log" 2>&1 || true
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -q --allow-downgrades \
+      -o Dpkg::Options::=--force-confold "$debs"/*.deb >> "$STATE_DIR/runbook.log" 2>&1
+    mongod_start
+    log "install $version: $(state) after"
+    verify
+    ;;
+  fcv)
+    target=${2:?FCV, e.g. 4.0}
+    js "var r = db.adminCommand({setFeatureCompatibilityVersion: '$target'}); if (!r.ok) { throw new Error(tojson(r)); }"
+    log "fcv: $(state)"
+    verify
+    ;;
+  rollback)
+    # Back to MongoDB 3.6.20 with the cold copy taken by `backup`. The current data files are
+    # kept aside (never deleted), so the rollback itself cannot lose anything either.
+    copy=${2:?path of the cold copy printed by the backup step}
+    [[ -d "$copy" ]] || die "cold copy $copy not found"
+    debs="$STATE_DIR/debs-3.6.20"
+    "$HERE/mongo-apt-verified-debs" 3.6 3.6.20 xenial "$debs" | tee -a "$STATE_DIR/runbook.log"
+    mongod_stop
+    dpkg --remove --force-depends mongodb-org mongodb-org-tools mongodb-org-database-tools-extra \
+      mongodb-database-tools >> "$STATE_DIR/runbook.log" 2>&1 || true
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -q --allow-downgrades \
+      -o Dpkg::Options::=--force-confold "$debs"/*.deb >> "$STATE_DIR/runbook.log" 2>&1
+    aside="$(db_path)-failed-$(date -u +%Y%m%d-%H%M%S)"
+    mv "$(db_path)" "$aside"
+    cp -a "$copy" "$(db_path)"
+    log "rollback: data files of the failed attempt kept at $aside"
+    mongod_start
+    log "rollback: $(state)"
+    verify
+    ;;
+  verify)
+    log "verify: $(state)"
+    verify
+    ;;
+  *)
+    sed -n '2,20p' "$0"; exit 1
+    ;;
+esac
+log "$step ${2:-} done in $(( $(date +%s) - started )) s"
