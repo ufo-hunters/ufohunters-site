@@ -23,7 +23,9 @@
 #   ... install 4.2.25 / fcv 4.2 / install 4.4.32 / fcv 4.4
 #   bin/mongo-upgrade-runbook verify          # can be run at any time
 #   bin/mongo-upgrade-runbook rollback <copy> # back to 3.6.20 from the cold copy
+#   bin/mongo-upgrade-runbook save-config     # only after editing /etc/mongod.conf by hand
 set -Eeuo pipefail
+export LC_ALL=C   # byte-order sorting, so checksum lists match across SSH sessions
 
 MODE=${MODE:-systemd}
 STATE_DIR=${STATE_DIR:-/root/mongo-upgrade}
@@ -39,7 +41,13 @@ log() { printf '[%s] %s\n' "$(date -u +%H:%M:%S)" "$*" | tee -a "$STATE_DIR/runb
 die() {
   trap - ERR
   log "STOP: $*"
-  log "STOP: mongod is $(pgrep -x mongod >/dev/null && echo running || echo STOPPED). Log: $STATE_DIR/runbook.log"
+  if pgrep -x mongod >/dev/null; then
+    log "STOP: mongod is running. Log: $STATE_DIR/runbook.log"
+  else
+    log "STOP: mongod is STOPPED. Log: $STATE_DIR/runbook.log"
+    log "STOP: recover by starting it ($( [[ "$MODE" == systemd ]] && echo 'systemctl start mongod' || echo "mongod --config $CONF --fork")) and running 'verify',"
+    log "STOP: or go back with 'rollback <cold copy>' (path in $STATE_DIR/backup.done). The data files are untouched."
+  fi
   exit 1
 }
 trap 'die "unexpected error on line $LINENO: $BASH_COMMAND"' ERR
@@ -122,12 +130,15 @@ save_config() {
   done
 }
 # A changed /etc/mongod.conf is put back (it holds dbPath, auth and the cache limit);
-# other changed files are only reported.
+# other changed files are only reported. If you edit /etc/mongod.conf by hand during the
+# upgrade, run the `save-config` step afterwards or your edit will be reverted.
 restore_mongod_conf() {
   local saved="$STATE_DIR/config/etc/mongod.conf" f
   [[ -f "$saved" ]] || die "no saved copy of $CONF (run backup first)"
   if ! cmp -s "$saved" "$CONF"; then
-    log "WARN: the package changed $CONF; restoring the saved copy"
+    log "WARN: $CONF differs from the copy saved at backup time; restoring the saved copy"
+    diff "$saved" "$CONF" | tee -a "$STATE_DIR/runbook.log" || true
+    log "WARN: (if that was your own edit, re-apply it, run the save-config step and repeat this step)"
     cp -a "$saved" "$CONF"
   fi
   for f in "${CONFIG_FILES[@]:1}"; do
@@ -268,11 +279,15 @@ case "$step" in
     grep -vE '^\s*(#|$)' "$CONF" | tee -a "$STATE_DIR/runbook.log" || true
     if grep -qE '^\s*(http|mmapv1|engine:\s*mmapv1)' "$CONF"; then die "$CONF has options removed after 3.6"; fi
     check_server
-    log "preflight: rollback packages ready at $(verified_debs "$ROLLBACK_VERSION")"
+    rollback_debs=$(verified_debs "$ROLLBACK_VERSION")
+    log "preflight: rollback packages ready at $rollback_debs"
     ;;
   baseline)
     require_app_stopped
     if [[ -s "$STATE_DIR/baseline.json" && -z "${FORCE:-}" ]]; then die "baseline already exists (FORCE=1 to replace)"; fi
+    if [[ -z "${FORCE:-}" && ( "$(series_of "$(running_version)")" != 3.6 || "$(current_fcv)" != 3.6 ) ]]; then
+      die "baseline must be taken on 3.6 with FCV 3.6 before upgrading"
+    fi
     snapshot > "$STATE_DIR/baseline.json.new"
     python3 -c 'import json,sys; c=json.load(open(sys.argv[1]))["collections"]; sys.exit(0 if any(not k.startswith("admin.") and v["count"] > 0 for k, v in c.items()) else 1)' \
       "$STATE_DIR/baseline.json.new" || die "baseline is empty: wrong database or credentials?"
@@ -289,6 +304,8 @@ case "$step" in
     require_free_space $((data_kb / 2 + 524288)) "$STATE_DIR"
     version_before=$(running_version)
     fcv_before=$(current_fcv)
+    check_server
+    verify   # the data being backed up must be exactly the baseline
     save_config
 
     dump="$STATE_DIR/dump-$(date -u +%Y%m%d-%H%M%S).archive.gz"
@@ -308,11 +325,11 @@ case "$step" in
     fi
     printf 'copy=%s\nversion=%s\nfcv=%s\nfiles=%s\ndate=%s\n' "$copy" "$version_before" "$fcv_before" \
       "$(wc -l < "$copy.sha256")" "$(date -u +%FT%TZ)" > "$copy.COMPLETE"
-    echo "$copy" > "$STATE_DIR/backup.done"
     log "backup: cold copy at $copy ($(du -sh "$copy" | cut -f1), $(wc -l < "$copy.sha256") files checksummed, identical)"
     mongod_start
     check_server
     verify
+    echo "$copy" > "$STATE_DIR/backup.done"
     ;;
   install)
     version=${2:?version, e.g. 4.0.28}
@@ -326,10 +343,12 @@ case "$step" in
     fcv=$(current_fcv)
     [[ "$(series_of "$now")" == "$expected" && "$fcv" == "$expected" ]] \
       || die "install $version needs mongod $expected.x with FCV $expected; found $now with FCV $fcv"
+    verify   # nothing changed since the last step
     debs=$(verified_debs "$version")
     log "install $version: $(state) before"
     mongod_stop
     install_debs "$debs"
+    mongod_stop   # in case the package's postinst started it with its own config
     restore_mongod_conf
     mongod_start
     now=$(running_version)
@@ -348,10 +367,15 @@ case "$step" in
     [[ "$(series_of "$now")" == "$target" ]] || die "FCV $target needs mongod $target.x; found $now"
     fcv=$(current_fcv)
     [[ "$fcv" == "$target" || "$fcv" == "$(previous_series "$target")" ]] || die "unexpected FCV $fcv"
+    verify   # nothing changed since the last step
     js "var r = db.adminCommand({setFeatureCompatibilityVersion: '$target'}); if (!r.ok) { throw new Error(tojson(r)); }"
     [[ "$(current_fcv)" == "$target" ]] || die "FCV did not change to $target"
     log "fcv: $(state)"
     verify
+    ;;
+  save-config)
+    save_config
+    log "save-config: $CONF and unit files saved; later steps will keep this version"
     ;;
   verify)
     log "verify: $(state)"
@@ -361,7 +385,7 @@ case "$step" in
   rollback)
     # Back to MongoDB 3.6.20 with the cold copy taken by `backup`. The current data files are
     # moved aside (never deleted), so the rollback itself cannot lose anything either.
-    copy=${2:?path of the cold copy printed by the backup step}
+    copy=$(realpath -m "${2:?path of the cold copy printed by the backup step}")
     require_app_stopped
     [[ -f "$copy.COMPLETE" ]] || die "$copy has no .COMPLETE marker: not a verified cold copy"
     grep -q "^version=$ROLLBACK_VERSION$" "$copy.COMPLETE" || die "$copy was not taken on $ROLLBACK_VERSION"
@@ -372,13 +396,15 @@ case "$step" in
     debs=$(verified_debs "$ROLLBACK_VERSION")
     mongod_stop
     install_debs "$debs"
+    mongod_stop   # in case the package's postinst started it on the failed data files
     restore_mongod_conf
     aside="$path-failed-$(date -u +%Y%m%d-%H%M%S)"
     mv "$path" "$aside"
     log "rollback: data files of the failed attempt kept at $aside"
-    cp -a "$copy" "$path"
+    cp -a "$copy" "$path" || die "copying $copy to $path failed; failed data is at $aside, the cold copy is intact"
     sync
-    tree_checksums "$path" | cmp -s - "$copy.sha256" || die "restored $path does not match the cold copy"
+    tree_checksums "$path" | cmp -s - "$copy.sha256" \
+      || die "restored $path does not match the cold copy; failed data is at $aside, the cold copy is intact"
     mongod_start
     now=$(running_version)
     [[ "$now" == "$ROLLBACK_VERSION" ]] || die "mongod reports $now after rollback"
@@ -387,7 +413,7 @@ case "$step" in
     verify
     ;;
   *)
-    sed -n '2,26p' "$0"; exit 1
+    sed -n '2,27p' "$0"; exit 1
     ;;
 esac
 log "$step ${2:-} done in $(( $(date +%s) - started )) s"
