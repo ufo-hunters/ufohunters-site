@@ -8,10 +8,10 @@ gem 'minitest', '~> 5.25'
 gem 'rails', '~> 8.0.2'
 
 # MongoDB
-gem 'mongoid', '~> 9.0'
+gem 'mongoid', '~> 9.0.13'
 
 # Web server
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 7.2', '>= 7.2.2'
 
 # Security
 gem 'bcrypt', '~> 3.1'
