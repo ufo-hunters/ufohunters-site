@@ -9,9 +9,9 @@ gem 'rails', '~> 8.0.2'
 
 # MongoDB
 gem 'mongoid', '~> 9.0.13'
-# Production runs MongoDB 3.6 (wire version 6). mongo 2.26 needs wire 9 (MongoDB 4.4+).
-# Lift this pin only after upgrading the server to MongoDB 4.4+ (4.2 is wire 8: not enough).
-gem 'mongo', '~> 2.23.0'
+# Production runs MongoDB 4.4 (wire version 9). CI tests against the same version, so a
+# driver release that drops 4.4 fails there before it reaches production.
+gem 'mongo', '~> 2.26', '>= 2.26.1'
 
 # Web server
 gem 'puma', '~> 7.2', '>= 7.2.2'
