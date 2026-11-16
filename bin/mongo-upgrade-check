@@ -40,10 +40,50 @@ for collection in "${!expected[@]}"; do
     && pass "$collection: $count documents" \
     || fail "$collection: $count documents, expected ${expected[$collection]}"
 done
-indexes=$(mongo_eval 'print(db.ufo.getIndexes().length)' | tail -n 1)
-[[ "$indexes" == 8 ]] && pass "ufo: 8 indexes" || fail "ufo: $indexes indexes, expected 8"
-mongo_eval 'print(JSON.stringify(db.ufo.getIndexes().map(function (i) { return i.key; })))' \
-  | grep -q '"2dsphere"' && pass "ufo: 2dsphere index on coord" || fail "ufo: 2dsphere index missing"
+echo "== Indexes (compared with production, db/mongo-upgrade/indexes-baseline.json)"
+# Full definitions: name, key order of compound indexes, index version and options
+# such as 2dsphereIndexVersion. `ns` is dropped because MongoDB 4.4 stops reporting it.
+current_indexes=$(mongo_eval '
+  var out = {};
+  db.getCollectionNames().sort().forEach(function (c) {
+    out[c] = db[c].getIndexes().map(function (i) { delete i.ns; return i; });
+  });
+  print(JSON.stringify(out));' | tail -n 1)
+index_report=$(python3 - "$current_indexes" db/mongo-upgrade/indexes-baseline.json <<'PY'
+import json, sys
+from collections import OrderedDict
+
+def load(text):
+    return json.loads(text, object_pairs_hook=OrderedDict)
+
+def canonical(collections):
+    result = {}
+    for name, indexes in collections.items():
+        if name.startswith("system."):
+            continue
+        for index in indexes:
+            key = list(index["key"].items())  # order matters for compound indexes
+            options = sorted((k, json.dumps(v)) for k, v in index.items() if k not in ("key", "ns"))
+            result[(name, index["name"])] = (key, options)
+    return result
+
+current = canonical(load(sys.argv[1]))
+baseline = canonical(load(open(sys.argv[2]).read()))
+for ident in sorted(set(baseline) | set(current)):
+    label = "%s.%s" % ident
+    if ident not in current:
+        print("FAIL missing %s" % label)
+    elif ident not in baseline:
+        print("FAIL extra %s %s" % (label, current[ident]))
+    elif current[ident] != baseline[ident]:
+        print("FAIL changed %s: %s -> %s" % (label, baseline[ident], current[ident]))
+    else:
+        print("PASS %s" % label)
+PY
+)
+while read -r status detail; do
+  [[ "$status" == PASS ]] && pass "index $detail" || fail "index $detail"
+done <<< "$index_report"
 
 echo "== Pages"
 report_id=$(mongo_eval 'print(db.ufo.findOne({status: 1, coord: {$exists: true}})._id.str)' | tail -n 1)
