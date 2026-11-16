@@ -1,0 +1,419 @@
+#!/usr/bin/env bash
+# MongoDB 3.6 -> 4.4 upgrade runbook, one step per invocation. The same commands run in the
+# rehearsal container (MODE=fork) and on the production server (MODE=systemd).
+#
+# Priority: NO DATA LOSS.
+# - `backup` takes a gzip dump (integrity-tested) and a cold copy of dbPath whose files are
+#   checksummed against the originals; the copy gets a .COMPLETE marker only if they match.
+# - Every step refuses to run out of order (baseline, backup, version and FCV preconditions,
+#   app stopped) and, afterwards, compares per-collection content hashes (dbHash), document
+#   counts and index definitions with the baseline, plus admin users/roles, auth and config.
+# - Nothing is ever deleted: rollback moves the failed data files aside.
+#
+#   MONGO_URI   connection string with a root-capable user (production: MONGOHQ_URL from .env)
+#   MODE        systemd (production, default) | fork (rehearsal container without systemd)
+#   STATE_DIR   where the baseline, dump, packages and logs go (default /root/mongo-upgrade)
+#
+# Steps, in order (stop the app before `baseline` so nothing writes meanwhile):
+#   bin/mongo-upgrade-runbook preflight       # tools, config, disk; pre-downloads 3.6.20 for rollback
+#   bin/mongo-upgrade-runbook baseline        # hashes, counts, indexes -> STATE_DIR/baseline.json
+#   bin/mongo-upgrade-runbook backup          # dump + verified cold copy of dbPath, then verify
+#   bin/mongo-upgrade-runbook install 4.0.28  # verified .debs, restart mongod, verify
+#   bin/mongo-upgrade-runbook fcv 4.0         # setFeatureCompatibilityVersion, verify
+#   ... install 4.2.25 / fcv 4.2 / install 4.4.32 / fcv 4.4
+#   bin/mongo-upgrade-runbook verify          # can be run at any time
+#   bin/mongo-upgrade-runbook rollback <copy> # back to 3.6.20 from the cold copy
+#   bin/mongo-upgrade-runbook save-config     # only after editing /etc/mongod.conf by hand
+set -Eeuo pipefail
+export LC_ALL=C   # byte-order sorting, so checksum lists match across SSH sessions
+
+MODE=${MODE:-systemd}
+STATE_DIR=${STATE_DIR:-/root/mongo-upgrade}
+MONGO_URI=${MONGO_URI:?set MONGO_URI to a root-capable connection string}
+CONF=/etc/mongod.conf
+DB=ufosightings
+ROLLBACK_VERSION=3.6.20
+HERE=$(cd "$(dirname "$0")" && pwd)
+mkdir -p "$STATE_DIR"
+chmod 700 "$STATE_DIR"
+
+log() { printf '[%s] %s\n' "$(date -u +%H:%M:%S)" "$*" | tee -a "$STATE_DIR/runbook.log"; }
+die() {
+  trap - ERR
+  log "STOP: $*"
+  if pgrep -x mongod >/dev/null; then
+    log "STOP: mongod is running. Log: $STATE_DIR/runbook.log"
+  else
+    log "STOP: mongod is STOPPED. Log: $STATE_DIR/runbook.log"
+    log "STOP: recover by starting it ($( [[ "$MODE" == systemd ]] && echo 'systemctl start mongod' || echo "mongod --config $CONF --fork")) and running 'verify',"
+    log "STOP: or go back with 'rollback <cold copy>' (path in $STATE_DIR/backup.done). The data files are untouched."
+  fi
+  exit 1
+}
+trap 'die "unexpected error on line $LINENO: $BASH_COMMAND"' ERR
+
+js() { mongo --quiet --norc "$MONGO_URI" --eval "$1"; }
+
+# dbPath from the config, as an absolute path without trailing slash (copies go next to it).
+db_path() {
+  local raw path
+  raw=$(awk '/^[ \t]*dbPath:/ { print $2; exit }' "$CONF" | tr -d "\"'")
+  [[ "$raw" == /* ]] || die "dbPath '$raw' in $CONF is not an absolute path"
+  path=$(realpath -m "$raw")
+  [[ "$path" != / ]] || die "dbPath is /"
+  echo "$path"
+}
+
+series_of() { echo "${1%.*}"; }
+previous_series() {
+  case "$1" in 4.0) echo 3.6 ;; 4.2) echo 4.0 ;; 4.4) echo 4.2 ;; *) die "unsupported target series $1" ;; esac
+}
+
+running_version() { js 'print(db.version())'; }
+current_fcv() { js 'print(db.adminCommand({getParameter: 1, featureCompatibilityVersion: 1}).featureCompatibilityVersion.version)'; }
+state() {
+  if pgrep -x mongod >/dev/null; then
+    echo "mongod $(running_version 2>/dev/null || echo '?'), FCV $(current_fcv 2>/dev/null || echo '?')"
+  else
+    echo "mongod not running"
+  fi
+}
+
+require_app_stopped() {
+  if [[ "$MODE" == systemd ]] && systemctl is-active --quiet ufohunters; then
+    die "the app is running: systemctl stop ufohunters first, nothing may write during the upgrade"
+  fi
+}
+require_baseline() { [[ -s "$STATE_DIR/baseline.json" ]] || die "no baseline: run the baseline step first"; }
+require_backup() { [[ -s "$STATE_DIR/backup.done" ]] || die "no verified backup: run the backup step first"; }
+
+mongod_stop() {
+  pgrep -x mongod >/dev/null || return 0
+  if [[ "$MODE" == systemd ]]; then systemctl stop mongod; else mongod --config "$CONF" --shutdown >/dev/null; fi
+  local _
+  for _ in $(seq 1 60); do pgrep -x mongod >/dev/null || return 0; sleep 1; done
+  die "mongod did not stop within 60 s"
+}
+
+mongod_start() {
+  if [[ "$MODE" == systemd ]]; then
+    systemctl daemon-reload
+    systemctl start mongod
+  else
+    mongod --config "$CONF" --fork >/dev/null
+  fi
+  local _ out
+  for _ in $(seq 1 120); do
+    out=$(js 'print(db.adminCommand({ping: 1}).ok)' 2>/dev/null || true)
+    [[ "$out" == 1 ]] && return 0
+    sleep 1
+  done
+  die "mongod did not accept connections within 120 s (see $(awk '/^[ \t]*path:/ { print $2; exit }' "$CONF"))"
+}
+
+# Checksums of every file under a directory, relative paths, sorted.
+tree_checksums() { (cd "$1" && find . -type f -print0 | sort -z | xargs -0 sha256sum); }
+
+require_free_space() {
+  local needed_kb=$1 where=$2 free_kb
+  free_kb=$(df -Pk "$where" | awk 'NR == 2 { print $4 }')
+  (( free_kb > needed_kb )) || die "not enough disk in $where: $((free_kb / 1024)) MB free, need $((needed_kb / 1024)) MB"
+}
+
+# Config files that must survive package upgrades. Saved by `backup`, compared after installs.
+CONFIG_FILES=(/etc/mongod.conf /etc/default/mongod /lib/systemd/system/mongod.service /etc/systemd/system/mongod.service)
+save_config() {
+  local f
+  mkdir -p "$STATE_DIR/config"
+  for f in "${CONFIG_FILES[@]}" /etc/systemd/system/mongod.service.d/*.conf; do
+    if [[ -f "$f" ]]; then cp -a --parents "$f" "$STATE_DIR/config/"; fi
+  done
+}
+# A changed /etc/mongod.conf is put back (it holds dbPath, auth and the cache limit);
+# other changed files are only reported. If you edit /etc/mongod.conf by hand during the
+# upgrade, run the `save-config` step afterwards or your edit will be reverted.
+restore_mongod_conf() {
+  local saved="$STATE_DIR/config/etc/mongod.conf" f
+  [[ -f "$saved" ]] || die "no saved copy of $CONF (run backup first)"
+  if ! cmp -s "$saved" "$CONF"; then
+    log "WARN: $CONF differs from the copy saved at backup time; restoring the saved copy"
+    diff "$saved" "$CONF" | tee -a "$STATE_DIR/runbook.log" || true
+    log "WARN: (if that was your own edit, re-apply it, run the save-config step and repeat this step)"
+    cp -a "$saved" "$CONF"
+  fi
+  for f in "${CONFIG_FILES[@]:1}"; do
+    if [[ -f "$STATE_DIR/config$f" ]] && ! cmp -s "$STATE_DIR/config$f" "$f"; then
+      log "NOTE: $f changed with the package:"
+      diff "$STATE_DIR/config$f" "$f" | tee -a "$STATE_DIR/runbook.log" || true
+    fi
+  done
+  if [[ -f /lib/systemd/system/mongod.service ]] && ! grep -q -- '--config /etc/mongod.conf' /lib/systemd/system/mongod.service; then
+    die "the mongod unit no longer starts with --config /etc/mongod.conf"
+  fi
+}
+
+# Auth must still be enforced and the storage engine unchanged after every restart.
+check_server() {
+  local engine auth
+  # Reading a document without credentials must fail. (Listing collections is not a valid
+  # test: from 4.0 the shell falls back to an empty list instead of an error.)
+  if mongo --quiet --norc "mongodb://127.0.0.1:27017/$DB" --eval "db.ufo.findOne({}, {_id: 1})" >/dev/null 2>&1; then
+    die "an unauthenticated client can read $DB.ufo: authorization is OFF"
+  fi
+  auth=$(js 'var s = db.adminCommand({getCmdLineOpts: 1}).parsed.security; print(s ? s.authorization : "none")')
+  [[ "$auth" == enabled ]] || die "mongod runs with security.authorization=$auth"
+  engine=$(js 'print(db.serverStatus().storageEngine.name)')
+  [[ "$engine" == wiredTiger ]] || die "storage engine is '$engine', expected wiredTiger"
+  log "server: auth enforced, storage engine $engine"
+}
+
+# Snapshot of everything that must survive: dbHash per collection, counts, index definitions,
+# for the app database, plus admin users and roles.
+snapshot() {
+  js "
+    var out = {collections: {}};
+    var d = db.getSiblingDB('$DB');
+    var h = d.runCommand({dbHash: 1});
+    if (!h.ok) { throw new Error('dbHash failed: ' + tojson(h)); }
+    d.getCollectionInfos().sort(function (a, b) { return a.name < b.name ? -1 : 1; }).forEach(function (info) {
+      var c = info.name;
+      if (info.type === 'view') { out.collections[c] = {hash: 'view ' + tojson(info.options), count: 0, indexes: []}; return; }
+      if (c.indexOf('system.') === 0) { return; }
+      out.collections[c] = {
+        hash: h.collections[c],
+        count: d[c].find().count(),
+        indexes: d[c].getIndexes().map(function (i) { delete i.ns; return i; })
+      };
+    });
+    var admin = db.getSiblingDB('admin');
+    ['system.users', 'system.roles'].forEach(function (c) {
+      var ah = admin.runCommand({dbHash: 1, collections: [c]});
+      out.collections['admin.' + c] = {hash: ah.collections[c] || 'absent', count: admin[c].find().count(), indexes: []};
+    });
+    print(JSON.stringify(out));"
+}
+
+verify() {
+  require_baseline
+  snapshot > "$STATE_DIR/current.json"
+  if ! python3 - "$STATE_DIR/baseline.json" "$STATE_DIR/current.json" <<'PY' | tee -a "$STATE_DIR/runbook.log"
+import json, sys
+from collections import OrderedDict
+load = lambda p: json.load(open(p), object_pairs_hook=OrderedDict)["collections"]
+base, cur = load(sys.argv[1]), load(sys.argv[2])
+def idx(c):
+    return {i["name"]: (list(i["key"].items()), sorted((k, json.dumps(v)) for k, v in i.items() if k != "key"))
+            for i in c["indexes"]}
+bad = 0
+for name in sorted(set(base) | set(cur)):
+    if name not in cur:
+        print("FAIL %s: collection missing" % name); bad += 1; continue
+    if name not in base:
+        print("FAIL %s: unexpected new collection" % name); bad += 1; continue
+    b, c = base[name], cur[name]
+    problems = []
+    if b["count"] != c["count"]: problems.append("count %s -> %s" % (b["count"], c["count"]))
+    if b["hash"] != c["hash"]:   problems.append("content hash changed")
+    if idx(b) != idx(c):         problems.append("indexes changed")
+    if problems:
+        print("FAIL %s: %s" % (name, "; ".join(problems))); bad += 1
+    else:
+        print("OK   %s: %d docs, hash %s, %d indexes" % (name, c["count"], c["hash"], len(c["indexes"])))
+sys.exit(1 if bad else 0)
+PY
+  then
+    die "data verification FAILED, do not continue (rollback: bin/mongo-upgrade-runbook rollback <copy>)"
+  fi
+  log "verify: all collections identical to baseline"
+}
+
+# Verified packages for a version: download if needed, then re-check every listed file offline.
+verified_debs() {
+  local version=$1 series distro dir
+  series=$(series_of "$version")
+  distro=bionic
+  if [[ "$series" == 3.6 ]]; then distro=xenial; fi
+  dir="$STATE_DIR/debs-$version"
+  if [[ ! -s "$dir/VERIFIED" ]]; then
+    "$HERE/mongo-apt-verified-debs" "$series" "$version" "$distro" "$dir" >> "$STATE_DIR/runbook.log" 2>&1 \
+      || die "could not download/verify MongoDB $version packages (see log)"
+  fi
+  (cd "$dir" && sha256sum --check --quiet VERIFIED) || die "packages in $dir no longer match VERIFIED"
+  echo "$dir"
+}
+
+# Installs exactly the verified files of a version, replacing whatever MongoDB packages exist.
+install_debs() {
+  local dir=$1 pkg file status files=() old=()
+  while read -r _ file; do files+=("$dir/$file"); done < "$dir/VERIFIED"
+  # mongodb-org-tools changed layout in 4.4 (mongodb-org-database-tools-extra now owns
+  # /usr/bin/install_compass), so the old meta and tools packages go first. This does not
+  # touch mongod, its config or the data files.
+  for pkg in mongodb-org mongodb-org-database mongodb-org-tools mongodb-org-database-tools-extra mongodb-database-tools; do
+    # Any state dpkg still tracks (installed, unpacked, half-configured...) except gone/config-only.
+    status=$(dpkg-query -W -f='${Status}' "$pkg" 2>/dev/null || true)
+    if [[ -n "$status" && "$status" != *not-installed && "$status" != *config-files ]]; then old+=("$pkg"); fi
+  done
+  if (( ${#old[@]} )); then
+    dpkg --remove --force-depends "${old[@]}" >> "$STATE_DIR/runbook.log" 2>&1 \
+      || die "dpkg --remove ${old[*]} failed; mongod is stopped (see log)"
+  fi
+  if ! DEBIAN_FRONTEND=noninteractive apt-get install -y -q --allow-downgrades \
+       -o Dpkg::Options::=--force-confold "${files[@]}" >> "$STATE_DIR/runbook.log" 2>&1; then
+    tail -n 20 "$STATE_DIR/runbook.log"
+    die "apt-get install failed; mongod is stopped"
+  fi
+}
+
+step=${1:-}
+started=$(date +%s)
+case "$step" in
+  preflight)
+    for tool in mongo mongod mongodump python3 gpg curl sha256sum realpath; do
+      command -v "$tool" >/dev/null || die "missing tool: $tool"
+    done
+    log "preflight: $(state)"
+    path=$(db_path)
+    log "dbPath $path: $(du -sh "$path" | cut -f1) used, $(df -Ph "$path" | awk 'NR == 2 { print $4 }') free"
+    log "memory: $(free -m | awk '/Mem:/ {print $7 " MB available of " $2}')"
+    grep -vE '^\s*(#|$)' "$CONF" | tee -a "$STATE_DIR/runbook.log" || true
+    if grep -qE '^\s*(http|mmapv1|engine:\s*mmapv1)' "$CONF"; then die "$CONF has options removed after 3.6"; fi
+    check_server
+    rollback_debs=$(verified_debs "$ROLLBACK_VERSION")
+    log "preflight: rollback packages ready at $rollback_debs"
+    ;;
+  baseline)
+    require_app_stopped
+    if [[ -s "$STATE_DIR/baseline.json" && -z "${FORCE:-}" ]]; then die "baseline already exists (FORCE=1 to replace)"; fi
+    if [[ -z "${FORCE:-}" && ( "$(series_of "$(running_version)")" != 3.6 || "$(current_fcv)" != 3.6 ) ]]; then
+      die "baseline must be taken on 3.6 with FCV 3.6 before upgrading"
+    fi
+    snapshot > "$STATE_DIR/baseline.json.new"
+    python3 -c 'import json,sys; c=json.load(open(sys.argv[1]))["collections"]; sys.exit(0 if any(not k.startswith("admin.") and v["count"] > 0 for k, v in c.items()) else 1)' \
+      "$STATE_DIR/baseline.json.new" || die "baseline is empty: wrong database or credentials?"
+    if [[ -s "$STATE_DIR/baseline.json" ]]; then mv "$STATE_DIR/baseline.json" "$STATE_DIR/baseline.json.$(date -u +%Y%m%d-%H%M%S)"; fi
+    mv "$STATE_DIR/baseline.json.new" "$STATE_DIR/baseline.json"
+    log "baseline: $(state); $(python3 -c 'import json,sys; c=json.load(open(sys.argv[1]))["collections"]; print(", ".join("%s=%d" % (k, v["count"]) for k, v in c.items()))' "$STATE_DIR/baseline.json")"
+    ;;
+  backup)
+    require_app_stopped
+    require_baseline
+    path=$(db_path)
+    data_kb=$(du -sk "$path" | cut -f1)
+    require_free_space $((data_kb * 2 + 1048576)) "$(dirname "$path")"
+    require_free_space $((data_kb / 2 + 524288)) "$STATE_DIR"
+    version_before=$(running_version)
+    fcv_before=$(current_fcv)
+    check_server
+    verify   # the data being backed up must be exactly the baseline
+    save_config
+
+    dump="$STATE_DIR/dump-$(date -u +%Y%m%d-%H%M%S).archive.gz"
+    mongodump --quiet --uri "$MONGO_URI" --gzip --archive="$dump"
+    if [[ ! -s "$dump" ]] || ! gzip -t "$dump"; then die "dump $dump is empty or corrupt"; fi
+    log "backup: dump $dump ($(du -h "$dump" | cut -f1)), gzip integrity OK"
+
+    copy="$path-copy-$(date -u +%Y%m%d-%H%M%S)"
+    mongod_stop
+    if ! cp -a "$path" "$copy"; then mongod_start; die "copying $path to $copy failed (mongod restarted)"; fi
+    sync
+    tree_checksums "$path" > "$STATE_DIR/copy-source.sha256"
+    tree_checksums "$copy" > "$copy.sha256"
+    if ! cmp -s "$STATE_DIR/copy-source.sha256" "$copy.sha256"; then
+      mongod_start
+      die "cold copy $copy differs from $path (mongod restarted)"
+    fi
+    printf 'copy=%s\nversion=%s\nfcv=%s\nfiles=%s\ndate=%s\n' "$copy" "$version_before" "$fcv_before" \
+      "$(wc -l < "$copy.sha256")" "$(date -u +%FT%TZ)" > "$copy.COMPLETE"
+    log "backup: cold copy at $copy ($(du -sh "$copy" | cut -f1), $(wc -l < "$copy.sha256") files checksummed, identical)"
+    mongod_start
+    check_server
+    verify
+    echo "$copy" > "$STATE_DIR/backup.done"
+    ;;
+  install)
+    version=${2:?version, e.g. 4.0.28}
+    [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || die "bad version '$version'"
+    series=$(series_of "$version")
+    expected=$(previous_series "$series")
+    require_app_stopped
+    require_baseline
+    require_backup
+    now=$(running_version)
+    fcv=$(current_fcv)
+    [[ "$(series_of "$now")" == "$expected" && "$fcv" == "$expected" ]] \
+      || die "install $version needs mongod $expected.x with FCV $expected; found $now with FCV $fcv"
+    verify   # nothing changed since the last step
+    debs=$(verified_debs "$version")
+    log "install $version: $(state) before"
+    mongod_stop
+    install_debs "$debs"
+    mongod_stop   # in case the package's postinst started it with its own config
+    restore_mongod_conf
+    mongod_start
+    now=$(running_version)
+    [[ "$now" == "$version" ]] || die "mongod reports $now after installing $version"
+    log "install $version: $(state) after"
+    check_server
+    verify
+    ;;
+  fcv)
+    target=${2:?FCV, e.g. 4.0}
+    [[ "$target" =~ ^[0-9]+\.[0-9]+$ ]] || die "bad FCV '$target'"
+    require_app_stopped
+    require_baseline
+    require_backup
+    now=$(running_version)
+    [[ "$(series_of "$now")" == "$target" ]] || die "FCV $target needs mongod $target.x; found $now"
+    fcv=$(current_fcv)
+    [[ "$fcv" == "$target" || "$fcv" == "$(previous_series "$target")" ]] || die "unexpected FCV $fcv"
+    verify   # nothing changed since the last step
+    js "var r = db.adminCommand({setFeatureCompatibilityVersion: '$target'}); if (!r.ok) { throw new Error(tojson(r)); }"
+    [[ "$(current_fcv)" == "$target" ]] || die "FCV did not change to $target"
+    log "fcv: $(state)"
+    verify
+    ;;
+  save-config)
+    save_config
+    log "save-config: $CONF and unit files saved; later steps will keep this version"
+    ;;
+  verify)
+    log "verify: $(state)"
+    check_server
+    verify
+    ;;
+  rollback)
+    # Back to MongoDB 3.6.20 with the cold copy taken by `backup`. The current data files are
+    # moved aside (never deleted), so the rollback itself cannot lose anything either.
+    copy=$(realpath -m "${2:?path of the cold copy printed by the backup step}")
+    require_app_stopped
+    [[ -f "$copy.COMPLETE" ]] || die "$copy has no .COMPLETE marker: not a verified cold copy"
+    grep -q "^version=$ROLLBACK_VERSION$" "$copy.COMPLETE" || die "$copy was not taken on $ROLLBACK_VERSION"
+    tree_checksums "$copy" | cmp -s - "$copy.sha256" || die "cold copy $copy no longer matches its checksums"
+    log "rollback: cold copy $copy verified ($(wc -l < "$copy.sha256") files)"
+    path=$(db_path)
+    require_free_space $(( $(du -sk "$copy" | cut -f1) + 524288 )) "$(dirname "$path")"
+    debs=$(verified_debs "$ROLLBACK_VERSION")
+    mongod_stop
+    install_debs "$debs"
+    mongod_stop   # in case the package's postinst started it on the failed data files
+    restore_mongod_conf
+    aside="$path-failed-$(date -u +%Y%m%d-%H%M%S)"
+    mv "$path" "$aside"
+    log "rollback: data files of the failed attempt kept at $aside"
+    cp -a "$copy" "$path" || die "copying $copy to $path failed; failed data is at $aside, the cold copy is intact"
+    sync
+    tree_checksums "$path" | cmp -s - "$copy.sha256" \
+      || die "restored $path does not match the cold copy; failed data is at $aside, the cold copy is intact"
+    mongod_start
+    now=$(running_version)
+    [[ "$now" == "$ROLLBACK_VERSION" ]] || die "mongod reports $now after rollback"
+    log "rollback: $(state)"
+    check_server
+    verify
+    ;;
+  *)
+    sed -n '2,27p' "$0"; exit 1
+    ;;
+esac
+log "$step ${2:-} done in $(( $(date +%s) - started )) s"

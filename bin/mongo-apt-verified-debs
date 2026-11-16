@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# Downloads the mongodb-org .deb packages of one MongoDB version and verifies the
+# whole chain of trust, for repos whose signing key has already expired
+# (MongoDB 3.6 and 4.0 keys expired in 2023, so `apt-get update` rejects them):
+#
+#   1. Release.gpg must be a GOOD signature by MongoDB's release key for that series,
+#      identified by its pinned fingerprint, checked at the Release file's own date
+#   2. the Packages index must match the SHA256 listed in the signed Release file
+#   3. every .deb must match the SHA256 listed in that Packages index
+#
+# On success <outdir> holds only the verified .debs plus VERIFIED, the exact list
+# the runbook installs.
+#
+# Usage: bin/mongo-apt-verified-debs <series> <version> <distro> <outdir>
+#   bin/mongo-apt-verified-debs 4.0 4.0.28 bionic /root/mongo-upgrade/debs-4.0.28
+set -euo pipefail
+
+series=$1 version=$2 distro=$3 outdir=$4
+
+# Primary key fingerprints, cross-checked on 2026-11-16 against www.mongodb.org/static/pgp
+# and keyserver.ubuntu.com.
+case "$series" in
+  3.6) fingerprint=2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 ;;
+  4.0) fingerprint=9DA31620334BD75D9DCB49F368818C72E52529D4 ;;
+  4.2) fingerprint=E162F504A20CDF15827F718D4B7C549A058F8B6B ;;
+  4.4) fingerprint=20691EEC35216C63CAF66CE1656408E390CFB1F5 ;;
+  *) echo "No pinned key for MongoDB $series" >&2; exit 1 ;;
+esac
+
+base="https://repo.mongodb.org/apt/ubuntu"
+dist="$base/dists/$distro/mongodb-org/$series"
+index="multiverse/binary-amd64/Packages"
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+
+# Start from an empty directory: nothing unverified may be installed from it.
+rm -rf "$outdir"
+mkdir -p "$outdir"
+
+curl -fsSL "https://www.mongodb.org/static/pgp/server-$series.asc" -o "$work/key.asc"
+curl -fsSL "$dist/Release" -o "$work/Release"
+curl -fsSL "$dist/Release.gpg" -o "$work/Release.gpg"
+curl -fsSL "$dist/$index" -o "$work/Packages"
+
+# 1. Signature by the pinned key, checked at the Release file's own date (the key was valid then).
+export GNUPGHOME="$work/gnupg"
+mkdir -m 700 "$GNUPGHOME"
+gpg --quiet --import "$work/key.asc" 2>/dev/null
+release_date_raw=$(sed -n 's/^Date: //p' "$work/Release")
+[[ -n "$release_date_raw" ]] || { echo "Release has no Date field" >&2; exit 1; }
+release_date=$(date -u -d "$release_date_raw" +%Y%m%dT%H%M%S)
+status=$(gpg --faked-system-time "$release_date" --status-fd 1 --verify "$work/Release.gpg" "$work/Release" 2>/dev/null || true)
+if grep -qE '^\[GNUPG:\] (BADSIG|ERRSIG|REVKEYSIG|EXPSIG|EXPKEYSIG|NO_PUBKEY)' <<< "$status" \
+   || ! grep -q '^\[GNUPG:\] GOODSIG' <<< "$status" \
+   || ! awk -v fpr="$fingerprint" '$1 == "[GNUPG:]" && $2 == "VALIDSIG" && $NF == fpr { ok = 1 } END { exit !ok }' <<< "$status"; then
+  echo "Release signature INVALID or not made by key $fingerprint" >&2
+  echo "$status" >&2
+  exit 1
+fi
+echo "OK  Release signed by $fingerprint (checked at $release_date)"
+
+# 2. Packages index against the signed Release.
+expected=$(awk -v f="$index" '/^SHA256:/{s=1;next} /^[A-Za-z]/{s=0} s && $3==f {print $1}' "$work/Release")
+actual=$(sha256sum "$work/Packages" | cut -d' ' -f1)
+[[ -n "$expected" && "$expected" == "$actual" ]] || { echo "Packages SHA256 mismatch" >&2; exit 1; }
+echo "OK  Packages index matches Release"
+
+# 3. Each mongodb-org* package of this version.
+awk -v v="$version" '
+  /^Package: /  { pkg = $2 }
+  /^Version: /  { ver = $2 }
+  /^Filename: / { file = $2 }
+  /^SHA256: /   { sha = $2 }
+  /^$/ { if (pkg ~ /^mongodb-org/ && ver == v) print pkg, file, sha; pkg = ver = file = sha = "" }
+  END  { if (pkg ~ /^mongodb-org/ && ver == v) print pkg, file, sha }
+' "$work/Packages" | sort -u -k1,1 > "$work/wanted"
+[[ -s "$work/wanted" ]] || { echo "No mongodb-org packages for $version" >&2; exit 1; }
+# From 4.4 on, mongodb-org-tools depends on mongodb-database-tools, versioned separately: take the newest.
+tools=$(awk '
+  /^Package: /  { pkg = $2 }
+  /^Version: /  { ver = $2 }
+  /^Filename: / { file = $2 }
+  /^SHA256: /   { sha = $2 }
+  /^$/ { if (pkg == "mongodb-database-tools") print ver, pkg, file, sha; pkg = ver = file = sha = "" }
+  END  { if (pkg == "mongodb-database-tools") print ver, pkg, file, sha }
+' "$work/Packages" | sort -V | tail -n 1 | cut -d' ' -f2-)
+if [[ -n "$tools" ]]; then echo "$tools" >> "$work/wanted"; fi
+
+while read -r pkg file sha; do
+  deb="$outdir/$(basename "$file")"
+  curl -fsSL "$base/$file" -o "$deb"
+  echo "$sha  $deb" | sha256sum --check --quiet || { echo "SHA256 mismatch for $pkg" >&2; exit 1; }
+  echo "$sha  $(basename "$file")" >> "$work/verified"
+  echo "OK  $pkg $(basename "$file")"
+done < "$work/wanted"
+
+mv "$work/verified" "$outdir/VERIFIED"
