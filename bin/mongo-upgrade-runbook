@@ -163,11 +163,18 @@ restore_mongod_conf() {
   fi
 }
 
-# Options a new series no longer accepts are removed before it first starts, and the edited
+# Options a new series no longer accepts are fixed before it first starts, and the edited
 # config is saved so later steps keep it. 7.0 refuses to start with storage.journal.* (journaling
 # is always on with WiredTiger, so dropping it changes nothing).
 migrate_config() {
-  local series=$1
+  local series=$1 cache
+  # 5.0 refuses to start with a WiredTiger cache below 0.25 GB (production had 0.125).
+  cache=$(awk '/^[[:space:]]*cacheSizeGB:/ { print $2; exit }' "$CONF")
+  if (( ${series%%.*} >= 5 )) && [[ -n "$cache" ]] && awk -v c="$cache" 'BEGIN { exit !(c < 0.25) }'; then
+    log "config: raising cacheSizeGB $cache -> 0.25 (minimum from 5.0 on)"
+    sed -i -E 's/^([[:space:]]*cacheSizeGB:)[[:space:]]*[0-9.]+/\1 0.25/' "$CONF"
+    save_config
+  fi
   if (( ${series%%.*} >= 7 )) && grep -qE '^[[:space:]]+journal:' "$CONF"; then
     awk '
       /^[[:space:]]+journal:/ { match($0, /^[[:space:]]+/); skip = RLENGTH; next }
