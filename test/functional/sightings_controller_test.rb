@@ -18,6 +18,21 @@ class SightingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  # Regression: 110 legacy reports store coord as [] (or another malformed array). [] is
+  # truthy in Ruby, so the page ran $nearSphere with an empty point and MongoDB answered
+  # "geo near accepts just one argument" -> 500 on the sighting page.
+  test 'search renders a report without coordinates and skips the nearby query and map' do
+    Report.collection.indexes.create_one({ coord: '2dsphere' })
+    report = create_dummy_report
+    report.coord = []
+    report.save!(validate: false)
+
+    get sightings_search_path(id: report.id)
+
+    assert_response :success
+    assert_no_match 'id="sightings-map"', response.body
+  end
+
   test 'should maps statistics' do
     get sightings_maps_path
 

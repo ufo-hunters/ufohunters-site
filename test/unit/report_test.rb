@@ -7,6 +7,16 @@ class ReportTest < ActiveSupport::TestCase
     @report = create_dummy_report
   end
 
+  test 'coordinates? is true for a numeric [longitude, latitude] pair' do
+    assert_predicate @report, :coordinates?
+  end
+
+  test 'coordinates? is false for missing or malformed legacy coord values' do
+    [[], nil, [1.0], %w[a b]].each do |coord|
+      assert_not_predicate Report.new(coord: coord), :coordinates?, "coord #{coord.inspect}"
+    end
+  end
+
   test 'should not save report without a location' do
     @report.location = nil
 

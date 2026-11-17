@@ -34,6 +34,12 @@ class Report
 
   before_create :set_case_number
 
+  # True only for a usable [longitude, latitude] pair. Legacy documents can hold [] or
+  # other malformed arrays (validation came later), and [] is truthy in Ruby.
+  def coordinates?
+    coord.is_a?(Array) && coord.size == 2 && coord.all?(Numeric)
+  end
+
   private
 
   # coord feeds a 2dsphere index; a malformed value makes MongoDB reject the
