@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# MongoDB 3.6 -> 4.4 upgrade runbook, one step per invocation. The same commands run in the
-# rehearsal container (MODE=fork) and on the production server (MODE=systemd).
+# MongoDB major-version upgrade runbook (used for 3.6 -> 4.4 and 4.4 -> 8.0), one step per
+# invocation. The same commands run in the rehearsal container (MODE=fork) and on the
+# production server (MODE=systemd).
 #
 # Priority: NO DATA LOSS.
 # - `backup` takes a gzip dump (integrity-tested) and a cold copy of dbPath whose files are
@@ -13,16 +14,19 @@
 #   MONGO_URI   connection string with a root-capable user (production: MONGOHQ_URL from .env)
 #   MODE        systemd (production, default) | fork (rehearsal container without systemd)
 #   STATE_DIR   where the baseline, dump, packages and logs go (default /root/mongo-upgrade)
+#   ROLLBACK_VERSION  version the upgrade starts from and rolls back to (default 3.6.20)
+#   DISTRO      Ubuntu codename of the MongoDB repo (default: this machine's, via lsb_release)
 #
 # Steps, in order (stop the app before `baseline` so nothing writes meanwhile):
-#   bin/mongo-upgrade-runbook preflight       # tools, config, disk; pre-downloads 3.6.20 for rollback
+#   bin/mongo-upgrade-runbook preflight       # tools, config, disk; pre-downloads ROLLBACK_VERSION
 #   bin/mongo-upgrade-runbook baseline        # hashes, counts, indexes -> STATE_DIR/baseline.json
 #   bin/mongo-upgrade-runbook backup          # dump + verified cold copy of dbPath, then verify
 #   bin/mongo-upgrade-runbook install 4.0.28  # verified .debs, restart mongod, verify
 #   bin/mongo-upgrade-runbook fcv 4.0         # setFeatureCompatibilityVersion, verify
 #   ... install 4.2.25 / fcv 4.2 / install 4.4.32 / fcv 4.4
+#   (4.4 -> 8.0: ROLLBACK_VERSION=4.4.32, then install/fcv 5.0, 6.0, 7.0, 8.0)
 #   bin/mongo-upgrade-runbook verify          # can be run at any time
-#   bin/mongo-upgrade-runbook rollback <copy> # back to 3.6.20 from the cold copy
+#   bin/mongo-upgrade-runbook rollback <copy> # back to ROLLBACK_VERSION from the cold copy
 #   bin/mongo-upgrade-runbook save-config     # only after editing /etc/mongod.conf by hand
 set -Eeuo pipefail
 export LC_ALL=C   # byte-order sorting, so checksum lists match across SSH sessions
@@ -32,7 +36,8 @@ STATE_DIR=${STATE_DIR:-/root/mongo-upgrade}
 MONGO_URI=${MONGO_URI:?set MONGO_URI to a root-capable connection string}
 CONF=/etc/mongod.conf
 DB=ufosightings
-ROLLBACK_VERSION=3.6.20
+ROLLBACK_VERSION=${ROLLBACK_VERSION:-3.6.20}
+DISTRO=${DISTRO:-$(lsb_release -cs)}
 HERE=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$STATE_DIR"
 chmod 700 "$STATE_DIR"
@@ -52,7 +57,9 @@ die() {
 }
 trap 'die "unexpected error on line $LINENO: $BASH_COMMAND"' ERR
 
-js() { mongo --quiet --norc "$MONGO_URI" --eval "$1"; }
+# The legacy `mongo` shell is gone from 6.0 on; prefer mongosh when it is installed.
+mongo_shell() { if command -v mongosh >/dev/null; then echo mongosh; else echo mongo; fi; }
+js() { "$(mongo_shell)" --quiet --norc "$MONGO_URI" --eval "$1"; }
 
 # dbPath from the config, as an absolute path without trailing slash (copies go next to it).
 db_path() {
@@ -66,7 +73,11 @@ db_path() {
 
 series_of() { echo "${1%.*}"; }
 previous_series() {
-  case "$1" in 4.0) echo 3.6 ;; 4.2) echo 4.0 ;; 4.4) echo 4.2 ;; *) die "unsupported target series $1" ;; esac
+  case "$1" in
+    4.0) echo 3.6 ;; 4.2) echo 4.0 ;; 4.4) echo 4.2 ;;
+    5.0) echo 4.4 ;; 6.0) echo 5.0 ;; 7.0) echo 6.0 ;; 8.0) echo 7.0 ;;
+    *) die "unsupported target series $1" ;;
+  esac
 }
 
 running_version() { js 'print(db.version())'; }
@@ -152,12 +163,38 @@ restore_mongod_conf() {
   fi
 }
 
+# Options a new series no longer accepts are fixed before it first starts, and the edited
+# config is saved so later steps keep it. 7.0 refuses to start with storage.journal.* (journaling
+# is always on with WiredTiger, so dropping it changes nothing).
+migrate_config() {
+  local series=$1 cache
+  # 5.0 refuses to start with a WiredTiger cache below 0.25 GB (production had 0.125).
+  cache=$(awk '/^[[:space:]]*cacheSizeGB:/ { print $2; exit }' "$CONF")
+  if (( ${series%%.*} >= 5 )) && [[ -n "$cache" ]] && awk -v c="$cache" 'BEGIN { exit !(c < 0.25) }'; then
+    log "config: raising cacheSizeGB $cache -> 0.25 (minimum from 5.0 on)"
+    sed -i -E 's/^([[:space:]]*cacheSizeGB:)[[:space:]]*[0-9.]+/\1 0.25/' "$CONF"
+    save_config
+  fi
+  if (( ${series%%.*} >= 7 )) && grep -qE '^[[:space:]]+journal:' "$CONF"; then
+    awk '
+      /^[[:space:]]+journal:/ { match($0, /^[[:space:]]+/); skip = RLENGTH; next }
+      skip { match($0, /^[[:space:]]*/); if (RLENGTH > skip && $0 !~ /^[[:space:]]*$/) next; skip = 0 }
+      { print }
+    ' "$CONF" > "$CONF.new"
+    log "config: removing storage.journal (not accepted from 7.0 on):"
+    diff "$CONF" "$CONF.new" | tee -a "$STATE_DIR/runbook.log" || true
+    cat "$CONF.new" > "$CONF"
+    rm -f "$CONF.new"
+    save_config
+  fi
+}
+
 # Auth must still be enforced and the storage engine unchanged after every restart.
 check_server() {
   local engine auth
   # Reading a document without credentials must fail. (Listing collections is not a valid
   # test: from 4.0 the shell falls back to an empty list instead of an error.)
-  if mongo --quiet --norc "mongodb://127.0.0.1:27017/$DB" --eval "db.ufo.findOne({}, {_id: 1})" >/dev/null 2>&1; then
+  if "$(mongo_shell)" --quiet --norc "mongodb://127.0.0.1:27017/$DB" --eval "db.ufo.findOne({}, {_id: 1})" >/dev/null 2>&1; then
     die "an unauthenticated client can read $DB.ufo: authorization is OFF"
   fi
   auth=$(js 'var s = db.adminCommand({getCmdLineOpts: 1}).parsed.security; print(s ? s.authorization : "none")')
@@ -181,14 +218,14 @@ snapshot() {
       if (c.indexOf('system.') === 0) { return; }
       out.collections[c] = {
         hash: h.collections[c],
-        count: d[c].find().count(),
+        count: d[c].countDocuments({}),
         indexes: d[c].getIndexes().map(function (i) { delete i.ns; return i; })
       };
     });
     var admin = db.getSiblingDB('admin');
     ['system.users', 'system.roles'].forEach(function (c) {
       var ah = admin.runCommand({dbHash: 1, collections: [c]});
-      out.collections['admin.' + c] = {hash: ah.collections[c] || 'absent', count: admin[c].find().count(), indexes: []};
+      out.collections['admin.' + c] = {hash: ah.collections[c] || 'absent', count: admin[c].countDocuments({}), indexes: []};
     });
     print(JSON.stringify(out));"
 }
@@ -231,7 +268,7 @@ PY
 verified_debs() {
   local version=$1 series distro dir
   series=$(series_of "$version")
-  distro=bionic
+  distro=$DISTRO
   if [[ "$series" == 3.6 ]]; then distro=xenial; fi
   dir="$STATE_DIR/debs-$version"
   if [[ ! -s "$dir/VERIFIED" ]]; then
@@ -269,7 +306,7 @@ step=${1:-}
 started=$(date +%s)
 case "$step" in
   preflight)
-    for tool in mongo mongod mongodump python3 gpg curl sha256sum realpath; do
+    for tool in "$(mongo_shell)" mongod mongodump python3 gpg curl sha256sum realpath; do
       command -v "$tool" >/dev/null || die "missing tool: $tool"
     done
     log "preflight: $(state)"
@@ -285,8 +322,9 @@ case "$step" in
   baseline)
     require_app_stopped
     if [[ -s "$STATE_DIR/baseline.json" && -z "${FORCE:-}" ]]; then die "baseline already exists (FORCE=1 to replace)"; fi
-    if [[ -z "${FORCE:-}" && ( "$(series_of "$(running_version)")" != 3.6 || "$(current_fcv)" != 3.6 ) ]]; then
-      die "baseline must be taken on 3.6 with FCV 3.6 before upgrading"
+    source_series=$(series_of "$ROLLBACK_VERSION")
+    if [[ -z "${FORCE:-}" && ( "$(series_of "$(running_version)")" != "$source_series" || "$(current_fcv)" != "$source_series" ) ]]; then
+      die "baseline must be taken on $source_series with FCV $source_series before upgrading"
     fi
     snapshot > "$STATE_DIR/baseline.json.new"
     python3 -c 'import json,sys; c=json.load(open(sys.argv[1]))["collections"]; sys.exit(0 if any(not k.startswith("admin.") and v["count"] > 0 for k, v in c.items()) else 1)' \
@@ -350,6 +388,7 @@ case "$step" in
     install_debs "$debs"
     mongod_stop   # in case the package's postinst started it with its own config
     restore_mongod_conf
+    migrate_config "$series"
     mongod_start
     now=$(running_version)
     [[ "$now" == "$version" ]] || die "mongod reports $now after installing $version"
@@ -368,7 +407,10 @@ case "$step" in
     fcv=$(current_fcv)
     [[ "$fcv" == "$target" || "$fcv" == "$(previous_series "$target")" ]] || die "unexpected FCV $fcv"
     verify   # nothing changed since the last step
-    js "var r = db.adminCommand({setFeatureCompatibilityVersion: '$target'}); if (!r.ok) { throw new Error(tojson(r)); }"
+    # From 7.0 on the command refuses to run without confirm: true.
+    confirm=""
+    if [[ "${target%%.*}" -ge 7 ]]; then confirm=", confirm: true"; fi
+    js "var r = db.adminCommand({setFeatureCompatibilityVersion: '$target'$confirm}); if (!r.ok) { throw new Error(tojson(r)); }"
     [[ "$(current_fcv)" == "$target" ]] || die "FCV did not change to $target"
     log "fcv: $(state)"
     verify
@@ -383,7 +425,7 @@ case "$step" in
     verify
     ;;
   rollback)
-    # Back to MongoDB 3.6.20 with the cold copy taken by `backup`. The current data files are
+    # Back to ROLLBACK_VERSION with the cold copy taken by `backup`. The current data files are
     # moved aside (never deleted), so the rollback itself cannot lose anything either.
     copy=$(realpath -m "${2:?path of the cold copy printed by the backup step}")
     require_app_stopped
