@@ -20,4 +20,51 @@ class ErrorsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :internal_server_error
   end
+
+  # Regression: an unknown URL ending in .jpg reached errors#not_found as JPEG, found no
+  # template and the failsafe answered 500 instead of 404 (seen in production logs).
+  test 'missing image URL answers 404, not 500' do
+    with_production_error_pages do
+      get '/524878083c024d5ed6000010/UFO%20Sighting%20in%20Bloemfontein(3).jpg'
+    end
+
+    assert_response :not_found
+    assert_empty response.body
+  end
+
+  test 'missing text file URL answers 404, not 500' do
+    with_production_error_pages do
+      get '/sightings/country/PRT/sources/deep.txt'
+    end
+
+    assert_response :not_found
+  end
+
+  test 'error pages without an HTML template answer with the status only' do
+    get '/404.json'
+
+    assert_response :not_found
+    assert_empty response.body
+  end
+
+  test 'error pages still render HTML for browsers' do
+    get '/404', headers: { 'Accept' => 'text/html' }
+
+    assert_response :not_found
+    assert_match 'ERROR', response.body
+  end
+
+  private
+
+  # The test environment shows the debug page for routing errors; production hands them
+  # to config.exceptions_app (ErrorsController). Switch to production behaviour.
+  def with_production_error_pages
+    env_config = Rails.application.env_config
+    original = env_config.slice('action_dispatch.show_exceptions', 'action_dispatch.show_detailed_exceptions')
+    env_config['action_dispatch.show_exceptions'] = :all
+    env_config['action_dispatch.show_detailed_exceptions'] = false
+    yield
+  ensure
+    env_config.merge!(original)
+  end
 end
