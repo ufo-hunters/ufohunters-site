@@ -30,7 +30,7 @@ class SightingsController < ApplicationController
     @coords = @ufo_list.coord
     distance = 100 # km
 
-    if @ufo_list.coord
+    if @ufo_list.coordinates?
       @nearest_sightings = Rails.cache.fetch("sightings/nearest/#{id_ufo}", expires_in: 1.year) do
         Report.where(coord: { '$nearSphere' => @coords, '$maxDistance' => distance.fdiv(6371) })
               .and(status: 1).desc(:sighted_at).limit(100).entries
