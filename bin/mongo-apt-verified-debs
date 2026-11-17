@@ -24,6 +24,11 @@ case "$series" in
   4.0) fingerprint=9DA31620334BD75D9DCB49F368818C72E52529D4 ;;
   4.2) fingerprint=E162F504A20CDF15827F718D4B7C549A058F8B6B ;;
   4.4) fingerprint=20691EEC35216C63CAF66CE1656408E390CFB1F5 ;;
+  # 5.0-8.0 cross-checked on 2026-11-17 against the same two sources.
+  5.0) fingerprint=F5679A222C647C87527C2F8CB00A0BD1E2C63C11 ;;
+  6.0) fingerprint=39BD841E4BE5FB195A65400E6A26B1AE64C3C388 ;;
+  7.0) fingerprint=E58830201F7DD82CD808AA84160D26BB1785BA38 ;;
+  8.0) fingerprint=4B0752C1BCA238C0B4EE14DC41DE058A4E7DCA05 ;;
   *) echo "No pinned key for MongoDB $series" >&2; exit 1 ;;
 esac
 
@@ -85,6 +90,16 @@ tools=$(awk '
   END  { if (pkg == "mongodb-database-tools") print ver, pkg, file, sha }
 ' "$work/Packages" | sort -V | tail -n 1 | cut -d' ' -f2-)
 if [[ -n "$tools" ]]; then echo "$tools" >> "$work/wanted"; fi
+# From 5.0 on, mongodb-org depends on mongodb-mongosh, also versioned separately: take the newest.
+mongosh=$(awk '
+  /^Package: /  { pkg = $2 }
+  /^Version: /  { ver = $2 }
+  /^Filename: / { file = $2 }
+  /^SHA256: /   { sha = $2 }
+  /^$/ { if (pkg == "mongodb-mongosh") print ver, pkg, file, sha; pkg = ver = file = sha = "" }
+  END  { if (pkg == "mongodb-mongosh") print ver, pkg, file, sha }
+' "$work/Packages" | sort -V | tail -n 1 | cut -d' ' -f2-)
+if [[ -n "$mongosh" ]]; then echo "$mongosh" >> "$work/wanted"; fi
 
 while read -r pkg file sha; do
   deb="$outdir/$(basename "$file")"
