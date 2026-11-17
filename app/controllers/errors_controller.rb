@@ -2,17 +2,27 @@
 
 class ErrorsController < ApplicationController
   def not_found
-    @page_title = 'ERROR'
-    render status: :not_found
+    render_error :not_found
   end
 
   def unacceptable
-    @page_title = 'ERROR'
-    render status: :unprocessable_content
+    render_error :unprocessable_content
   end
 
   def internal_error
+    render_error :internal_server_error
+  end
+
+  private
+
+  # Error pages only have HTML templates. Any other format (an unknown .jpg or .txt URL
+  # routed here by exceptions_app) gets the bare status: rendering would raise
+  # MissingTemplate and the failsafe would turn a 404 into a 500.
+  def render_error(status)
     @page_title = 'ERROR'
-    render status: :internal_server_error
+    respond_to do |format|
+      format.html { render status: status }
+      format.any { head status }
+    end
   end
 end
