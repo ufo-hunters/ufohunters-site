@@ -176,6 +176,18 @@ class SightingsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href*='/articles/#{article.id}']", text: /Read the full article/
   end
 
+  test 'home featured teaser is not double escaped' do
+    create_dummy_user.save!
+    article = create_dummy_article
+    article.assign_attributes(teaser: "Reid's request #{'word ' * 50}", status: 1, featured: true)
+    article.save!
+
+    get root_path
+
+    assert_response :success
+    assert_not_includes response.body, '&amp;#39;'
+  end
+
   test 'home renders without a featured article' do
     get root_path
 

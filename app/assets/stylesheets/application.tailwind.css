@@ -27,6 +27,21 @@
   .btn-primary {
     @apply inline-block px-4 py-2 bg-[#D7DF21] text-gray-900 font-bold rounded cursor-pointer border border-[#D7DF21] hover:border-gray-400 no-underline;
   }
+  /* Call-to-action links inside article bodies (hub → in-depth articles). */
+  .prose a.article-cta {
+    @apply inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-[#D7DF21] text-[#10141a] font-bold no-underline shadow-md transition-colors duration-200;
+  }
+  .prose a.article-cta:hover,
+  .prose a.article-cta:focus-visible {
+    @apply bg-[#bdf4ff] text-[#10141a] no-underline outline-none;
+  }
+  .prose a.article-cta--secondary {
+    @apply bg-transparent text-[#D7DF21] border border-[#D7DF21] shadow-none;
+  }
+  .prose a.article-cta--secondary:hover,
+  .prose a.article-cta--secondary:focus-visible {
+    @apply bg-[#D7DF21]/10 text-[#D7DF21];
+  }
   .map-canvas {
     @apply h-[400px] w-full m-0 p-0;
   }
