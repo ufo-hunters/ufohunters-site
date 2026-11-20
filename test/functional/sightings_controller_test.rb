@@ -183,4 +183,72 @@ class SightingsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'span', text: /Featured Report/, count: 0
     assert_select 'a', text: /Read the full article/, count: 0
   end
+
+  test 'home links to the featured article' do
+    create_dummy_user.save!
+    featured = create_home_article(title: 'Big Case', featured: true)
+
+    get root_path
+
+    assert_response :success
+    assert_select '#home-articles h2', text: 'Big Case'
+    assert_select "a[href*='/articles/#{featured.id}']", text: /Read the full article/
+  end
+
+  test 'home lists the published related articles of the featured one in their stored order' do
+    create_dummy_user.save!
+    related = (1..3).map { |i| create_home_article(title: "Dossier #{i}") }
+    draft = create_home_article(title: 'Draft Dossier', status: 0)
+    create_home_article(title: 'Big Case', featured: true,
+                        related_article_ids: [related[2].id, draft.id, related[0].id, related[1].id])
+
+    get root_path
+
+    assert_select '#home-related-articles li', count: 3
+    assert_select '#home-related-articles li:first-child a', text: /Dossier 3/
+    assert_select '#home-related-articles a', text: /Draft Dossier/, count: 0
+  end
+
+  test 'home related links use the article URL format' do
+    create_dummy_user.save!
+    related = create_home_article(title: 'Dossier 1')
+    create_home_article(title: 'Big Case', featured: true, related_article_ids: [related.id])
+
+    get root_path
+
+    assert_select "#home-related-articles a[href^='/articles/#{related.id}/']", text: /Dossier 1/
+    assert_select "a[href='#{articles_path}']", text: /All articles/
+  end
+
+  test 'home shows the featured article alone when it has no related articles' do
+    create_dummy_user.save!
+    create_home_article(title: 'Big Case', featured: true)
+    create_home_article(title: 'Unrelated Dossier')
+
+    get root_path
+
+    assert_select '#home-articles h2', text: 'Big Case'
+    assert_select '#home-related-articles', count: 0
+    assert_select 'a', text: /Unrelated Dossier/, count: 0
+  end
+
+  test 'home renders a full width hero when there is no featured article' do
+    create_dummy_user.save!
+    create_home_article(title: 'Plain Dossier')
+
+    get root_path
+
+    assert_select 'h1', text: /SIGHTINGS/
+    assert_select '#home-articles', count: 0
+    assert_select 'a', text: /Plain Dossier/, count: 0
+  end
+
+  private
+
+  def create_home_article(attrs = {})
+    article = create_dummy_article
+    article.assign_attributes({ status: 1 }.merge(attrs))
+    article.save!
+    article
+  end
 end

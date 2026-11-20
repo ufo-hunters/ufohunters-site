@@ -76,6 +76,46 @@ class ArticleTest < ActiveSupport::TestCase
     assert_nil Article.featured
   end
 
+  test 'related_article_ids defaults to an empty list' do
+    assert_empty Article.new.related_article_ids
+  end
+
+  test 'related_articles does not touch the related articles' do
+    other = create_featured_article(title: 'Other', featured: false)
+    hub = create_featured_article(title: 'Hub', related_article_ids: [other.id])
+
+    assert_equal [other.id], hub.reload.related_article_ids
+    assert_empty other.reload.related_article_ids
+  end
+
+  test 'published_related_articles keeps the stored order' do
+    first = create_featured_article(title: 'First', featured: false, published_date: '20100101')
+    second = create_featured_article(title: 'Second', featured: false, published_date: '20240101')
+    third = create_featured_article(title: 'Third', featured: false, published_date: '20150101')
+    hub = create_featured_article(title: 'Hub', related_article_ids: [third.id, first.id, second.id])
+
+    assert_equal %w[Third First Second], hub.published_related_articles.map(&:title)
+  end
+
+  test 'published_related_articles skips unpublished articles' do
+    draft = create_featured_article(title: 'Draft', featured: false, status: 0)
+    live = create_featured_article(title: 'Live', featured: false)
+    hub = create_featured_article(title: 'Hub', related_article_ids: [draft.id, live.id])
+
+    assert_equal [live], hub.published_related_articles
+  end
+
+  test 'published_related_articles skips the body field' do
+    other = create_featured_article(title: 'Other', featured: false)
+    hub = create_featured_article(title: 'Hub', related_article_ids: [other.id])
+
+    assert_raises(Mongoid::Errors::AttributeNotLoaded) { hub.published_related_articles.first.body }
+  end
+
+  test 'published_related_articles is empty without related ids' do
+    assert_empty create_featured_article.published_related_articles
+  end
+
   private
 
   def create_featured_article(attrs = {})

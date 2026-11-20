@@ -18,6 +18,9 @@ class Article
   field :featured, type: Boolean, default: false
 
   belongs_to :user
+  # one-sided and hand-curated (set via mongosh): the order of related_article_ids is the display order
+  # Mongoid has no has_many :through; a one-sided HABTM stores the ordered id array on the document
+  has_and_belongs_to_many :related_articles, class_name: 'Article', inverse_of: nil # rubocop:disable Rails/HasAndBelongsToMany
 
   validates :title, presence: { message: 'Title is mandatory' }
   validates :teaser, presence: { message: 'Teaser is mandatory' }
@@ -29,5 +32,12 @@ class Article
 
   def self.featured
     where(status: 1, featured: true).desc(:published_date).without(:body).first
+  end
+
+  def published_related_articles
+    return [] if related_article_ids.blank?
+
+    Article.where(:_id.in => related_article_ids, status: 1).without(:body)
+           .sort_by { |article| related_article_ids.index(article.id) }
   end
 end

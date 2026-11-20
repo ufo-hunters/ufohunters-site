@@ -49,6 +49,11 @@ class ArticlesController < ApplicationController
     @article = Rails.cache.fetch("articles/#{params[:id]}", expires_in: 1.month) do
       Article.without(:email).find(params[:id])
     end
+    # The article doc above is cached for a month, so re-read the related ids under a short-lived key
+    # (set by hand via mongosh) instead of trusting the cached copy.
+    @related_articles = Rails.cache.fetch("articles/#{@article.id}/related", expires_in: 1.hour) do
+      Article.only(:related_article_ids).find(@article.id).published_related_articles
+    end
     @page_title = ArticlesHelper.friendly_title(@article)
     @page_description = "#{@article.teaser[0..200]}..."
 
