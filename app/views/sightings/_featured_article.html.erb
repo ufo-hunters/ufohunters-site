@@ -1,0 +1,29 @@
+<!-- Featured Article Section -->
+<section class="pt-12 md:pt-20 px-4 md:px-8 max-w-[1920px] mx-auto">
+  <div class="glass-panel rounded-xl border border-[#484833]/30 overflow-hidden flex flex-col md:flex-row">
+    <% if article.image_thumbnail.present? %>
+      <div class="w-full md:w-1/3 flex-shrink-0 bg-[#0a0e14]">
+        <%= image_tag article.image_thumbnail, alt: article.title, loading: 'lazy', class: 'w-full h-full max-h-72 md:max-h-none object-cover' %>
+      </div>
+    <% end %>
+    <div class="flex flex-col gap-4 p-6 md:p-10 flex-1 min-w-0">
+      <span class="self-start inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#D7DF21]/10 border border-[#D7DF21]/30 text-[#D7DF21] text-[10px] font-['Space_Grotesk'] uppercase tracking-[0.2em]">
+        <span class="material-symbols-outlined text-[14px]">star</span>
+        Featured Report
+      </span>
+      <h2 class="text-2xl md:text-4xl font-bold text-[#dfe2eb] break-words"><%= article.title %></h2>
+      <p class="text-[#c9c8ad] leading-relaxed"><%= truncate(strip_tags(article.teaser.to_s), length: 300, separator: ' ') %></p>
+      <% if article.published_date.present? %>
+        <p class="text-xs font-['Space_Grotesk'] text-[#c9c8ad]/70">
+          <span class="material-symbols-outlined text-[12px] align-middle mr-1">schedule</span>
+          Published on <strong class="text-[#dfe2eb]"><%= format_date article.published_date %></strong>
+        </p>
+      <% end %>
+      <%= link_to({ controller: 'articles', action: 'show', id: article.id, title: ArticlesHelper.friendly_title(article) },
+                  class: "self-start inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#D7DF21] text-[#0a0e14] font-['Space_Grotesk'] font-bold uppercase tracking-widest text-sm hover:bg-[#bdf4ff] transition-colors") do %>
+        Read the full article
+        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+      <% end %>
+    </div>
+  </div>
+</section>

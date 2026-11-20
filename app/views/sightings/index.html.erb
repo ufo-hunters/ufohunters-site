@@ -40,6 +40,8 @@
   <div class="absolute bottom-8 right-8 w-24 h-24 border-b border-r border-[#D7DF21]/20 hidden lg:block"></div>
 </section>
 
+<%= render 'sightings/featured_article', article: @featured_article if @featured_article.present? %>
+
 <!-- Interactive Map Section -->
 <section class="py-12 md:py-24 px-4 md:px-8 max-w-[1920px] mx-auto">
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">

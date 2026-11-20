@@ -162,4 +162,25 @@ class SightingsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
   end
+
+  test 'home shows the featured article with a link to it' do
+    create_dummy_user.save!
+    article = create_dummy_article
+    article.assign_attributes(title: 'Big Case', status: 1, featured: true)
+    article.save!
+
+    get root_path
+
+    assert_response :success
+    assert_select 'h2', text: 'Big Case'
+    assert_select "a[href*='/articles/#{article.id}']", text: /Read the full article/
+  end
+
+  test 'home renders without a featured article' do
+    get root_path
+
+    assert_response :success
+    assert_select 'span', text: /Featured Report/, count: 0
+    assert_select 'a', text: /Read the full article/, count: 0
+  end
 end

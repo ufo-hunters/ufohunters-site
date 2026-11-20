@@ -14,6 +14,8 @@ class Article
   field :article_helper_method, type: String
   field :partial_1, type: String
   field :status, type: Integer, default: 0
+  # at most one article is shown on the home page: the most recent published featured one
+  field :featured, type: Boolean, default: false
 
   belongs_to :user
 
@@ -22,5 +24,10 @@ class Article
   validates :body, presence: { message: 'Body is mandatory' }
 
   index({ status: 1, published_date: -1 }, { background: true })
+  index({ featured: 1, status: 1, published_date: -1 }, { background: true })
   index({ user_id: 1 }, { background: true })
+
+  def self.featured
+    where(status: 1, featured: true).desc(:published_date).without(:body).first
+  end
 end

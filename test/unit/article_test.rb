@@ -42,4 +42,46 @@ class ArticleTest < ActiveSupport::TestCase
 
     assert_equal 0, article.status
   end
+
+  test 'featured defaults to false' do
+    assert_not Article.new.featured
+  end
+
+  test 'Article.featured returns the featured published article' do
+    article = create_featured_article
+
+    assert_equal article, Article.featured
+  end
+
+  test 'Article.featured ignores unpublished articles' do
+    create_featured_article(status: 0)
+
+    assert_nil Article.featured
+  end
+
+  test 'Article.featured ignores articles that are not featured' do
+    create_featured_article(featured: false)
+
+    assert_nil Article.featured
+  end
+
+  test 'Article.featured picks the most recent published_date' do
+    create_featured_article(title: 'Old', published_date: '20120102')
+    newest = create_featured_article(title: 'New', published_date: '20240102')
+
+    assert_equal newest, Article.featured
+  end
+
+  test 'Article.featured is nil when there are none' do
+    assert_nil Article.featured
+  end
+
+  private
+
+  def create_featured_article(attrs = {})
+    article = create_dummy_article
+    article.assign_attributes({ status: 1, featured: true }.merge(attrs))
+    article.save!
+    article
+  end
 end
