@@ -29,6 +29,41 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'show lists the published related articles in their stored order' do
+    first = create_published_article(title: 'First Related')
+    second = create_published_article(title: 'Second Related')
+    draft = create_published_article(title: 'Draft Related', status: 0)
+    @article.assign_attributes(status: 1, related_article_ids: [second.id, draft.id, first.id])
+    @article.save!
+
+    get article_path(id: @article.id)
+
+    assert_select '#related-articles li', count: 2
+    assert_select '#related-articles li:first-child a', text: /Second Related/
+    assert_select '#related-articles', text: /Draft Related/, count: 0
+  end
+
+  test 'show related cards link to the article with its teaser' do
+    related = create_published_article(title: 'First Related', teaser: 'First teaser')
+    @article.assign_attributes(status: 1, related_article_ids: [related.id])
+    @article.save!
+
+    get article_path(id: @article.id)
+
+    assert_response :success
+    assert_select "#related-articles a[href^='/articles/#{related.id}/']", text: /First teaser/
+  end
+
+  test 'show has no related block when the article has no related articles' do
+    @article.status = 1
+    @article.save!
+
+    get article_path(id: @article.id)
+
+    assert_response :success
+    assert_select '#related-articles', count: 0
+  end
+
   test 'should get uforesearchteam' do
     get articles_uforesearchteam_path
 
@@ -108,5 +143,14 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     patch article_path(id: mine.id), params: { article: { title: 'Updated' } }
 
     assert_equal 'Updated', mine.reload.title
+  end
+
+  private
+
+  def create_published_article(attrs = {})
+    article = create_dummy_article
+    article.assign_attributes({ status: 1 }.merge(attrs))
+    article.save!
+    article
   end
 end

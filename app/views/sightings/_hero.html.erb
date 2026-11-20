@@ -1,0 +1,61 @@
+<%# Split hero: live data block on the left, featured dossier on the right (lg+). Without a featured
+    article the data block takes the full width, as the hero did before. %>
+<% split = featured_article.present? %>
+<section aria-label="UFO sightings archive" class="relative bg-[#0a0e14] overflow-hidden">
+  <div class="max-w-[1920px] mx-auto <%= split ? 'px-4 md:px-8 pt-6 md:pt-8 pb-4 md:pb-8 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8' : '' %>">
+    <div class="relative overflow-hidden bg-[#0a0e14] flex items-center <%= split ? 'lg:col-span-7 min-h-[440px] sm:min-h-[480px] lg:min-h-[600px] rounded-2xl border border-[#484833]/30' : 'h-[600px] md:h-[750px] justify-center' %>">
+      <!-- Live map backdrop -->
+      <div class="absolute inset-0 z-0" aria-hidden="true">
+        <div id="hero-map" class="w-full h-full opacity-30"></div>
+        <div class="absolute inset-0 bg-[linear-gradient(rgba(189,244,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(189,244,255,0.05)_1px,transparent_1px)] bg-[size:48px_48px]"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_35%,rgba(215,223,33,0.10),transparent_55%)]"></div>
+        <div class="absolute right-[-120px] top-[-120px] w-[520px] h-[520px] rounded-full border border-[#bdf4ff]/10"></div>
+        <div class="absolute right-[-40px] top-[-40px] w-[360px] h-[360px] rounded-full border border-[#bdf4ff]/10"></div>
+        <div class="absolute right-[40px] top-[40px] w-[200px] h-[200px] rounded-full border border-[#D7DF21]/15"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-[#10141a]/30 to-[#10141a]"></div>
+      </div>
+
+      <div class="relative z-10 w-full <%= split ? 'px-6 py-10 sm:px-10 lg:px-14 text-left' : 'max-w-4xl px-6 text-center' %>">
+        <div class="inline-flex items-center gap-2 mb-6 px-4 py-1 rounded-full border border-[#D7DF21]/30 bg-[#D7DF21]/5 text-[#D7DF21] font-['Space_Grotesk'] text-xs tracking-widest uppercase">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D7DF21] opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-[#D7DF21]"></span>
+          </span>
+          Live Data Feed Active
+        </div>
+        <h1 class="<%= split ? 'text-5xl sm:text-6xl xl:text-7xl 2xl:text-8xl' : 'text-5xl md:text-8xl' %> font-black mb-4 tracking-tighter leading-none text-[#dfe2eb]">
+          <%= number_with_delimiter(num_reports) %> <span class="<%= 'block' if split %> text-[#D7DF21] drop-shadow-[0_0_15px_rgba(215,223,33,0.3)]">SIGHTINGS</span>
+        </h1>
+        <p class="text-lg md:text-2xl text-[#c9c8ad] font-light <%= split ? 'mb-10' : 'mb-12' %> tracking-wide uppercase font-headline">
+          Reported Datasets &hellip; and growing
+        </p>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center <%= 'md:justify-center' unless split %> gap-4">
+          <%= link_to sightings_ufosearch_path, class: "w-full sm:w-auto justify-center inline-flex items-center gap-3 bg-[#D7DF21] text-[#313300] px-8 py-4 rounded-xl font-['Space_Grotesk'] font-bold uppercase tracking-widest text-sm hover:bg-[#D7DF21]/80 transition-all duration-200 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#bdf4ff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0e14]" do %>
+            <span class="material-symbols-outlined" aria-hidden="true">radar</span>
+            Search the Archive
+          <% end %>
+          <%= link_to new_report_path, class: "w-full sm:w-auto justify-center inline-flex items-center gap-3 bg-[#0a0e14]/40 border border-[#D7DF21]/30 text-[#D7DF21] px-8 py-4 rounded-xl font-['Space_Grotesk'] font-bold uppercase tracking-widest text-sm hover:bg-[#D7DF21]/10 transition-all duration-200 no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#bdf4ff] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0e14]" do %>
+            <span class="material-symbols-outlined" aria-hidden="true">upload_file</span>
+            Report a Sighting
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Coordinates readout -->
+      <div class="absolute hidden lg:flex <%= split ? 'top-6 right-6 flex-row gap-6' : 'left-6 top-1/2 -translate-y-1/2 flex-col gap-8' %> opacity-40" aria-hidden="true">
+        <div class="text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] tracking-widest <%= 'rotate-90 origin-left' unless split %>">LAT: 51.5074 N</div>
+        <div class="text-[10px] font-['Space_Grotesk'] text-[#bdf4ff] tracking-widest <%= 'rotate-90 origin-left' unless split %>">LONG: 0.1278 W</div>
+      </div>
+      <!-- Tactical Corners -->
+      <div class="absolute <%= split ? 'top-4 left-4 w-16 h-16' : 'top-24 left-8 w-24 h-24' %> border-t border-l border-[#D7DF21]/20 hidden lg:block" aria-hidden="true"></div>
+      <div class="absolute <%= split ? 'bottom-4 right-4 w-16 h-16' : 'bottom-8 right-8 w-24 h-24' %> border-b border-r border-[#D7DF21]/20 hidden lg:block" aria-hidden="true"></div>
+    </div>
+
+    <% if split %>
+      <aside id="home-articles" aria-label="Featured dossier" class="lg:col-span-5 flex flex-col gap-6 min-w-0">
+        <%= render 'sightings/featured_article', article: featured_article %>
+        <%= render 'sightings/related_articles', articles: related_articles if related_articles.present? %>
+      </aside>
+    <% end %>
+  </div>
+</section>

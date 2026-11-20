@@ -16,6 +16,13 @@ class SightingsController < ApplicationController
       collection.offset((page - 1) * 20).limit(20).entries
     end
 
+    @featured_article = Rails.cache.fetch('articles/featured', expires_in: 1.hour) { Article.featured }
+    if @featured_article
+      @featured_related_articles = Rails.cache.fetch("articles/#{@featured_article.id}/related", expires_in: 1.hour) do
+        @featured_article.published_related_articles
+      end
+    end
+
     @pagy = Pagy.new(count: total_count, page: page, limit: 20)
     @menu = 'index'
     @page_title = 'Recent UFO Activity'

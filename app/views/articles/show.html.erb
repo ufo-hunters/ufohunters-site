@@ -29,7 +29,6 @@
   </script>
 <% end %>
 
-<% cache("articles/content/#{@article.id}", skip_digest: true, expires_in: 1.month) do%>
 <p id="notice" class="text-[#bdf4ff]"><%= notice %></p>
 
 <div class="px-4 md:px-12 max-w-[1920px] mx-auto">
@@ -44,6 +43,8 @@
   <div itemscope itemtype="http://schema.org/Article" class="flex flex-col lg:flex-row gap-8">
 
     <div class="w-full lg:w-2/3">
+      <%# Only the article itself is cached for a month: the related block below has its own 1h cache. %>
+      <% cache("articles/content/v2/#{@article.id}", skip_digest: true, expires_in: 1.month) do %>
       <article class="bg-[#262a31] border border-[#484833]/20 rounded-xl p-6 md:p-8">
         <!-- Go to www.addthis.com/dashboard to customize your tools -->
         <div class="addthis_sharing_toolbox mb-4"></div>
@@ -101,6 +102,9 @@
             </span>
         </div>
       </article>
+      <% end %>
+
+      <%= render 'articles/related_articles', articles: @related_articles if @related_articles.present? %>
 
       <!-- Comments Section -->
       <div class="mt-8 bg-[#262a31] border border-[#484833]/20 rounded-xl p-6">
@@ -126,4 +130,3 @@
   </div>
 
 </div>
-<% end %>

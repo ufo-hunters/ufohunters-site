@@ -1,0 +1,23 @@
+<section aria-labelledby="home-related-heading" class="rounded-2xl border border-[#484833]/30 bg-[#10141a] px-6 pt-5 pb-3">
+  <div class="flex items-center justify-between gap-4 mb-1">
+    <h2 id="home-related-heading" class="m-0 text-xs font-['Space_Grotesk'] uppercase tracking-[0.2em] text-[#bdf4ff]">
+      <span class="material-symbols-outlined text-[14px] align-middle mr-1" aria-hidden="true">folder_special</span>In this dossier
+    </h2>
+    <%= link_to articles_path, class: "text-xs font-['Space_Grotesk'] uppercase tracking-widest text-[#c9c8ad] hover:text-[#D7DF21] transition-colors duration-200 focus-visible:outline-none focus-visible:text-[#D7DF21] focus-visible:underline" do %>
+      All articles <span aria-hidden="true">&rarr;</span>
+    <% end %>
+  </div>
+  <ol id="home-related-articles" class="divide-y divide-[#484833]/30">
+    <% articles.each do |article| %>
+      <li>
+        <%= link_to({ controller: 'articles', action: 'show', id: article.id, title: ArticlesHelper.friendly_title(article) },
+                    class: 'group flex items-start gap-4 py-2.5 rounded no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#bdf4ff]') do %>
+          <span class="flex-1 min-w-0 text-sm font-['Space_Grotesk'] font-semibold leading-snug text-[#dfe2eb] group-hover:text-[#D7DF21] transition-colors duration-200 break-words"><%= article.title %></span>
+          <% if article.published_date.present? %>
+            <time datetime="<%= format_date_microdata article.published_date %>" class="shrink-0 pt-0.5 text-[11px] font-['Space_Grotesk'] tracking-wider text-[#c9c8ad]"><%= format_date_microdata article.published_date %></time>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ol>
+</section>
