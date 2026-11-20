@@ -54,6 +54,17 @@ class ArticlesControllerTest < ActionDispatch::IntegrationTest
     assert_select "#related-articles a[href^='/articles/#{related.id}/']", text: /First teaser/
   end
 
+  test 'show related card teaser is not double escaped' do
+    related = create_published_article(title: 'Quoted', teaser: "Reid's request #{'word ' * 50}")
+    @article.assign_attributes(status: 1, related_article_ids: [related.id])
+    @article.save!
+
+    get article_path(id: @article.id)
+
+    assert_response :success
+    assert_not_includes response.body, '&amp;#39;'
+  end
+
   test 'show has no related block when the article has no related articles' do
     @article.status = 1
     @article.save!

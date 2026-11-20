@@ -11,7 +11,7 @@
             <time datetime="<%= format_date_microdata article.published_date %>" class="text-[10px] font-['Space_Grotesk'] tracking-widest uppercase text-[#c9c8ad]"><%= format_date article.published_date %></time>
           <% end %>
           <span class="font-['Space_Grotesk'] font-semibold leading-snug text-[#dfe2eb] group-hover:text-[#D7DF21] transition-colors duration-200 break-words"><%= article.title %></span>
-          <span class="text-sm text-[#c9c8ad] leading-relaxed"><%= truncate(strip_tags(article.teaser.to_s), length: 160, separator: ' ') %></span>
+          <span class="text-sm text-[#c9c8ad] leading-relaxed"><%= truncate(CGI.unescapeHTML(strip_tags(article.teaser.to_s)), length: 160, separator: ' ') %></span>
         <% end %>
       </li>
     <% end %>
