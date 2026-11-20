@@ -23,7 +23,7 @@ module SocialPoster
       report = ReportSelector.candidate_for('twitter')
 
       unless report
-        Rails.logger.info '[SocialPoster::Twitter] No unposted candidates in last month'
+        Rails.logger.info '[SocialPoster::Twitter] No unposted candidates in lookback window'
         return nil
       end
 

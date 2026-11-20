@@ -2,6 +2,9 @@
 
 module SocialPoster
   class ReportSelector
+    # How far back (by reported_at) a sighting can be to get posted.
+    LOOKBACK = 6.months
+
     def self.candidate_for(platform)
       new(platform).candidate
     end
@@ -15,7 +18,7 @@ module SocialPoster
 
       match = {
         'status' => 1,
-        'reported_at' => { '$gte' => 1.month.ago.strftime('%Y%m%d') }
+        'reported_at' => { '$gte' => LOOKBACK.ago.strftime('%Y%m%d') }
       }
 
       if already_posted_ids.any?

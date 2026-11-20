@@ -4,7 +4,7 @@ require 'test_helper'
 
 module SocialPoster
   class ReportSelectorTest < ActiveSupport::TestCase
-    test 'returns nil when no published reports in last month' do
+    test 'returns nil when no published reports in lookback window' do
       result = SocialPoster::ReportSelector.candidate_for('twitter')
 
       assert_nil result
@@ -47,10 +47,21 @@ module SocialPoster
       assert_nil result
     end
 
-    test 'excludes reports older than one month' do
+    test 'includes reports from a few months ago' do
       report = create_dummy_report
       report.status = 1
-      report.reported_at = 2.months.ago.strftime('%Y%m%d')
+      report.reported_at = 3.months.ago.strftime('%Y%m%d')
+      report.save!
+
+      result = SocialPoster::ReportSelector.candidate_for('twitter')
+
+      assert_not_nil result
+    end
+
+    test 'excludes reports older than six months' do
+      report = create_dummy_report
+      report.status = 1
+      report.reported_at = 7.months.ago.strftime('%Y%m%d')
       report.save!
 
       result = SocialPoster::ReportSelector.candidate_for('twitter')

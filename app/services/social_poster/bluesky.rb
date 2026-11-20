@@ -15,7 +15,7 @@ module SocialPoster
       report = ReportSelector.candidate_for('bluesky')
 
       unless report
-        Rails.logger.info '[SocialPoster::Bluesky] No unposted candidates in last month'
+        Rails.logger.info '[SocialPoster::Bluesky] No unposted candidates in lookback window'
         return nil
       end
 
